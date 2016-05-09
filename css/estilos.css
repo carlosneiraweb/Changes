@@ -1,0 +1,609 @@
+/*
+color letras #FF5917 -- #0C0792;
+*/
+
+*{
+	margin:0;
+	padding:0;
+	border: 0;
+}
+
+html{
+	height: 100%;
+}
+
+article, figcaption, figure, fieldset, footer, header, hgroup, nav, section{ display: block;}
+img{max-width: 100%;}
+
+@font-face {
+    font-family: 'old_school_toonsregular';
+    src: url('../fonts/old_school/old_school_toons-webfont.eot');
+    src: url('../fonts/old_school/old_school_toons-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/old_school/old_school_toons-webfont.woff2') format('woff2'),
+         url('../fonts/old_school/old_school_toons-webfont.woff') format('woff'),
+         url('../fonts/old_school/old_school_toons-webfont.ttf') format('truetype'),
+         url('../fonts/old_school/old_school_toons-webfont.svg#old_school_toonsregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'chapazaregular';
+    src: url('../fonts/chapaza/chapaza-webfont.eot');
+    src: url('../fonts/chapaza/chapaza-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/chapaza/chapaza-webfont.woff2') format('woff2'),
+         url('../fonts/chapaza/chapaza-webfont.woff') format('woff'),
+         url('../fonts/chapaza/chapaza-webfont.ttf') format('truetype'),
+         url('../fonts/chapaza/chapaza-webfont.svg#chapazaregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'berry_rotundaregular';
+    src: url('../fonts/berry_rotunda/berry_rotunda-webfont.eot');
+    src: url('../fonts/berry_rotunda/berry_rotunda-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/berry_rotunda/berry_rotunda-webfont.woff2') format('woff2'),
+         url('../fonts/berry_rotunda/berry_rotunda-webfont.woff') format('woff'),
+         url('../fonts/berry_rotunda/berry_rotunda-webfont.ttf') format('truetype'),
+         url('../fonts/berry_rotunda/berry_rotunda-webfont.svg#berry_rotundaregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'bubbleboddyfat';
+    src: url('../fonts/bobbleboddy/bobbleboddy-webfont.eot');
+    src: url('../fonts/bobbleboddy/bobbleboddy-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/bobbleboddy/bobbleboddy-webfont.woff2') format('woff2'),
+         url('../fonts/bobbleboddy/bobbleboddy-webfont.woff') format('woff'),
+         url('../fonts/bobbleboddy/bobbleboddy-webfont.ttf') format('truetype'),
+         url('../fonts/bobbleboddy/bobbleboddy-webfont.svg#bubbleboddyfat') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body{
+	background: #212121 url(../img/fondo2.jpg);
+	font-family: "chapazaregular", Helvetica, Verdana;
+	font-size: 1em;
+	max-width: 95%;
+	margin: 5px auto;
+	position:relative;
+       
+}
+
+header,section#menu, nav, footer{
+	background-color: #fff;
+	border: 2px solid #4F628E;
+	border-radius: 0.8em;
+	-moz-border-radius: 1em; /* Firefox 3.5 */
+    -webkit-border-radius: 1em; /* Google Chrome y Safari */
+    -ms-border-radius: 1em; /*internet explorer*/
+	color: #FF5917;
+	margin: 1em auto;
+	max-width: 960px;
+	padding: .25em;
+	z-index: 5;
+}
+
+figure#logo, section#cabecera{
+	display: inline-block;
+	vertical-align: middle;
+	margin: .2em auto;
+	padding: .3em;
+	width: 35%;	
+	min-height: 150px;
+	
+}
+
+figcaption#titulo{
+		border-bottom: .1em #FF4900 solid;
+		color: #061539;
+		font-size: .85em;
+		font-family: 'berry_rotundaregular',Helvetica, Verdana;	
+		text-align: center;border-bottom: .1em #FF4900 solid;
+		margin: .15em auto;
+		width: 90%;
+}
+
+section#cabecera{ 
+	width: 60%;
+}
+
+section#cabecera h3{
+		color: #0C0792;
+		font-size: 1.1em;
+		margin: .25em auto;
+		text-align: center;
+}
+
+section#btns_logueo{
+		margin: .25em auto;
+		width: 40%;
+}
+
+section#btn_desloguear{
+                width: 40%;
+                margin: .2em auto;
+}
+input[type="button"], section#btn_desloguear a{
+	cursor: pointer;
+	color: #0C0792;
+	font-weight: 900;
+	margin: .15em;
+	padding: 0;
+	width: 35%;
+        min-width: 100px;
+	border-top: 1px solid #FF5917;
+	border-bottom: 1px solid #FF5917;
+}
+
+input[type="button"]:hover, section#btn_desloguear a:hover{
+	color: #FF5917;
+	border-top: 1px solid #0C0792;
+	border-bottom: 1px solid #0C0792;
+}
+section#btn_desloguear>a{
+    background-color: #F0F0F0;
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    margin: .15em auto;
+    min-width: 110px;
+    padding: 0;
+}
+
+h1{
+	font-family:'old_school_toonsregular', Helvetica, Verdana;
+	font-size: 4.5em;
+	text-align: center;
+	text-shadow: 5px 5px 5px rgba(000,000,000,0.7);
+}
+
+
+/*Estilos para la pagina que se muestra cuando hay un error*/
+section#error{
+    width: 450px;
+    height: 390px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    background-color: white;
+    border: 2px solid blue;
+    border-radius: 0.8em;
+    margin: auto;
+    margin: auto;
+    position:absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+    
+}
+
+figure#imagen_error{
+    margin: .3em auto;
+    width: 200px;
+    height: 200px;
+    min-width: 150px; 
+}
+
+section#mensaje_error{
+    text-align: center;
+    margin: .5em auto;
+}
+/*Fin pagina error*/
+
+
+section#mensaje_error h2{
+    font-family:'bubbleboddyfat', Helvetica, Verdana;
+    font-size: 2em;
+    color: #FF5917;
+}
+
+section#mensaje_error h3{
+    font-size: .9em;
+    color: #0C0792;
+}
+
+
+section#contenedor{
+	margin: .7em auto;
+	max-width: 950px;
+	padding: .5em;
+	text-align: center;
+        border: 1px solid blue;
+}
+
+section#posts, aside#publi{
+	background: white;
+	border: 1px solid blue;
+	border-radius: 0.8em;
+	-moz-border-radius: 1em; /* Firefox 3.5 */
+        -webkit-border-radius: 1em; /* Google Chrome y Safari */
+        -ms-border-radius: 1em; /*internet explorer*/
+	color: black;
+	display: inline-block;
+	vertical-align: top;
+	margin: .25em auto;
+	padding: .3em;
+	width: 60%;
+	min-height: 300px;
+}
+
+aside#publi{
+        margin-left: 3%;
+	width: 25%; 
+}
+
+figure#izquierda, figure#derecha, figure#arriba, figure#abajo{
+	cursor: pointer;
+	font-size: 0.5em;
+	text-align: center;
+	top: 5px;
+	padding: 0;
+	position: relative;
+	margin: .3em;
+	max-width: 40px;
+	max-height: 40px;
+}
+
+figure#izquierda, figure#derecha{
+	display: inline-block;
+	vertical-align: middle;
+}
+				/*Clases*/
+.fade{
+	-ms-transition: all 0.5s ease-in;
+	-moz-transition: all 0.5s ease-in;
+	-o-transition: all 0.5s ease-in;
+	-webkit-transition: all 0.5s ease-in;
+	transition: all 0.5s ease-in;
+	opacity: 1;
+	filter:alpha(opacity=10);
+}
+
+.fade:hover{
+	-ms-transition: all 0.5s ease-out;
+	-moz-transition: all 0.5s ease-out;
+	-o-transition: all 0.5s ease-out;
+	-webkit-transition: all 0.5s ease-out;
+	transition: all 0.5s ease-out;
+	opacity:.5;
+	filter:alpha(opacity=5);
+}
+
+							/*Estilos formularios*/
+section#login_form{
+	border: 2px solid #4F628E;
+	border-radius: 0.8em;
+	-moz-border-radius: 1em; /* Firefox 3.5 */
+        -webkit-border-radius: 1em; /* Google Chrome y Safari */
+        -ms-border-radius: 1em; /*internet explorer*/
+}
+
+section#login_form h4, section#registro_form h4{
+	color: #FF5917;
+	font-size: 1em;
+	font-family: 'berry_rotundaregular',Helvetica, Verdana;	
+	text-align: center;
+}
+
+fieldset {
+	background: white;
+	border: thin solid skyblue;
+	border-radius: 1em;
+	color: #0C0792;
+	font-size: .8em;
+	padding: 1em;	
+}
+form input[type="text"], input[type="email"], input[type="tel"], input[type="password"]{
+	border-bottom: 1px solid black;
+	border-top: 1px solid black;
+	margin: .3em auto;
+	padding: .15em;
+	width: 95%;
+}
+
+
+form input[type="submit"]{
+	background: #FF5917 ;
+	border: thin solid transparent;
+	border-radius: .5em;
+	color: #0C0792;
+	cursor: pointer;
+	font-size: 1em;
+	margin-left: 30%;
+	min-width: 60px;
+	padding: .5em;
+        cursor: pointer;
+	width: 25%;
+	
+}
+form input[type="submit"]:hover{
+	background: #0C0792;
+	border: thin solid #f60;
+	border-radius: 0;
+	color: #FF5917;
+	font-weight:900;
+}
+
+							
+.slider-container{
+	margin: 0 auto;
+	padding: .35em;
+	width: 80%;
+}
+
+.slider-wrapper{
+	 display: inline-block;
+	vertical-align: top;
+	font-weight: bold;
+	list-style: none;
+	margin: .3em;
+	padding: .5em;
+	position: relative;
+	/*overflow: hidden;*/
+	width: 75%;
+}
+
+.slider-wrapper li{
+	display: none;
+	padding: .3em;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 95%;
+}
+
+ul#slider>li>a {
+	color: #0C0792;
+	font-family: 'bubbleboddyfat', Helvetica, Verdana;
+	font-size: 1.2em;
+	margin-left: 2.5em;
+	text-decoration: underline;
+	padding: .3em;
+	-ms-transition: all 0.5s ease-in;
+	-moz-transition: all 0.5s ease-in;
+	-o-transition: all 0.5s ease-in;
+	-webkit-transition: all 0.5s ease-in;
+	transition: all 0.5s ease-in;
+	
+}
+
+ul#slider>li>a:link{
+	border-left: 1px solid #FF5917;
+	border-right: 1px solid #FF5917;
+	text-shadow: 5px 5px 5px rgba(000,000,000,0.7);
+}
+
+ul#slider>li>a:visited{}
+ul#slider>li>a:hover{
+	border-left: 1px solid #0C0792;
+	border-right: 1px solid #0C0792;
+	color: #FF5917;
+}
+ul#slider>li>a:active{ 
+	border-top: 1px solid green;
+	border-bottom: 1px solid green;
+	color: black;
+}
+
+li.slide-current{
+	display:block;
+}
+.mi_body{
+    height: 100%;
+    width: 100%;
+    position:relative;
+}
+section#salir_sesion{
+    background-color: white;
+    border: 3px solid #0C0792;
+    height: 260px;
+    width: 340px;
+    margin: auto;
+    position:absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+    padding: .3em;
+}
+
+figure#logo_salir_sesion{
+
+    margin: auto;
+    height: 250px;
+    width: 330px;
+   
+}
+/*Cada formulario para poder estar centrado necesita unas medidas concretas*/
+
+/*Estilo de bordr redondeado para todos los elementos de la pagina*/
+.login_form_tamanyo, .registro_form_tamanyo, #ocultar, section#salir_sesion, section#error, figure#imagen_error{
+	border-radius: 0.8em;
+	-moz-border-radius: .8em; /* Firefox 3.5 */
+    -webkit-border-radius: .8em; /* Google Chrome y Safari */
+    -ms-border-radius: .8em; /*internet explorer*/
+}
+
+.login_form_tamanyo{
+        max-width: 250px;
+	min-width: 200px;
+        max-height: 340px;
+        height: 340px;
+	width: 25%;
+}
+
+.registro_form_tamanyo{
+	min-width: 200px;
+        height: 850px;
+	width: 35%;
+}
+/*Muestran el fondo del formulario y el mismo*/
+.mostrar_transparencia{
+	background-color: black;
+	opacity: .4;
+	filter:alpha(opacity=4);
+	position: absolute;
+	top:0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	visibility: visible;
+	z-index: 10;
+}
+
+.mostrar_formulario{
+	background-color: white;
+	padding: .3em;
+	margin: auto;
+        max-height: 335px;
+        max-width: 245px;
+	position:absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	visibility: visible;
+	z-index: 20;
+        
+}
+
+/*Clase para ocultar elementos sin modificar posicion*/
+.ocultar{
+        visibility: hidden;
+	
+}
+.noOcupar{
+	display:none;
+}
+/*Clases para ocultar los formularios*/
+.oculto{
+	height: 0;
+	max-height: 0;
+	opacity: 0;
+	visibility: hidden;
+	width: 0;
+	z-index: 0;
+}
+
+
+	/*Clases para validadar formulario*/
+.error{
+	background-color: #BC1010;
+	padding: 6px 12px;
+	border-radius: 4px;
+	color: #fff;
+	font-weight: bold;
+	margin-left: 30px;
+	margin-top: 6px;
+	position: absolute;
+}
+.error:before{
+	content: '';
+	border-top: 8px solid transparent;
+	border-bottom: 8px solid transparent;
+	border-right:  8px solid #BC1010;
+	border-left: 8px solid transparent;
+	left: -16px;
+	position:absolute;
+	top: 5px;
+}
+/*
+.borderColor{
+	border-top: 1px solid red !important;
+	border-bottom: 1px solid red !important;
+}
+*/
+.obligatorio{
+    padding-left: .4em;
+}
+footer{
+	background-color: brown;
+
+}
+		/*MediaQuery*/
+
+@media screen and (max-width:1127px){
+	ul#slider>li>a { margin-left: .5em;}
+	figure#arriba{display:none}
+}
+@media screen and (max-width:920px){
+	figure#logo{width: 35%;margin-left: 1em;}
+	section#cabecera{width: 50%; margin-left:3em;}
+	section#btns_logueo{width: 70%;}
+	.slider-container{width: 90%;}/*para slider menu*/
+}
+@media screen and (max-width:811px){
+	.slider-container{width: 95%;}
+}
+@media screen and (max-width:761px){
+	section#posts{width: 95%;}
+}
+@media screen and (max-width:776px){
+	figure#logo{width: 35%;margin-left: 1em;}
+	figcaption#titulo{font-size: 0.75em;}
+	section#cabecera{width: 47%; margin-left:3em;}
+	h1{font-size: 3.4em;}
+	section#cabecera h3{font-size: .9em;}
+	section#btns_logueo{width: 100%;margin:0}
+	.slider-container{width: 95%;}
+	figure#izquierda, figure#derecha{ width: 30px;}
+	ul#slider>li>a {font-size: 1.2em;}
+	
+}
+@media screen and (max-width:660px){
+	figure#derecha{display:none}
+	figure#izquierda{display:none}
+	figure#arriba{display:block;}
+	figure#abajo{display:block;}
+	figure#arriba, figure#abajo{ max-width: 20px; }
+	ul#slider>li>a {font-size: 1.3em;}
+	.slider-wrapper{width: 80%; margin-left: 1.7em; vertical-align: top;}
+	figure#logo{width: 35%;margin-left: .8em;}
+	figcaption#titulo{font-size: 0.75em;}
+	section#cabecera{width: 40%; margin-left:2em;}
+}
+
+
+@media screen and (max-width:545px){
+	figure#logo{width: 30%;margin-left: .5em;}
+	figcaption#titulo{font-size: 0.45em;}
+	section#cabecera{width: 40%; margin-left:1.5em;}
+	figure#arriba, figure#abajo{ max-width: 20px; }
+	ul#slider>li>a {font-size: 1.2em;}	
+}
+
+@media screen and (max-width:495px){
+	header{ max-height: 285px;}
+	figcaption#titulo{display: none;}
+	figure#logo{ width: 60%; margin: 2em 70px;}
+	section#cabecera{
+		bottom: 200px;
+		position: relative;
+		width: 80%;
+	}
+	section#cabecera h1{
+		opacity: 0.8;
+  		filter:  alpha(opacity=80);
+	}
+	ul#slider>li>a {font-size: 1em;}
+}
+
+@media screen and (max-width:430px){
+	ul#slider>li>a {font-size: 1em;}
+	.slider-wrapper{margin-left: .5em;}
+}
+
+@media screen and (max-width:390px){
+	figure#logo{margin-top: 2.1em;}
+	section#cabecera{ bottom: 220px;}
+	figure#arriba, figure#abajo{ max-width: 15px; }
+	ul#slider>li>a {font-size: .85em;}
+	.slider-wrapper{margin-left: 0em;}
+	figure#abajo{top: 12px;}
+	figure#arriba{bottom: 12px;}
+}
