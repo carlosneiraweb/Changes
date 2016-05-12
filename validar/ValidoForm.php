@@ -1,51 +1,13 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+//use Usuarios;
 
-/**
- * Description of Validate
- *
- * @author Carlos Neira Sanchez
- */
- class ValidoForm implements Interf_comprobar{
-    private $requeridos = array();
-    private $perdidos = array();
-   
-    
-    public function __construct($req, $miss) {
-       
-        $tmpReq ="";
-        $tmpPer ="";
-        foreach ($req as $tmpReq){
-            array_push($this->requeridos, $tmpReq);
-        }
+    require_once 'entidades/Usuarios.php';
+    require_once 'entidades/DataObj.php';
         
-        foreach ($miss as $tmpPer){
-            array_push($this->perdidos, $tmpPer);
-        }
         
-    }
-    function getRequeridos() {
-        return $this->requeridos;
-    }
-
-    function getPerdidos() {
-        return $this->perdidos;
-    }
-
-    function setRequeridos($requeridos) {
-        $this->requeridos = $requeridos;
-    }
-
-    function setPerdidos($perdidos) {
-        $this->perdidos = $perdidos;
-    }
-    
-     
+    class ValidoForm{
+        
     /**
      * Metodo que recive un string y 
      * nos aseguramos que todo los caracteres 
@@ -53,10 +15,12 @@
      * Antes quitamos los posibles espacios en blanco
      * 
      */
-    public function htmlCaracteres($string){
+    final private function htmlCaracteres($string){
         $cadena = trim($string);
         $cadena = htmlspecialchars($cadena, ENT_QUOTES, 'UTF-8');
         return $cadena;
+      
+       
     }
    
         /*
@@ -68,7 +32,7 @@
      * medida de seguridad.
      * 
      */
-      final  public function validateField($nombreCampo, $camposPerdidos){
+    function validateField($nombreCampo, $camposPerdidos){
           
             if(in_array($nombreCampo, $camposPerdidos)){
                 return 'class="error"';
@@ -79,30 +43,35 @@
        * Validamos los datos introducidos para logearse.
        * Recibe objeto de la clase usuario
        * Devuelve true o false.
+       * Utilizamos la indicación para decirle al método que va 
+       * a recivir un objeto de Usuarios
        * @param type $obj
        */  
-      public function validarEntrada($obj){
-          $nick = $this->htmlCaracteres($obj->nick);
-          $pass = $this->htmlCaracteres($obj->password_1);
-        if($this->campoVacio($nick) and $this->campoVacio($pass) and $this->validarPassword($pass)){   
-                    return true;
+    final function validarEntrada(DataObj $obj){
+          
+          $nick = $this->htmlCaracteres($obj->getValue('nick'));
+          $pass = $this->htmlCaracteres($obj->getValue('email'));
+        if($this->campoVacio($obj->getValue('nick')) and $this->campoVacio($obj->getValue('email')) and $this->validarEmail($obj->getValue('email'))){        
+            echo 'en validar es true';    
+            return true;
             }else{
-                    return false;
+            echo 'en validar es falso';
+                return false;
             }
         }
       
       /**
        * Metodo que valida el registro de un usuario
        */
-      public function validoRegistro($objUsu){
+    final function validoRegistro($objUsu){
           
-          $nombre = $this->htmlCaracteres($objUsu->nombre);
-          $telefono = $this->htmlCaracteres($objUsu->telefono);
-          $email = $this->htmlCaracteres($objUsu->email);
-          $nick = $this->htmlCaracteres($objUsu->nick);
-          $pass_1 = $this->htmlCaracteres($objUsu->password_1);
-          $pass_2 = $this->htmlCaracteres($objUsu->password_2);
-          $valor = $this->htmlCaracteres($objUsu->string);
+          $nombre = $this->$objUsu->nombre;
+          $telefono = $this->$objUsu->telefono;
+          $email = $this->$objUsu->email;
+          $nick = $this->$objUsu->nick;
+          $pass_1 = $this->$objUsu->password_1;
+          $pass_2 = $this->$objUsu->password_2;
+          $valor = $this->$objUsu->string;
         
           $miArray = array($nombre, $telefono, $email, $nick, $pass_1, $pass_2, $valor);
 
@@ -141,7 +110,7 @@
        * Metodo que recive un password
        * para ser validado
        */
-      private function validarPassword($cadena){
+    final private function validarPassword($cadena){
           
          
          $patron = "/^[0-9a-zA-Z]{6,10}$/";
@@ -157,7 +126,7 @@
        * Recive dos strings.
        * SE HACE DISTINCIÓN ENTRE MAYUSCULAS Y MINUSCULAS
        */
-      function validarIgualdadPasswords($pass1, $pass2){
+    final private function validarIgualdadPasswords($pass1, $pass2){
           
         $result = strcmp ($pass1 ,$pass2 ); 
         if($result === 0){
@@ -177,7 +146,7 @@
        * Ademas los caracteres tienen que ser números
        */
       
-      function validaTelefono($tel){
+    final private  function validaTelefono($tel){
           
           $expresion = '/^[9|8|6|7][0-9]{8}$/';
          if($result = preg_match($expresion, $tel) and ctype_digit($tel)){
@@ -194,7 +163,7 @@
        * @param type $elemento
        * @return boolean
        */  
-      public function campoVacio($elemento){
+    final private function campoVacio($elemento){
         
             if($elemento != ""){
                return true;
@@ -207,7 +176,7 @@
        * para validar
        * @param type $elemento
        */
-    final public function validarEmail($elemento){
+    final private function validarEmail($elemento){
           
         $expresion = "/^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$/";
         $result = preg_match($expresion, $elemento);
@@ -222,7 +191,7 @@
       * vuelva a escribir en el formulario
       * @param type $nombreCampo
       */   
-    public function setValue($nombreCampo){
+    function setValue($nombreCampo){
             if(isset($_POST[$nombreCampo])){
                 return $_POST[$nombreCampo];
             }
@@ -259,7 +228,7 @@
      * las condiciones. 
      * Se define final para evitar la sobreescritura. 
      */
-    final public function comprobarCheck($nombreCampo){
+     function comprobarCheck($nombreCampo){
         //echo 'el valor de condiciones vale: '.$_POST[$nombreCampo].'<br>';
         if(!isset($_POST[$nombreCampo]) or $_POST[$nombreCampo] != '1'){
             return false;
@@ -269,36 +238,10 @@
   
     }    
   
-    /**
-     * Metodo que elimina el objeto pasado
-     * @param type $obj
-     */
-    final public function eliminarObjeto($obj) {
-        unset($obj);
-    }    
     
-
-    /**
-     * 
-     * Metodo que para mostrar un objeto de la clase
-     * @return string
-     */
-    public function __toString()
-    {
-        $tmpReq ="";
-        $tmpMi ="";
-        
-        foreach ($this->requeridos as $ele){
-            $tmpReq .= "Elemento requerido: ".$ele.'<br>';
-        }
-        
-        foreach($this->perdidos as $miss){
-            $tmpMi .= "Elemento perdido: ".$miss.'<br>';
-        }
-        $mostrar = $tmpReq.'<br>'.$tmpMi;
-        return $mostrar;
+   //fin clase
     }
        
    
     
-}
+

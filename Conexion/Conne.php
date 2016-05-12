@@ -1,0 +1,52 @@
+<?php
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ * Description of Connection
+ *
+ * @author Carlos Neira Sanchez
+ * Clase que crea y cierra una conexion
+ */
+
+require_once 'Constantes.php';
+class Conne{
+   
+      /**
+     * Metodo protected
+     * connect
+     * @return \PDO
+     */
+    static function connect(){
+        
+        try{
+            $con = new PDO(DB_DNS, DB_USERNAME, DB_PASSWORD);
+            $con->setAttribute(PDO::ATTR_PERSISTENT, true);
+            $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (Exception $ex) {
+            die("Connection failed: ".$ex->getMessage());
+        }
+       
+        return $con;
+    //fin connect    
+    }
+    
+    /**
+     * Metodo protected
+     * disconnect
+     * @param string $con
+     */
+    static function disconnect($con){
+        //Ojo no eliminamos la conexion
+        $con="";
+    }
+    
+    
+    
+    
+//fin connection    
+}

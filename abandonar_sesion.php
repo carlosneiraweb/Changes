@@ -20,7 +20,8 @@ session_start();
 	<link rel="stylesheet" href="css/estilos.css"/>
         <script language="javascript">
             function volverInicio(){
-                setTimeout("location.href=' http://localhost/Proyecto-Final/index.php'", 3000);  
+                // http://localhost/Changes/index.php
+                setTimeout("location.href='<?php echo $_SESSION["url"] ?>'", 3000);  
             }
         
         </script>   

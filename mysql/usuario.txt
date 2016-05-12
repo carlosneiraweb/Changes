@@ -1,12 +1,12 @@
-insert into usuario (nick,password,email, fecha) values ('carlos','123','example@gmailcom',curdate());
+insert into usuario (nick,password,email, fecha) values ('carlos',password('123'),'example@gmailcom',curdate());
 
 
-insert into datos_usuario(id_datos_usuario, idgenero, nombre, apellido_1, apellido_2)
+insert into datos_usuario(idDatosUsuario, idGenero, nombre, apellido_1, apellido_2)
 values
 ((select idUsuario from usuario where nick = 'carlos'),
-(select idgenero from genero where idgenero = 1),
+(select idGenero from genero where idGenero = 1),
 'carlos','neira','sanchez');
 
 
-insert into direccion (iddireccion, calle, numero,ciudad,provincias_idprovincias,pais) values
-((select idusuario from usuario where nick = 'carlos'),'maestro serrano', 26, 'Benifairo les Valls',(select idprovincias from provincias where nombre='Valencia'),'España');
+insert into direccion (idDireccion, calle, numero,ciudad,provincias_idprovincias,pais) values
+((select idUsuario from usuario where nick = 'carlos'),'maestro serrano', 26, 'Benifairo les Valls',(select idProvincias from provincias where nombre='Valencia'),'España');

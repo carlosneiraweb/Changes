@@ -1,12 +1,12 @@
 <?php 
+require_once 'entidades/Usuarios.php';
+require_once 'entidades/DataObj.php';
 session_start();
-$usuario = $_SESSION['user'];
+$usuario = $_SESSION['user']->getValue('nick');
 $url = $_SESSION["url"];
 echo "usuario es: $usuario y session es: ".$url."<br>";
 
 ?>
-
-
 <!DOCTYPE html>
 <!--
  author Carlos Neira Sanchez
@@ -46,7 +46,7 @@ echo "usuario es: $usuario y session es: ".$url."<br>";
             global $nuevoDirectorio;
             if($count === 1){
    
-            $nuevoDirectorio = contarDirectorios($usuario);
+            $nuevoDirectorio = contarDirectorios('antonio');
             }
             
             
@@ -61,54 +61,6 @@ echo "usuario es: $usuario y session es: ".$url."<br>";
                     $nuevoName = renombrarArchivo( $nombreArchivo,$nuevoDirectorio);
                 }
    
-                //segunda imagen
-                if (isset($_FILES['photo2']) and $_FILES['photo2']['error'] == UPLOAD_ERR_OK) {
-                if($_FILES['photo2']['type'] != 'image/jpeg'){
-                    echo"<p>JPEG photos only, thanks!</p>";
-                }elseif(!move_uploaded_file($_FILES['photo2']['tmp_name'], $nuevoDirectorio.'/'.  basename($_FILES['photo2']['name']))){
-                    echo"<p>Sorry, there was  a problem uploading that photo2.</p>".$_FILES['photo2']['error'];
-                }else{
-                    $nombreArchivo = $nuevoDirectorio.'/'.  basename($_FILES['photo2']['name']);
-                    $nuevoName = renombrarArchivo($nombreArchivo, $nuevoDirectorio);
-                }
-                }
-                //tercera imagen
-                if (isset($_FILES['photo3']) and $_FILES['photo3']['error'] == UPLOAD_ERR_OK) {
-                if($_FILES['photo3']['type'] != 'image/jpeg'){
-                    echo"<p>JPEG photos only, thanks!</p>";
-                }elseif(!move_uploaded_file($_FILES['photo3']['tmp_name'], $nuevoDirectorio.'/'.  basename($_FILES['photo3']['name']))){
-                    echo"<p>Sorry, there was  a problem uploading that photo2.</p>".$_FILES['photo3']['error'];
-                }else{
-                    $nombreArchivo = $nuevoDirectorio.'/'.  basename($_FILES['photo3']['name']);
-                    $nuevoName = renombrarArchivo($nombreArchivo, $nuevoDirectorio);
-                }
-                }
-                //cuarta imagen
-                if (isset($_FILES['photo4']) and $_FILES['photo4']['error'] == UPLOAD_ERR_OK) {
-                if($_FILES['photo4']['type'] != 'image/jpeg'){
-                    echo"<p>JPEG photos only, thanks!</p>";
-                }elseif(!move_uploaded_file($_FILES['photo4']['tmp_name'], $nuevoDirectorio.'/'.  basename($_FILES['photo4']['name']))){
-                    echo"<p>Sorry, there was  a problem uploading that photo2.</p>".$_FILES['photo4']['error'];
-                }else{
-                    $nombreArchivo = $nuevoDirectorio.'/'.  basename($_FILES['photo4']['name']);
-                    $nuevoName = renombrarArchivo($nombreArchivo, $nuevoDirectorio);
-                }
-                }
-                //quinta imagen
-                if (isset($_FILES['photo5']) and $_FILES['photo5']['error'] == UPLOAD_ERR_OK) {
-                if($_FILES['photo5']['type'] != 'image/jpeg'){
-                    echo"<p>JPEG photos only, thanks!</p>";
-                }elseif(!move_uploaded_file($_FILES['photo5']['tmp_name'], $nuevoDirectorio.'/'.  basename($_FILES['photo5']['name']))){
-                    echo"<p>Sorry, there was  a problem uploading that photo5.</p>".$_FILES['photo5']['error'];
-                }else{
-                    $nombreArchivo = $nuevoDirectorio.'/'.  basename($_FILES['photo5']['name']);
-                    try{
-                    $nuevoName = renombrarArchivo($nombreArchivo, $nuevoDirectorio);
-                    }catch(Exception $e){
-                        header("Location : mostrar_error.php");
-                    }
-                }
-                }
                 
             
             }else{
@@ -133,7 +85,7 @@ echo "usuario es: $usuario y session es: ".$url."<br>";
             //validamos que se ha subido correctamente una foto
             if(isset($_FILES['photo']) and $_FILES['photo']['error'] == UPLOAD_ERR_OK){
             global $url;
-            header("Location: $url");
+            header("Location: ".$_SESSION['url']);
                 
             }
         //fin processForm    
@@ -154,10 +106,7 @@ echo "usuario es: $usuario y session es: ".$url."<br>";
             echo'<label for="photo">Your photo</label>';
             
             echo'<input type="file" name="photo" id="photo" value="" />';
-            echo'<input type="file" name="photo2" id="photo2" value="" />';
-            echo'<input type="file" name="photo3" id="photo3" value="" />';
-            echo'<input type="file" name="photo4" id="photo4" value="" />';
-            echo'<input type="file" name="photo5" id="photo5" value="" />';
+           
             
                 echo'<div style="clear:both;">';
                     echo'<input type="submit" name="sendPhoto" value="sendPhoto" />';
@@ -169,24 +118,13 @@ echo "usuario es: $usuario y session es: ".$url."<br>";
             
        //fin displayForm     
         }
-   /////////////////////////////////////////////     
-        function volverOrigen(){
-              
-                echo '<script>';
-                echo 'window.history.go(-2)';
-                echo '</script>';
-                exit();       
-        //fin volverOrigen            
-        }
-   ////////////////////////////////////////////////         
+  
             
-            function contarDirectorios($usuario){
+    function contarDirectorios($usuario){
               
-                global $nuevoDirectorio;
-          
-                $dir = 'photos/'.$usuario;
-                $count = 0;
-                if(!($handle = opendir($dir))) die("Cannot open $dir.");
+        $dir = 'photos/'.$usuario;
+        $count = 0;
+            if(!($handle = opendir($dir))) die("Cannot open $dir.");
              
                 while($file = readdir($handle)){
                     if($file != "." && $file != ".."){
@@ -212,9 +150,9 @@ echo "usuario es: $usuario y session es: ".$url."<br>";
             //fin contarDirectorios    
             }
             
-            function renombrarArchivo($nombreViejo, $nuevoDirectorio){
+    function renombrarArchivo($nombreViejo, $nuevoDirectorio){
             
-                if($nombreViejo != null and $nuevoDirectorio != null){
+        if($nombreViejo != null and $nuevoDirectorio != null){
                 $original = basename($nombreViejo);
                 //Extraemos el directorio donde esta el archivo 
                 $tmp = strstr($nombreViejo, $original, true);
@@ -228,7 +166,7 @@ echo "usuario es: $usuario y session es: ".$url."<br>";
                 return $nombreNuevo;
                
        
-            }
+        }
         ?>
     </body>
 </html>

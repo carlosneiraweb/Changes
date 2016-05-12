@@ -153,6 +153,29 @@ section#btn_desloguear>a{
     min-width: 110px;
     padding: 0;
 }
+/*Estilos para la pagina de salir de la sesion*/
+section#salir_sesion{
+    background-color: white;
+    border: 3px solid #0C0792;
+    height: 260px;
+    width: 340px;
+    margin: auto;
+    position:absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+    padding: .3em;
+}
+
+figure#logo_salir_sesion{
+
+    margin: auto;
+    height: 250px;
+    width: 330px;
+   
+}
+/*fin estilos pagina salir sesion*/
 
 h1{
 	font-family:'old_school_toonsregular', Helvetica, Verdana;
@@ -193,7 +216,7 @@ section#mensaje_error{
     text-align: center;
     margin: .5em auto;
 }
-/*Fin pagina error*/
+
 
 
 section#mensaje_error h2{
@@ -207,6 +230,7 @@ section#mensaje_error h3{
     color: #0C0792;
 }
 
+/*Fin pagina error*/
 
 section#contenedor{
 	margin: .7em auto;
@@ -215,7 +239,10 @@ section#contenedor{
 	text-align: center;
         border: 1px solid blue;
 }
-
+/*esta clase se aplica al contenedor de la pagina register*/
+.cambiarPosition{
+    position: relative;
+}
 section#posts, aside#publi{
 	background: white;
 	border: 1px solid blue;
@@ -237,6 +264,8 @@ aside#publi{
 	width: 25%; 
 }
 
+/*Estilos para los botones del menu*/
+
 figure#izquierda, figure#derecha, figure#arriba, figure#abajo{
 	cursor: pointer;
 	font-size: 0.5em;
@@ -253,7 +282,10 @@ figure#izquierda, figure#derecha{
 	display: inline-block;
 	vertical-align: middle;
 }
-				/*Clases*/
+
+
+
+        /*Clases fade aplicada a varios elementos, figure cabecera, enlaces menus*/
 .fade{
 	-ms-transition: all 0.5s ease-in;
 	-moz-transition: all 0.5s ease-in;
@@ -274,7 +306,7 @@ figure#izquierda, figure#derecha{
 	filter:alpha(opacity=5);
 }
 
-							/*Estilos formularios*/
+			/*Estilos formularios*/
 section#login_form{
 	border: 2px solid #4F628E;
 	border-radius: 0.8em;
@@ -283,10 +315,17 @@ section#login_form{
         -ms-border-radius: 1em; /*internet explorer*/
 }
 
-section#login_form h4, section#registro_form h4{
+section#login_form h4, section#form_registro h4{
 	color: #FF5917;
 	font-size: 1em;
 	font-family: 'berry_rotundaregular',Helvetica, Verdana;	
+	text-align: center;
+}
+
+section#login_form h5{
+        color: #0C0792;
+	font-size: .7em;
+	font-family: 'old_school_toonsregular',Helvetica, Verdana;	
 	text-align: center;
 }
 
@@ -313,12 +352,13 @@ form input[type="submit"]{
 	border-radius: .5em;
 	color: #0C0792;
 	cursor: pointer;
+        display:block;
 	font-size: 1em;
-	margin-left: 30%;
-	min-width: 60px;
+	margin: .8em auto;
+	min-width: 90px;
 	padding: .5em;
         cursor: pointer;
-	width: 25%;
+	width: 90px;
 	
 }
 form input[type="submit"]:hover{
@@ -329,7 +369,7 @@ form input[type="submit"]:hover{
 	font-weight:900;
 }
 
-							
+        /*Estilos para el menu horizontal*/
 .slider-container{
 	margin: 0 auto;
 	padding: .35em;
@@ -393,55 +433,38 @@ ul#slider>li>a:active{
 li.slide-current{
 	display:block;
 }
+
+        /* fin estilos menu horizontal*/
+ 
+        /*posicionamos relative el body para centrar los formularios*/
 .mi_body{
     height: 100%;
     width: 100%;
     position:relative;
 }
-section#salir_sesion{
+
+/*estilos contenedor del formulario de registro*/
+section#form_registro{
     background-color: white;
     border: 3px solid #0C0792;
-    height: 260px;
-    width: 340px;
-    margin: auto;
-    position:absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
+    margin: 1em auto;
     padding: .3em;
+     position:relative;
+    width: 50%;
+    z-index: 20;
 }
-
-figure#logo_salir_sesion{
-
-    margin: auto;
-    height: 250px;
-    width: 330px;
-   
-}
-/*Cada formulario para poder estar centrado necesita unas medidas concretas*/
 
 /*Estilo de bordr redondeado para todos los elementos de la pagina*/
-.login_form_tamanyo, .registro_form_tamanyo, #ocultar, section#salir_sesion, section#error, figure#imagen_error{
-	border-radius: 0.8em;
-	-moz-border-radius: .8em; /* Firefox 3.5 */
-    -webkit-border-radius: .8em; /* Google Chrome y Safari */
-    -ms-border-radius: .8em; /*internet explorer*/
+.login_form_tamanyo, .registro_form_tamanyo, #ocultar, section#salir_sesion, section#error, figure#imagen_error, section#form_registro{
+	border-radius: 1em;
+	-moz-border-radius: 1em; /* Firefox 3.5 */
+        -webkit-border-radius: 1em; /* Google Chrome y Safari */
+        -ms-border-radius: 1em; /*internet explorer*/
 }
 
-.login_form_tamanyo{
-        max-width: 250px;
-	min-width: 200px;
-        max-height: 340px;
-        height: 340px;
-	width: 25%;
-}
 
-.registro_form_tamanyo{
-	min-width: 200px;
-        height: 850px;
-	width: 35%;
-}
+
+
 /*Muestran el fondo del formulario y el mismo*/
 .mostrar_transparencia{
 	background-color: black;
@@ -498,7 +521,7 @@ figure#logo_salir_sesion{
 	border-radius: 4px;
 	color: #fff;
 	font-weight: bold;
-	margin-left: 30px;
+	margin-left: 20px;
 	margin-top: 6px;
 	position: absolute;
 }
@@ -512,12 +535,7 @@ figure#logo_salir_sesion{
 	position:absolute;
 	top: 5px;
 }
-/*
-.borderColor{
-	border-top: 1px solid red !important;
-	border-bottom: 1px solid red !important;
-}
-*/
+
 .obligatorio{
     padding-left: .4em;
 }
