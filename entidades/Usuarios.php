@@ -157,20 +157,19 @@ class Usuarios extends DataObj{
        
         $con = Conne::connect();
         if($opc){
-            $sql = "Select * FROM ".TBL_USUARIO. " WHERE nick = :nick AND email = :email ";
+            $sql = "Select * FROM ".TBL_USUARIO. " WHERE nick = :nick AND password = :password ";
             //echo $sql.'<br>';
         } else{ 
             $sql = "Select * FROM ".TBL_USUARIO. " WHERE nick = :nick AND password = password(:password) AND email = :email";
         }   
         try{
-          
+                //
             $st = $con->prepare($sql);
             $st->bindValue(":nick", $this->data["nick"], PDO::PARAM_STR);
-            if(!$opc){ $st->bindValue(":password", $this->data["password"], PDO::PARAM_STR);}
-            $st->bindValue(":email", $this->data["email"], PDO::PARAM_STR);
+            $st->bindValue(":password", $this->data["password"], PDO::PARAM_STR);
+            //if(!$opc){ $st->bindValue(":email", $this->data["email"], PDO::PARAM_STR); }  
             $st->execute();
             $row =  $st->fetch();
-            //var_dump($row);
            Conne::disconnect($con);
            if($row) return new Usuarios($row);
         } catch (Exception $ex) {
@@ -200,13 +199,13 @@ class Usuarios extends DataObj{
                    
             ) VALUES (
             :nick,
-            password(:password),
+            :password,
             :email,
             :fecha            
             );";
         
         try{
-            $date = date(Y-m-d);
+            $date = date('Y-m-d');
             $st = $con->prepare($sql);
             $st->bindValue(":nick", $this->data["nick"], PDO::PARAM_STR);
             $st->bindValue(":password", $this->data["password"], PDO::PARAM_STR);
@@ -215,66 +214,10 @@ class Usuarios extends DataObj{
             
   
             $total = $st->execute();
-           // echo 'total campos: '.$total.'<br>';
+            echo 'total campos: '.$total.'<br>';
            
-                if($total){
-                    $sql = "INSERT INTO ".TBL_DATOS_USUARIO." ( idDatosUsuario, idGenero, nombre, apellido_1, apellido_2)".
-                            "VALUES".
-                            "((SELECT idUsuario FROM ".TBL_USUARIO." where nick = :nick),
-                            (SELECT idGenero FROM ".TBL_GENERO." WHERE idGenero = :genero),
-                            ':nombre',':apellido_1',':apellido_2');";
-                    //echo $sql
-
-                    try{
-                        
-                        $st = $con->prepare($sql);
-                        $st->bindValue(":nick", $this->data["nick"], PDO::PARAM_STR);
-                        $st->bindValue(":genero", $this->data["genero"], PDO::PARAM_STR);
-                        $st->bindValue(":nombre", $this->data["nombre"], PDO::PARAM_STR);
-                        $st->bindValue(":apellido_1", $this->data["apellido_1"], PDO::PARAM_STR);
-                        $st->bindValue(":apellido_2", $this->data["apellido_2"], PDO::PARAM_STR);
-                        
-                        $total = $st->execute();
-                            // echo 'total campos: '.$total.'<br>';
-                        
-                            if($total){
-                                
-                                $sql = "INSERT INTO ".TBL_DIRECCION." (idDireccion, calle, numero, ciudad, provincias_idprovincias, pais)".
-                                        " VALUES ".
-                                    "((SELECT idUsuario FROM ".TBL_USUARIO. " where nick = :nick),".
-                                    "':calle', ':numero', ':ciudad', ".
-                                    "(SELECT idProvincias FROM ".TBL_PROVINCIAS. " WHERE nombre=':nombre'),':pais');";
-                                //echo $sql
-                                try{
-                                
-                                    $st = $con->prepare($sql);
-                                    $st->bindValue(":nick", $this->data["nick"], PDO::PARAM_STR);
-                                    $st->bindValue(":calle", $this->data["calle"], PDO::PARAM_STR);
-                                    $st->bindValue(":numero", $this->data["numero"], PDO::PARAM_STR);
-                                    $st->bindValue(":ciudad", $this->data["ciudad"], PDO::PARAM_STR);
-                                    $st->bindValue(":nombre", $this->data["nombre"], PDO::PARAM_STR);
-                                    $st->bindValue(":pais", $this->data["pais"], PDO::PARAM_STR);
-                        
-                                    $st->execute();
-                                } catch (Exception $ex) {
-                                    Connection::disconnect($con);
-                                    echo 'El error se produce en la línea: '.$ex->getLine().'<br>';
-                                    echo 'Del archivo: '.$ex->getFile();
-                                    echo'<br>';
-                                    echo $ex->getCode().'<br>';
-                                    die("Query failed: ".$ex->getMessage());
-                                }
-                            
-                            }
-                    } catch (Exception $ex) {
-                        Conne::disconnect($con);
-                        echo 'El error se produce en la línea: '.$ex->getLine().'<br>';
-                        echo 'Del archivo: '.$ex->getFile();
-                        echo'<br>';
-                        echo $ex->getCode().'<br>';
-                        die("Query failed: ".$ex->getMessage());
-                    }
-                }
+                
+                
            Conne::disconnect($con);
         } catch (Exception $ex) {
             Conne::disconnect($con);

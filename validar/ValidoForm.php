@@ -50,8 +50,9 @@
     final function validarEntrada(DataObj $obj){
           
           $nick = $this->htmlCaracteres($obj->getValue('nick'));
-          $pass = $this->htmlCaracteres($obj->getValue('email'));
-        if($this->campoVacio($obj->getValue('nick')) and $this->campoVacio($obj->getValue('email')) and $this->validarEmail($obj->getValue('email'))){        
+          $pass = $this->htmlCaracteres($obj->getValue('password'));
+          echo 'en validarEntrada, nick: '.$nick.' pass '.$pass.'<br>';
+        if($this->campoVacio($nick) and $this->campoVacio($pass) and $this->validarPassword($pass)){        
             echo 'en validar es true';    
             return true;
             }else{
@@ -113,7 +114,7 @@
     final private function validarPassword($cadena){
           
          
-         $patron = "/^[0-9a-zA-Z]{6,10}$/";
+         $patron = "/^[0-9a-zA-Z]{6,12}$/";
          $result = preg_match($patron,$cadena);
              return $result;
         

@@ -59,6 +59,7 @@ if(isset($_GET["step"]) and $_GET["step"] >= 1 and $_GET["step"] <=3 ){
         
     /*Mandamos a comprobar los campos del primer formulario*/
     if(isset($_GET['primero']) and $_GET['primero'] == "Next >"){
+        echo 'entramos';
         $requiredFields = array('nick', 'password', 'email');
         processForm($requiredFields, "step1");
     }    
@@ -96,13 +97,13 @@ function displayStep1($missingFields, $user){
             echo"<form action='hidden.php' method='get'>";
             echo"<input type='hidden' name='step' value='1'>";
     
-    echo'<label '.validateField("nick", $missingFields).' for="nick">Introduce nombre de usuario:</label> ';
+    echo'<label '.$valido->validateField("nick", $missingFields).' for="nick">Introduce nombre de usuario:</label> ';
     echo'<input type="text" name="nick" id="nick" placeholder="Tú nombre usuario"  value="'.$user->getValueEncoded('nick').'">';        
-    echo'<label '.validateField("password", $missingFields). ' for="password">Introduce tú password</label>';
+    echo'<label '.$valido->validateField("password", $missingFields). ' for="password">Introduce tú password</label>';
     echo'<input type="password" name="password" class="passReg1" id="password" value="" >';	
-    echo'<label '.validateField("passReg2", $missingFields). ' for="passReg2">Repite el password</label>';
+    echo'<label '.$valido->validateField("passReg2", $missingFields). ' for="passReg2">Repite el password</label>';
     echo'<input type="password" name="passReg2" class="passReg2" id="passReg2" value="">';       
-    echo'<label '.validateField("email", $missingFields).' for="email">Email:</label> ';
+    echo'<label '.$valido->validateField("email", $missingFields).' for="email">Email:</label> ';
     echo'<input type="email" name="email" id="email" placeholder="info@developerji.com" value='.$user->getValueEncoded('email').'>'; 
             
                 echo"<input type='submit' name='primero' id='primero' value='Next &gt;' >";
@@ -143,8 +144,10 @@ function processForm($requiredFields, $step){
    
     if($missingFields and $step == "step1"){
         displayStep1($missingFields, $user);
-    } 
-    
+    } elseif(!$loggedInMember = $user->insert()) {
+       $test = false;
+       displayStep1($missingFields, $user);
+    }
 //fin processForm
 }
     /*section contenedor*/

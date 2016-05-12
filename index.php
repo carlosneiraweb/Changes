@@ -45,9 +45,9 @@ $_SESSION["url"] = "index.php";
         //Un bolean para saber si la validacion ha sido correcto
         displayFormLogeo(array(), new Usuarios(array()), true); 
         }
-
+    //en caso de error se muestra la capa de fondo
     function mostrarOculto(){
-       echo'<div id="ocultar" class="mostrar_transparencia"></div>';
+       echo'<div id="ocultarPHP" class="mostrar_transparencia"></div>';
     }
     echo'<header>';
 	echo'<figure id="logo" class="fade">';
@@ -99,11 +99,11 @@ function displayFormLogeo($missingFields, $user, $test){
 
 echo'<label '.$valido->validateField("nick", $missingFields). ' for="nick" >Introduce nombre de usuario:</label><span class="obligatorio"><img src="img/obligado.png" ></span>';
 echo'<input  type="text" name="nick" id="nick" autofocus placeholder="Escribe tú nick" value="'.$user->getValueEncoded("nick").'" ><br></br>';            
-echo'<label '.$valido->validateField("email", $missingFields).' for="password">Introduce tú password</label><span class="obligatorio"><img src="img/obligado.png" ></span>';
-echo'<input type="password" name="email" id="email" placeholder="Escribe tú password" value="'.$user->getValueEncoded("email").'" ><br><br>';
+echo'<label '.$valido->validateField("password", $missingFields).' for="password">Introduce tú password</label><span class="obligatorio"><img src="img/obligado.png" ></span>';
+echo'<input type="password" name="password" id="password" placeholder="Escribe tú password" value="'.$user->getValueEncoded("password").'" ><br><br>';
   
 if(!$test){
-    echo '<h5>El usuario o la contraseña <br> no coinciden.</h5>';
+    echo '<h5>El usuario o la contraseña <br> <strong>no son validos</strong>.</h5>';
 }
 echo'<input type="submit" id="btn_login" name="logeo" value="aceptar" />';          
     echo"</div>";
@@ -119,27 +119,25 @@ echo'<input type="submit" id="btn_login" name="logeo" value="aceptar" />';
 function processForm(){
     global $valido;
     //Secrea un array con los campos requeridos
-            $requiredFields = array("nick", "email");
+            $requiredFields = array("nick", "password");
             //Array para almacenar los campos no rellenados y obligatorios
             $missingFields = array();
-    //"password" => isset($_POST["password"]) ? preg_replace("/[^\-\_a-zAZ0-9]/", "", $_POST["password"]) : "",          
+  
     $user = new Usuarios(
             array(
                 "nick" => isset($_POST["nick"]) ? preg_replace("/[^\-\_a-zAZ0-9]/", "", $_POST["nick"]) : "",
-                "email" => $_POST["email"]
+                "password" => isset($_POST["password"]) ? preg_replace("/[^\-\_a-zAZ0-9]/", "", $_POST["password"]) : "",          
   
             )
             );
-    
+           
     foreach($requiredFields as $requiredField){
         if(!$user->getValue($requiredField)){
             
             $missingFields[] = $requiredField;
         }
     }
-    //Mandamos el objeto user a validar su login
-     echo 'validar usuario '.$valido->validarEntrada($user);
-   
+    
     if($missingFields){
        displayFormLogeo($missingFields, $user, true);
     } elseif(!$loggedInMember = $user->authenticate(1)) {

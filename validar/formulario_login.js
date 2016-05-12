@@ -1,9 +1,9 @@
 $(document).ready(function(){
        
-	var passReg = /^[0-9a-zA-Z]{6,15}$/;
+	var passReg = /^[0-9a-zA-Z]{6,12}$/;
 	//Recojemos valores
         var nick = $("#nick");
-        var pass = $("#email");
+        var pass = $("#password");
         
     $("#ingresar").on('click', mostrarCapaOpaca); 
       
@@ -24,11 +24,11 @@ $(document).ready(function(){
             }
             
             function validarPassword(){
-            //|| !passReg.test(pass.val())
+            //
                 $(".error").remove();
-		    if(pass.val() === "" ){
+		    if(pass.val() === "" || !passReg.test(pass.val())){
                     
-                        $("#email").focus().after("<span class='error'><p>El password solo puede tener letras y números, minimo 6 y máximo 10</p></span>");
+                        $("#password").focus().after("<span class='error'><p>El password solo puede tener letras y números, minimo 6 y máximo 12</p></span>");
 			$('#password').addClass('borderColor');
                         return false;
                     } else{
@@ -41,7 +41,7 @@ $(document).ready(function(){
           
             if(validarNick() && validarPassword()){
                
-            }
+           }
 //                $('#form_login').submit(function(){ 
 //                    $("#login_form").removeClass('mostrar_formulario login_form_tamanyo').addClass('oculto');	
 //                    $("#ocultar").removeClass('mostrar_tranparencia').addClass('oculto');      
