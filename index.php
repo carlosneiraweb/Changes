@@ -1,7 +1,6 @@
 <?php 
 session_start(); 
-$_SESSION["url"] = "index.php";
-
+$_SESSION["url"] = basename($_SERVER['PHP_SELF']);
 ?>
 <!DOCTYPE html>
 
@@ -96,7 +95,6 @@ function displayFormLogeo($missingFields, $user, $test){
         echo'<fieldset>';
   
             echo'<legend>Formulario de ingreso</legend>';
-
 echo'<label '.$valido->validateField("nick", $missingFields). ' for="nick" >Introduce nombre de usuario:</label><span class="obligatorio"><img src="img/obligado.png" ></span>';
 echo'<input  type="text" name="nick" id="nick" autofocus placeholder="Escribe tú nick" value="'.$user->getValueEncoded("nick").'" ><br></br>';            
 echo'<label '.$valido->validateField("password", $missingFields).' for="password">Introduce tú password</label><span class="obligatorio"><img src="img/obligado.png" ></span>';
@@ -108,9 +106,7 @@ if(!$test){
 echo'<input type="submit" id="btn_login" name="logeo" value="aceptar" />';          
     echo"</div>";
         echo'</fieldset>';
-
                 echo'</form>';
-
         echo'</section>';
     
       
@@ -203,6 +199,3 @@ function processForm(){
                     <br/>
         */
     echo'</footer>';
-  
-   echo'</body>';
-echo'</html>';

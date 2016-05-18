@@ -14,7 +14,7 @@
         <link href="img/fabicon.ico" rel="icon" type="image/x-icon">
 	<link rel="stylesheet" href="css/estilos.css"/>
         <script src="jquery-2.2.2.js" type="text/javascript"></script>
-        <script src="mostrar/publicar.js"></script>
+        <script src="mostrar/redireccionar.js"></script>
     </head>
     <body class="mi_body">
      

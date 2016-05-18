@@ -1,8 +1,7 @@
 <?php
-function __autoload($class){
-    $class = str_replace("..", "", $class);
-    require_once("../Conexion/$class.php");
-}
+
+    require_once("../Conexion/Conne.php");
+
 
   // -------  cabeceras indicando que se envian datos JSON.
   header('Content-Type: application/json');
@@ -24,8 +23,7 @@ function __autoload($class){
   // ------- pámetro nombre usuario para realizar la consulta de usuarios registrados       
    if (isset($_POST['pro'])) 
       $nom=$_POST['pro'];
-  else
-     if (isset($_GET['pro'])) 
+  elseif (isset($_GET['pro'])) 
         $nom=$_GET['pro'];
  
     switch ($opc) {
@@ -39,10 +37,10 @@ function __autoload($class){
           
     try{
         
-        $con= Connection::connect();
+        $con= Conne::connect();
         $st = $con->query($sql);
         $resultados= $st->fetchAll();
-        Connection::disconnect($con);
+        Conne::disconnect($con);
     
         
                 $datos = $resultados; // Almacenar en un array cada filas del recordset.
@@ -50,6 +48,6 @@ function __autoload($class){
           echo json_encode($datos);// función de PHP que convierte a formato JSON el array.
   
     }catch(PDOException $ex){
-        Connection::disconnect($con);
+        Conne::disconnect($con);
         die($ex->getMessage());
     }

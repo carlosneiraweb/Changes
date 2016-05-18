@@ -32,10 +32,10 @@
      * medida de seguridad.
      * 
      */
-    function validateField($nombreCampo, $camposPerdidos){
+    final static function validateField($nombreCampo, $camposPerdidos){
           
             if(in_array($nombreCampo, $camposPerdidos)){
-                return 'class="error"';
+                return 'class="errorPHP"';
             }
         }
         
@@ -50,72 +50,27 @@
     final function validarEntrada(DataObj $obj){
           
           $nick = $this->htmlCaracteres($obj->getValue('nick'));
-          $pass = $this->htmlCaracteres($obj->getValue('password'));
-          echo 'en validarEntrada, nick: '.$nick.' pass '.$pass.'<br>';
+          $pass = $this->htmlCaracteres($obj->getValue('password')); 
         if($this->campoVacio($nick) and $this->campoVacio($pass) and $this->validarPassword($pass)){        
-            echo 'en validar es true';    
             return true;
-            }else{
-            echo 'en validar es falso';
+            }else{ 
                 return false;
             }
         }
       
-      /**
-       * Metodo que valida el registro de un usuario
-       */
-    final function validoRegistro($objUsu){
-          
-          $nombre = $this->$objUsu->nombre;
-          $telefono = $this->$objUsu->telefono;
-          $email = $this->$objUsu->email;
-          $nick = $this->$objUsu->nick;
-          $pass_1 = $this->$objUsu->password_1;
-          $pass_2 = $this->$objUsu->password_2;
-          $valor = $this->$objUsu->string;
-        
-          $miArray = array($nombre, $telefono, $email, $nick, $pass_1, $pass_2, $valor);
-
-        $test = true;
-        
-            foreach ($miArray as $valor){
-                if(!$this->campoVacio($valor)){
-                 $test = false;
-                 break;
-                }
-            }
-           
-        if($test){ 
-            if(!$this->validarEmail($email)){
-                $test = false;
-            }elseif(!$this->validaTelefono($telefono)){
-                $test = false;  
-            }elseif(!$this->validarPassword($pass_1)){
-                $test = false;
-            }elseif(!$this->validarPassword($pass_2)){
-                $test = false;
-            }elseif(!$this->validarIgualdadPasswords($pass_1, $pass_2)){
-                $test = false;
-            }elseif(!$this->comprobarCheck('condiciones')){
-                $test = false;
-            }
-            
-
-        }
-            return $test;
-            
-      //fin validoRegistro    
-      }
       
       /**
        * Metodo que recive un password
-       * para ser validado
+       * para ser validado.
+       * Se require entre 6 y 12 digitos.
+       * Solo acepta letras y numeros 
        */
-    final private function validarPassword($cadena){
+    final static function validarPassword($cadena){
           
          
          $patron = "/^[0-9a-zA-Z]{6,12}$/";
          $result = preg_match($patron,$cadena);
+         echo 'validar password vale: '.$result.'<br>';
              return $result;
         
       //fin validarPassword 
@@ -127,7 +82,7 @@
        * Recive dos strings.
        * SE HACE DISTINCIÓN ENTRE MAYUSCULAS Y MINUSCULAS
        */
-    final private function validarIgualdadPasswords($pass1, $pass2){
+    final static function validarIgualdadPasswords($pass1, $pass2){
           
         $result = strcmp ($pass1 ,$pass2 ); 
         if($result === 0){
@@ -147,7 +102,7 @@
        * Ademas los caracteres tienen que ser números
        */
       
-    final private  function validaTelefono($tel){
+    final static  function validaTelefono($tel){
           
           $expresion = '/^[9|8|6|7][0-9]{8}$/';
          if($result = preg_match($expresion, $tel) and ctype_digit($tel)){
@@ -164,7 +119,7 @@
        * @param type $elemento
        * @return boolean
        */  
-    final private function campoVacio($elemento){
+    final static function campoVacio($elemento){
         
             if($elemento != ""){
                return true;
@@ -177,27 +132,31 @@
        * para validar
        * @param type $elemento
        */
-    final private function validarEmail($elemento){
+    final static function validarEmail($elemento){
           
         $expresion = "/^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$/";
         $result = preg_match($expresion, $elemento);
+        
             return $result;
 
 //fin validarEmail     
       }
 
-     /**
-      * Metodo que recive un parametro $_POST desde el script.
-      * si es distinto de null lo devuelve para que se 
-      * vuelva a escribir en el formulario
-      * @param type $nombreCampo
-      */   
-    function setValue($nombreCampo){
-            if(isset($_POST[$nombreCampo])){
-                return $_POST[$nombreCampo];
-            }
-        }
-    
+    /**
+     * Metodo que valida el codigo postal
+     * Tiene que tener 5 caracteres y poder ser 
+     * casteado a números
+     */
+      
+      final static function validarCodPostal($elemento){
+          $test = false;
+          if(ctype_digit($elemento) and strlen($elemento) === 5){
+              $test = true;
+          }
+          
+          return $test;
+          
+      }
     /**
      * Metodo para dejar checkeado los campos 
      * que el usuario a checked.
@@ -205,7 +164,7 @@
      * @param type $nombreCampo
      * @param type $campoValor
      */
-    function setChecked($nombreCampo, $campoValor){
+    final static function setChecked($nombreCampo, $campoValor){
             if(isset($_POST[$nombreCampo]) and $_POST[$nombreCampo] == $campoValor){
                 //echo 'Valor de $_post= '.$_POST['gender'];
                 return 'checked="checked"';
@@ -218,7 +177,7 @@
      * @param type $nombreCampo
      * @param type $valorCampo
      */    
-    function setSelected($nombreCampo, $valorCampo){
+    final static function setSelected($nombreCampo, $valorCampo){
             if(isset($_POST[$nombreCampo]) and $_POST[$nombreCampo] == $valorCampo){
                 return 'selected="selected"';
             }
@@ -229,7 +188,7 @@
      * las condiciones. 
      * Se define final para evitar la sobreescritura. 
      */
-     function comprobarCheck($nombreCampo){
+    final static function comprobarCheck($nombreCampo){
         //echo 'el valor de condiciones vale: '.$_POST[$nombreCampo].'<br>';
         if(!isset($_POST[$nombreCampo]) or $_POST[$nombreCampo] != '1'){
             return false;

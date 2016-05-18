@@ -322,7 +322,7 @@ section#login_form h4, section#form_registro h4{
 	text-align: center;
 }
 
-section#login_form h5{
+section#login_form h5, section#form_registro h5{
         color: #0C0792;
 	font-size: .7em;
 	font-family: 'old_school_toonsregular',Helvetica, Verdana;	
@@ -476,7 +476,7 @@ section#form_registro{
 	height: 100%;
 	width: 100%;
 	visibility: visible;
-	z-index: 10;
+	z-index: 1;
 }
 
 .mostrar_formulario{
@@ -510,7 +510,7 @@ section#form_registro{
 	opacity: 0;
 	visibility: hidden;
 	width: 0;
-	z-index: 0;
+	z-index: 10;
 }
 
 
@@ -535,7 +535,11 @@ section#form_registro{
 	position:absolute;
 	top: 5px;
 }
-
+.errorPHP{
+    color: red !important;
+    font-size: 1.1em !important;
+    
+}
 .obligatorio{
     padding-left: .4em;
 }

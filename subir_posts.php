@@ -4,7 +4,7 @@ require_once 'entidades/DataObj.php';
 session_start();
 $usuario = $_SESSION['user']->getValue('nick');
 $url = $_SESSION["url"];
-echo "usuario es: $usuario y session es: ".$url."<br>";
+//echo "usuario es: $usuario y session es: ".$url."<br>";
 
 ?>
 <!DOCTYPE html>
@@ -46,7 +46,7 @@ echo "usuario es: $usuario y session es: ".$url."<br>";
             global $nuevoDirectorio;
             if($count === 1){
    
-            $nuevoDirectorio = contarDirectorios('antonio');
+            $nuevoDirectorio = contarDirectorios($usuario);
             }
             
             
