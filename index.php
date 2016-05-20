@@ -15,7 +15,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
         <script src="jquery-2.2.2.js" type="text/javascript"></script>
         <script src="mostrar/menu.js"></script>					
         <script src="validar/formulario_login.js"></script>
-        <script src="mostrar/publicar.js"></script>	
+        <script src="mostrar/redireccionar.js"></script>	
     <!--Para navegadores viejos-->
         <!--[if lt IE 9]>
             <script
@@ -31,6 +31,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
         require_once 'entidades/Usuarios.php';
         require_once 'entidades/DataObj.php';
         require_once 'validar/ValidoForm.php';
+        
     global $valido;
     $valido = new ValidoForm();
     

@@ -37,6 +37,7 @@ $(document).ready(function(){
         //fin validar password
             } 
     
+    
        $('#btn_login').on('mouseover',function(){
           
             if(validarNick() && validarPassword()){

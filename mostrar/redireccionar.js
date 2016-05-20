@@ -1,8 +1,9 @@
 $(document).ready(function(){
     
-   $('#publicar').on('click', redirecionar);
+   $('#publicar').on('click', redireccionarSubirPost);
    $('#volver_intentar').on('click', volverAnterior);
-   function redirecionar(){
+   $("#registrar").on('click', redireccionarRegistrarse);
+   function redireccionarSubirPost(){
        location.href= 'subir_posts.php';
    }
     
@@ -10,7 +11,12 @@ $(document).ready(function(){
       
        history.back();
    } 
-    
+   
+   function redireccionarRegistrarse(){
+       location.href = 'register.php';
+   }
+   
+   
 });
 
 

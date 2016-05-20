@@ -239,10 +239,7 @@ section#contenedor{
 	text-align: center;
         border: 1px solid blue;
 }
-/*esta clase se aplica al contenedor de la pagina register*/
-.cambiarPosition{
-    position: relative;
-}
+
 section#posts, aside#publi{
 	background: white;
 	border: 1px solid blue;
@@ -454,6 +451,15 @@ section#form_registro{
     z-index: 20;
 }
 
+
+/**Estilos para subir Posts*/
+
+
+
+
+
+
+
 /*Estilo de bordr redondeado para todos los elementos de la pagina*/
 .login_form_tamanyo, .registro_form_tamanyo, #ocultar, section#salir_sesion, section#error, figure#imagen_error, section#form_registro{
 	border-radius: 1em;
@@ -500,9 +506,7 @@ section#form_registro{
         visibility: hidden;
 	
 }
-.noOcupar{
-	display:none;
-}
+
 /*Clases para ocultar los formularios*/
 .oculto{
 	height: 0;

@@ -65,3 +65,12 @@ insert into secciones (nombre_seccion) values ('Moda');
 insert into secciones (nombre_seccion) values ('Hogar');
 insert into secciones (nombre_seccion) values ('Hospedaje');
 insert into secciones (nombre_seccion) values ('Cultura');
+
+
+insert into tiempo_cambio (tiempo) values ('Por unas horas');
+insert into tiempo_cambio (tiempo) values ('Por un par de días');
+insert into tiempo_cambio (tiempo) values ('Por un fin de semana');
+insert into tiempo_cambio (tiempo) values ('Por una semana');
+insert into tiempo_cambio (tiempo) values ('Por una temporada');
+insert into tiempo_cambio (tiempo) values ('Para siempre');
+insert into tiempo_cambio (tiempo) values ('Otros');

@@ -11,8 +11,8 @@
  *
  * @author Carlos Neira Sanchez
  */
-require_once './Conexion/Conne.php';
-require_once 'DataObj.php';
+require_once('Sistema/Conne.php');
+require_once('DataObj.php');
 
 
 
@@ -194,6 +194,7 @@ class Usuarios extends DataObj{
      * insert object
      */
     public function insert(){
+        global $total;
         try{
         $con = Conne::connect();
         $sql = "INSERT INTO ".TBL_USUARIO. "(
@@ -274,7 +275,9 @@ class Usuarios extends DataObj{
                                     $this->deleteFrom('datos_usuario');
                                     $this->deleteFrom('usuario');
                                     echo 'El error se produce en la línea: '.$ex->getLine().'<br>';
-                                    die("Query failed: ".$ex->getMessage());
+                                    return $total;
+                                    
+                                    
                             }
 
            Conne::disconnect($con);

@@ -66,11 +66,9 @@
        * Solo acepta letras y numeros 
        */
     final static function validarPassword($cadena){
-          
-         
+
          $patron = "/^[0-9a-zA-Z]{6,12}$/";
          $result = preg_match($patron,$cadena);
-         echo 'validar password vale: '.$result.'<br>';
              return $result;
         
       //fin validarPassword 

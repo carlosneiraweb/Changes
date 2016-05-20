@@ -26,5 +26,8 @@ define("EMAIL_INCORRECTO", '<h5>El email no es valido</h5>'.
                           '<h5>Por favor compruebalo</h5>');
 define("TELEFONO_INCORRECTO", '<h5>El teléfono introducido es incorrecto</h5>');
 define("CODIGO_POSTAL", "<h5>El código postal no es correcto</h5>");
-
+define("FORMATO_FOTO", '<h5>Únicamente aceptamos imagenes .jpg</h5>');
+define("TAMAÑO_FOTO", '<h5>El tamaño de la foto supera el máximo permitido</h5>');
+define("FOTO_NO_ELIGIDA", '<h5>Parece que no has seleccionado una imagen</h5>');
+define("FOTO_GENERAL", "<h5>Lo sentimos hemos tenido un problema al subir la foto</h5>");
 

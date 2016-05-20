@@ -2,9 +2,11 @@
 require_once 'entidades/Usuarios.php';
 require_once 'entidades/DataObj.php';
 session_start();
-$usuario = $_SESSION['user']->getValue('nick');
-$url = $_SESSION["url"];
-//echo "usuario es: $usuario y session es: ".$url."<br>";
+//$usuario = $_SESSION['user']->getValue('nick');
+$usuario = 'admin';
+//$url = $_SESSION["url"];
+$url = 'index.html';
+echo "usuario es: $usuario y session es: ".$url."<br>";
 
 ?>
 <!DOCTYPE html>
@@ -85,7 +87,7 @@ $url = $_SESSION["url"];
             //validamos que se ha subido correctamente una foto
             if(isset($_FILES['photo']) and $_FILES['photo']['error'] == UPLOAD_ERR_OK){
             global $url;
-            header("Location: ".$_SESSION['url']);
+           // header("Location: ".$_SESSION['url']);
                 
             }
         //fin processForm    
@@ -151,15 +153,19 @@ $url = $_SESSION["url"];
             }
             
     function renombrarArchivo($nombreViejo, $nuevoDirectorio){
-            
+            echo 'nombre viejo: '.$nombreViejo.'<br>';
         if($nombreViejo != null and $nuevoDirectorio != null){
                 $original = basename($nombreViejo);
+                echo 'Nombre original: '.$original.'<br>';
                 //Extraemos el directorio donde esta el archivo 
-                $tmp = strstr($nombreViejo, $original, true);
+                $tmp = strstr($nombreViejo, $original, true);//OJO
+                echo "despues de strstr: ".$tmp.'<br>';
                 //Contamos cuantos archivos hay
                 $total_imagenes = count(glob($nuevoDirectorio."/{*.jpg}",GLOB_BRACE)); 
                 //Renombramos el archivo con el ultimo
+                
                 $nombreNuevo = $tmp.$total_imagenes.'.jpg';
+                echo 'nombre nuevo: '.$nombreNuevo.'<br>';
                 rename($nombreViejo, $nombreNuevo);    
                 }
                  $total_imagenes++;

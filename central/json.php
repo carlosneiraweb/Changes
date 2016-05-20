@@ -1,7 +1,7 @@
 <?php
 
-    require_once("../Conexion/Conne.php");
-
+    require_once("../Sistema/Conne.php");
+    
 
   // -------  cabeceras indicando que se envian datos JSON.
   header('Content-Type: application/json');
