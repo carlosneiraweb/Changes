@@ -146,6 +146,7 @@ function processForm(){
     } else {
        //var_dump($loggedInMember);
        $_SESSION["user"] = $loggedInMember;
+       
        session_write_close();
       
     }

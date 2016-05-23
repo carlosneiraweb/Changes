@@ -14,6 +14,7 @@ define("TBL_PROVINCIAS", "provincias");
 define("TBL_SECCIONES", "secciones");
 define("TBL_USUARIO", "usuario");
 define("TBL_IMAGENES", "imagenes");
+define("TBL_TIEMPO_CAMBIO", "tiempo_cambio");
 define("ERROR", "Revisa tu formulario");
 define("PASSWORD_EXISTE", '<h5>El nombre de usuario ya existe</h5>');
 define("PASSWORD_INCORRECTO", '<h5>El password introducido no cumple las normas<h5>'.

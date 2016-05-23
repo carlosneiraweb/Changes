@@ -95,13 +95,13 @@ function displayStep1($missingFields){
         echo'<fieldset>';
         	echo'<legend>Formulario de Registro Primer Paso</legend>';
         echo"<input type='hidden' name='step' value='1'>";  
-    echo'<label '.ValidoForm::validateField("nick", $missingFields).' for="nick">Introduce nombre de usuario:</label> <span class="obligatorio"><img src="img/obligado.png" ></span>';
+    echo'<label '.ValidoForm::validateField("nick", $missingFields).' for="nick">Introduce nombre de usuario:</label> <span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="text" name="nick" id="nick" autofocus placeholder="Tú nombre usuario"  value=';if(isset($_SESSION['usuario']['nick'])){echo $_SESSION['usuario']['nick'];} echo ">";       
-    echo'<label '.ValidoForm::validateField("password", $missingFields). ' for="password">Introduce tú password</label><span class="obligatorio"><img src="img/obligado.png" ></span>';
+    echo'<label '.ValidoForm::validateField("password", $missingFields). ' for="password">Introduce tú password</label><span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="password" name="password" id="password"  maxlength="12" >';	
-    echo'<label '.ValidoForm::validateField("passReg2", $missingFields). ' for="passReg2">Repite el password</label><span class="obligatorio"><img src="img/obligado.png" ></span>';
+    echo'<label '.ValidoForm::validateField("passReg2", $missingFields). ' for="passReg2">Repite el password</label><span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio" ></span>';
     echo'<input type="password" name="passReg2" id="passReg2" maxlength="12"  >';       
-    echo'<label '.ValidoForm::validateField("email", $missingFields).' for="email">Email:</label> <span class="obligatorio"><img src="img/obligado.png" ></span>';
+    echo'<label '.ValidoForm::validateField("email", $missingFields).' for="email">Email:</label> <span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="text" name="email" id="email" placeholder="info@developerji.com" value=';if(isset($_SESSION['usuario']['email'])){echo $_SESSION['usuario']['email'];} echo ">";
     
     
@@ -127,13 +127,13 @@ function displayStep2($missingFields){
         echo'<fieldset>';
         	echo'<legend>Formulario de Registro Segundo Paso</legend>';
     echo"<input type='hidden' name='step' value='2'>";
-    echo'<label '.ValidoForm::validateField("nombre", $missingFields). ' for="nombre">Nombre:</label> <span class="obligatorio"><img src="img/obligado.png" ></span>';
+    echo'<label '.ValidoForm::validateField("nombre", $missingFields). ' for="nombre">Nombre:</label> <span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="text" name="nombre" id="nombre" autofocus  placeholder="Escribe tú nombre" value=';if(isset($_SESSION['usuario']['nombre']))echo $_SESSION['usuario']['nombre']; echo ">";
     echo'<label for="apellido_1">Primer Apellido:</label>';
     echo'<input type="text" name="apellido_1" id="apellido_1" placeholder="Escribe tú apellido"  />';
     echo'<label for="apellido_2">Segundo Apellido:</label>';
     echo'<input type="text" name="apellido_2" id="apellido_2" placeholder="Escribe tú apellido"  />';        
-    echo'<label '.ValidoForm::validateField("telefono", $missingFields). ' for="telefono">Teléfono:</label><span class="obligatorio"><img src="img/obligado.png" ></span>';
+    echo'<label '.ValidoForm::validateField("telefono", $missingFields). ' for="telefono">Teléfono:</label><span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="text" name="telefono" id="telefono" placeholder="No será mostrado" value=';if(isset($_SESSION['usuario']['telefono']))echo $_SESSION['usuario']['telefono']; echo ">";
         echo'<label for="genero">Selecciona tu sexo:</label>';
 		echo'<select name="genero" id="genero">';			
@@ -173,7 +173,7 @@ function displayStep3($missingFields){
     echo'<input type="text" name="ptr" id="ptr" placeholder="Escribe el número de la puerta"  />';
     echo'<label for="ciudad">Ciudad:</label>';
     echo'<input type="text" name="ciudad" id="ciudad" placeholder="Nombre de tu Localidad"  />';
-    echo'<label for="codPostal">Código Postal:</label><span class="obligatorio"><img src="img/obligado.png" ></span>';
+    echo'<label for="codPostal">Código Postal:</label><span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="text" name="codPostal" id="codPostal" placeholder="Escribe el número del código postal"  maxlength="5" />';
     
     echo'<label for="provincia">Provincia:</label>';
@@ -296,20 +296,20 @@ function processForm($requiredFields, $st){
                 $_SESSION['usuario']["email"] = isset($_POST["email"]) ? preg_replace("/[^\@\.\-\_a-zA-Z0-9]/", "", $_POST["email"]) : "";
                     break;
             case "step2":
-                $_SESSION['usuario']["nombre"] = isset($_POST["nombre"])  ? preg_replace("/[^\-\_a-zAZ]/", "", $_POST["nombre"]) : "";
-                $_SESSION['usuario']["apellido_1"] = isset($_POST["apellido_1"]) ? preg_replace("/[^\-\_a-zAZ]/", "", $_POST["apellido_1"]) : "";
-                $_SESSION['usuario']["apellido_2"] = isset($_POST["apellido_2"]) ? preg_replace("/[^\-\_a-zAZ]/", "", $_POST["apellido_2"]) : "";
+                $_SESSION['usuario']["nombre"] = isset($_POST["nombre"])  ? preg_replace("/[^\-\_a-zAZ.,`'´]/", "", $_POST["nombre"]) : "";
+                $_SESSION['usuario']["apellido_1"] = isset($_POST["apellido_1"]) ? preg_replace("/[^\-\_a-zAZ.,`'´]/", "", $_POST["apellido_1"]) : "";
+                $_SESSION['usuario']["apellido_2"] = isset($_POST["apellido_2"]) ? preg_replace("/[^\-\_a-zAZ.,`'´]/", "", $_POST["apellido_2"]) : "";
                 $_SESSION['usuario']["telefono"] = isset($_POST["telefono"]) ?  $_POST["telefono"] : "";
                 $_SESSION['usuario']["genero"] = isset($_POST["genero"]) ? $_POST['genero'] : "" ;
                     break;
             case "step3":
-                $_SESSION['usuario']["calle"] = isset($_POST['calle']) ? preg_replace("/[^\-\_a-zAZ0-9]/", "", $_POST["calle"]) : "";
+                $_SESSION['usuario']["calle"] = isset($_POST['calle']) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´]/", "", $_POST["calle"]) : "";
                 $_SESSION['usuario']["numeroPortal"] = isset($_POST['numeroPortal']) ? preg_replace("/[^\-\_0-9]/", "", $_POST["numeroPortal"]) : "";
                 $_SESSION['usuario']["ptr"] = isset($_POST['ptr']) ? preg_replace("/[^\-\_a-zAZ0-9]/", "", $_POST["ptr"]) : "";
-                $_SESSION['usuario']["ciudad"] = isset($_POST['ciudad']) ? preg_replace("/[^\-\_a-zAZ0-9]/", "", $_POST["ciudad"]) : "";
+                $_SESSION['usuario']["ciudad"] = isset($_POST['ciudad']) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´]/", "", $_POST["ciudad"]) : "";
                 $_SESSION['usuario']["codPostal"] = isset($_POST['codPostal']) ? preg_replace("/[^\-\_0-9]/", "", $_POST["codPostal"]) : "";
                 $_SESSION['usuario']["provincia"] = isset($_POST['provincia']) ? $_POST['provincia'] : "";
-                $_SESSION['usuario']["pais"] = isset($_POST['pais']) ? preg_replace("/[^\-\_a-zAZ0-9]/", "", $_POST["pais"]) : "";
+                $_SESSION['usuario']["pais"] = isset($_POST['pais']) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´]/", "", $_POST["pais"]) : "";
                 //cerramos escritura sobre variable de sesion
                 session_write_close();
                 
@@ -404,11 +404,7 @@ function processForm($requiredFields, $st){
                             $foto = $_FILES['photo']['tmp_name'];
                             //Creamos dos directorios en el sistema
                             //El primero donde almacenamos la foto de su perfil, en el futuro guardaremos mas cosas
-                            //El segundo directorio es donde almacenaremos las imagenes
-                                //De todos los posts que el usuario valla subiendo.
-                                //Cada post tendra una carpeta independiente
-                            //echo 'llamo subo perfil<br>';
-                            $test = Sistema::crearDirectorio("photos");
+                           
                             $test = Sistema::crearDirectorio("datos_usuario");
                             $test = Sistema::moverImagen($foto, $destino);
                             $test = Sistema::renombrarFotoPerfilUsuario($destino, $_SESSION['usuario']['nick']);  
@@ -419,7 +415,7 @@ function processForm($requiredFields, $st){
                 } else {
                     //Si no sube ninguna foto se le asigna la de default
                     //echo 'llamo por que no subo perfil<br>';
-                    $test = Sistema::crearDirectorio("photos");
+                   
                     $test = Sistema::crearDirectorio("datos_usuario");
                     $test = Sistema::copiarFoto("datos_usuario/desconocido.jpg", 'datos_usuario/'.$_SESSION['usuario']['nick'].'/'.$_SESSION['usuario']['nick'].'.jpg');
                 }

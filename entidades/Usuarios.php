@@ -35,9 +35,7 @@ class Usuarios extends DataObj{
             "nick" => "",
             "password" => "",
             "password_2" => "",
-            "admin" => ""
-            
-            
+            "admin" => ""    
         );
     
     
@@ -175,7 +173,7 @@ class Usuarios extends DataObj{
             if(!$opc){ $st->bindValue(":email", $this->data["email"], PDO::PARAM_STR); }  
             $st->execute();
             $row =  $st->fetch();
-            
+            //var_dump($row);
            Conne::disconnect($con);
            if($row) return new Usuarios($row);
         } catch (Exception $ex) {

@@ -1,7 +1,7 @@
 <?php
 
     require_once("../Sistema/Conne.php");
-    
+    require_once("../Sistema/Constantes.php");
 
   // -------  cabeceras indicando que se envian datos JSON.
   header('Content-Type: application/json');
@@ -18,21 +18,22 @@
   else
      if (isset($_GET['opcion'])) 
         $opc=$_GET['opcion'];
-    
-   
-  // ------- pámetro nombre usuario para realizar la consulta de usuarios registrados       
-   if (isset($_POST['pro'])) 
-      $nom=$_POST['pro'];
-  elseif (isset($_GET['pro'])) 
-        $nom=$_GET['pro'];
- 
+
+
     switch ($opc) {
         case "PP":
-            $sql="select nombre from provincias";     
+            $sql="select nombre from ".TBL_PROVINCIAS.";";     
                 break;
         case "PG":
-            $sql = "select genero from genero";
+            $sql = "select genero from ".TBL_GENERO.";";
             break;
+        case "PS":
+            $sql = "Select nombre_seccion from ".TBL_SECCIONES.";";
+            break;
+        case "PT":
+            $sql = "Select * from ".TBL_TIEMPO_CAMBIO.";";
+            break;
+            
     }
           
     try{

@@ -67,7 +67,7 @@ insert into secciones (nombre_seccion) values ('Hospedaje');
 insert into secciones (nombre_seccion) values ('Cultura');
 
 
-insert into tiempo_cambio (tiempo) values ('Por unas horas');
+insert into tiempo_cambio (tiempo) values ('Por un día');
 insert into tiempo_cambio (tiempo) values ('Por un par de días');
 insert into tiempo_cambio (tiempo) values ('Por un fin de semana');
 insert into tiempo_cambio (tiempo) values ('Por una semana');

@@ -6,15 +6,18 @@ var READY_STATE_LOADED = 2;
 var READY_STATE_INTERACTIVE = 3;
 var READY_STATE_COMPLETE = 4;
 
-var objPro, petPro, objGen, petGen, objSelec, petSelec;
+var objPro, petPro, objGen, petGen, objSeccion, petSeccion, objTiempoCambio, petTiempoCambio;
 var fecha = new Date();
 
 window.onload=function(){   
      provincias = document.getElementById('provincia');
      genero = document.getElementById('genero');
+     seccion = document.getElementById('seccion');
 
      cargarPeticion("PP", "opcion=PP");
      cargarPeticion("PG", "opcion=PG");
+     cargarPeticion("PS", "opcion=PS");
+     cargarPeticion("PT", "opcion=PT");
     
 };
 
@@ -37,7 +40,20 @@ function cargarPeticion(tipo, parametros){
            petGen.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petGen.send(parametros);
                 break;
-        
+        case('PS'):
+           petSeccion = inicializaPeticion();
+           petSeccion.onreadystatechange = procesaRespuesta;
+           petSeccion.open('POST', "./central/json.php?", true);
+           petSeccion.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+           petSeccion.send(parametros);
+                break;        
+        case('PT'):
+           petTiempoCambio = inicializaPeticion();
+           petTiempoCambio.onreadystatechange = procesaRespuesta;
+           petTiempoCambio.open('POST', "./central/json.php?", true);
+           petTiempoCambio.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+           petTiempoCambio.send(parametros);
+                break; 
     //fin switch
     }
     
@@ -49,6 +65,10 @@ function cargarPeticion(tipo, parametros){
                     objPro = JSON.parse(petPro.responseText);
                 } else if(tipo === 'PG'){
                     objGen = JSON.parse(petGen.responseText);
+                } else if(tipo === 'PS'){
+                    objSeccion = JSON.parse(petSeccion.responseText);
+                } else if(tipo === 'PT'){
+                    objTiempoCambio = JSON.parse(petTiempoCambio.responseText);
                 }
                 
                 
@@ -69,7 +89,12 @@ function cargarPeticion(tipo, parametros){
                 case 'PG':
                     cargarGenero(objGen);
                         break;
-                   
+                case 'PS':
+                    cargarSecciones(objSeccion);
+                        break;
+                case 'PT':
+                    cargarTiempoDeCambio(objTiempoCambio);
+                        break;
               
             //fin switch
             }
@@ -100,7 +125,23 @@ function cargarGenero(objGene){
 //fin cargarProvincias    
 }
 
+/*Cargamos las secciones de los artículos*/   
+function cargarSecciones(objSeccion){
+    for(var i = 0; i < objSeccion.length; i++){
+        var objTmpS = objSeccion[i];
+      seccion.options.add(new Option(objTmpS.nombre_seccion));
+    }  
+//fin cargarSecciones   
+}
 
+/*Cargamos el tiempo para el cambio*/   
+function cargarTiempoDeCambio(objTiempoCambio){
+    for(var i = 0; i < objTiempoCambio.length; i++){
+        var objTmpTiempoCambio = objTiempoCambio[i];
+      tiempoCambio.options.add(new Option(objTmpTiempoCambio.tiempo));
+    }  
+//fin cargarSecciones   
+}
 
 
 
