@@ -54,6 +54,7 @@ class Usuarios extends DataObj{
             $st->bindValue(":id", $id, PDO::PARAM_INT);
             $st->execute();
             $row = $st->fetch();
+            $st->closeCursor();
             Conne::disconnect($con);
             
             if($row) return new Member($row);
@@ -83,6 +84,7 @@ class Usuarios extends DataObj{
             $st ->execute();
             $row = $st->fetch();
             if($row) return new Usuarios($row);
+            $st->closeCursor();
             Conne::disconnect($con);
         } catch (Exception $ex) {
             echo $ex->getFile();
@@ -109,6 +111,7 @@ class Usuarios extends DataObj{
             $st->bindValue(":emailaddress", $emailAddress, PDO::PARAM_STR);
             $st->execute();
             $row = $st->fetch();
+            $st->closeCursor();
             Conne::disconnect($con);
             if($row) return new Usuarios($row);    
         } catch(Exception $ex) {
@@ -135,6 +138,7 @@ class Usuarios extends DataObj{
             $st->bindValue(":password", $password, PDO::PARAM_STR);
             $st->execute();
             $row = $st->fetch();
+            $st->closeCursor();
             Conne::disconnect($con);
             if($row) return new Member($row);    
         } catch(Exception $ex) {
@@ -243,7 +247,7 @@ class Usuarios extends DataObj{
                         $this->deleteFrom('usuario');
                         echo 'El error se produce en la línea: '.$ex->getLine().'<br>';
                         die("Query failed: ".$ex->getMessage());
-                    }
+                }
                         
                             try{
                                 
@@ -266,7 +270,7 @@ class Usuarios extends DataObj{
                                     $st->bindValue(":pais", $this->data["pais"], PDO::PARAM_STR);
                         
                                     $total = $st->execute();
-                                    return $total;
+                                    
                             } catch (Exception $ex) {
                                     //Si ha ocurrido un error eliminamos al usuario de la tabla
                                     //y sus datos
@@ -279,6 +283,7 @@ class Usuarios extends DataObj{
                             }
 
            Conne::disconnect($con);
+           return $total;
         } catch (Exception $ex) {
             Conne::disconnect($con);
             echo 'El error se produce en la línea: '.$ex->getLine().'<br>';
@@ -303,6 +308,7 @@ class Usuarios extends DataObj{
                 $st->bindValue(":nick", $this->data['nick'], PDO::PARAM_INT);
                 $st->execute();
                 $row = $st->fetch();
+                $st->closeCursor();
                 if($row) return $row;
                 Conne::disconnect($con);
                 

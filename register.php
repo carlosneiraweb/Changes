@@ -84,11 +84,15 @@ function volverAnterior(){
     } elseif(isset($_POST['cuarto']) and $_POST['cuarto'] == "Aceptar"){
         $requiredFields = array();
         processForm($requiredFields, "step4");
-    } 
+    } elseif(isset($_POST['volvemos']) and $_POST['volvemos'] == "Aceptar"){
+        volverAnterior();
+    }
      
 function displayStep1($missingFields){
-    global $mensaje; 
+    
     global $user;
+    global $mensaje;
+    
     echo'<section id="form_registro">';
                 echo'<h4>Introduzca sus datos</h4>';
     echo'<form name="registro" action="register.php" method="POST" id="registro" >';
@@ -108,18 +112,20 @@ function displayStep1($missingFields){
                 echo"<input type='submit' name='primero' id='primero'  value='Next &gt;' >";
                     
             echo "</form>";
-        if($mensaje){
+          
+        echo'</fieldset>'; 
+        
+    if($mensaje){
             echo $mensaje;
-        }    
-        echo'</fieldset>';  
+        }        
         
     echo'</section>';
  //fin displayStep1
 }
 
 function displayStep2($missingFields){
-   
     global $mensaje;
+  
     
     echo'<section id="form_registro">';
                 echo'<h4>Introduzca sus datos</h4>';
@@ -147,7 +153,7 @@ function displayStep2($missingFields){
                     echo"</div>";
                     
             echo "</form>";
-        if($mensaje){
+         if($mensaje){
             echo $mensaje;
         }    
         echo'</fieldset>';  
@@ -196,18 +202,19 @@ function displayStep3($missingFields){
                     echo"</div>";
                     
             echo "</form>";
-        if($mensaje){
-            echo $mensaje;
-        }    
-        echo'</fieldset>';  
+          
+        echo'</fieldset>';
         
+    if($mensaje){
+            echo $mensaje;
+        }       
     echo'</section>';
  //fin  displayStep3()   
 }
 
 function displayStep4($missingFields){
-    
-        global $mensaje;
+    global $mensaje;
+        
     echo'<section id="form_registro">';
                 echo'<h4>Introduzca sus datos</h4>';
     echo'<form name="registro" action="register.php" method="POST" id="registro" enctype="multipart/form-data">';
@@ -226,11 +233,11 @@ function displayStep4($missingFields){
                     echo"</div>";
                     
             echo "</form>";
-        if($mensaje){
-            echo $mensaje;
-        }    
+         
         echo'</fieldset>';  
-        
+    if($mensaje){
+            echo $mensaje;
+        }       
     echo'</section>';
 //fin displayStep4    
 }
@@ -238,6 +245,7 @@ function displayStep4($missingFields){
 
 function confirmarRegistro(){
     echo '<h2>Has sido registrado correctamente</h2>';
+    echo '<h3>Ahora podras logearte con tu usuario y contraseña</h3>';
     echo "<section id='form_registro'>";
     echo'<form name="registro" action="register.php" method="POST" id="registro">';
     echo"<input type='submit' name='volvemos' id='volvemos' value='Aceptar'>";
@@ -273,6 +281,7 @@ function confirmarRegistro(){
                 ));
      
             $test = $user->insert();
+            
             if($test){
                 confirmarRegistro();
             } else{
@@ -352,11 +361,11 @@ function processForm($requiredFields, $st){
                         $test = false;
                         break;
                     }elseif(!ValidoForm::validarPassword($_SESSION['usuario']['password'])){
-                        $mensaje = PASSWORD_INCORRECTO;
+                        $mensaje =  PASSWORD_INCORRECTO;
                         $test = false;
                         break;
                     }elseif(!ValidoForm::validarIgualdadPasswords($_SESSION['usuario']['password'], $_POST['passReg2'])){
-                        $mensaje = IGUALDAD_PASSWORD;
+                        $mensaje =  IGUALDAD_PASSWORD;
                         $test = false;
                         break;
                     }elseif(!ValidoForm::validarEmail($_SESSION['usuario']['email'])){
@@ -374,7 +383,7 @@ function processForm($requiredFields, $st){
             case 'step2':
           
                     if(!ValidoForm::validaTelefono($_SESSION['usuario']['telefono'])){
-                        $mensaje = TELEFONO_INCORRECTO;
+                        $mensaje =  TELEFONO_INCORRECTO;
                         $test = false;
                          break;
                     }
@@ -396,7 +405,7 @@ function processForm($requiredFields, $st){
             //Si el usuario sube una foto para su perfil la validamos
                 if(isset($_FILES['photo']['tmp_name']) and $_FILES['photo']['tmp_name'] != null){
                         
-                        if(Sistema::validarFoto()){  
+                        if(Sistema::validarFoto('photo')){  
                             
                             //Importante
                             //Recupreamos el nombre del archivo y ruta
@@ -405,10 +414,11 @@ function processForm($requiredFields, $st){
                             //Creamos dos directorios en el sistema
                             //El primero donde almacenamos la foto de su perfil, en el futuro guardaremos mas cosas
                            
-                            $test = Sistema::crearDirectorio("datos_usuario");
+                            $test = Sistema::crearDirectorio("datos_usuario/".$_SESSION['usuario']['nick']);
                             $test = Sistema::moverImagen($foto, $destino);
-                            $test = Sistema::renombrarFotoPerfilUsuario($destino, $_SESSION['usuario']['nick']);  
-                           
+                            $test = Sistema::renombrarFoto($destino, $_SESSION['usuario']['nick']);  
+                            if(!$test){$_SESSION['error'] = FOTO_GENERAL;}
+                            
                         }else{
                             $test = false;
                         } 
@@ -416,16 +426,17 @@ function processForm($requiredFields, $st){
                     //Si no sube ninguna foto se le asigna la de default
                     //echo 'llamo por que no subo perfil<br>';
                    
-                    $test = Sistema::crearDirectorio("datos_usuario");
+                    $test = Sistema::crearDirectorio("datos_usuario/".$_SESSION['usuario']['nick']);
                     $test = Sistema::copiarFoto("datos_usuario/desconocido.jpg", 'datos_usuario/'.$_SESSION['usuario']['nick'].'/'.$_SESSION['usuario']['nick'].'.jpg');
+                    if(!$test){$_SESSION['error'] = FOTO_GENERAL;}
                 }
             //Si hay algun tipo de error al subir la foto
                 //Redirigimos a la pagina de mostrar error
                 //Para que el usuario vuelva a intentarlo
-//                if(!$test){
-//                    mostrarError();
-//                    exit();
-//                }
+                if(!$test){
+                    mostrarError();
+                    exit();
+                }
             return $test;
    
         }

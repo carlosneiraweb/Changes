@@ -3,12 +3,17 @@ require_once ('entidades/Post.php');
 require_once 'entidades/Usuarios.php';
 require_once ('entidades/DataObj.php');
 session_start();
-global $usuario;       
+global $usuario;
+if(!isset($_SESSION['contador'])){
+    $_SESSION['contador'] = 0; 
+}
 $usuario = $_SESSION['user']->getValue('nick');
-//$usuario = 'admin';
-//$url = $_SESSION["url"];
-$url = 'index.html';
-echo "usuario es: $usuario y session es: ".$url."<br>";
+$url = $_SESSION["url"];
+
+
+function volverAnterior(){
+    header('Location:'. $_SESSION["url"]);
+}
 
 ?>
 <!DOCTYPE html>
@@ -40,6 +45,7 @@ echo "usuario es: $usuario y session es: ".$url."<br>";
         
         require_once('validar/ValidoForm.php');
         require_once('Sistema/Directorios.php');
+        
         $user = new Usuarios(array());
         
         global $post;
@@ -53,7 +59,7 @@ echo "usuario es: $usuario y session es: ".$url."<br>";
 	echo'<section id="cabecera">';
 			echo'<h1>Te lo cambio</h1>';
 			echo'<h3>Miles de personas compartiendo te están esperando.</h3>';
-		        echo'<h3>Registrarte solo te llevara un minuto</h3>';
+		        echo'<h3>Sube todos los artículos que desees.</h3>';
                 
 	echo'</section>';
      
@@ -67,22 +73,30 @@ echo "usuario es: $usuario y session es: ".$url."<br>";
     }
     
     /*Mandamos a comprobar los campos del primer formulario*/
-    if(isset($_POST['primero']) and $_POST['primero'] == "Aceptar"){
-        $requiredFields = array('seccion', 'comentario', 'Pa_buscadas', 'Pa_ofrecidas');
+    if(isset($_POST['primero']) and $_POST['primero'] == "Next >"){
+        $requiredFields = array('seccion', 'comentario', 'Pa_queridas', 'Pa_ofrecidas');
         processForm($requiredFields, "step1");
-    } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Aceptar >"){
+    } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Enviar"){
         $requiredFields = array();
         processForm($requiredFields, "step2");
     } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "< Back"){
+       //En caso que el usuario pulse el boton de atras
+        //evitamos que se vuelva a ingresar el mismo post
+        $_SESSION['atras'] = 'atras'; 
         displayStep1(array());
+    } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Fin"){
+        unset($_SESSION['atras']);
+        $_SESSION['contador'] = 0;
+        volverAnterior();
     }
         
         
         
         
     function displayStep1($missingFields){
-    global $mensaje; 
-    global $user;
+        global $mensaje; 
+        global $user;
+        
     echo'<section id="form_post">';
                 echo'<h4>Introduzca los datos del artículo</h4>';
     echo'<form name="post" action="subir_posts.php" method="POST" id="post" >';
@@ -105,10 +119,10 @@ echo "usuario es: $usuario y session es: ".$url."<br>";
     echo'<label '.ValidoForm::validateField("comentario", $missingFields). ' for="comentario">Introduce una descripción general del artículo. </label><span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<textarea maxlength="255" name="comentario" id="comentario" placeholder= "Máximo 255 caracteres." value=';if(isset($_SESSION['post']['comentario'])){echo $_SESSION['post']['comentario'];} echo '></textarea>';
     
-    echo'<label  for="precio">Introduce un precio aproximado  artículo. </label><span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
+    echo'<label  for="precio">Introduce un precio aproximado  artículo. </label>';
     echo'<input type="text" name="precio" id="precio" placeholder="Precio aproximado" value=';if(isset($_SESSION['post']['precio'])){echo $_SESSION['post']['precio'];} echo ">";
     
-    echo'<label for="seccion">Elige por cuanto tiempo deseas hacer el cambio.</label> <span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
+    echo'<label for="tiempoCambio">Elige por cuanto tiempo deseas hacer el cambio.</label> <span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
  
 	echo'<select name="tiempoCambio" id="tiempoCambio">';
            
@@ -118,12 +132,12 @@ echo "usuario es: $usuario y session es: ".$url."<br>";
                 echo'<br>';
                 
                 
-    echo'<label  for="Pa_buscadas">Introduce 4 palabras por lo que tú estarías interesado en cambiarlo. </label>';
+    echo'<label  for="Pa_queridas">Introduce 4 palabras por lo que tú estarías interesado en cambiarlo. </label>';
         echo '<section id="buscadas" class="introducir_palabras">';
-    echo'<input type="text" name="buscada_1" id="buscada_1" placeholder="Máximo 25" maxlength="25"   value=';if(isset($_SESSION['post']['Pa_buscadas'][0])){echo $_SESSION['post']['Pa_buscadas'][0];} echo ">";
-    echo'<input type="text" name="buscada_2" id="buscada_2" maxlength="25" value=';if(isset($_SESSION['post']['Pa_buscadas'][1])){echo $_SESSION['post']['Pa_buscadas'][1];} echo ">";
-    echo'<input type="text" name="buscada_3" id="buscada_3" maxlength="25" value=';if(isset($_SESSION['post']['Pa_buscadas'][2])){echo $_SESSION['post']['Pa_buscadas'][2];} echo ">";
-    echo'<input type="text" name="buscada_4" id="buscada_4" maxlength="25" value=';if(isset($_SESSION['post']['Pa_buscadas'][3])){echo $_SESSION['post']['Pa_buscadas'][3];} echo ">";
+    echo'<input type="text" name="querida_1" id="querida_1" placeholder="Máximo 25" maxlength="25"   value=';if(isset($_SESSION['post']['Pa_queridas'][0])){echo $_SESSION['post']['Pa_queridas'][0];} echo ">";
+    echo'<input type="text" name="querida_2" id="querida_2" maxlength="25" value=';if(isset($_SESSION['post']['Pa_queridas'][1])){echo $_SESSION['post']['Pa_queridas'][1];} echo ">";
+    echo'<input type="text" name="querida_3" id="querida_3" maxlength="25" value=';if(isset($_SESSION['post']['Pa_queridas'][2])){echo $_SESSION['post']['Pa_queridas'][2];} echo ">";
+    echo'<input type="text" name="querida_4" id="querida_4" maxlength="25" value=';if(isset($_SESSION['post']['Pa_queridas'][3])){echo $_SESSION['post']['Pa_queridas'][3];} echo ">";
     
         echo '</section>';
         
@@ -136,8 +150,8 @@ echo "usuario es: $usuario y session es: ".$url."<br>";
     echo'<input type="text" name="ofrecida_4" id="ofrecida_4" maxlength="25" value=';if(isset($_SESSION['post']['Pa_ofrecidas'][3])){echo $_SESSION['post']['Pa_ofrecidas'][3];} echo ">";
     
         echo '</section>';
-            //Next &gt;
-            echo"<input type='submit' name='primero' id='primero'  value='Aceptar' >";
+           
+            echo"<input type='submit' name='primero' id='primero'  value='Next &gt' >";
                     
             echo "</form>";
         if($mensaje){
@@ -151,29 +165,61 @@ echo "usuario es: $usuario y session es: ".$url."<br>";
         
 
 function displayStep2($missingFields){
+    global $mensaje; 
+    global $user;
     
-    echo 'Hola';
-    
-    
+   
+    echo'<section id="form_post">';
+                echo'<h4>Puedes subir hasta 5 imagenes</h4>';
+    echo'<form name="post" action="subir_posts.php" method="POST" id="post" enctype="multipart/form-data">';
+        echo'<fieldset>';
+        	echo'<legend>Introduce alguna imagen.</legend>';
+        echo"<input type='hidden' name='step' value='2'>"; 
+        
+        echo'<input type="hidden" name="MAX_FILE_SIZE" value="50000" />';
+        echo'<label for="photoArticulo">Solo fotos .jpg</label>';
+        echo '<br>';    
+            echo'<input type="file" name="photoArticulo" id="photoArticulo" value="" />';        
+        
+        echo '<br><br>';    
+    echo'<label  for="figcaption">Introduce una pequeña descripción, se verá junto a la imagen. </label>';
+    echo'<input type="text" name="figcaption" id="figcaption" placeholder="Una pequeña descripción" value="" >';    
+    echo"<div style='clear: both';>";
+        echo "contador: ".$_SESSION['contador'].'<br>';
+        
+                        echo"<input type='submit' name='segundo' id='segundo'  value='&lt; Back'>";
+                    if($_SESSION['contador'] < 5){
+                        echo"<input type='submit' name='segundo' id='segundo'  value='Enviar'>";
+                    }    
+                        echo"<input type='submit' name='segundo' id='segundo' value='Fin' >";
+                    echo"</div>";       
+            
+            echo "</form>";
+        if($mensaje){
+            echo $mensaje;
+        }    
+        echo'</fieldset>';  
+        
+    echo'</section>';
 //fin displayStep2    
 }
 
 function ingresarPost(){
     global $articulo;
     global $usuario;
-    echo 'El nick de la  variable es: '.$usuario. ' y con session: '.$_SESSION['user']->getValue('nick').'<br>';
+        
         $articulo = new Post(array(
-            "IdUsuario" => $usuario,
+            "idUsuario" => $_SESSION['user']->getValue('nick'),
             "secciones_idsecciones" => $_SESSION['post']['seccion'],
-            "tiempo_cambio_idTiempoCambio" => $_SESSION['post']['tiempo_cambio'],
+            "tiempo_cambio_idTiempoCambio" => $_SESSION['post']['tiempoCambio'],
             "titulo" => $_SESSION['post']['titulo'],
             "comentario" => $_SESSION['post']['comentario'],
             "precio" => $_SESSION['post']['precio'],
-            "Pa_buscadas" => array(
-                $_SESSION['post']['Pa_buscadas'][0],
-                $_SESSION['post']['Pa_buscadas'][1],
-                $_SESSION['post']['Pa_buscadas'][2],
-                $_SESSION['post']['Pa_buscadas'][3]
+            "Pa_queridas" => array(
+                $_SESSION['post']['Pa_queridas'][0],
+                $_SESSION['post']['Pa_queridas'][1],
+                $_SESSION['post']['Pa_queridas'][2],
+                $_SESSION['post']['Pa_queridas'][3]
             ),
             "Pa_ofrecidas" => array(
                 $_SESSION['post']['Pa_ofrecidas'][0],
@@ -183,40 +229,63 @@ function ingresarPost(){
             ),
             "fechaPost" => ""        
         ));
-        echo 'Datos de articulos<br>';
-        //var_dump($articulo);
-        $test = $articulo->insertArticulo();
-        if($test){
-            echo 'correcto';
+        
+        //Por si el usuario quiere cambiar 
+        //algun dato en el paso anterior
+        if(isset($_SESSION['atras'])){           
+            $articulo->actualizarArticulo();  
         }else{
-            echo 'NO CORRECTO';
+            $result = $articulo->insertArticulo();
         }
-    
+        
+        
 //fin ingresarPost    
 }
 
+/**
+ * Este metodo ingresa en la tabla de imagenes
+ * las imagenes que tiene cada post
+ */
+
+function ingresarImagenes(){
+    
+      
+    $articulo = new Post(array(
+       "figcaption" => $_SESSION['post']['figcaption'],
+       "idImagen" => $_SESSION['idImagen']
+    ));
+    
+    $articulo->insertarFotos();
+    
+    
+    
+//fin ingresarImagenes    
+}
 function processForm($requiredFields, $st){
     //Array para almacenar los campos no rellenados y obligatorios
         global $missingFields;
         $missingFields = array();   
 
         switch ($st){
-            case ('step1'):
+            case 'step1':
                 $_SESSION['post']['seccion'] = isset($_POST['seccion']) ? $_POST['seccion'] : "";
-                $_SESSION['post']['tiempo_cambio'] = isset($_POST['tiempo_cambio']) ? $_POST['tiempo_cambio'] : "";
-                $_SESSION['post']['titulo'] = isset($_POST["titulo"]) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´]/", "", $_POST["titulo"]) : "";       
-                $_SESSION['post']['comentario'] = isset($_POST['comentario']) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´]/", "", $_POST["comentario"]) : "";
-                $_SESSION['post']['precio'] = isset($_POST['precio']) ? preg_replace("/[^\-\_a-zAZ0-9.,]/", "", $_POST["precio"]) : "";
-                $_SESSION['post']['Pa_buscadas'][0] = isset($_POST["buscada_1"]) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´]/", "", $_POST["buscada_1"]) : "";
-                $_SESSION['post']['Pa_buscadas'][1] = isset($_POST["buscada_2"]) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´]/", "", $_POST["buscada_2"]) : "";
-                $_SESSION['post']['Pa_buscadas'][2] = isset($_POST["buscada_3"]) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´]/", "", $_POST["buscada_3"]) : "";
-                $_SESSION['post']['Pa_buscadas'][3] = isset($_POST["buscada_4"]) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´]/", "", $_POST["buscada_4"]) : "";
-                $_SESSION['post']['Pa_ofrecidas'][0] = isset($_POST["ofrecida_1"]) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´]/", "", $_POST["ofrecida_1"]) : "";
-                $_SESSION['post']['Pa_ofrecidas'][1] = isset($_POST["ofrecida_2"]) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´]/", "", $_POST["ofrecida_2"]) : "";
-                $_SESSION['post']['Pa_ofrecidas'][2] = isset($_POST["ofrecida_3"]) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´]/", "", $_POST["ofrecida_3"]) : "";
-                $_SESSION['post']['Pa_ofrecidas'][3] = isset($_POST["ofrecida_4"]) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´]/", "", $_POST["ofrecida_4"]) : "";
+                $_SESSION['post']['tiempoCambio'] = isset($_POST['tiempoCambio']) ? $_POST['tiempoCambio'] : "";
+                $_SESSION['post']['titulo'] = isset($_POST["titulo"]) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´ áéíóúäëïöü]/", "", $_POST["titulo"]) : "";       
+                $_SESSION['post']['comentario'] = isset($_POST['comentario']) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´ áéíóúäëïöü]/", "", $_POST["comentario"]) : "";
+                $_SESSION['post']['precio'] = isset($_POST['precio']) ? preg_replace("/[^\-\_a-zAZ0-9., €$]/", "", $_POST["precio"]) : "";
+                $_SESSION['post']['Pa_queridas'][0] = isset($_POST["querida_1"]) ? preg_replace("/[^\-\_a-zAZ0-9. ,'``'´áéíóúäëïöü]/", "", $_POST["querida_1"]) : "";
+                $_SESSION['post']['Pa_queridas'][1] = isset($_POST["querida_2"]) ? preg_replace("/[^\-\_a-zAZ0-9. ,`'´áéíóúäëïöü]/", "", $_POST["querida_2"]) : "";
+                $_SESSION['post']['Pa_queridas'][2] = isset($_POST["querida_3"]) ? preg_replace("/[^\-\_a-zAZ0-9. ,`'´áéíóúäëïöü]/", "", $_POST["querida_3"]) : "";
+                $_SESSION['post']['Pa_queridas'][3] = isset($_POST["querida_4"]) ? preg_replace("/[^\-\_a-zAZ0-9. ,`'´áéíóúäëïöü]/", "", $_POST["querida_4"]) : "";
+                $_SESSION['post']['Pa_ofrecidas'][0] = isset($_POST["ofrecida_1"]) ? preg_replace("/[^\-\_a-zAZ0-9. ,`'´áéíóúäëïöü]/", "", $_POST["ofrecida_1"]) : "";
+                $_SESSION['post']['Pa_ofrecidas'][1] = isset($_POST["ofrecida_2"]) ? preg_replace("/[^\-\_a-zAZ0-9. ,`'´áéíóúäëïöü]/", "", $_POST["ofrecida_2"]) : "";
+                $_SESSION['post']['Pa_ofrecidas'][2] = isset($_POST["ofrecida_3"]) ? preg_replace("/[^\-\_a-zAZ0-9. ,`'´áéíóúäëïöü]/", "", $_POST["ofrecida_3"]) : "";
+                $_SESSION['post']['Pa_ofrecidas'][3] = isset($_POST["ofrecida_4"]) ? preg_replace("/[^\-\_a-zAZ0-9. ,`'´áéíóúäëïöü]/", "", $_POST["ofrecida_4"]) : "";
                 
-                //var_dump($_SESSION['post']);
+                break;
+            
+            case 'step2':
+                $_SESSION['post']['figcaption'] = isset($_POST['figcaption']) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´ áéíóúäëïöü]/", "", $_POST["figcaption"]) : ""; 
                 break;
         }
 
@@ -235,23 +304,50 @@ function processForm($requiredFields, $st){
      * @param type $st
      * @return boolean
      */
-    function validarCampos($st){
-        global $mensaje;
-        global $articulo;
-        $test = true;
+function validarCampos($st){
+    global $mensaje;
+    $test = true;
         
-            switch ($st){
+    switch ($st){
             
-                case("step1"):
-                   //Nada de momento
-                    
-                    break;
+        case("step1"):
+        //Nada de momento 
+            break;
+                 
+    case 'step2':
+        global $idImagen;
+        
+        if(isset($_FILES['photoArticulo']['tmp_name']) and $_FILES['photoArticulo']['tmp_name'] != null){
+                        
+            if(Sistema::validarFoto('photoArticulo')){
+                
+                //eliminamos la foto que subimos de demo
+                if(is_file($_SESSION['nuevoDirectorio'].'/demo.jpg')){
+            $test = unlink($_SESSION['nuevoDirectorio'].'/demo.jpg');  
+                }
+            $destino = $_SESSION['nuevoDirectorio'].'/'.basename($_FILES['photoArticulo']['name']);                   
+            $foto = $_FILES['photoArticulo']['tmp_name'];
+            $test = Sistema::moverImagen($foto, $destino);
+            $_SESSION['idImagen'] = Sistema::contarArchivos($_SESSION['nuevoDirectorio']);
+          
+            $test = Sistema::renombrarFoto($_SESSION['nuevoDirectorio'].'/'.basename($_FILES['photoArticulo']['name']), $_SESSION['idImagen']);
             
-            } 
-            
-        return $test;
-     //fin de validarCampos   
-    }
+            }else{
+                $test = false;
+            }
+        } else{
+        //Si hay algun tipo de error al subir la foto
+                //Redirigimos a la pagina de mostrar error
+                 //Para que el usuario vuelva a intentarlo
+                if(!$test){
+                    mostrarError();
+                    exit();
+                }
+        } 
+    }            
+       return $test;
+//fin de validarCampos   
+}
     
     
     //Mandamos a validar al metodo anterior los campos segun 
@@ -264,10 +360,19 @@ function processForm($requiredFields, $st){
             if($missingFields || !validarCampos($st)){
                 displayStep1($missingFields);
             } else{
-                ingresarPost();
+                    ingresarPost();
+                    displayStep2(array());
+            }
+                break;
+        
+        case 'step2':
+            
+            if($missingFields || !validarCampos($st)){
+                displayStep2($missingFields);
+            } else {
+                ingresarImagenes();
                 displayStep2(array());
             }
-            break;
     
     }
     

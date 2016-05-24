@@ -1,6 +1,7 @@
 <?php 
 session_start(); 
 $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
+
 ?>
 <!DOCTYPE html>
 
@@ -31,6 +32,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
         require_once 'entidades/Usuarios.php';
         require_once 'entidades/DataObj.php';
         require_once 'validar/ValidoForm.php';
+      
         
     global $valido;
     $valido = new ValidoForm();

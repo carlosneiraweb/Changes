@@ -7,7 +7,7 @@ define("PAGE_SIZE", 7);
 define("TBL_DATOS_USUARIO", "datos_usuario");
 define("TBL_DIRECCION", "direccion");
 define("TBL_GENERO", "genero");
-define("TBL_PBS_BUSCADAS", "pbs_buscadas");
+define("TBL_PBS_OFRECIDAS", "pbs_ofrecidas");
 define("TBL_PBS_QUERIDAS", "pbs_queridas");
 define("TBL_POST", "post");
 define("TBL_PROVINCIAS", "provincias");

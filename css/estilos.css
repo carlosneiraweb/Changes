@@ -188,7 +188,7 @@ h1{
 /*Estilos para la pagina que se muestra cuando hay un error*/
 section#error{
     width: 450px;
-    height: 390px;
+    height: 410px;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -196,7 +196,7 @@ section#error{
     border: 2px solid blue;
     border-radius: 0.8em;
     margin: auto;
-    margin: auto;
+    padding: 1em;
     position:absolute;
 	top: 0;
 	left: 0;
@@ -464,7 +464,6 @@ textarea {
     border: thin solid skyblue;
     border-radius: 1em;
     display: block;
-    font: 12px arial;
     height: 100px;
     margin: .8em auto;
     padding: 5px 2px;

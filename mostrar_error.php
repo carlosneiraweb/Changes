@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <!--
  author Carlos Neira Sanchez
@@ -23,6 +26,9 @@
       <figure id="imagen_error"><img src="img/error.png" alt="error"></figure>
       <section id="mensaje_error">
       <h2>Ohh! Hemos tenido un problema.</h2>
+      <?php 
+        echo "<h3>".$_SESSION['error']."</h3>";
+      ?>
       <h3>Puedes volver a intentarlo</h3>
       <input type="button" id="volver_intentar" value="Aceptar"/>
               </section>  
