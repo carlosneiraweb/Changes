@@ -2,6 +2,8 @@
 
     require_once("../Sistema/Conne.php");
     require_once("../Sistema/Constantes.php");
+    
+  
 
   // -------  cabeceras indicando que se envian datos JSON.
   header('Content-Type: application/json');
@@ -13,13 +15,20 @@
  
   
   // -------- párametro opción para determinar la select a realizar -------
-  if (isset($_POST['opcion'])) 
+if (isset($_POST['opcion'])) 
       $opc=$_POST['opcion'];
-  else
+else
      if (isset($_GET['opcion'])) 
         $opc=$_GET['opcion'];
 
-
+if (isset($_POST['idPost'])) 
+        $idPost=$_POST['idPost'];
+  else
+     if (isset($_GET['idPost'])) 
+        $idPost=$_GET['idPost'];
+     
+     
+    
     switch ($opc) {
         case "PP":
             $sql="select nombre from ".TBL_PROVINCIAS.";";     
@@ -33,7 +42,9 @@
         case "PT":
             $sql = "Select * from ".TBL_TIEMPO_CAMBIO.";";
             break;
-            
+        case "UI":
+            $sql = "Select ruta  as ruta  from ".TBL_IMAGENES." WHERE post_idPost = '".$idPost."'";
+            break;
     }
           
     try{
@@ -52,3 +63,5 @@
         Conne::disconnect($con);
         die($ex->getMessage());
     }
+    
+    

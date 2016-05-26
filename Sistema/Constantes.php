@@ -16,6 +16,7 @@ define("TBL_USUARIO", "usuario");
 define("TBL_IMAGENES", "imagenes");
 define("TBL_TIEMPO_CAMBIO", "tiempo_cambio");
 define("ERROR", "Revisa tu formulario");
+define("ERROR_VALIDACION_LOGIN", '<h5>El usuario o la contraseña <br> <strong>no son validos</strong>.</h5>');
 define("PASSWORD_EXISTE", '<h5>El nombre de usuario ya existe</h5>');
 define("PASSWORD_INCORRECTO", '<h5>El password introducido no cumple las normas<h5>'.
                                 "<h5>Recuerda que solo acepta letras y números/<h5>".

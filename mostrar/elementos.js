@@ -6,19 +6,24 @@ var READY_STATE_LOADED = 2;
 var READY_STATE_INTERACTIVE = 3;
 var READY_STATE_COMPLETE = 4;
 
-var objPro, petPro, objGen, petGen, objSeccion, petSeccion, objTiempoCambio, petTiempoCambio;
+var objPro, petPro, objGen, petGen, objSeccion, petSeccion, objTiempoCambio, petTiempoCambio,
+        objLastImg, petLastImg, idPost;
 var fecha = new Date();
 
-window.onload=function(){   
+window.onload=function(){
+   
+     
      provincias = document.getElementById('provincia');
      genero = document.getElementById('genero');
      seccion = document.getElementById('seccion');
-
+     verImagenes = document.getElementById('img_ingresadas');
+     
+     
      cargarPeticion("PP", "opcion=PP");
      cargarPeticion("PG", "opcion=PG");
      cargarPeticion("PS", "opcion=PS");
      cargarPeticion("PT", "opcion=PT");
-    
+     cargarPeticion("UI", "opcion=UI&idPost="+idPost);
 };
 
 
@@ -53,7 +58,15 @@ function cargarPeticion(tipo, parametros){
            petTiempoCambio.open('POST', "./central/json.php?", true);
            petTiempoCambio.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petTiempoCambio.send(parametros);
-                break; 
+                break;
+        case('UI'):
+           petLastImg = inicializaPeticion();
+           petLastImg.onreadystatechange = procesaRespuesta;
+           petLastImg.open('POST', "./central/json.php?", true);
+           petLastImg.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+           petLastImg.send(parametros);
+                break;
+            
     //fin switch
     }
     
@@ -69,6 +82,9 @@ function cargarPeticion(tipo, parametros){
                     objSeccion = JSON.parse(petSeccion.responseText);
                 } else if(tipo === 'PT'){
                     objTiempoCambio = JSON.parse(petTiempoCambio.responseText);
+                } else if(tipo === 'UI'){
+                    objLastImg = JSON.parse(petLastImg.responseText);
+                    //alert('Valor del objeto: '+ objLastImg);
                 }
                 
                 
@@ -76,8 +92,11 @@ function cargarPeticion(tipo, parametros){
                 switch(tipo){        
                     case 'PP':
                             break;
+                    case 'UI':
+                        fotos.innerHTML = "<h3>No hemos podido recuperar esa imagen</h3>";
+                            break;
                     default:
-                        alert("No recuperación datos");
+                       // location.href= 'mostrar_error.php';
                 }
             //fin catch
             }
@@ -95,7 +114,9 @@ function cargarPeticion(tipo, parametros){
                 case 'PT':
                     cargarTiempoDeCambio(objTiempoCambio);
                         break;
-              
+                case 'UI':
+                    cargarUltimaImagen(objLastImg);
+                        break;
             //fin switch
             }
         //fin if
@@ -143,7 +164,24 @@ function cargarTiempoDeCambio(objTiempoCambio){
 //fin cargarSecciones   
 }
 
-
+/*Cargamos la ultima imagen selecionada por el usuario*/
+function cargarUltimaImagen(objLastImg){
+        
+        var sep = '<section class="mini" >';
+        for (var i = 0; i < objLastImg.length; i++){
+            
+                sep += '<form action="subir_posts.php" method="POST" id='+i+' class="form_mini" >';
+                sep += "<input type='hidden' name='url' value="+i+ ">"; 
+                sep += '<img src='+objLastImg[i].ruta+'>';
+                sep += '<input type="submit" name="eliminar" id="eliminar" value="Eliminar" >';
+               
+            }
+        sep += '</section>';
+        verImagenes.innerHTML = "";
+        verImagenes.innerHTML += sep;
+   
+//  cargarUltimaImagen  
+}
 
 //------------------------funcion inicializa peticion ----------------------------
   function inicializaPeticion(){

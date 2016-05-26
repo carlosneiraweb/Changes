@@ -17,7 +17,7 @@ class Sistema {
         final static function validarFoto($foto){
             $test = true;
             if(isset($_FILES[$foto]) and $_FILES[$foto]['error'] == UPLOAD_ERR_OK){
-           
+          
                 if($_FILES[$foto]['type'] != 'image/jpeg'){
                     $test = false;
                     $_SESSION['error'] = FORMATO_FOTO;
@@ -116,7 +116,7 @@ class Sistema {
                 mkdir('photos/'.$usuario.'/'.$nuevo); 
                 $nuevoDirectorio = 'photos/'.$usuario.'/'.$nuevo;
             }
-            echo 'Nuevo Subdirectorio creado: '.$nuevoDirectorio.'<br>';
+            //echo 'Nuevo Subdirectorio creado: '.$nuevoDirectorio.'<br>';
             return $nuevoDirectorio; 
         }catch(Exception $ex){
                 echo $ex->getMessage();
@@ -152,7 +152,7 @@ class Sistema {
          * @param type $nombre
          */
         final static function renombrarFoto($nombreViejo, $nombreNuevo){
-            $test = false;
+            
             //echo 'nombre viejo '.$nombreViejo.'<br>';
             //echo 'nombre Nuevo '.$nombreNuevo.'<br>';
             try{
@@ -160,11 +160,11 @@ class Sistema {
                    $original = basename($nombreViejo);
                    $tmp = strstr($nombreViejo, $original, true);//OJO
                    $nuevoNombre = $tmp.$nombreNuevo.'.jpg';
-                   $test = rename($nombreViejo, $nuevoNombre);
+                   rename($nombreViejo, $nuevoNombre);
                    
                }
                 
-             return $test;
+             return $nuevoNombre;
             } catch (Exception $ex) {
                 $ex->getMessage();
             }

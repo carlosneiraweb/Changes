@@ -29,7 +29,11 @@ class Post extends DataObj{
     );
 
      
-    
+    /**
+     * Metodo que actualiza un articulo de un Post
+     * Se utiliza si el usuaro de mueve de adelante a atras
+     * por el formulario
+     */
     
     public function actualizarArticulo(){
     
@@ -107,7 +111,10 @@ class Post extends DataObj{
 }
 
 
-
+/**
+ * Metodo que inserta un articulo en un post
+ * @return type
+ */
 public function insertArticulo(){
   
         
@@ -232,12 +239,14 @@ public function insertArticulo(){
 }    
 
 
-   
+/**
+ * Metodo que inserta las imagenes
+ * y comntarios de cada imagen subida
+ */
 public function insertarFotos(){
          
           $_SESSION['contador'] = $_SESSION['contador'] + 1;
-          echo 'contador'.$_SESSION['contador'];
-          echo 'El ultimo id es: '. $_SESSION['lastId'][0].'<br>';
+          
     try{
         $con = Conne::connect();
         
@@ -259,6 +268,41 @@ public function insertarFotos(){
         die("Query failed: ".$ex->getMessage());
     }
 //fin insertarFotos  
+}
+
+
+/***
+ * Metodo que elimina una imagen 
+ * y cometario que el usuario quiera
+ */
+
+function eliminarImg(){
+    
+     try{
+        $con = Conne::connect();
+        
+        $sql = "DELETE FROM ".TBL_IMAGENES." WHERE (post_idPost = :post_idPost  AND  idImagen = :idImagen)";
+        //echo 'Sql insertArticulo: '.$sql.'<br>';
+        $st = $con->prepare($sql);
+       
+        $st->bindValue(":post_idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
+        $st->bindValue(":idImagen", $_SESSION['idImg'], PDO::PARAM_INT);
+       
+        $total = $st->execute();
+        
+        return $total
+                ;
+        Conne::disconnect($con);
+    } catch (Exception $ex) {
+        Conne::disconnect($con);
+        echo 'El error se produce en la línea: '.$ex->getLine().'<br>';
+        die("Query failed: ".$ex->getMessage());
+    }
+    
+    
+    
+    
+//fin eliminarImg    
 }
 
 

@@ -470,9 +470,9 @@ textarea {
     resize: none;
     width: 90%;  
 }
-.borderojo {
+.borderojo { 
 	outline: none;
-	border: 1px solid #f00;
+	border: 1px solid #f00 !important;
 }
 .bordegris { border: 1px solid #d4d4d; }
 
@@ -578,6 +578,8 @@ section#form_registro, section#form_post{
     font-size: 1.1em !important;
     
 }
+
+
 .obligatorio{
     padding-left: .4em;
 }

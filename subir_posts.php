@@ -2,15 +2,23 @@
 require_once ('entidades/Post.php');
 require_once 'entidades/Usuarios.php';
 require_once ('entidades/DataObj.php');
+
+
 session_start();
 global $usuario;
+//Iniciamos la variable de session contador a 0
+//Iremos incrementando el numero de fotos subidas
 if(!isset($_SESSION['contador'])){
     $_SESSION['contador'] = 0; 
 }
+//Recuperamos un objeto usuario desde la variable de sessin
 $usuario = $_SESSION['user']->getValue('nick');
+//Recuperamos la url de la anterior pagina
 $url = $_SESSION["url"];
 
-
+/**
+ * Metodo que nos devuelve a la pagina anterior
+ */
 function volverAnterior(){
     header('Location:'. $_SESSION["url"]);
 }
@@ -37,6 +45,8 @@ function volverAnterior(){
         <script src="jquery-2.2.2.js" type="text/javascript"></script>
         <script src="mostrar/elementos.js"></script>
         <script src="validar/formulario_reg.js"></script>
+        <script src="validar/contador.js"></script>
+       
     </head>
     <body>
         
@@ -46,10 +56,10 @@ function volverAnterior(){
         require_once('validar/ValidoForm.php');
         require_once('Sistema/Directorios.php');
         
-        $user = new Usuarios(array());
+        //$user = new Usuarios(array());
         
-        global $post;
-        $post = new Post(array());
+        global $articulo;
+        $articulo = new Post(array());
  
         echo'<header>';
 	echo'<figure id="logo" class="fade">';
@@ -88,6 +98,10 @@ function volverAnterior(){
         unset($_SESSION['atras']);
         $_SESSION['contador'] = 0;
         volverAnterior();
+    } elseif(isset($_POST['eliminar']) && isset($_POST['url'])){
+        $_SESSION['idImg'] = $_POST['url'];
+        eliminarImagen();
+        echo ' la foto ha eliminar es: '.$_SESSION['idImg'].'<br>';
     }
         
         
@@ -105,8 +119,9 @@ function volverAnterior(){
         echo"<input type='hidden' name='step' value='1'>"; 
         
     echo'<label '.ValidoForm::validateField("titulo", $missingFields).' for="titulo">Introduce un titulo para el artículo:</label> <span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
-    echo'<input type="text" name="titulo" id="titulo" autofocus placeholder="Pon un titulo al artículo"  value=';if(isset($_SESSION['post']['titulo'])){echo $_SESSION['post']['titulo'];} echo ">";  
     
+    echo'<input type="text" maxlength="15" name="titulo" id="titulo" autofocus placeholder="Pon un titulo al artículo"  value=';if(isset($_SESSION['post']['titulo'])){echo $_SESSION['post']['titulo'];} echo ">";  
+    echo '<label>Quedan: <span></span></label>';
     echo'<label for="seccion">Seccion:</label> <span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
  
 	echo'<select name="seccion" id="seccion">';
@@ -115,8 +130,8 @@ function volverAnterior(){
 
                 echo'<br>';
                 echo'<br>';
-    
-    echo'<label '.ValidoForm::validateField("comentario", $missingFields). ' for="comentario">Introduce una descripción general del artículo. </label><span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
+    //<span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>
+    echo'<label '.ValidoForm::validateField("comentario", $missingFields). ' for="comentario">Introduce una descripción general del artículo. </label><span></span>';
     echo'<textarea maxlength="255" name="comentario" id="comentario" placeholder= "Máximo 255 caracteres." value=';if(isset($_SESSION['post']['comentario'])){echo $_SESSION['post']['comentario'];} echo '></textarea>';
     
     echo'<label  for="precio">Introduce un precio aproximado  artículo. </label>';
@@ -140,8 +155,8 @@ function volverAnterior(){
     echo'<input type="text" name="querida_4" id="querida_4" maxlength="25" value=';if(isset($_SESSION['post']['Pa_queridas'][3])){echo $_SESSION['post']['Pa_queridas'][3];} echo ">";
     
         echo '</section>';
-        
     
+        
     echo'<label  for="Pa_ofrecidas">Introduce 4 palabras para que la gente encuentre tu artículo. </label>';
         echo '<section id="ofrecidas" class="introducir_palabras">';
     echo'<input type="text" name="ofrecida_1" id="ofrecida_1" placeholder="Máximo 25" maxlength="25" value=';if(isset($_SESSION['post']['Pa_ofrecidas'][0])){echo $_SESSION['post']['Pa_ofrecidas'][0];} echo ">";
@@ -152,7 +167,7 @@ function volverAnterior(){
         echo '</section>';
            
             echo"<input type='submit' name='primero' id='primero'  value='Next &gt' >";
-                    
+        //Mostramos cualquier errror al validar el formulario            
             echo "</form>";
         if($mensaje){
             echo $mensaje;
@@ -168,7 +183,19 @@ function displayStep2($missingFields){
     global $mensaje; 
     global $user;
     
+    //Si el usuario ha subido una foto le pasamos su url a javascript
+    // para que se muestre.
+    
+    if(isset($_SESSION['lastId'])){
    
+    $idPost = $_SESSION['lastId'][0];
+    echo 'El ultimo id: '.$idPost.'<br>';
+    echo '<script type="text/javascript">';
+        echo "var idPost = "; echo "'$idPost'".";";
+    echo '</script>';
+    }
+    
+    
     echo'<section id="form_post">';
                 echo'<h4>Puedes subir hasta 5 imagenes</h4>';
     echo'<form name="post" action="subir_posts.php" method="POST" id="post" enctype="multipart/form-data">';
@@ -185,7 +212,7 @@ function displayStep2($missingFields){
     echo'<label  for="figcaption">Introduce una pequeña descripción, se verá junto a la imagen. </label>';
     echo'<input type="text" name="figcaption" id="figcaption" placeholder="Una pequeña descripción" value="" >';    
     echo"<div style='clear: both';>";
-        echo "contador: ".$_SESSION['contador'].'<br>';
+       // echo "contador: ".$_SESSION['contador'].'<br>';
         
                         echo"<input type='submit' name='segundo' id='segundo'  value='&lt; Back'>";
                     if($_SESSION['contador'] < 5){
@@ -195,21 +222,38 @@ function displayStep2($missingFields){
                     echo"</div>";       
             
             echo "</form>";
-        if($mensaje){
-            echo $mensaje;
-        }    
+        //Mostramos cualquier errror en el formulario
+            //y cualquier error al validar la foto
+        if($mensaje || isset($_SESSION['error'])){
+            echo $mensaje.'<br>';
+            echo $_SESSION['error'];
+            $_SESSION['error'] = null;
+        }   
         echo'</fieldset>';  
+        
+        //Seccion donde mostraemos las imagenes que
+        //va subiendo el usuario
+        echo '<section id="img_ingresadas">';
+            
+     
+        echo '</section>';
         
     echo'</section>';
 //fin displayStep2    
 }
 
+/**
+ * Metodo utilizado para crear un objeto de 
+ * la clase Post
+ * @global Post $articulo
+ * @global string $usuario
+ */
 function ingresarPost(){
     global $articulo;
     global $usuario;
         
         $articulo = new Post(array(
-            "idUsuario" => $_SESSION['user']->getValue('nick'),
+            "idUsuario" => 'admin',//$_SESSION['user']->getValue('nick'),
             "secciones_idsecciones" => $_SESSION['post']['seccion'],
             "tiempo_cambio_idTiempoCambio" => $_SESSION['post']['tiempoCambio'],
             "titulo" => $_SESSION['post']['titulo'],
@@ -229,7 +273,7 @@ function ingresarPost(){
             ),
             "fechaPost" => ""        
         ));
-        
+        //var_dump($articulo);
         //Por si el usuario quiere cambiar 
         //algun dato en el paso anterior
         if(isset($_SESSION['atras'])){           
@@ -242,6 +286,20 @@ function ingresarPost(){
 //fin ingresarPost    
 }
 
+
+function eliminarImagen(){
+    global $articulo;
+    $result = true;
+    var_dump($articulo);
+    $result = $articulo->eliminarImg();
+//    if(!$result){
+//        mostrarError();
+//        exit();
+//    }
+    
+    
+//fin eliminar imagen   
+}
 /**
  * Este metodo ingresa en la tabla de imagenes
  * las imagenes que tiene cada post
@@ -331,7 +389,7 @@ function validarCampos($st){
             $_SESSION['idImagen'] = Sistema::contarArchivos($_SESSION['nuevoDirectorio']);
           
             $test = Sistema::renombrarFoto($_SESSION['nuevoDirectorio'].'/'.basename($_FILES['photoArticulo']['name']), $_SESSION['idImagen']);
-            
+                
             }else{
                 $test = false;
             }

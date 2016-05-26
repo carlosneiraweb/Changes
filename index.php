@@ -102,9 +102,10 @@ echo'<label '.$valido->validateField("nick", $missingFields). ' for="nick" >Intr
 echo'<input  type="text" name="nick" id="nick" autofocus placeholder="Escribe tú nick" value="'.$user->getValueEncoded("nick").'" ><br></br>';            
 echo'<label '.$valido->validateField("password", $missingFields).' for="password">Introduce tú password</label><span class="obligatorio"><img src="img/obligado.png" ></span>';
 echo'<input type="password" name="password" id="password" placeholder="Escribe tú password" value="'.$user->getValueEncoded("password").'" ><br><br>';
-  
+
+//Mostramos un error en el login
 if(!$test){
-    echo '<h5>El usuario o la contraseña <br> <strong>no son validos</strong>.</h5>';
+    echo ERROR_VALIDACION_LOGIN;
 }
 echo'<input type="submit" id="btn_login" name="logeo" value="aceptar" />';          
     echo"</div>";
