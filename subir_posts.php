@@ -3,16 +3,13 @@ require_once ('entidades/Post.php');
 require_once 'entidades/Usuarios.php';
 require_once ('entidades/DataObj.php');
 
-
 session_start();
-global $usuario;
 //Iniciamos la variable de session contador a 0
 //Iremos incrementando el numero de fotos subidas
 if(!isset($_SESSION['contador'])){
     $_SESSION['contador'] = 0; 
 }
-//Recuperamos un objeto usuario desde la variable de sessin
-$usuario = $_SESSION['user']->getValue('nick');
+
 //Recuperamos la url de la anterior pagina
 $url = $_SESSION["url"];
 
@@ -22,6 +19,7 @@ $url = $_SESSION["url"];
 function volverAnterior(){
     header('Location:'. $_SESSION["url"]);
 }
+
 
 ?>
 <!DOCTYPE html>
@@ -55,11 +53,6 @@ function volverAnterior(){
         
         require_once('validar/ValidoForm.php');
         require_once('Sistema/Directorios.php');
-        
-        //$user = new Usuarios(array());
-        
-        global $articulo;
-        $articulo = new Post(array());
  
         echo'<header>';
 	echo'<figure id="logo" class="fade">';
@@ -87,29 +80,31 @@ function volverAnterior(){
         $requiredFields = array('seccion', 'comentario', 'Pa_queridas', 'Pa_ofrecidas');
         processForm($requiredFields, "step1");
     } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Enviar"){
+         //El usario quiere subir una foto al post
         $requiredFields = array();
         processForm($requiredFields, "step2");
     } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "< Back"){
-       //En caso que el usuario pulse el boton de atras
-        //evitamos que se vuelva a ingresar el mismo post
-        $_SESSION['atras'] = 'atras'; 
+        //Esto significa que el usuario ha dado un paso atras en el formulario
+        //Lo que hacemos es actualizar los datos, no volver a registrarlo
+        $_SESSION['atras'] = 'atras'; //Ver ingresarPost
         displayStep1(array());
     } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Fin"){
+        //El usuario ha terminado de ingresar los datos del post
+        //Le redirigimos a cualqier url que estubiera
+        //Destruimos la sesion atras y ponemos contador a 0
         unset($_SESSION['atras']);
         $_SESSION['contador'] = 0;
         volverAnterior();
     } elseif(isset($_POST['eliminar']) && isset($_POST['url'])){
-        $_SESSION['idImg'] = $_POST['url'];
+        //El usuario quiere eliminar una imagen que ha subido
+        $_SESSION['url'] = $_POST['url'];
         eliminarImagen();
-        echo ' la foto ha eliminar es: '.$_SESSION['idImg'].'<br>';
+        
     }
-        
-        
-        
-        
+
     function displayStep1($missingFields){
         global $mensaje; 
-        global $user;
+        
         
     echo'<section id="form_post">';
                 echo'<h4>Introduzca los datos del artículo</h4>';
@@ -130,7 +125,7 @@ function volverAnterior(){
 
                 echo'<br>';
                 echo'<br>';
-    //<span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>
+    
     echo'<label '.ValidoForm::validateField("comentario", $missingFields). ' for="comentario">Introduce una descripción general del artículo. </label><span></span>';
     echo'<textarea maxlength="255" name="comentario" id="comentario" placeholder= "Máximo 255 caracteres." value=';if(isset($_SESSION['post']['comentario'])){echo $_SESSION['post']['comentario'];} echo '></textarea>';
     
@@ -181,18 +176,15 @@ function volverAnterior(){
 
 function displayStep2($missingFields){
     global $mensaje; 
-    global $user;
     
-    //Si el usuario ha subido una foto le pasamos su url a javascript
-    // para que se muestre.
-    
+    //Aqui recuperamos el id del post en el que estamos
+    //Se lo pasamos a javascript para que nos muestre 
+    //todas las fotos que vamos subiendo
     if(isset($_SESSION['lastId'])){
-   
-    $idPost = $_SESSION['lastId'][0];
-    echo 'El ultimo id: '.$idPost.'<br>';
-    echo '<script type="text/javascript">';
-        echo "var idPost = "; echo "'$idPost'".";";
-    echo '</script>';
+        $idPost = $_SESSION['lastId'][0];
+            echo '<script type="text/javascript">';
+                echo "var idPost = "; echo "'$idPost'".";";
+            echo '</script>';
     }
     
     
@@ -212,7 +204,7 @@ function displayStep2($missingFields){
     echo'<label  for="figcaption">Introduce una pequeña descripción, se verá junto a la imagen. </label>';
     echo'<input type="text" name="figcaption" id="figcaption" placeholder="Una pequeña descripción" value="" >';    
     echo"<div style='clear: both';>";
-       // echo "contador: ".$_SESSION['contador'].'<br>';
+        echo "contador: ".$_SESSION['contador'].'<br>';
         
                         echo"<input type='submit' name='segundo' id='segundo'  value='&lt; Back'>";
                     if($_SESSION['contador'] < 5){
@@ -222,12 +214,10 @@ function displayStep2($missingFields){
                     echo"</div>";       
             
             echo "</form>";
-        //Mostramos cualquier errror en el formulario
+        //Mostramos cualquier error en el formulario
             //y cualquier error al validar la foto
-        if($mensaje || isset($_SESSION['error'])){
+        if($mensaje ){
             echo $mensaje.'<br>';
-            echo $_SESSION['error'];
-            $_SESSION['error'] = null;
         }   
         echo'</fieldset>';  
         
@@ -250,10 +240,10 @@ function displayStep2($missingFields){
  */
 function ingresarPost(){
     global $articulo;
-    global $usuario;
+    
         
         $articulo = new Post(array(
-            "idUsuario" => 'admin',//$_SESSION['user']->getValue('nick'),
+            "idUsuario" => $_SESSION['user']->getValue('nick'),
             "secciones_idsecciones" => $_SESSION['post']['seccion'],
             "tiempo_cambio_idTiempoCambio" => $_SESSION['post']['tiempoCambio'],
             "titulo" => $_SESSION['post']['titulo'],
@@ -273,29 +263,43 @@ function ingresarPost(){
             ),
             "fechaPost" => ""        
         ));
-        //var_dump($articulo);
+        
         //Por si el usuario quiere cambiar 
         //algun dato en el paso anterior
         if(isset($_SESSION['atras'])){           
-            $articulo->actualizarArticulo();  
+            $result = $articulo->actualizarArticulo();  
         }else{
             $result = $articulo->insertArticulo();
         }
         
-        
+        //Si hay algun tipo de error al subir la foto
+                //Redirigimos a la pagina de mostrar error
+                //Para que el usuario vuelva a intentarlo    
+            if(!$result){
+                mostrarError();
+                exit();
+            }
 //fin ingresarPost    
 }
 
-
+/**
+ * Metodo que elimina una imagen
+ * @global Post $articulo
+ */
 function eliminarImagen(){
     global $articulo;
-    $result = true;
-    var_dump($articulo);
+    $result;
+    
     $result = $articulo->eliminarImg();
-//    if(!$result){
-//        mostrarError();
-//        exit();
-//    }
+   
+    //Si ha habido algun error, nos redirige a la pagina que muestra un error
+    //Sino, continuamos en el formulario
+    if(!$result){
+        mostrarError();
+        exit();
+    }else{
+        displayStep2(array());
+    }
     
     
 //fin eliminar imagen   
@@ -306,16 +310,22 @@ function eliminarImagen(){
  */
 
 function ingresarImagenes(){
-    
+    global $articulo;
       
     $articulo = new Post(array(
        "figcaption" => $_SESSION['post']['figcaption'],
-       "idImagen" => $_SESSION['idImagen']
+       "idImagen" => $_SESSION['nombreImagen']
     ));
     
-    $articulo->insertarFotos();
-    
-    
+    $result = $articulo->insertarFotos();
+    //Incrementamos el contador del total de fotos
+    //Si ha habido un error mostramos la pagina de error
+    if($result){
+         $_SESSION['contador'] = $_SESSION['contador'] + 1;
+    } else{
+        mostrarError();
+        exit();      
+    }
     
 //fin ingresarImagenes    
 }
@@ -362,6 +372,16 @@ function processForm($requiredFields, $st){
      * @param type $st
      * @return boolean
      */
+    
+/**
+ * Metodo que nos redirige a la pagina de mostrar error
+ */
+function mostrarError(){
+    echo 'estoy en mostrar error<br>';
+    header('Location: mostrar_error.php');
+}
+
+
 function validarCampos($st){
     global $mensaje;
     $test = true;
@@ -369,40 +389,41 @@ function validarCampos($st){
     switch ($st){
             
         case("step1"):
-        //Nada de momento 
+            
             break;
                  
-    case 'step2':
-        global $idImagen;
+    case('step2'):
+        
+        $test = false;
         
         if(isset($_FILES['photoArticulo']['tmp_name']) and $_FILES['photoArticulo']['tmp_name'] != null){
-                        
+            
             if(Sistema::validarFoto('photoArticulo')){
-                
+                echo 'entro<br>';
                 //eliminamos la foto que subimos de demo
                 if(is_file($_SESSION['nuevoDirectorio'].'/demo.jpg')){
             $test = unlink($_SESSION['nuevoDirectorio'].'/demo.jpg');  
                 }
-            $destino = $_SESSION['nuevoDirectorio'].'/'.basename($_FILES['photoArticulo']['name']);                   
+                //Insertamos las fotos en el directorio del usuario
+                //y en su subdirectorio propio
+            echo 'el nuevo directorio: '.$_SESSION['nuevoDirectorio'].'<br>';
+            $_SESSION['nombreImagen']= $_FILES['photoArticulo']['name'];
+            $destino = "photos/".$_SESSION['nuevoDirectorio'].'/'.basename($_FILES['photoArticulo']['name']);                   
             $foto = $_FILES['photoArticulo']['tmp_name'];
             $test = Sistema::moverImagen($foto, $destino);
-            $_SESSION['idImagen'] = Sistema::contarArchivos($_SESSION['nuevoDirectorio']);
-          
-            $test = Sistema::renombrarFoto($_SESSION['nuevoDirectorio'].'/'.basename($_FILES['photoArticulo']['name']), $_SESSION['idImagen']);
-                
+   
             }else{
-                $test = false;
-            }
-        } else{
-        //Si hay algun tipo de error al subir la foto
+               
+                //Si hay algun tipo de error al subir la foto
                 //Redirigimos a la pagina de mostrar error
                  //Para que el usuario vuelva a intentarlo
-                if(!$test){
                     mostrarError();
-                    exit();
-                }
+                   exit();  
+            }
         } 
-    }            
+    }
+    
+       echo 'al final validar: '.$test."<br>";
        return $test;
 //fin de validarCampos   
 }
@@ -413,6 +434,7 @@ function validarCampos($st){
     switch ($st){
    
         case 'step1':
+            
             //Si ha habido algun error volvemos a mostrar el paso del formulario
             //  correcto y un mensaje con los campos correspondientes
             if($missingFields || !validarCampos($st)){
@@ -428,10 +450,11 @@ function validarCampos($st){
             if($missingFields || !validarCampos($st)){
                 displayStep2($missingFields);
             } else {
-                ingresarImagenes();
+                //ingresarImagenes();
                 displayStep2(array());
             }
-    
+            
+        
     }
     
     
@@ -440,11 +463,6 @@ function validarCampos($st){
     
 //fin processForm
 }        
-        
-        
-        
-        
-        
         
         ?>
     </body>

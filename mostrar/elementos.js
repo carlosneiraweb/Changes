@@ -168,10 +168,10 @@ function cargarTiempoDeCambio(objTiempoCambio){
 function cargarUltimaImagen(objLastImg){
         
         var sep = '<section class="mini" >';
-        for (var i = 0; i < objLastImg.length; i++){
+        for (var i= 0 ; i < objLastImg.length; i++){
             
-                sep += '<form action="subir_posts.php" method="POST" id='+i+' class="form_mini" >';
-                sep += "<input type='hidden' name='url' value="+i+ ">"; 
+                sep += '<form action="subir_posts.php" method="POST" id='+(i+1)+' class="form_mini" >';
+                sep += "<input type='hidden' name='url' value="+objLastImg[i].ruta+ ">"; 
                 sep += '<img src='+objLastImg[i].ruta+'>';
                 sep += '<input type="submit" name="eliminar" id="eliminar" value="Eliminar" >';
                

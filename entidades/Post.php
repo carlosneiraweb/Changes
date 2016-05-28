@@ -117,11 +117,11 @@ class Post extends DataObj{
  */
 public function insertArticulo(){
   
-        
+        $test;
         try{
         $con = Conne::connect();
         $con->beginTransaction();
-        
+         
             $sql = " INSERT INTO ".TBL_POST. "(
                    
                    idUsuario,
@@ -154,34 +154,22 @@ public function insertArticulo(){
             $st->bindValue(":precio", $this->data["precio"], PDO::PARAM_STR);
             $st->bindValue(":fechaPost", $date, PDO::PARAM_STR);
 
-            $result = $st->execute();
+            $test = $st->execute();
             
-            if($result){
-                //Si ha ido bien creamos el directorio donde el usuario
-                    //almacenara las imagenes de cada post 
-                    if(!is_dir("photos/".$this->data["idUsuario"])){
-                $result = Sistema::crearDirectorio("photos/".$this->data["idUsuario"]);
-                    }
+            if($test){
+                
                 //Creamos un subdirectorio para almacenar las imagenes 
                     //de cada post. Solo se crea la primera vez que se manda una
                     //una foto. 
                 if($_SESSION['contador'] === 0 ){
-                    echo 'creamos subdirectorio '.$_SESSION['contador'] == 0;'<br>';
+                   
                     $_SESSION['nuevoDirectorio'] = Sistema::crearSubdirectorio($this->data['idUsuario']);
+                    echo 'nuevoDirectorio en insertar articulo: '.$_SESSION['nuevoDirectorio'].'<br>';
                 }
                 
-                $result = Sistema::copiarFoto('photos/demo.jpg', $_SESSION['nuevoDirectorio'].'/demo.jpg');
+                
             }
-            
-        //Si hay algun tipo de error al subir la foto
-                //Redirigimos a la pagina de mostrar error
-                //Para que el usuario vuelva a intentarlo    
-            if(!$result){
-                mostrarError();
-                exit();
-            }
-            
-            
+
             $sql2 = "SELECT last_insert_id() FROM ".TBL_POST;
             $st2 = $con->prepare($sql2);
             $st2->execute();
@@ -226,7 +214,7 @@ public function insertArticulo(){
             }
            
             Conne::disconnect($con);
-            return $result;
+            return $test;
         }catch(Exception $ex){
             $con->rollBack();
             Conne::disconnect($con);
@@ -244,26 +232,25 @@ public function insertArticulo(){
  * y comntarios de cada imagen subida
  */
 public function insertarFotos(){
-         
-          $_SESSION['contador'] = $_SESSION['contador'] + 1;
           
     try{
         $con = Conne::connect();
         
-        $sql = "INSERT INTO ".TBL_IMAGENES." VALUES(:post_idPost, :idImagen, :ruta, :texto)";
+        $sql = "INSERT INTO ".TBL_IMAGENES." (post_idPost, ruta, texto) VALUES ( :post_idPost, :ruta, :texto)";
         //echo 'Sql insertArticulo: '.$sql.'<br>';
         $st = $con->prepare($sql);
        
         $st->bindValue(":post_idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
-        $st->bindValue(":idImagen", $this->data['idImagen'], PDO::PARAM_INT);
-        $st->bindValue(":ruta",$_SESSION['nuevoDirectorio'].'/'.$this->data['idImagen'].'.jpg' , PDO::PARAM_STR);
+        $st->bindValue(":ruta","photos/".$_SESSION['nuevoDirectorio'].'/'.$_SESSION['nombreImagen'], PDO::PARAM_STR);
         $st->bindValue(":texto", $this->data['figcaption'], PDO::PARAM_STR);
         
-        $total = $st->execute();
+        $test = $st->execute();
+        return $test;
         
         Conne::disconnect($con);
     } catch (Exception $ex) {
         Conne::disconnect($con);
+        $_SESSION['error'] = ERROR_INSERTAR_FOTO;
         echo 'El error se produce en la línea: '.$ex->getLine().'<br>';
         die("Query failed: ".$ex->getMessage());
     }
@@ -273,35 +260,38 @@ public function insertarFotos(){
 
 /***
  * Metodo que elimina una imagen 
- * y cometario que el usuario quiera
+ * y cometario de la bbdd y del sistema
+ * que el usuario quiera
  */
 
 function eliminarImg(){
     
      try{
         $con = Conne::connect();
-        
-        $sql = "DELETE FROM ".TBL_IMAGENES." WHERE (post_idPost = :post_idPost  AND  idImagen = :idImagen)";
+       
+        $sql = "DELETE FROM ".TBL_IMAGENES." WHERE (ruta = :url)";
         //echo 'Sql insertArticulo: '.$sql.'<br>';
         $st = $con->prepare($sql);
        
-        $st->bindValue(":post_idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
-        $st->bindValue(":idImagen", $_SESSION['idImg'], PDO::PARAM_INT);
-       
-        $total = $st->execute();
-        
-        return $total
-                ;
+        $st->bindValue(":url", $_SESSION['url'], PDO::PARAM_INT);
+
+        $test = $st->execute();
+        //En caso de ser todo correcto eliminamos la imagen 
+        //del sistema y restamos 1 al contador de imagenes
+        if($test){
+            $test = Sistema::eliminarImagen($_SESSION['url']);
+            $_SESSION['contador'] = $_SESSION['contador'] - 1;
+        }
+
+        return $test;
+                
         Conne::disconnect($con);
     } catch (Exception $ex) {
         Conne::disconnect($con);
+        $_SESSION['error'] = ERROR_ELIMINAR_FOTO;
         echo 'El error se produce en la línea: '.$ex->getLine().'<br>';
         die("Query failed: ".$ex->getMessage());
-    }
-    
-    
-    
-    
+    }  
 //fin eliminarImg    
 }
 

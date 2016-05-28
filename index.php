@@ -125,7 +125,7 @@ function processForm(){
   
     $user = new Usuarios(
             array(
-                "nick" => isset($_POST["nick"]) ? preg_replace("/[^\-\_a-zAZ0-9]/", "", $_POST["nick"]) : "",
+                "nick" => isset($_POST["nick"]) ? preg_replace("/[^\-\_a-zAZ0-9. ,'``'´áéíóúäëïöü]/", "", $_POST["nick"]) : "",
                 "password" => isset($_POST["password"]) ? preg_replace("/[^\-\_a-zAZ0-9]/", "", $_POST["password"]) : "",          
   
             )

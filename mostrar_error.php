@@ -27,7 +27,10 @@ session_start();
       <section id="mensaje_error">
       <h2>Ohh! Hemos tenido un problema.</h2>
       <?php 
+       //Mostramos el rror que se ha producido 
+       //y reseteamos la variable
         echo "<h3>".$_SESSION['error']."</h3>";
+        $_SESSION['error'] = null;
       ?>
       <h3>Puedes volver a intentarlo</h3>
       <input type="button" id="volver_intentar" value="Aceptar"/>

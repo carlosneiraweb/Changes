@@ -60,7 +60,8 @@ function volverAnterior(){
     
    
     echo'<div id="ocultar" class = "mostrar_transparencia"></div>';
-
+    //Si no se ha recivido el step
+    //Se muestra por primera vez el formulario
     if(!isset($_POST['step'])){
         displayStep1(array());
     }
@@ -84,6 +85,9 @@ function volverAnterior(){
     } elseif(isset($_POST['cuarto']) and $_POST['cuarto'] == "Aceptar"){
         $requiredFields = array();
         processForm($requiredFields, "step4");
+        /*Todo ha ido bien y
+        Confirmamos el registro,
+        nos redirige  a la pagina que estabamos*/
     } elseif(isset($_POST['volvemos']) and $_POST['volvemos'] == "Aceptar"){
         volverAnterior();
     }
@@ -114,7 +118,8 @@ function displayStep1($missingFields){
             echo "</form>";
           
         echo'</fieldset>'; 
-        
+    //En caso de error 
+        //se muestra en el formulario
     if($mensaje){
             echo $mensaje;
         }        
@@ -153,6 +158,8 @@ function displayStep2($missingFields){
                     echo"</div>";
                     
             echo "</form>";
+         //En caso de error 
+        //se muestra en el formulario
          if($mensaje){
             echo $mensaje;
         }    
@@ -204,7 +211,8 @@ function displayStep3($missingFields){
             echo "</form>";
           
         echo'</fieldset>';
-        
+     //En caso de error 
+        //se muestra en el formulario   
     if($mensaje){
             echo $mensaje;
         }       
@@ -235,6 +243,8 @@ function displayStep4($missingFields){
             echo "</form>";
          
         echo'</fieldset>';  
+     //En caso de error 
+        //se muestra en el formulario    
     if($mensaje){
             echo $mensaje;
         }       
@@ -413,7 +423,9 @@ function processForm($requiredFields, $st){
                             $foto = $_FILES['photo']['tmp_name'];
                             //Creamos dos directorios en el sistema
                             //El primero donde almacenamos la foto de su perfil, en el futuro guardaremos mas cosas
-                           
+                           //Si ha ido bien creamos el directorio donde el usuario
+                            $test = Sistema::crearDirectorio("photos/".$_SESSION['usuario']['nick']);
+                            $test = Sistema::copiarFoto('photos/demo.jpg',"photos/".$_SESSION['usuario']['nick'].'/demo.jpg');
                             $test = Sistema::crearDirectorio("datos_usuario/".$_SESSION['usuario']['nick']);
                             $test = Sistema::moverImagen($foto, $destino);
                             $test = Sistema::renombrarFoto($destino, $_SESSION['usuario']['nick']);  
@@ -434,8 +446,8 @@ function processForm($requiredFields, $st){
                 //Redirigimos a la pagina de mostrar error
                 //Para que el usuario vuelva a intentarlo
                 if(!$test){
-                    mostrarError();
-                    exit();
+                    //mostrarError();
+                   // exit();
                 }
             return $test;
    

@@ -15,37 +15,45 @@ class Sistema {
          */
         
         final static function validarFoto($foto){
+           
             $test = true;
             if(isset($_FILES[$foto]) and $_FILES[$foto]['error'] == UPLOAD_ERR_OK){
-          
+               
                 if($_FILES[$foto]['type'] != 'image/jpeg'){
+                    $_SESSION['error'] = ERROR_FORMATO_FOTO;
                     $test = false;
-                    $_SESSION['error'] = FORMATO_FOTO;
+                    
                 }
-
+               
             }else{
+                
                 switch ($_FILES[$foto]['error']){
-                    case UPLOAD_ERR_INI_SIZE:
+                    case 1:
+                        $_SESSION['error'] = ERROR_TAMAÑO_FOTO;
                         $test = false;
-                        $_SESSION['error'] = TAMAÑO_FOTO;
+                        
                             break;
                     case UPLOAD_ERR_FORM_SIZE:
+                        $_SESSION['error'] = ERROR_TAMAÑO_FOTO;
                         $test = false;
-                        $_SESSION['error'] = TAMAÑO_FOTO;
+                        
                             break;
                     case UPLOAD_ERR_NO_FILE:
+                        $_SESSION['error'] = ERROR_FOTO_NO_ELIGIDA;
                         $test = false;
-                        $_SESSION['error'] = FOTO_NO_ELIGIDA;
+                        
                             break;
                     default:
+                        $_SESSION['error'] = ERROR_FOTO_GENERAL;
                         $test = false;
-                        $_SESSION['error'] = FOTO_NO_ELIGIDA;
+                        
                 }
                
             }
-            //echo 'Valido foro dice: '.$test.'<br>';
+           echo 'validar foto dice: '.$test.'<br>';
+                   
             return $test;
-     
+           
         //fin validar foto    
         }
     
@@ -57,13 +65,16 @@ class Sistema {
         final static  function moverImagen($nombreFoto, $nuevoDirectorio){
             $test;
             //echo 'nombre: '.$nombreFoto.'<br>';
-            //echo 'nuevodirectorio: '.$nuevoDirectorio.'<br>';
+            echo 'nuevodirectorio: '.$nuevoDirectorio.'<br>';
          try{
              $test = move_uploaded_file($nombreFoto, $nuevoDirectorio);
+              return $test;  
          } catch (Exception $ex) {
+             $_SESSION['error'] = ERROR_FOTO_GENERAL;
              echo $ex->getCode();
+              return $test;  
          }
-            return $test;  
+           
         //fin mover imagen    
         }
         
@@ -75,14 +86,19 @@ class Sistema {
          * @param type $ruta
          */
         final static function crearDirectorio($ruta){
+          $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
            //echo 'Soy llamado con ruta'.$ruta.'<br>';
-         $test;
+         $test = true;
          try{
+           
             $test = mkdir($ruta);
+            return $test;
+            
          }catch(Exception $ex){
             echo $ex->getMessage();
+            return $test;
          }
-         return $test;
+         
             }
         
          /**
@@ -114,11 +130,13 @@ class Sistema {
             }else{
                 $nuevo= $count+1;
                 mkdir('photos/'.$usuario.'/'.$nuevo); 
-                $nuevoDirectorio = 'photos/'.$usuario.'/'.$nuevo;
+                $nuevoDirectorio = $usuario.'/'.$nuevo;
             }
             //echo 'Nuevo Subdirectorio creado: '.$nuevoDirectorio.'<br>';
+            
             return $nuevoDirectorio; 
         }catch(Exception $ex){
+            $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
                 echo $ex->getMessage();
         }
         //fin crearSubdirectorio
@@ -134,15 +152,17 @@ class Sistema {
         static function copiarFoto($imagen, $nuevaImagen){
             $test;
             try{
-               //echo 'image: '.$imagen.'<br>';
-               //echo 'nueva: '.$nuevaImagen.'<br>';
+               echo 'image: '.$imagen.'<br>';
+               echo 'nueva: '.$nuevaImagen.'<br>';
                $test =  copy($imagen, $nuevaImagen);
-                
+                return $test; 
             } catch (Exception $ex) {
+                $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
                 echo $ex->getMessage();
+                return $test; 
             }
             
-        return $test;   
+          
         //fin copiarFoto    
         }
             
@@ -166,6 +186,7 @@ class Sistema {
                 
              return $nuevoNombre;
             } catch (Exception $ex) {
+                $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
                 $ex->getMessage();
             }
            
@@ -197,5 +218,26 @@ class Sistema {
         
     //fin contarArchivos    
     }
+    
+    
+    /**
+     * Metodo que elimina una imagen
+     * recive como parametro la ruta
+     */ 
+static function eliminarImagen($ruta){
+    $test = true;
+    
+    try{
+        
+        $test = unlink($ruta);
+        return $test;
+    } catch (Exception $ex) {
+        $_SESSION['error'] = ERROR_ELIMINAR_FOTO;
+        echo $ex->getMessage();
+        return $test;
+    }
+    
+//fin eliminar imagen    
+}
 //fin sistema    
 }
