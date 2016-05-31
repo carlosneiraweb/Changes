@@ -63,9 +63,9 @@ class Post extends DataObj{
             $stm->bindValue(":fechaPost", $date, PDO::PARAM_STR);
             $stm->bindValue(":idPost", $_SESSION['lastId'][0] , PDO::PARAM_INT);
             
-            $result = $stm->execute();
+            $test = $stm->execute();
     
-                if($result){
+                if($test){
                     
                      //Creamos un array con las palabras buscadas
                     $buscadas = $this->getValue("Pa_queridas");
@@ -78,7 +78,7 @@ class Post extends DataObj{
                             $stm = $con->prepare($stm);
                             $stm->bindValue(":idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
                             $stm->bindValue(":palabra", $val, PDO::PARAM_STR);
-                            $stm->execute();
+                            $test = $stm->execute();
             
                         }
                     }
@@ -94,12 +94,12 @@ class Post extends DataObj{
                             $stm = $con->prepare($stm);
                             $stm->bindValue(":idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
                             $stm->bindValue(":palabra", $val, PDO::PARAM_STR);
-                            $stm->execute();
+                            $test = $stm->execute();
             
                         }
                     }
                 }
-                
+        return $test;        
         Conne::disconnect($con);       
     }catch(Exception $ex){
         Conne::disconnect($con);
@@ -155,21 +155,7 @@ public function insertArticulo(){
             $st->bindValue(":fechaPost", $date, PDO::PARAM_STR);
 
             $test = $st->execute();
-            
-            if($test){
-                
-                //Creamos un subdirectorio para almacenar las imagenes 
-                    //de cada post. Solo se crea la primera vez que se manda una
-                    //una foto. 
-                if($_SESSION['contador'] === 0 ){
-                   
-                    $_SESSION['nuevoDirectorio'] = Sistema::crearSubdirectorio($this->data['idUsuario']);
-                    echo 'nuevoDirectorio en insertar articulo: '.$_SESSION['nuevoDirectorio'].'<br>';
-                }
-                
-                
-            }
-
+      
             $sql2 = "SELECT last_insert_id() FROM ".TBL_POST;
             $st2 = $con->prepare($sql2);
             $st2->execute();
@@ -239,9 +225,12 @@ public function insertarFotos(){
         $sql = "INSERT INTO ".TBL_IMAGENES." (post_idPost, ruta, texto) VALUES ( :post_idPost, :ruta, :texto)";
         //echo 'Sql insertArticulo: '.$sql.'<br>';
         $st = $con->prepare($sql);
-       
+        //Nos quedamos con la parte imprescindible de la ruta de la imagen
+        //Para ocupar menos espacio en la tabla de la bbdd
+        $tmp = strstr($_SESSION['nombreImagen'],'/',false);
+        $tmp = strstr($tmp,'.',true);
         $st->bindValue(":post_idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
-        $st->bindValue(":ruta","photos/".$_SESSION['nuevoDirectorio'].'/'.$_SESSION['nombreImagen'], PDO::PARAM_STR);
+        $st->bindValue(":ruta",$tmp, PDO::PARAM_STR);
         $st->bindValue(":texto", $this->data['figcaption'], PDO::PARAM_STR);
         
         $test = $st->execute();
@@ -250,6 +239,7 @@ public function insertarFotos(){
         Conne::disconnect($con);
     } catch (Exception $ex) {
         Conne::disconnect($con);
+        echo 'codigo: '.$ex->getCode().'<br>';
         $_SESSION['error'] = ERROR_INSERTAR_FOTO;
         echo 'El error se produce en la línea: '.$ex->getLine().'<br>';
         die("Query failed: ".$ex->getMessage());
@@ -269,18 +259,25 @@ function eliminarImg(){
      try{
         $con = Conne::connect();
        
-        $sql = "DELETE FROM ".TBL_IMAGENES." WHERE (ruta = :url)";
-        //echo 'Sql insertArticulo: '.$sql.'<br>';
+        $sql = "DELETE FROM ".TBL_IMAGENES." WHERE post_idPost = :post_idPost and ruta = :url";
+        //echo 'Sql eliminarImagen: '.$sql.'<br>';
         $st = $con->prepare($sql);
-       
-        $st->bindValue(":url", $_SESSION['url'], PDO::PARAM_INT);
+        $st->bindValue(":post_idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
+        $st->bindValue(":url", $_SESSION['urlEliminar'], PDO::PARAM_STR);
 
         $test = $st->execute();
         //En caso de ser todo correcto eliminamos la imagen 
         //del sistema y restamos 1 al contador de imagenes
         if($test){
-            $test = Sistema::eliminarImagen($_SESSION['url']);
-            $_SESSION['contador'] = $_SESSION['contador'] - 1;
+            $nombreImagenEliminar = $_SESSION['nuevoSubdirectorio'].'/'.substr($_SESSION['urlEliminar'], -1);
+            $test = Sistema::eliminarImagen($nombreImagenEliminar.'.jpg');
+            if($test){$_SESSION['contador'] = $_SESSION['contador'] - 1;}
+            //Si el contador vuelve a 0, volvemos a copiar la foto demo
+            //Evitamos que en cada momento el que el usuario no ingrese ninguna imagen
+            if(isset($_SESSION['contador']) and $_SESSION['contador'] == 0){
+            $test = Sistema::copiarFoto("photos/demo.jpg",$_SESSION['nuevoSubdirectorio']."/demo.jpg");
+            }
+           
         }
 
         return $test;

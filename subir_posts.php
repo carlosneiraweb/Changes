@@ -1,8 +1,9 @@
 <?php 
 require_once ('entidades/Post.php');
-require_once 'entidades/Usuarios.php';
+require_once ('entidades/Usuarios.php');
 require_once ('entidades/DataObj.php');
-
+require_once('validar/ValidoForm.php');
+require_once('Sistema/Directorios.php');
 session_start();
 //Iniciamos la variable de session contador a 0
 //Iremos incrementando el numero de fotos subidas
@@ -20,7 +21,15 @@ function volverAnterior(){
     header('Location:'. $_SESSION["url"]);
 }
 
+/**
+ * Metodo que nos redirige a la pagina de mostrar error
+ */
+function mostrarError(){
+    header('Location: mostrar_error.php');
+}
 
+global $articulo;
+$articulo = new Post(array());
 ?>
 <!DOCTYPE html>
 <!--
@@ -50,9 +59,6 @@ function volverAnterior(){
         
         
         <?php
-        
-        require_once('validar/ValidoForm.php');
-        require_once('Sistema/Directorios.php');
  
         echo'<header>';
 	echo'<figure id="logo" class="fade">';
@@ -70,7 +76,8 @@ function volverAnterior(){
     
    
     echo'<div id="ocultar" class = "mostrar_transparencia"></div>';
-        
+    //Si no se ha recivido el step
+    //se muestra el formulario por primera vez
     if(!isset($_POST['step'])){
         displayStep1(array());
     }
@@ -91,15 +98,15 @@ function volverAnterior(){
     } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Fin"){
         //El usuario ha terminado de ingresar los datos del post
         //Le redirigimos a cualqier url que estubiera
-        //Destruimos la sesion atras y ponemos contador a 0
+        //Destruimos la sesion atras y la sesion contador
         unset($_SESSION['atras']);
-        $_SESSION['contador'] = 0;
+        unset($_SESSION['contador']);
         volverAnterior();
-    } elseif(isset($_POST['eliminar']) && isset($_POST['url'])){
+    } elseif(isset($_POST['eliminar']) && isset($_POST['urlBorrar'])){
         //El usuario quiere eliminar una imagen que ha subido
-        $_SESSION['url'] = $_POST['url'];
+        $_SESSION['urlEliminar'] = $_POST['urlBorrar'];
         eliminarImagen();
-        
+        displayStep2(array());
     }
 
     function displayStep1($missingFields){
@@ -115,7 +122,7 @@ function volverAnterior(){
         
     echo'<label '.ValidoForm::validateField("titulo", $missingFields).' for="titulo">Introduce un titulo para el artículo:</label> <span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     
-    echo'<input type="text" maxlength="15" name="titulo" id="titulo" autofocus placeholder="Pon un titulo al artículo"  value=';if(isset($_SESSION['post']['titulo'])){echo $_SESSION['post']['titulo'];} echo ">";  
+    echo'<input type="text" maxlength="30" name="titulo" id="titulo" autofocus placeholder="Pon un titulo al artículo"  value=';if(isset($_SESSION['post']['titulo'])){echo $_SESSION['post']['titulo'];} echo ">";  
     echo '<label>Quedan: <span></span></label>';
     echo'<label for="seccion">Seccion:</label> <span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
  
@@ -179,7 +186,7 @@ function displayStep2($missingFields){
     
     //Aqui recuperamos el id del post en el que estamos
     //Se lo pasamos a javascript para que nos muestre 
-    //todas las fotos que vamos subiendo
+    //todas las fotos que vamos subiendo via JSON
     if(isset($_SESSION['lastId'])){
         $idPost = $_SESSION['lastId'][0];
             echo '<script type="text/javascript">';
@@ -282,28 +289,7 @@ function ingresarPost(){
 //fin ingresarPost    
 }
 
-/**
- * Metodo que elimina una imagen
- * @global Post $articulo
- */
-function eliminarImagen(){
-    global $articulo;
-    $result;
-    
-    $result = $articulo->eliminarImg();
-   
-    //Si ha habido algun error, nos redirige a la pagina que muestra un error
-    //Sino, continuamos en el formulario
-    if(!$result){
-        mostrarError();
-        exit();
-    }else{
-        displayStep2(array());
-    }
-    
-    
-//fin eliminar imagen   
-}
+
 /**
  * Este metodo ingresa en la tabla de imagenes
  * las imagenes que tiene cada post
@@ -329,6 +315,26 @@ function ingresarImagenes(){
     
 //fin ingresarImagenes    
 }
+
+/**
+ * Metodo que elimina una imagen
+ * @global Post $articulo
+ */
+function eliminarImagen(){
+    global $articulo;
+    
+    $result;
+    $result = $articulo->eliminarImg();
+    
+    //Si ha habido algun error, nos redirige a la pagina que muestra un error
+    //Sino, continuamos en el formulario
+    if(!$result){
+        mostrarError();
+        exit();
+    }
+//    
+//fin eliminar imagen   
+}
 function processForm($requiredFields, $st){
     //Array para almacenar los campos no rellenados y obligatorios
         global $missingFields;
@@ -341,14 +347,14 @@ function processForm($requiredFields, $st){
                 $_SESSION['post']['titulo'] = isset($_POST["titulo"]) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´ áéíóúäëïöü]/", "", $_POST["titulo"]) : "";       
                 $_SESSION['post']['comentario'] = isset($_POST['comentario']) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´ áéíóúäëïöü]/", "", $_POST["comentario"]) : "";
                 $_SESSION['post']['precio'] = isset($_POST['precio']) ? preg_replace("/[^\-\_a-zAZ0-9., €$]/", "", $_POST["precio"]) : "";
-                $_SESSION['post']['Pa_queridas'][0] = isset($_POST["querida_1"]) ? preg_replace("/[^\-\_a-zAZ0-9. ,'``'´áéíóúäëïöü]/", "", $_POST["querida_1"]) : "";
-                $_SESSION['post']['Pa_queridas'][1] = isset($_POST["querida_2"]) ? preg_replace("/[^\-\_a-zAZ0-9. ,`'´áéíóúäëïöü]/", "", $_POST["querida_2"]) : "";
-                $_SESSION['post']['Pa_queridas'][2] = isset($_POST["querida_3"]) ? preg_replace("/[^\-\_a-zAZ0-9. ,`'´áéíóúäëïöü]/", "", $_POST["querida_3"]) : "";
-                $_SESSION['post']['Pa_queridas'][3] = isset($_POST["querida_4"]) ? preg_replace("/[^\-\_a-zAZ0-9. ,`'´áéíóúäëïöü]/", "", $_POST["querida_4"]) : "";
-                $_SESSION['post']['Pa_ofrecidas'][0] = isset($_POST["ofrecida_1"]) ? preg_replace("/[^\-\_a-zAZ0-9. ,`'´áéíóúäëïöü]/", "", $_POST["ofrecida_1"]) : "";
-                $_SESSION['post']['Pa_ofrecidas'][1] = isset($_POST["ofrecida_2"]) ? preg_replace("/[^\-\_a-zAZ0-9. ,`'´áéíóúäëïöü]/", "", $_POST["ofrecida_2"]) : "";
-                $_SESSION['post']['Pa_ofrecidas'][2] = isset($_POST["ofrecida_3"]) ? preg_replace("/[^\-\_a-zAZ0-9. ,`'´áéíóúäëïöü]/", "", $_POST["ofrecida_3"]) : "";
-                $_SESSION['post']['Pa_ofrecidas'][3] = isset($_POST["ofrecida_4"]) ? preg_replace("/[^\-\_a-zAZ0-9. ,`'´áéíóúäëïöü]/", "", $_POST["ofrecida_4"]) : "";
+                $_SESSION['post']['Pa_queridas'][0] = isset($_POST["querida_1"]) ? preg_replace("/[^\-\_a-zAZ0-9., '``'´áéíóúäëïöü]/", "", $_POST["querida_1"]) : "";
+                $_SESSION['post']['Pa_queridas'][1] = isset($_POST["querida_2"]) ? preg_replace("/[^\-\_a-zAZ0-9., `'´áéíóúäëïöü]/", "", $_POST["querida_2"]) : "";
+                $_SESSION['post']['Pa_queridas'][2] = isset($_POST["querida_3"]) ? preg_replace("/[^\-\_a-zAZ0-9., `'´áéíóúäëïöü]/", "", $_POST["querida_3"]) : "";
+                $_SESSION['post']['Pa_queridas'][3] = isset($_POST["querida_4"]) ? preg_replace("/[^\-\_a-zAZ0-9., `'´áéíóúäëïöü]/", "", $_POST["querida_4"]) : "";
+                $_SESSION['post']['Pa_ofrecidas'][0] = isset($_POST["ofrecida_1"]) ? preg_replace("/[^\-\_a-zAZ0-9., `'´áéíóúäëïöü]/", "", $_POST["ofrecida_1"]) : "";
+                $_SESSION['post']['Pa_ofrecidas'][1] = isset($_POST["ofrecida_2"]) ? preg_replace("/[^\-\_a-zAZ0-9., `'´áéíóúäëïöü]/", "", $_POST["ofrecida_2"]) : "";
+                $_SESSION['post']['Pa_ofrecidas'][2] = isset($_POST["ofrecida_3"]) ? preg_replace("/[^\-\_a-zAZ0-9., `'´áéíóúäëïöü]/", "", $_POST["ofrecida_3"]) : "";
+                $_SESSION['post']['Pa_ofrecidas'][3] = isset($_POST["ofrecida_4"]) ? preg_replace("/[^\-\_a-zAZ0-9., `'´áéíóúäëïöü]/", "", $_POST["ofrecida_4"]) : "";
                 
                 break;
             
@@ -373,13 +379,6 @@ function processForm($requiredFields, $st){
      * @return boolean
      */
     
-/**
- * Metodo que nos redirige a la pagina de mostrar error
- */
-function mostrarError(){
-    echo 'estoy en mostrar error<br>';
-    header('Location: mostrar_error.php');
-}
 
 
 function validarCampos($st){
@@ -389,29 +388,47 @@ function validarCampos($st){
     switch ($st){
             
         case("step1"):
-            
+                        
+                //Creamos un subdirectorio para almacenar las imagenes 
+                //IMPORTANTE CONOCER EL CONTENIDO DE 'nuevoSubdirectorio' 
+                //Es la usada para mover, copiar, eliminar he ingresar en la bbdd
+                //Su contenido es del tipo photos/nombreUsuario/totalSubdirectorios
+                
+                //Agregamos una foto demo por si el usuario no quiere subir
+                //ninguna imagen
+                //Esto solo se hace la primera vez y se evita crearlo otra vez si el usuario 
+                // vuelve atras en el formulario
+                if($_SESSION['contador'] == 0 and !isset($_SESSION['atras'])){
+                    
+                    $_SESSION['nuevoSubdirectorio'] = Sistema::crearSubdirectorio("photos/".$_SESSION['user']->getValue('nick'));
+                    $test = Sistema::copiarFoto("photos/demo.jpg",$_SESSION['nuevoSubdirectorio']."/demo.jpg");
+                    echo 'Creamos nuevoSubdiretorio en antes de mandar a insertar articulo: '.$_SESSION['nuevoSubdirectorio'].'<br>';
+                    return $test;
+                }
             break;
                  
     case('step2'):
         
         $test = false;
-        
+       
+                
         if(isset($_FILES['photoArticulo']['tmp_name']) and $_FILES['photoArticulo']['tmp_name'] != null){
             
             if(Sistema::validarFoto('photoArticulo')){
-                echo 'entro<br>';
+               
                 //eliminamos la foto que subimos de demo
-                if(is_file($_SESSION['nuevoDirectorio'].'/demo.jpg')){
-            $test = unlink($_SESSION['nuevoDirectorio'].'/demo.jpg');  
+                 echo 'en unlik eliminar foto demo ruta es: '.$_SESSION['nuevoSubdirectorio'].'/demo.jpg'.'<br>';                            
+                if(is_file($_SESSION['nuevoSubdirectorio'].'/demo.jpg')){
+            $test = unlink($_SESSION['nuevoSubdirectorio'].'/demo.jpg');  
                 }
-                //Insertamos las fotos en el directorio del usuario
-                //y en su subdirectorio propio
-            echo 'el nuevo directorio: '.$_SESSION['nuevoDirectorio'].'<br>';
-            $_SESSION['nombreImagen']= $_FILES['photoArticulo']['name'];
-            $destino = "photos/".$_SESSION['nuevoDirectorio'].'/'.basename($_FILES['photoArticulo']['name']);                   
+               
+                    
+            $destino = $_SESSION['nuevoSubdirectorio'].'/'.basename($_FILES['photoArticulo']['name']);                   
             $foto = $_FILES['photoArticulo']['tmp_name'];
             $test = Sistema::moverImagen($foto, $destino);
-   
+            //mandamos cambiar el nombre de la imagen
+            if($test){ $_SESSION['nombreImagen'] = Sistema::renombrarFoto($destino, null);}
+            
             }else{
                
                 //Si hay algun tipo de error al subir la foto
@@ -423,7 +440,7 @@ function validarCampos($st){
         } 
     }
     
-       echo 'al final validar: '.$test."<br>";
+       
        return $test;
 //fin de validarCampos   
 }
@@ -450,7 +467,7 @@ function validarCampos($st){
             if($missingFields || !validarCampos($st)){
                 displayStep2($missingFields);
             } else {
-                //ingresarImagenes();
+                ingresarImagenes();
                 displayStep2(array());
             }
             

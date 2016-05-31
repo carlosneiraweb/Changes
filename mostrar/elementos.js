@@ -171,8 +171,9 @@ function cargarUltimaImagen(objLastImg){
         for (var i= 0 ; i < objLastImg.length; i++){
             
                 sep += '<form action="subir_posts.php" method="POST" id='+(i+1)+' class="form_mini" >';
-                sep += "<input type='hidden' name='url' value="+objLastImg[i].ruta+ ">"; 
-                sep += '<img src='+objLastImg[i].ruta+'>';
+                sep += "<input type='hidden' name='step' value='4'>";
+                sep += "<input type='hidden' name='urlBorrar' value="+objLastImg[i].ruta+ ">"; 
+                sep += '<img src="photos'+objLastImg[i].ruta+'.jpg">';
                 sep += '<input type="submit" name="eliminar" id="eliminar" value="Eliminar" >';
                
             }

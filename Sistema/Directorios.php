@@ -49,9 +49,7 @@ class Sistema {
                         
                 }
                
-            }
-           echo 'validar foto dice: '.$test.'<br>';
-                   
+            }        
             return $test;
            
         //fin validar foto    
@@ -63,9 +61,9 @@ class Sistema {
          * definitivo.
          */
         final static  function moverImagen($nombreFoto, $nuevoDirectorio){
-            $test;
-            //echo 'nombre: '.$nombreFoto.'<br>';
-            echo 'nuevodirectorio: '.$nuevoDirectorio.'<br>';
+            $test = null;
+            echo 'moverImagen nombre foto: '.$nombreFoto.'<br>';
+            echo 'moverImagen nuevoDirectorio al que mover: '.$nuevoDirectorio.'<br>';
          try{
              $test = move_uploaded_file($nombreFoto, $nuevoDirectorio);
               return $test;  
@@ -86,20 +84,25 @@ class Sistema {
          * @param type $ruta
          */
         final static function crearDirectorio($ruta){
-          $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-           //echo 'Soy llamado con ruta'.$ruta.'<br>';
          $test = true;
          try{
-           
-            $test = mkdir($ruta);
-            return $test;
-            
+             //Comprobamos que los directorios ya no existan
+            if (file_exists($ruta)) {
+               $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
+               $test = false;
+               return $test;
+            }  else {
+               $test = mkdir($ruta);
+               return $test;
+            }
          }catch(Exception $ex){
+            $test = false;
             echo $ex->getMessage();
             return $test;
          }
-         
-            }
+
+        //fin de crear directorio 
+        }
         
          /**
           * Metodo que cuenta el numero de directorios
@@ -109,31 +112,32 @@ class Sistema {
           */
             
         static function crearSubdirectorio($usuario){
-            
+          
         try{
-            $dir = 'photos/'.$usuario;
+            echo 'en crear subdirectorio la ruta recivida es: '.$usuario.'<br>';
+            $dir = $usuario;
             $count = 0;
             $nuevoDirectorio;
             if(!($handle = opendir($dir))) die("Cannot open $dir.");
              
                 while($file = readdir($handle)){
                     if($file != "." && $file != ".."){
-                        if(is_dir('photos/'.$usuario.'/'.$file)){
+                        if(is_dir($usuario.'/'.$file)){
                             $count++;
                         }
                     }
                 }
             
             if($count === 0){
-                mkdir('photos/'.$usuario.'/1');
-                $nuevoDirectorio = 'photos/'.$usuario.'/1';
+                mkdir($usuario.'/1');
+                $nuevoDirectorio = $usuario.'/1';
             }else{
                 $nuevo= $count+1;
-                mkdir('photos/'.$usuario.'/'.$nuevo); 
+                mkdir($usuario.'/'.$nuevo); 
                 $nuevoDirectorio = $usuario.'/'.$nuevo;
             }
-            //echo 'Nuevo Subdirectorio creado: '.$nuevoDirectorio.'<br>';
-            
+            echo 'Nuevo Subdirectorio creado en el metodo crearsubdirectorio: '.$nuevoDirectorio.'<br>';
+            //el nuevo subidrectorio creado siempre es: usuario/total directorio => admin/1
             return $nuevoDirectorio; 
         }catch(Exception $ex){
             $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
@@ -152,12 +156,13 @@ class Sistema {
         static function copiarFoto($imagen, $nuevaImagen){
             $test;
             try{
-               echo 'image: '.$imagen.'<br>';
-               echo 'nueva: '.$nuevaImagen.'<br>';
+               echo 'imagen a copiar: '.$imagen.'<br>';
+               echo 'imagen copiada: '.$nuevaImagen.'<br>';
                $test =  copy($imagen, $nuevaImagen);
+               echo 'en copiar foto dice: '.$test.'<br>';
                 return $test; 
             } catch (Exception $ex) {
-                $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
+                $_SESSION['error'] = ERROR_INSERTAR_FOTO;
                 echo $ex->getMessage();
                 return $test; 
             }
@@ -173,25 +178,36 @@ class Sistema {
          */
         final static function renombrarFoto($nombreViejo, $nombreNuevo){
             
-            //echo 'nombre viejo '.$nombreViejo.'<br>';
-            //echo 'nombre Nuevo '.$nombreNuevo.'<br>';
+                    echo 'en renombrar: nombreViejo: '.$nombreViejo.'<br>';
+                    echo 'en renombrar nombreNuevo: '.$nombreNuevo.'<br>';
+            //Si el nombreNuevo es null este metodo es llamado 
+            //desde subir_post. Lo que hacemos es cambiarle el nombre
+            //de la imagen del usuario de modo que no tengamos problemas
+            //ni por duplicados al insertar ni acentos o signos raros en el nombre de las imagenes
+            if($nombreNuevo == null){
+                //Renombramos las imagenes por el numero de imagenes en su subdirectorio
+                $_SESSION['nombreNuevo']  = Sistema::contarArchivos($_SESSION['nuevoSubdirectorio']);
+            }else{
+                //En caso de que no sea null se le asigna el nombre pasado
+                $_SESSION['nombreNuevo'] = $nombreNuevo;
+            }
+           
             try{
                if($nombreViejo){
                    $original = basename($nombreViejo);
                    $tmp = strstr($nombreViejo, $original, true);//OJO
-                   $nuevoNombre = $tmp.$nombreNuevo.'.jpg';
+                   $nuevoNombre = $tmp.$_SESSION['nombreNuevo'].'.jpg';
                    rename($nombreViejo, $nuevoNombre);
                    
                }
-                
+             
              return $nuevoNombre;
             } catch (Exception $ex) {
                 $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
                 $ex->getMessage();
             }
-           
-            
-        //fin renombrarFotoPerfilUsuario
+
+        //fin renombrarImagenes
         }
     
     /**
@@ -201,6 +217,7 @@ class Sistema {
     static function contarArchivos($ruta){
         
         $count = 0;
+        echo 'La ruta al contar archivos es: '.$ruta.'<br>';
         $dir =  $ruta;
     
     if(!($handle = opendir($dir))) die("Cannot open $dir.");
