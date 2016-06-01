@@ -33,7 +33,7 @@ function volverAnterior(){
    <body id="cuerpo">
        
         <?php
-             
+    
         require_once('entidades/Usuarios.php');
         require_once('entidades/DataObj.php');
         require_once('validar/ValidoForm.php');
@@ -60,7 +60,7 @@ function volverAnterior(){
     echo'</header>';
     
    
-    echo'<div id="ocultar" class = "mostrar_transparencia"></div>';
+    
     //Si no se ha recivido el step
     //Se muestra por primera vez el formulario
     if(!isset($_POST['step'])){
@@ -113,8 +113,9 @@ function displayStep1($missingFields){
     echo'<label '.ValidoForm::validateField("email", $missingFields).' for="email">Email:</label> <span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="text" name="email" id="email" placeholder="info@developerji.com" value=';if(isset($_SESSION['usuario']['email'])){echo $_SESSION['usuario']['email'];} echo ">";
     
-    
+    echo '<section id="btns_registrar">';
                 echo"<input type='submit' name='primero' id='primero'  value='Next &gt;' >";
+    echo '</section>';
                     
             echo "</form>";
           
@@ -153,10 +154,10 @@ function displayStep2($missingFields){
 	
                 echo'<br>';        
     
-    echo"<div style='clear: both';>";
+    echo '<section id="btns_registrar">';
                         echo"<input type='submit' name='segundo' id='segundo'  value='Next &gt;'>";
                         echo"<input type='submit' name='segundo' id='segundo' value='&lt; Back' >";
-                    echo"</div>";
+    echo"</section>";
                     
             echo "</form>";
          //En caso de error 
@@ -204,10 +205,10 @@ function displayStep3($missingFields){
 			
     
     
-    echo"<div style='clear: both';>";
+    echo '<section id="btns_registrar">';
                         echo"<input type='submit' name='tercero' id='tercero'  value='Next &gt;'>";
                         echo"<input type='submit' name='tercero' id='tercero' value='&lt; Back' >";
-                    echo"</div>";
+    echo"</section>";
                     
             echo "</form>";
           
@@ -236,10 +237,10 @@ function displayStep4($missingFields){
             
             echo'<input type="file" name="photo" id="photo" value="" />';
             
-    echo"<div style='clear: both';>";
+    echo '<section id="btns_registrar">';
                         echo"<input type='submit' name='cuarto' id='cuarto'  value='Aceptar'>";
                         echo"<input type='submit' name='cuarto' id='cuarto' value='&lt; Back' >";
-                    echo"</div>";
+    echo"</section>";
                     
             echo "</form>";
          
@@ -255,12 +256,15 @@ function displayStep4($missingFields){
 
 
 function confirmarRegistro(){
-    echo '<h2>Has sido registrado correctamente</h2>';
-    echo '<h3>Ahora podras logearte con tu usuario y contraseña</h3>';
-    echo "<section id='form_registro'>";
-    echo'<form name="registro" action="register.php" method="POST" id="registro">';
-    echo"<input type='submit' name='volvemos' id='volvemos' value='Aceptar'>";
-    echo "</form>";
+    echo '<section id="confirmarRegistro">';
+        echo '<h2>Has sido registrado correctamente</h2>';
+        echo '<h3>Ahora podras logearte con tu usuario y contraseña</h3>';
+            echo "<section id='form_registro'>";
+                echo'<form name="registro" action="register.php" method="POST" id="registro">';
+                    echo '<section id="btns_registrar">';
+                        echo"<input type='submit' name='volvemos' id='volvemos' value='Aceptar'>";
+                    echo '</section>';
+            echo "</form>";
     echo "</section>";
 }
 
@@ -511,15 +515,7 @@ function processForm($requiredFields, $st){
     
     /*section contenedor*/
     echo'</section>';     
-     echo' <footer>';
-    /*
-        <script src="http://platform.twitter.com/widgets.js"></script>
-            <a href="http://twitter.com/share" class="twitter-share-button"
-                data-text="#te lo cambio.es | Portal de intercambio de objetos entre particulares"
-                data-url="https://telocambio.es" >Twittear</a>
-                    <br/>
-        */
-    echo'</footer>';
+    
   
    echo'</body>';
 echo'</html>';

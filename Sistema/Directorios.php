@@ -62,8 +62,8 @@ class Sistema {
          */
         final static  function moverImagen($nombreFoto, $nuevoDirectorio){
             $test = null;
-            echo 'moverImagen nombre foto: '.$nombreFoto.'<br>';
-            echo 'moverImagen nuevoDirectorio al que mover: '.$nuevoDirectorio.'<br>';
+            //echo 'moverImagen nombre foto: '.$nombreFoto.'<br>';
+            //echo 'moverImagen nuevoDirectorio al que mover: '.$nuevoDirectorio.'<br>';
          try{
              $test = move_uploaded_file($nombreFoto, $nuevoDirectorio);
               return $test;  
@@ -114,7 +114,7 @@ class Sistema {
         static function crearSubdirectorio($usuario){
           
         try{
-            echo 'en crear subdirectorio la ruta recivida es: '.$usuario.'<br>';
+            //echo 'en crear subdirectorio la ruta recivida es: '.$usuario.'<br>';
             $dir = $usuario;
             $count = 0;
             $nuevoDirectorio;
@@ -136,7 +136,7 @@ class Sistema {
                 mkdir($usuario.'/'.$nuevo); 
                 $nuevoDirectorio = $usuario.'/'.$nuevo;
             }
-            echo 'Nuevo Subdirectorio creado en el metodo crearsubdirectorio: '.$nuevoDirectorio.'<br>';
+            //echo 'Nuevo Subdirectorio creado en el metodo crearsubdirectorio: '.$nuevoDirectorio.'<br>';
             //el nuevo subidrectorio creado siempre es: usuario/total directorio => admin/1
             return $nuevoDirectorio; 
         }catch(Exception $ex){
@@ -156,10 +156,10 @@ class Sistema {
         static function copiarFoto($imagen, $nuevaImagen){
             $test;
             try{
-               echo 'imagen a copiar: '.$imagen.'<br>';
-               echo 'imagen copiada: '.$nuevaImagen.'<br>';
+               //echo 'imagen a copiar: '.$imagen.'<br>';
+               //echo 'imagen copiada: '.$nuevaImagen.'<br>';
                $test =  copy($imagen, $nuevaImagen);
-               echo 'en copiar foto dice: '.$test.'<br>';
+               //echo 'en copiar foto dice: '.$test.'<br>';
                 return $test; 
             } catch (Exception $ex) {
                 $_SESSION['error'] = ERROR_INSERTAR_FOTO;
@@ -178,8 +178,8 @@ class Sistema {
          */
         final static function renombrarFoto($nombreViejo, $nombreNuevo){
             
-                    echo 'en renombrar: nombreViejo: '.$nombreViejo.'<br>';
-                    echo 'en renombrar nombreNuevo: '.$nombreNuevo.'<br>';
+                    //echo 'en renombrar: nombreViejo: '.$nombreViejo.'<br>';
+                    //echo 'en renombrar nombreNuevo: '.$nombreNuevo.'<br>';
             //Si el nombreNuevo es null este metodo es llamado 
             //desde subir_post. Lo que hacemos es cambiarle el nombre
             //de la imagen del usuario de modo que no tengamos problemas
@@ -217,7 +217,7 @@ class Sistema {
     static function contarArchivos($ruta){
         
         $count = 0;
-        echo 'La ruta al contar archivos es: '.$ruta.'<br>';
+        //echo 'La ruta al contar archivos es: '.$ruta.'<br>';
         $dir =  $ruta;
     
     if(!($handle = opendir($dir))) die("Cannot open $dir.");

@@ -25,7 +25,8 @@ session_start();
       <section id="error">
       <figure id="imagen_error"><img src="img/error.png" alt="error"></figure>
       <section id="mensaje_error">
-      <h2>Ohh! Hemos tenido un problema.</h2>
+          <h2>Upss <span class="separarLetras">!!!</span> </h2>
+      <h3>Hemos tenido un problema.</h3>
       <?php 
        //Mostramos el error que se ha producido 
        //y reseteamos la variable
@@ -34,7 +35,7 @@ session_start();
         $_SESSION['error'] = null;
         }
       ?>
-      <h3>Puedes volver a intentarlo</h3>
+      <h4>Puedes volver a intentarlo</h4>
       <input type="button" id="volver_intentar" value="Aceptar"/>
               </section>  
       </section>      

@@ -27,7 +27,13 @@ if (isset($_POST['idPost']))
      if (isset($_GET['idPost'])) 
         $idPost=$_GET['idPost'];
      
-     
+if(isset($_POST['ruta'])){
+        $ruta = $_POST['ruta'];
+    } else {
+        if(isset($_GET['ruta'])){
+            $ruta = $_GET['ruta'];
+        }
+    }    
     
     switch ($opc) {
         case "PP":
@@ -44,6 +50,9 @@ if (isset($_POST['idPost']))
             break;
         case "UI":
             $sql = "Select ruta  as ruta  from ".TBL_IMAGENES." WHERE post_idPost = '".$idPost."'";
+            break;
+        case "PMI":
+            $sql = "SELECT ruta as ruta, texto as texto from ".TBL_IMAGENES." WHERE post_idPost = '".$idPost."' and ruta = '".$ruta."'";
             break;
     }
           

@@ -7,7 +7,8 @@ var READY_STATE_INTERACTIVE = 3;
 var READY_STATE_COMPLETE = 4;
 
 var objPro, petPro, objGen, petGen, objSeccion, petSeccion, objTiempoCambio, petTiempoCambio,
-        objLastImg, petLastImg, idPost;
+        objLastImg, petLastImg, idPost, petImgEliminar, objImgEliminar;
+
 var fecha = new Date();
 
 window.onload=function(){
@@ -16,7 +17,10 @@ window.onload=function(){
      provincias = document.getElementById('provincia');
      genero = document.getElementById('genero');
      seccion = document.getElementById('seccion');
-     verImagenes = document.getElementById('img_ingresadas');
+     tiempoCambio = document.getElementById('tiempoCambio');
+     verImagenes = document.getElementById('cnt_img');
+     imgSeleccionada = document.getElementById('mostrarImgSeleccionada');
+     
      
      
      cargarPeticion("PP", "opcion=PP");
@@ -24,7 +28,18 @@ window.onload=function(){
      cargarPeticion("PS", "opcion=PS");
      cargarPeticion("PT", "opcion=PT");
      cargarPeticion("UI", "opcion=UI&idPost="+idPost);
+     
+     
 };
+
+/*  Metodo que recive el id del post y el id de la imagen
+ *      para mostrar por si el usuario quiere eliminar o modificar la descripcion
+ *  Los parametros se los mandamos una vez se muestra al usuario la imagen
+ *      desde el metodo cargarUltimaImgen
+ */
+function mandarId(id){
+    cargarPeticion("PMI", "opcion=PMI&idPost="+idPost+"&ruta="+id);
+}
 
 
 function cargarPeticion(tipo, parametros){
@@ -66,7 +81,13 @@ function cargarPeticion(tipo, parametros){
            petLastImg.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petLastImg.send(parametros);
                 break;
-            
+        case('PMI'):
+           petImgEliminar = inicializaPeticion();
+           petImgEliminar.onreadystatechange = procesaRespuesta;
+           petImgEliminar.open('POST', "./central/json.php?", true);
+           petImgEliminar.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+           petImgEliminar.send(parametros);
+                break;    
     //fin switch
     }
     
@@ -84,7 +105,8 @@ function cargarPeticion(tipo, parametros){
                     objTiempoCambio = JSON.parse(petTiempoCambio.responseText);
                 } else if(tipo === 'UI'){
                     objLastImg = JSON.parse(petLastImg.responseText);
-                    //alert('Valor del objeto: '+ objLastImg);
+                } else if(tipo === 'PMI'){
+                    objImgEliminar = JSON.parse(petImgEliminar.responseText);
                 }
                 
                 
@@ -116,6 +138,9 @@ function cargarPeticion(tipo, parametros){
                         break;
                 case 'UI':
                     cargarUltimaImagen(objLastImg);
+                        break;
+                case 'PMI':
+                    cargarImgEliminar(objImgEliminar);
                         break;
             //fin switch
             }
@@ -167,23 +192,59 @@ function cargarTiempoDeCambio(objTiempoCambio){
 /*Cargamos la ultima imagen selecionada por el usuario*/
 function cargarUltimaImagen(objLastImg){
         
-        var sep = '<section class="mini" >';
+        var sep = '<section id="capturar" class="contenedor_imagenes" >';
         for (var i= 0 ; i < objLastImg.length; i++){
-            
-                sep += '<form action="subir_posts.php" method="POST" id='+(i+1)+' class="form_mini" >';
-                sep += "<input type='hidden' name='step' value='4'>";
-                sep += "<input type='hidden' name='urlBorrar' value="+objLastImg[i].ruta+ ">"; 
-                sep += '<img src="photos'+objLastImg[i].ruta+'.jpg">';
-                sep += '<input type="submit" name="eliminar" id="eliminar" value="Eliminar" >';
-               
+          
+                sep += "<figure class='img_usuario_tmp'>";
+                sep += '<img src="photos'+objLastImg[i].ruta+'.jpg" id="'+objLastImg[i].ruta+'" alt="imagen subida por el usuario" title="Pinchame para ver la información.">';
+                sep += '</figure>';
+                               
             }
         sep += '</section>';
         verImagenes.innerHTML = "";
         verImagenes.innerHTML += sep;
-   
+        
+        /* Si el usuario hace click sobre una imagen le mostramos la imagen y descripcion
+         * Por si desea eliminar o actualizar
+         */
+        $(".img_usuario_tmp").click(function(){
+            var id = $(this).children('img').attr('id');
+            mandarId(id);
+    });
 //  cargarUltimaImagen  
 }
 
+
+function cargarImgEliminar(objImgEliminar){
+    //Mostramos la capa opca de fondo
+    $("#ocultar").removeClass('oculto').addClass('mostrar_transparencia');
+    $("#form_post").addClass('noOcupar');
+    //Creamos los elementos para mostrar la imagen y el texto
+    
+    var form = '<h4>Elimina la imagen o modifica la descrición.</h4>'+
+               '<form name="eliminarImagen" action="subir_posts.php" method="POST" id="eliminarImagen" >'+
+               '<fieldset>'+
+               '<legend>Rellena los campos</legend>'+
+               '<input type="hidden" name="step" value="1">'+
+               '<input type="hidden" name="ruta" value="'+objImgEliminar[0].ruta+'">'+
+               '<figure class="img_usuario_tmp">'+
+               '<img src="photos'+objImgEliminar[0].ruta+'.jpg" alt="Puedes modificar la imagen o el texto" title="Puedes modificar la descripción y eliminar la imagen.">'+
+               '</figure>'+
+               '<section class="contenedor">'+
+               '<label for="txtModificar" >Modifica la descripcion y dale a OK</label>'+
+               '<input type="text" name="txtModificar" id="txtModificar" maxlength="25" value="'+objImgEliminar[0].texto+'">'+
+               '<label><span class="cnt">0</span></label>'+
+               '</section>'+
+               '<section id="btns_registrar">'+
+               '<input type="submit" name="modificar" id="modificar"  value="OK">'+
+               '<input type="submit" name="modificar" id="modificar"  value="Borrar">'+
+               '</fieldset>'+
+               '</from>';
+       
+    imgSeleccionada.innerHTML = "";
+    imgSeleccionada.innerHTML = form;
+//fin cargarImgEliminar    
+}
 //------------------------funcion inicializa peticion ----------------------------
   function inicializaPeticion(){
          var peticion;

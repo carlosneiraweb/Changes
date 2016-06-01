@@ -58,8 +58,11 @@ $articulo = new Post(array());
     <body>
         
         
-        <?php
- 
+    <?php
+        echo'<div id="ocultar" class="oculto"> </div>';   
+        
+        
+        echo'<section id="fecha"></section>';
         echo'<header>';
 	echo'<figure id="logo" class="fade">';
 		echo'<img src="img/logo.png" alt="Logo del portal"/>';
@@ -74,8 +77,6 @@ $articulo = new Post(array());
      
     echo'</header>';
     
-   
-    echo'<div id="ocultar" class = "mostrar_transparencia"></div>';
     //Si no se ha recivido el step
     //se muestra el formulario por primera vez
     if(!isset($_POST['step'])){
@@ -86,7 +87,7 @@ $articulo = new Post(array());
     if(isset($_POST['primero']) and $_POST['primero'] == "Next >"){
         $requiredFields = array('seccion', 'comentario', 'Pa_queridas', 'Pa_ofrecidas');
         processForm($requiredFields, "step1");
-    } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Enviar"){
+    } elseif(isset($_POST['segundo']) and $_POST['segundo'] === "Enviar"){     
          //El usario quiere subir una foto al post
         $requiredFields = array();
         processForm($requiredFields, "step2");
@@ -102,13 +103,16 @@ $articulo = new Post(array());
         unset($_SESSION['atras']);
         unset($_SESSION['contador']);
         volverAnterior();
-    } elseif(isset($_POST['eliminar']) && isset($_POST['urlBorrar'])){
-        //El usuario quiere eliminar una imagen que ha subido
-        $_SESSION['urlEliminar'] = $_POST['urlBorrar'];
+    } elseif(isset($_POST['modificar']) && $_POST['modificar'] == 'Borrar'){
         eliminarImagen();
+        displayStep2(array());
+    } elseif(isset($_POST['modificar']) && $_POST['modificar'] == 'OK'){
+        actualizarImagen();
         displayStep2(array());
     }
 
+    
+    
     function displayStep1($missingFields){
         global $mensaje; 
         
@@ -120,10 +124,12 @@ $articulo = new Post(array());
         	echo'<legend>Rellena los campos</legend>';
         echo"<input type='hidden' name='step' value='1'>"; 
         
-    echo'<label '.ValidoForm::validateField("titulo", $missingFields).' for="titulo">Introduce un titulo para el artículo:</label> <span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
-    
-    echo'<input type="text" maxlength="30" name="titulo" id="titulo" autofocus placeholder="Pon un titulo al artículo"  value=';if(isset($_SESSION['post']['titulo'])){echo $_SESSION['post']['titulo'];} echo ">";  
-    echo '<label>Quedan: <span></span></label>';
+    echo '<section class="contenedor">';    
+    echo'<label '.ValidoForm::validateField("titulo", $missingFields).' for="titulo">Introduce un titulo para el anuncio. </label> <span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
+    echo'<input type="text" maxlength="30" name="titulo" id="titulo" autofocus placeholder="Máximo 30 caracteres."  value="';if(isset($_SESSION['post']['titulo'])){echo $_SESSION['post']['titulo'];} echo '">'; 
+    echo'<label><span class="cnt">0</span></label>';
+    echo'</section>';
+
     echo'<label for="seccion">Seccion:</label> <span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
  
 	echo'<select name="seccion" id="seccion">';
@@ -132,12 +138,20 @@ $articulo = new Post(array());
 
                 echo'<br>';
                 echo'<br>';
+   
+                
+    echo '<section class="contenedor">';
+    echo'<label '.ValidoForm::validateField("comentario", $missingFields). ' for="comentario">Introduce una descripción general del artículo. </label>';
+    echo'<textarea maxlength="255" name="comentario" id="comentario" placeholder= "Máximo 255 caracteres." value="';if(isset($_SESSION['post']['comentario'])){echo $_SESSION['post']['comentario'];} echo '">'; 
+    echo'</textarea>';
+    echo'<label><span class="cnt">0</span></label>';
+    echo'</section>';
     
-    echo'<label '.ValidoForm::validateField("comentario", $missingFields). ' for="comentario">Introduce una descripción general del artículo. </label><span></span>';
-    echo'<textarea maxlength="255" name="comentario" id="comentario" placeholder= "Máximo 255 caracteres." value=';if(isset($_SESSION['post']['comentario'])){echo $_SESSION['post']['comentario'];} echo '></textarea>';
-    
+    echo '<section class="contenedor">';
     echo'<label  for="precio">Introduce un precio aproximado  artículo. </label>';
-    echo'<input type="text" name="precio" id="precio" placeholder="Precio aproximado" value=';if(isset($_SESSION['post']['precio'])){echo $_SESSION['post']['precio'];} echo ">";
+    echo'<input type="text" name="precio" id="precio" placeholder="Precio aproximado" value="';if(isset($_SESSION['post']['precio'])){echo $_SESSION['post']['precio'];} echo '">';
+    echo'</section>';
+    
     
     echo'<label for="tiempoCambio">Elige por cuanto tiempo deseas hacer el cambio.</label> <span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
  
@@ -147,28 +161,44 @@ $articulo = new Post(array());
 
                 echo'<br>';
                 echo'<br>';
+     
                 
-                
-    echo'<label  for="Pa_queridas">Introduce 4 palabras por lo que tú estarías interesado en cambiarlo. </label>';
-        echo '<section id="buscadas" class="introducir_palabras">';
-    echo'<input type="text" name="querida_1" id="querida_1" placeholder="Máximo 25" maxlength="25"   value=';if(isset($_SESSION['post']['Pa_queridas'][0])){echo $_SESSION['post']['Pa_queridas'][0];} echo ">";
-    echo'<input type="text" name="querida_2" id="querida_2" maxlength="25" value=';if(isset($_SESSION['post']['Pa_queridas'][1])){echo $_SESSION['post']['Pa_queridas'][1];} echo ">";
-    echo'<input type="text" name="querida_3" id="querida_3" maxlength="25" value=';if(isset($_SESSION['post']['Pa_queridas'][2])){echo $_SESSION['post']['Pa_queridas'][2];} echo ">";
-    echo'<input type="text" name="querida_4" id="querida_4" maxlength="25" value=';if(isset($_SESSION['post']['Pa_queridas'][3])){echo $_SESSION['post']['Pa_queridas'][3];} echo ">";
+         
+    echo '<section class="contenedor">';
+    echo'<label  for="Pa_queridas" class="centrar">Introduce 4 palabras por lo que tú estarías interesado en cambiarlo. </label>';
+        echo '<section id="buscadas" class="introducir_palabras">';       
+    echo'<input type="text" name="querida_1" id="querida_1" placeholder="Máximo 25" maxlength="25"   value="';if(isset($_SESSION['post']['Pa_queridas'][0])){echo $_SESSION['post']['Pa_queridas'][0];} echo '">';
+        echo'<label><span class="cnt">0</span></label>';
+    echo'<input type="text" name="querida_2" id="querida_2" maxlength="25" value="';if(isset($_SESSION['post']['Pa_queridas'][1])){echo $_SESSION['post']['Pa_queridas'][1];} echo '">';
+        echo'<label><span class="cnt">0</span></label>';
+    echo'<input type="text" name="querida_3" id="querida_3" maxlength="25" value="';if(isset($_SESSION['post']['Pa_queridas'][2])){echo $_SESSION['post']['Pa_queridas'][2];} echo '">';
+        echo'<label><span class="cnt">0</span></label>';
+    echo'<input type="text" name="querida_4" id="querida_4" maxlength="25" value="';if(isset($_SESSION['post']['Pa_queridas'][3])){echo $_SESSION['post']['Pa_queridas'][3];} echo '">';
+        echo'<label><span class="cnt">0</span></label>';
+        echo'</section>';
+     
+    echo '</section>';
     
-        echo '</section>';
     
-        
-    echo'<label  for="Pa_ofrecidas">Introduce 4 palabras para que la gente encuentre tu artículo. </label>';
+    echo '<section class="contenedor">'; 
+    echo'<label  for="Pa_ofrecidas" class="centrar">Introduce 4 palabras para que la gente encuentre tu artículo. </label>';
         echo '<section id="ofrecidas" class="introducir_palabras">';
-    echo'<input type="text" name="ofrecida_1" id="ofrecida_1" placeholder="Máximo 25" maxlength="25" value=';if(isset($_SESSION['post']['Pa_ofrecidas'][0])){echo $_SESSION['post']['Pa_ofrecidas'][0];} echo ">";
-    echo'<input type="text" name="ofrecida_2" id="ofrecida_2" maxlength="25" value=';if(isset($_SESSION['post']['Pa_ofrecidas'][1])){echo $_SESSION['post']['Pa_ofrecidas'][1];} echo ">";
-    echo'<input type="text" name="ofrecida_3" id="ofrecida_3" maxlength="25" value=';if(isset($_SESSION['post']['Pa_ofrecidas'][2])){echo $_SESSION['post']['Pa_ofrecidas'][2];} echo ">";
-    echo'<input type="text" name="ofrecida_4" id="ofrecida_4" maxlength="25" value=';if(isset($_SESSION['post']['Pa_ofrecidas'][3])){echo $_SESSION['post']['Pa_ofrecidas'][3];} echo ">";
-    
+    echo'<input type="text" name="ofrecida_1" id="ofrecida_1" placeholder="Máximo 25" maxlength="25" value="';if(isset($_SESSION['post']['Pa_ofrecidas'][0])){echo $_SESSION['post']['Pa_ofrecidas'][0];} echo '">';
+        echo'<label><span class="cnt">0</span></label>';
+    echo'<input type="text" name="ofrecida_2" id="ofrecida_2" maxlength="25" value="';if(isset($_SESSION['post']['Pa_ofrecidas'][1])){echo $_SESSION['post']['Pa_ofrecidas'][1];} echo '">';
+        echo'<label><span class="cnt">0</span></label>';
+    echo'<input type="text" name="ofrecida_3" id="ofrecida_3" maxlength="25" value="';if(isset($_SESSION['post']['Pa_ofrecidas'][2])){echo $_SESSION['post']['Pa_ofrecidas'][2];} echo '">';
+        echo'<label><span class="cnt">0</span></label>';
+    echo'<input type="text" name="ofrecida_4" id="ofrecida_4" maxlength="25" value="';if(isset($_SESSION['post']['Pa_ofrecidas'][3])){echo $_SESSION['post']['Pa_ofrecidas'][3];} echo '">';
+        echo'<label><span class="cnt">0</span></label>';
         echo '</section>';
+        
+    echo '</section>';
            
-            echo"<input type='submit' name='primero' id='primero'  value='Next &gt' >";
+    echo '<section id="btns_registrar">';    
+        echo"<input type='submit' name='primero' id='primero'  value='Next &gt' >";
+    echo '<section>';
+    
         //Mostramos cualquier errror al validar el formulario            
             echo "</form>";
         if($mensaje){
@@ -184,19 +214,40 @@ $articulo = new Post(array());
 function displayStep2($missingFields){
     global $mensaje; 
     
-    //Aqui recuperamos el id del post en el que estamos
-    //Se lo pasamos a javascript para que nos muestre 
-    //todas las fotos que vamos subiendo via JSON
-    if(isset($_SESSION['lastId'])){
-        $idPost = $_SESSION['lastId'][0];
+     //Aqui recuperamos el id del post en el que estamos
+        //Se lo pasamos a javascript para que nos muestre 
+        //todas las fotos que vamos subiendo via JSON
+            if(isset($_SESSION['lastId']) ){
+                $idPost = $_SESSION['lastId'][0];
             echo '<script type="text/javascript">';
                 echo "var idPost = "; echo "'$idPost'".";";
             echo '</script>';
-    }
+         
+            }
+    echo '<section id="mostrarImgSeleccionada">';
+    
+            //Aqui mostramos la imagen ampliada
+            //Pos si el usuario quiere modificarla
+            //Se muestra desde JSON
+    
+    echo '</section>';
     
     
     echo'<section id="form_post">';
                 echo'<h4>Puedes subir hasta 5 imagenes</h4>';
+                
+        //Seccion donde mostraemos las imagenes que
+        //va subiendo el usuario
+        echo '<section id="img_ingresadas">';
+            //Vamos mostrando la cantidad de imagenes
+            echo '<span id="contador">';
+                echo $_SESSION['contador'].'<br>';
+            echo '</span>';
+                echo'<section id="cnt_img">';
+            //Aqui el section creado con JS para las imagenes
+                echo '</section>';
+        echo '</section>';
+        
     echo'<form name="post" action="subir_posts.php" method="POST" id="post" enctype="multipart/form-data">';
         echo'<fieldset>';
         	echo'<legend>Introduce alguna imagen.</legend>';
@@ -207,11 +258,18 @@ function displayStep2($missingFields){
         echo '<br>';    
             echo'<input type="file" name="photoArticulo" id="photoArticulo" value="" />';        
         
-        echo '<br><br>';    
+        echo '<br><br>'; 
+        
+        
+    echo '<section class="contenedor">'; 
     echo'<label  for="figcaption">Introduce una pequeña descripción, se verá junto a la imagen. </label>';
-    echo'<input type="text" name="figcaption" id="figcaption" placeholder="Una pequeña descripción" value="" >';    
-    echo"<div style='clear: both';>";
-        echo "contador: ".$_SESSION['contador'].'<br>';
+    echo'<input type="text" name="figcaption" id="figcaption" placeholder="Una pequeña descripción" maxlength="25" value="" >'; 
+        echo'<label><span class="cnt">0</span></label>';
+        echo '</section>';
+        
+        
+    echo '<section id="btns_registrar">';
+        
         
                         echo"<input type='submit' name='segundo' id='segundo'  value='&lt; Back'>";
                     if($_SESSION['contador'] < 5){
@@ -219,7 +277,8 @@ function displayStep2($missingFields){
                     }    
                         echo"<input type='submit' name='segundo' id='segundo' value='Fin' >";
                     echo"</div>";       
-            
+    echo'</section>';
+    
             echo "</form>";
         //Mostramos cualquier error en el formulario
             //y cualquier error al validar la foto
@@ -227,13 +286,6 @@ function displayStep2($missingFields){
             echo $mensaje.'<br>';
         }   
         echo'</fieldset>';  
-        
-        //Seccion donde mostraemos las imagenes que
-        //va subiendo el usuario
-        echo '<section id="img_ingresadas">';
-            
-     
-        echo '</section>';
         
     echo'</section>';
 //fin displayStep2    
@@ -296,7 +348,6 @@ function ingresarPost(){
  */
 
 function ingresarImagenes(){
-    global $articulo;
       
     $articulo = new Post(array(
        "figcaption" => $_SESSION['post']['figcaption'],
@@ -304,6 +355,7 @@ function ingresarImagenes(){
     ));
     
     $result = $articulo->insertarFotos();
+    
     //Incrementamos el contador del total de fotos
     //Si ha habido un error mostramos la pagina de error
     if($result){
@@ -317,13 +369,36 @@ function ingresarImagenes(){
 }
 
 /**
+ * Metodo que actualiza una imagen
+ */
+function actualizarImagen(){
+    
+    $articulo = new Post(array(
+       "figcaption" => $_POST['txtModificar'],
+       "idImagen" => $_POST['ruta']
+    ));
+    
+    $result = $articulo->actualizarTexto();
+    
+    if(!$result){
+        mostrarError();
+        exit();
+    }
+    
+//fin actualizarImagen    
+}
+
+
+
+/**
  * Metodo que elimina una imagen
  * @global Post $articulo
  */
 function eliminarImagen(){
-    global $articulo;
     
-    $result;
+    $articulo = new Post(array(
+        "idImagen" => $_POST['ruta']
+    ));
     $result = $articulo->eliminarImg();
     
     //Si ha habido algun error, nos redirige a la pagina que muestra un error
@@ -335,6 +410,8 @@ function eliminarImagen(){
 //    
 //fin eliminar imagen   
 }
+
+
 function processForm($requiredFields, $st){
     //Array para almacenar los campos no rellenados y obligatorios
         global $missingFields;
@@ -378,9 +455,7 @@ function processForm($requiredFields, $st){
      * @param type $st
      * @return boolean
      */
-    
-
-
+   
 function validarCampos($st){
     global $mensaje;
     $test = true;
@@ -402,7 +477,7 @@ function validarCampos($st){
                     
                     $_SESSION['nuevoSubdirectorio'] = Sistema::crearSubdirectorio("photos/".$_SESSION['user']->getValue('nick'));
                     $test = Sistema::copiarFoto("photos/demo.jpg",$_SESSION['nuevoSubdirectorio']."/demo.jpg");
-                    echo 'Creamos nuevoSubdiretorio en antes de mandar a insertar articulo: '.$_SESSION['nuevoSubdirectorio'].'<br>';
+                    //echo 'Creamos nuevoSubdiretorio en antes de mandar a insertar articulo: '.$_SESSION['nuevoSubdirectorio'].'<br>';
                     return $test;
                 }
             break;
@@ -417,7 +492,7 @@ function validarCampos($st){
             if(Sistema::validarFoto('photoArticulo')){
                
                 //eliminamos la foto que subimos de demo
-                 echo 'en unlik eliminar foto demo ruta es: '.$_SESSION['nuevoSubdirectorio'].'/demo.jpg'.'<br>';                            
+                                             
                 if(is_file($_SESSION['nuevoSubdirectorio'].'/demo.jpg')){
             $test = unlink($_SESSION['nuevoSubdirectorio'].'/demo.jpg');  
                 }

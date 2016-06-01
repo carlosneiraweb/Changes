@@ -99,8 +99,9 @@ class Post extends DataObj{
                         }
                     }
                 }
-        return $test;        
-        Conne::disconnect($con);       
+             
+        Conne::disconnect($con);  
+        return $test;   
     }catch(Exception $ex){
         Conne::disconnect($con);
         echo 'El error se produce en la línea: '.$ex->getLine().'<br>';
@@ -234,9 +235,9 @@ public function insertarFotos(){
         $st->bindValue(":texto", $this->data['figcaption'], PDO::PARAM_STR);
         
         $test = $st->execute();
-        return $test;
         
         Conne::disconnect($con);
+        return $test;
     } catch (Exception $ex) {
         Conne::disconnect($con);
         echo 'codigo: '.$ex->getCode().'<br>';
@@ -263,13 +264,13 @@ function eliminarImg(){
         //echo 'Sql eliminarImagen: '.$sql.'<br>';
         $st = $con->prepare($sql);
         $st->bindValue(":post_idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
-        $st->bindValue(":url", $_SESSION['urlEliminar'], PDO::PARAM_STR);
+        $st->bindValue(":url", $this->getValue('idImagen'), PDO::PARAM_STR);
 
         $test = $st->execute();
         //En caso de ser todo correcto eliminamos la imagen 
         //del sistema y restamos 1 al contador de imagenes
         if($test){
-            $nombreImagenEliminar = $_SESSION['nuevoSubdirectorio'].'/'.substr($_SESSION['urlEliminar'], -1);
+            $nombreImagenEliminar = 'photos'.$this->getValue('idImagen');
             $test = Sistema::eliminarImagen($nombreImagenEliminar.'.jpg');
             if($test){$_SESSION['contador'] = $_SESSION['contador'] - 1;}
             //Si el contador vuelve a 0, volvemos a copiar la foto demo
@@ -279,10 +280,9 @@ function eliminarImg(){
             }
            
         }
-
-        return $test;
                 
         Conne::disconnect($con);
+        return true;
     } catch (Exception $ex) {
         Conne::disconnect($con);
         $_SESSION['error'] = ERROR_ELIMINAR_FOTO;
@@ -291,6 +291,40 @@ function eliminarImg(){
     }  
 //fin eliminarImg    
 }
+
+/**
+ * Metodo que actualiza el texto
+ * introducido en una imagen cuando 
+ * se inserta una imagen en un post
+ */
+ function actualizarTexto(){
+  
+    try{
+    
+    $con = Conne::connect();
+        $sql = "UPDATE ".TBL_IMAGENES. " SET ".
+                "texto = :descripcion ".
+                " WHERE post_idPost = :idPost and ruta = :ruta ";
+        //echo "sql actualizarTexto ".$sql.'<br>';
+        
+        $stm = $con->prepare($sql);
+        $stm->bindValue(":descripcion", $this->getValue('figcaption'), PDO::PARAM_STR );
+        $stm->bindValue(":idPost", $_SESSION['lastId'][0] , PDO::PARAM_INT);
+        $stm->bindValue(":ruta", $this->getValue('idImagen'), PDO::PARAM_STR);
+        
+        $test = $stm->execute();
+        
+        Conne::disconnect($con);
+        return $test;    
+    }catch(Exception $ex){
+        Conne::disconnect($con);
+        echo 'El error se produce en la línea: '.$ex->getCode().'<br>';
+        die("Query failed: ".$ex->getMessage());
+    }
+    
+//fin actualizarTexto    
+}
+
 
 
 //fin de clase Post    

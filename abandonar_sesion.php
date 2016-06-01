@@ -28,14 +28,13 @@ session_start();
     </head>
     <body class="mi_body">
         <?php
-        /*
-     echo 'usuario: '.$_SESSION["user"]. ' : url: '.$_SESSION["url"].'<br>'; 
- */
+     
         echo '<section id="salir_sesion">';
+        echo '<h2>Te lo cambio</h2>';
             echo'<figure id="logo_salir_sesion">';
 		echo'<img src="img/logo.png" alt="Logo del portal"/>';
 		echo'<figcaption id="titulo">Acabas de abandonar tu sesión<br>'.
-                 'Gracias por participar.</figcaption>';
+                 '<strong>Gracias por participar.</strong></figcaption>';
 	echo'</figure>';
         echo '</section>';
        

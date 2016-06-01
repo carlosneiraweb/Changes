@@ -1,8 +1,4 @@
 <?php 
-require_once('entidades/Usuarios.php');
-require_once('entidades/DataObj.php');
-require_once 'validar/ValidoForm.php';
-
 session_start(); 
 $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
 
@@ -10,7 +6,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
 <!DOCTYPE html>
 
 <html>
-    <head>
+   <head>
        <meta charset="UTF-8">
        <title>Tú portal de intercambio</title>
 	<meta name="description" content="Portal para intercambiar las cosas que ya no usas o utilizas por otras que necesitas o te gustan."/>
@@ -20,8 +16,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
         <script src="jquery-2.2.2.js" type="text/javascript"></script>
         <script src="mostrar/menu.js"></script>					
         <script src="validar/formulario_login.js"></script>
-        <script src="mostrar/redireccionar.js"></script>
-        <script src="mostrar/script.js"></script>
+        <script src="mostrar/redireccionar.js"></script>	
     <!--Para navegadores viejos-->
         <!--[if lt IE 9]>
             <script
@@ -33,7 +28,12 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
    <body id="cuerpo">
        
         <?php
-         
+ 
+        require_once 'entidades/Usuarios.php';
+        require_once 'entidades/DataObj.php';
+        require_once 'validar/ValidoForm.php';
+      
+        
     global $valido;
     $valido = new ValidoForm();
     
@@ -57,37 +57,26 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
 		echo'<figcaption id="titulo">Cambia todo lo que ya no uses.</figcaption>';
 	echo'</figure>';
 	echo'<section id="cabecera">';
-            echo'<section id="btns_logueo">';
-			
-                        //Mostramos la foto del usuario una vez se ha logueado
-                        if(isset($_SESSION["user"]) and $_SESSION != ""){
-                            echo '<section id="foto_usuario">';
-                                echo '<figure id="img_usuario">';
-                                    echo '<img src='."datos_usuario/".$_SESSION['user']->getValue('nick')."/".$_SESSION['user']->getValue('nick').".jpg".' alt="imagen del usuario" />';
-                            echo '</section>';
-                        }
-                echo'<input type="button" id="ingresar" name="ingresar" value="Ingresar"/>';
-                echo'<input type="button" id="registrar" name="registrar" value="Registrarse"/>';
-            echo'</section>';
-            
 			echo'<h1>Te lo cambio</h1>';
 			echo'<h3>Miles de personas compartiendo te están esperando.</h3>';
-		
-            echo '<section id="btns_sesion">';
+		echo'<section id="btns_logueo">';
+			echo'<input type="button" id="ingresar" name="ingresar" value="Ingresar"/>';
+			echo'<input type="button" id="registrar" name="registrar" value="Registrarse"/>';
+                        
+		echo'</section>';
+                echo '<section id="btn_desloguear">';
           
                     if(isset($_SESSION["user"]) and $_SESSION != ""){
                         echo'<a href="abandonar_sesion.php">Salir Sesión</a>';
-                        echo'<a href="">Menú</a>';
                     }
                
-                echo '</section>';   
                 echo '</section>';
                 
 	echo'</section>';
      
     echo'</header>';
     
- echo'<div id="ocultar" class="oculto"> </div>';    
+    echo'<div id="ocultar" class="oculto"> </div>';
     
       //class="oculto login_form_tamanyo"
 function displayFormLogeo($missingFields, $user, $test){
@@ -176,9 +165,9 @@ function processForm(){
         echo'</figure>';	
 	
             echo'<ul id="slider" class="slider-wrapper">';
-                echo'<li class="slide-current"><a class="separarLetras" href="index.php">Inicio</a><a class="separarLetras" href="index.php">Servicios</a><a class="separarLetras" href="index.php">Automoción</a><a class="separarLetras" href="index.php">Ocio</a></li>';
-		echo'<li><a class="separarLetras" href="index.php">Inicio</a><a class="separarLetras" href="index.php">Bricolage</a><a class="separarLetras" href="index.php">Electrónica</a><a class="separarLetras" href="index.php">Moda</a></li>';
-		echo'<li><a class="separarLetras" href="index.php">Inicio</a><a class="separarLetras" href="index.php">Hogar</a><a class="separarLetras" href="index.php">Hospedaje</a><a class="separarLetras" href="index.php">Cultura</a></li>';
+                echo'<li class="slide-current"><a href="index.php">Inicio</a><a href="index.php">Servicios</a><a href="index.php">Automoción</a><a href="index.php">Ocio</a></li>';
+		echo'<li><a href="index.php">Inicio</a><a href="index.php">Bricolage</a><a href="index.php">Electrónica</a><a href="index.php">Moda</a></li>';
+		echo'<li><a href="index.php">Inicio</a><a href="index.php">Hogar</a><a href="index.php">Hospedaje</a><a href="index.php">Cultura</a></li>';
             echo'</ul>';
 	
 	echo'<figure id="abajo" class="noOcupar">';
@@ -207,8 +196,6 @@ function processForm(){
                
          
      echo' <footer>';
-    echo' <div class="medidas"><p>Ventana: <span id="span1"></span></div>';
-    echo'<div class="medidas">Ancho Supercontenedor: <span id="span2"></span> px</p>';
     /*
         <script src="http://platform.twitter.com/widgets.js"></script>
             <a href="http://twitter.com/share" class="twitter-share-button"
