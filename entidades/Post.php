@@ -117,7 +117,7 @@ class Post extends DataObj{
  * @return type
  */
 public function insertArticulo(){
-  
+       
         $test;
         try{
         $con = Conne::connect();
@@ -199,6 +199,13 @@ public function insertArticulo(){
             
                 }
             }
+            //Insertamos en la tabla imagenes la ruta de la imagen demo
+            
+            $st4 = "Insert into ".TBL_IMAGENES." (post_idPost, ruta) values (:idPost, :ruta)";
+            $st4 = $con->prepare($st4);
+            $st4->bindValue(":idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
+            $st4->bindValue(":ruta", "/demo", PDO::PARAM_STR);
+            $st4->execute();
            
             Conne::disconnect($con);
             return $test;
@@ -218,7 +225,7 @@ public function insertArticulo(){
  * Metodo que inserta las imagenes
  * y comntarios de cada imagen subida
  */
-public function insertarFotos(){
+ function insertarFotos(){
           
     try{
         $con = Conne::connect();
@@ -235,6 +242,23 @@ public function insertarFotos(){
         $st->bindValue(":texto", $this->data['figcaption'], PDO::PARAM_STR);
         
         $test = $st->execute();
+         if($test){
+         $_SESSION['contador'] = $_SESSION['contador'] + 1;
+         
+         }
+        //                    IMPORTANTE
+        //Cuando insertamos una imagen eliminamos de la tabla imagenes
+        // la imagen demo que subimos.Unicamente hacemos eso si contador == 1
+        if(isset($_SESSION['contador']) and $_SESSION['contador'] == 1){
+            $sql = "DELETE FROM ".TBL_IMAGENES." WHERE post_idPost = :post_idPost and ruta = :url";
+            //echo 'Sql eliminarImagen: '.$sql.'<br>';
+                $st = $con->prepare($sql);
+                $st->bindValue(":post_idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);       
+                $st->bindValue(":url", "/demo", PDO::PARAM_STR);
+       
+                    $test = $st->execute();
+        }
+        
         
         Conne::disconnect($con);
         return $test;
@@ -256,33 +280,46 @@ public function insertarFotos(){
  */
 
 function eliminarImg(){
-    
+     
      try{
         $con = Conne::connect();
-       
         $sql = "DELETE FROM ".TBL_IMAGENES." WHERE post_idPost = :post_idPost and ruta = :url";
         //echo 'Sql eliminarImagen: '.$sql.'<br>';
         $st = $con->prepare($sql);
-        $st->bindValue(":post_idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
+        $st->bindValue(":post_idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);       
         $st->bindValue(":url", $this->getValue('idImagen'), PDO::PARAM_STR);
-
+       
         $test = $st->execute();
         //En caso de ser todo correcto eliminamos la imagen 
         //del sistema y restamos 1 al contador de imagenes
         if($test){
-            $nombreImagenEliminar = 'photos'.$this->getValue('idImagen');
-            $test = Sistema::eliminarImagen($nombreImagenEliminar.'.jpg');
-            if($test){$_SESSION['contador'] = $_SESSION['contador'] - 1;}
+           
+            
+            $test = Sistema::eliminarImagen("photos".$this->getValue('idImagen').".jpg");
+            if($test){ $_SESSION['contador'] = $_SESSION['contador'] - 1;}
+            
             //Si el contador vuelve a 0, volvemos a copiar la foto demo
             //Evitamos que en cada momento el que el usuario no ingrese ninguna imagen
             if(isset($_SESSION['contador']) and $_SESSION['contador'] == 0){
             $test = Sistema::copiarFoto("photos/demo.jpg",$_SESSION['nuevoSubdirectorio']."/demo.jpg");
+            //                    IMPORTANTE
+            //  Volvemos a ingresar en la bbdd la ruta de la imagen /demo
+            // para poder mostrar siempre una imagen
+            $sql = "INSERT INTO ".TBL_IMAGENES." (post_idPost, ruta) VALUES ( :post_idPost, :ruta)";
+       
+                $st = $con->prepare($sql);
+        
+            $st->bindValue(":post_idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
+            $st->bindValue(":ruta","/demo", PDO::PARAM_STR);  
+                
+                $test = $st->execute();
             }
+
            
         }
                 
         Conne::disconnect($con);
-        return true;
+        return $test;
     } catch (Exception $ex) {
         Conne::disconnect($con);
         $_SESSION['error'] = ERROR_ELIMINAR_FOTO;

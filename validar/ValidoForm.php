@@ -148,10 +148,9 @@
       
       final static function validarCodPostal($elemento){
           $test = false;
-          if(ctype_digit($elemento) and strlen($elemento) === 5){
+          if(!ctype_digit($elemento) || strlen($elemento) == 5){
               $test = true;
           }
-          
           return $test;
           
       }

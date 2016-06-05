@@ -18,7 +18,8 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
 	<link href="img/fabicon.ico" rel="icon" type="image/x-icon">
 	<link rel="stylesheet" href="css/estilos.css"/>
         <script src="jquery-2.2.2.js" type="text/javascript"></script>
-        <script src="mostrar/menu.js"></script>					
+        <script src="mostrar/menu.js"></script>	
+        <script src="mostrar/elementos.js"></script>
         <script src="validar/formulario_login.js"></script>
         <script src="mostrar/redireccionar.js"></script>
         <script src="mostrar/script.js"></script>
@@ -191,16 +192,23 @@ function processForm(){
    
  
     echo'<section id="contenedor">';
-    echo'<section id="posts">';
-            echo'<div>';
+    //para la publicidad
+    echo'<aside id="publi">';
+		echo'<p>Aqui va la publicidad</p>';
+                echo'<div>';
         if(isset($_SESSION["user"]) and $_SESSION != ""){    
             echo'<input type="button" id="publicar" name="publicar" value="Publicar"/>';
         }
             echo'</div>';
-        echo'</section>';
-        echo'<aside id="publi">';
-		echo'<p>Aqui va la publicidad</p>';
 	echo'</aside>';
+     
+    //para los posts
+    echo'<section id="posts">';
+    
+    
+            
+        echo'</section>';
+        
 	
     
     echo'</section>';

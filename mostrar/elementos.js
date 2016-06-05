@@ -7,13 +7,13 @@ var READY_STATE_INTERACTIVE = 3;
 var READY_STATE_COMPLETE = 4;
 
 var objPro, petPro, objGen, petGen, objSeccion, petSeccion, objTiempoCambio, petTiempoCambio,
-        objLastImg, petLastImg, idPost, petImgEliminar, objImgEliminar;
+        objLastImg, petLastImg, idPost, petImgEliminar, objImgEliminar, petPost, objPost;
 
 var fecha = new Date();
 
 window.onload=function(){
    
-     
+     post = document.getElementById('posts');
      provincias = document.getElementById('provincia');
      genero = document.getElementById('genero');
      seccion = document.getElementById('seccion');
@@ -23,6 +23,7 @@ window.onload=function(){
      
      
      
+     cargarPeticion("PPS", "opcion=PPS");
      cargarPeticion("PP", "opcion=PP");
      cargarPeticion("PG", "opcion=PG");
      cargarPeticion("PS", "opcion=PS");
@@ -87,7 +88,14 @@ function cargarPeticion(tipo, parametros){
            petImgEliminar.open('POST', "./central/json.php?", true);
            petImgEliminar.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petImgEliminar.send(parametros);
-                break;    
+                break;
+        case('PPS'):
+           petPost = inicializaPeticion();
+           petPost.onreadystatechange = procesaRespuesta;
+           petPost.open('POST', "./central/json.php?", true);
+           petPost.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+           petPost.send(parametros);
+                break;   
     //fin switch
     }
     
@@ -95,6 +103,7 @@ function cargarPeticion(tipo, parametros){
        
        if(this.readyState === READY_STATE_COMPLETE && this.status === 200){
             try{
+                
                if(tipo === 'PP'){
                     objPro = JSON.parse(petPro.responseText);
                 } else if(tipo === 'PG'){
@@ -107,6 +116,8 @@ function cargarPeticion(tipo, parametros){
                     objLastImg = JSON.parse(petLastImg.responseText);
                 } else if(tipo === 'PMI'){
                     objImgEliminar = JSON.parse(petImgEliminar.responseText);
+                } else if(tipo === 'PPS'){
+                    objPost= JSON.parse(petPost.responseText);
                 }
                 
                 
@@ -141,6 +152,9 @@ function cargarPeticion(tipo, parametros){
                         break;
                 case 'PMI':
                     cargarImgEliminar(objImgEliminar);
+                        break;
+                case 'PPS':
+                    cargarPost(objPost);
                         break;
             //fin switch
             }
@@ -194,10 +208,17 @@ function cargarUltimaImagen(objLastImg){
         
         var sep = '<section id="capturar" class="contenedor_imagenes" >';
         for (var i= 0 ; i < objLastImg.length; i++){
-          
-                sep += "<figure class='img_usuario_tmp'>";
-                sep += '<img src="photos'+objLastImg[i].ruta+'.jpg" id="'+objLastImg[i].ruta+'" alt="imagen subida por el usuario" title="Pinchame para ver la información.">';
-                sep += '</figure>';
+            //Evitamos cualquier posible error
+                if(objLastImg[i].ruta == "/demo"){
+                   //No mostramos la imagen /demo. Esta imagen aqui es opaca al usuario
+                   //Solo se muestra en la pagina principal si el usuario no
+                   //Ha subido ninguna foto.
+                    continue;
+                }else{
+                    sep += "<figure class='img_usuario_tmp'>";
+                    sep += '<img src="photos'+objLastImg[i].ruta+'.jpg" id="'+objLastImg[i].ruta+'" alt="imagen subida por el usuario" title="Pinchame para ver la información.">';
+                    sep += '</figure>';
+                }
                                
             }
         sep += '</section>';
@@ -232,7 +253,7 @@ function cargarImgEliminar(objImgEliminar){
                '</figure>'+
                '<section class="contenedor">'+
                '<label for="txtModificar" >Modifica la descripcion y dale a OK</label>'+
-               '<input type="text" name="txtModificar" id="txtModificar" maxlength="25" value="'+objImgEliminar[0].texto+'">'+
+               '<input type="text" name="txtModificar" id="txtModificar" maxlength="70" value="'+objImgEliminar[0].texto+'">'+
                '<label><span class="cnt">0</span></label>'+
                '</section>'+
                '<section id="btns_registrar">'+
@@ -244,6 +265,32 @@ function cargarImgEliminar(objImgEliminar){
     imgSeleccionada.innerHTML = "";
     imgSeleccionada.innerHTML = form;
 //fin cargarImgEliminar    
+}
+
+
+/**
+ * Metodo que carga los post
+ * @returns {ActiveXObject|XMLHttpRequest}
+ */
+
+
+function cargarPost(objPost){
+   
+    
+    var acumulador = "";    
+    for(var i = 0; i < objPost.length; i++){
+       muestro_post = '<section class="cont_post">'+
+       '<h2>'+objPost[i].titulo+'</h2>'+
+       '<section class="cont_usuario"><span class="usuario"><p>El usuario: <span class="resaltar">'+objPost[i].nick+'</span></p></span><span class="tiempo_cambio"><p>Tiempo del cambio <span class="resaltar">'+objPost[i].tiempoCambio+'</span></p></span></section>'+
+       '<figure><img src="photos/'+objPost[i].ruta+'.jpg" alt="Fotos de intercabio de cosas"/></figure><section class="comentario"><textarea class="texto_comentario">'+objPost[i].comentario+'</textarea></section>'+
+       '<span class="fecha_post"><p>Fecha del Anuncio<span class="date">'+objPost[i].fecha+'</span></p></span>'+
+       '</section>';
+        acumulador += muestro_post;
+    }
+    post.innerHTML = "";
+    post.innerHTML = acumulador;
+    acumulador = null;
+//fin cargarPost    
 }
 //------------------------funcion inicializa peticion ----------------------------
   function inicializaPeticion(){

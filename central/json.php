@@ -11,8 +11,9 @@
   header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 
   // -------   Crear la conexión al servidor y ejecutar la consulta.
-  
- 
+    try{
+    
+    $con= Conne::connect();
   
   // -------- párametro opción para determinar la select a realizar -------
 if (isset($_POST['opcion'])) 
@@ -33,8 +34,33 @@ if(isset($_POST['ruta'])){
         if(isset($_GET['ruta'])){
             $ruta = $_GET['ruta'];
         }
-    }    
+    }  
     
+    if($opc == "PPS"){
+        
+                $sql = "SELECT idPost FROM post ORDER BY fechaPost  DESC";
+                $stm = $con->query($sql);
+                $v = $stm->fetchAll();
+                
+                $rs = array();
+               
+                foreach($v as $id){
+               
+                $sqlPost = "select u.nick as nick, prov.nombre as provincia, p.fechaPost as fecha, p.titulo as titulo, img.ruta as ruta, p.titulo as titulo, p.comentario as comentario, tc.tiempo as tiempoCambio
+from usuario AS u, post AS p, imagenes AS img, provincias AS prov, direccion as dir, tiempo_cambio as tc
+where p.idUsuario = u.idUsuario and p.idPost = $id[0] and img.post_idPost = $id[0]
+and dir.provincias_idprovincias = prov.idprovincias 
+and tc.idTiempoCambio = p.tiempo_cambio_idTiempoCambio  limit 1";
+                $stm2 = $con->query($sqlPost);
+                $tmp = $stm2->fetch();
+        
+                 array_push($rs, $tmp);
+                }   
+               
+                echo json_encode($rs);
+        
+    }else{
+
     switch ($opc) {
         case "PP":
             $sql="select nombre from ".TBL_PROVINCIAS.";";     
@@ -54,20 +80,15 @@ if(isset($_POST['ruta'])){
         case "PMI":
             $sql = "SELECT ruta as ruta, texto as texto from ".TBL_IMAGENES." WHERE post_idPost = '".$idPost."' and ruta = '".$ruta."'";
             break;
-    }
-          
-    try{
-        
-        $con= Conne::connect();
+    }   
         $st = $con->query($sql);
         $resultados= $st->fetchAll();
-        Conne::disconnect($con);
+        $datos = $resultados; 
+        echo json_encode($datos);
+       
     
-        
-                $datos = $resultados; // Almacenar en un array cada filas del recordset.
-           
-          echo json_encode($datos);// función de PHP que convierte a formato JSON el array.
-  
+    }
+        Conne::disconnect($con);
     }catch(PDOException $ex){
         Conne::disconnect($con);
         die($ex->getMessage());

@@ -126,7 +126,7 @@ $articulo = new Post(array());
         
     echo '<section class="contenedor">';    
     echo'<label '.ValidoForm::validateField("titulo", $missingFields).' for="titulo">Introduce un titulo para el anuncio. </label> <span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
-    echo'<input type="text" maxlength="30" name="titulo" id="titulo" autofocus placeholder="Máximo 30 caracteres."  value="';if(isset($_SESSION['post']['titulo'])){echo $_SESSION['post']['titulo'];} echo '">'; 
+    echo'<input type="text" maxlength="60" name="titulo" id="titulo" autofocus placeholder="Máximo 60 caracteres."  value="';if(isset($_SESSION['post']['titulo'])){echo $_SESSION['post']['titulo'];} echo '">'; 
     echo'<label><span class="cnt">0</span></label>';
     echo'</section>';
 
@@ -263,7 +263,7 @@ function displayStep2($missingFields){
         
     echo '<section class="contenedor">'; 
     echo'<label  for="figcaption">Introduce una pequeña descripción, se verá junto a la imagen. </label>';
-    echo'<input type="text" name="figcaption" id="figcaption" placeholder="Una pequeña descripción" maxlength="25" value="" >'; 
+    echo'<input type="text" name="figcaption" id="figcaption" placeholder="Una pequeña descripción" maxlength="70" value="" >'; 
         echo'<label><span class="cnt">0</span></label>';
         echo '</section>';
         
@@ -358,9 +358,8 @@ function ingresarImagenes(){
     
     //Incrementamos el contador del total de fotos
     //Si ha habido un error mostramos la pagina de error
-    if($result){
-         $_SESSION['contador'] = $_SESSION['contador'] + 1;
-    } else{
+    if(!$result){
+       
         mostrarError();
         exit();      
     }
@@ -421,22 +420,22 @@ function processForm($requiredFields, $st){
             case 'step1':
                 $_SESSION['post']['seccion'] = isset($_POST['seccion']) ? $_POST['seccion'] : "";
                 $_SESSION['post']['tiempoCambio'] = isset($_POST['tiempoCambio']) ? $_POST['tiempoCambio'] : "";
-                $_SESSION['post']['titulo'] = isset($_POST["titulo"]) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´ áéíóúäëïöü]/", "", $_POST["titulo"]) : "";       
-                $_SESSION['post']['comentario'] = isset($_POST['comentario']) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´ áéíóúäëïöü]/", "", $_POST["comentario"]) : "";
+                $_SESSION['post']['titulo'] = isset($_POST["titulo"]) ? preg_replace("/[^\-\_a-zA-Z0-9.,`'´ ñÑáéíóúäëïöü]/", "", $_POST["titulo"]) : "";       
+                $_SESSION['post']['comentario'] = isset($_POST['comentario']) ? preg_replace("/[^\-\_a-zA-Z0-9.,ºª`'´ Ññáéíóúäëïöü]/", "", $_POST["comentario"]) : "";
                 $_SESSION['post']['precio'] = isset($_POST['precio']) ? preg_replace("/[^\-\_a-zAZ0-9., €$]/", "", $_POST["precio"]) : "";
-                $_SESSION['post']['Pa_queridas'][0] = isset($_POST["querida_1"]) ? preg_replace("/[^\-\_a-zAZ0-9., '``'´áéíóúäëïöü]/", "", $_POST["querida_1"]) : "";
-                $_SESSION['post']['Pa_queridas'][1] = isset($_POST["querida_2"]) ? preg_replace("/[^\-\_a-zAZ0-9., `'´áéíóúäëïöü]/", "", $_POST["querida_2"]) : "";
-                $_SESSION['post']['Pa_queridas'][2] = isset($_POST["querida_3"]) ? preg_replace("/[^\-\_a-zAZ0-9., `'´áéíóúäëïöü]/", "", $_POST["querida_3"]) : "";
-                $_SESSION['post']['Pa_queridas'][3] = isset($_POST["querida_4"]) ? preg_replace("/[^\-\_a-zAZ0-9., `'´áéíóúäëïöü]/", "", $_POST["querida_4"]) : "";
-                $_SESSION['post']['Pa_ofrecidas'][0] = isset($_POST["ofrecida_1"]) ? preg_replace("/[^\-\_a-zAZ0-9., `'´áéíóúäëïöü]/", "", $_POST["ofrecida_1"]) : "";
-                $_SESSION['post']['Pa_ofrecidas'][1] = isset($_POST["ofrecida_2"]) ? preg_replace("/[^\-\_a-zAZ0-9., `'´áéíóúäëïöü]/", "", $_POST["ofrecida_2"]) : "";
-                $_SESSION['post']['Pa_ofrecidas'][2] = isset($_POST["ofrecida_3"]) ? preg_replace("/[^\-\_a-zAZ0-9., `'´áéíóúäëïöü]/", "", $_POST["ofrecida_3"]) : "";
-                $_SESSION['post']['Pa_ofrecidas'][3] = isset($_POST["ofrecida_4"]) ? preg_replace("/[^\-\_a-zAZ0-9., `'´áéíóúäëïöü]/", "", $_POST["ofrecida_4"]) : "";
-                
+                $_SESSION['post']['Pa_queridas'][0] = isset($_POST["querida_1"]) ? preg_replace("/[^\-\_a-zA-Z0-9ºª., '``'´ñÑáéíóúäëïöü]/", "", $_POST["querida_1"]) : "";
+                $_SESSION['post']['Pa_queridas'][1] = isset($_POST["querida_2"]) ? preg_replace("/[^\-\_a-zA-Z0-9ºª., `'´Ññáéíóúäëïöü]/", "", $_POST["querida_2"]) : "";
+                $_SESSION['post']['Pa_queridas'][2] = isset($_POST["querida_3"]) ? preg_replace("/[^\-\_a-zA-Z0-9ºª., `'´ñÑáéíóúäëïöü]/", "", $_POST["querida_3"]) : "";
+                $_SESSION['post']['Pa_queridas'][3] = isset($_POST["querida_4"]) ? preg_replace("/[^\-\_a-zA-Z0-9ºª., `'´Ññáéíóúäëïöü]/", "", $_POST["querida_4"]) : "";
+                $_SESSION['post']['Pa_ofrecidas'][0] = isset($_POST["ofrecida_1"]) ? preg_replace("/[^\-\_a-zA-Z0-9ºª., `'´ñÑáéíóúäëïöü]/", "", $_POST["ofrecida_1"]) : "";
+                $_SESSION['post']['Pa_ofrecidas'][1] = isset($_POST["ofrecida_2"]) ? preg_replace("/[^\-\_a-zA-Z0-9ºª., `'´Ññáéíóúäëïöü]/", "", $_POST["ofrecida_2"]) : "";
+                $_SESSION['post']['Pa_ofrecidas'][2] = isset($_POST["ofrecida_3"]) ? preg_replace("/[^\-\_a-zA-Z0-9ºª., `'´ñÑáéíóúäëïöü]/", "", $_POST["ofrecida_3"]) : "";
+                $_SESSION['post']['Pa_ofrecidas'][3] = isset($_POST["ofrecida_4"]) ? preg_replace("/[^\-\_a-zA-Z0-9ºª., `'´Ññáéíóúäëïöü]/", "", $_POST["ofrecida_4"]) : "";
+               
                 break;
             
             case 'step2':
-                $_SESSION['post']['figcaption'] = isset($_POST['figcaption']) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´ áéíóúäëïöü]/", "", $_POST["figcaption"]) : ""; 
+                $_SESSION['post']['figcaption'] = isset($_POST['figcaption']) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´ ñÑáéíóúäëïöü]/", "", $_POST["figcaption"]) : ""; 
                 break;
         }
 
@@ -477,7 +476,6 @@ function validarCampos($st){
                     
                     $_SESSION['nuevoSubdirectorio'] = Sistema::crearSubdirectorio("photos/".$_SESSION['user']->getValue('nick'));
                     $test = Sistema::copiarFoto("photos/demo.jpg",$_SESSION['nuevoSubdirectorio']."/demo.jpg");
-                    //echo 'Creamos nuevoSubdiretorio en antes de mandar a insertar articulo: '.$_SESSION['nuevoSubdirectorio'].'<br>';
                     return $test;
                 }
             break;

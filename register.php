@@ -71,16 +71,22 @@ function volverAnterior(){
     if(isset($_POST['primero']) and $_POST['primero'] == "Next >"){
         $requiredFields = array('nick', 'password', 'email');
         processForm($requiredFields, "step1");
+    } elseif(isset($_POST['primero']) and $_POST['primero'] == "Salir"){
+        volverAnterior();
     } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Next >"){
         $requiredFields = array('nombre');
         processForm($requiredFields, "step2");
     } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "< Back"){
         displayStep1(array());
+    } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Salir"){
+        volverAnterior();
     } elseif(isset($_POST['tercero']) and $_POST['tercero'] == "Next >"){
         $requiredFields = array('codPostal');
         processForm($requiredFields, "step3");
     } elseif(isset($_POST['tercero']) and $_POST['tercero'] == "< Back"){
         displayStep2(array());
+    } elseif(isset($_POST['tercero']) and $_POST['tercero'] == "Salir"){
+        volverAnterior();
     } elseif(isset($_POST['cuarto']) and $_POST['cuarto'] == "< Back"){
         displayStep3(array());
     } elseif(isset($_POST['cuarto']) and $_POST['cuarto'] == "Aceptar"){
@@ -115,6 +121,7 @@ function displayStep1($missingFields){
     
     echo '<section id="btns_registrar">';
                 echo"<input type='submit' name='primero' id='primero'  value='Next &gt;' >";
+                echo"<input type='submit' name='primero' id='primero'  value='Salir' >";
     echo '</section>';
                     
             echo "</form>";
@@ -147,7 +154,7 @@ function displayStep2($missingFields){
     echo'<label for="apellido_2">Segundo Apellido:</label>';
     echo'<input type="text" name="apellido_2" id="apellido_2" placeholder="Escribe tú apellido"  />';        
     echo'<label '.ValidoForm::validateField("telefono", $missingFields). ' for="telefono">Teléfono:</label><span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
-    echo'<input type="text" name="telefono" id="telefono" placeholder="No será mostrado" value=';if(isset($_SESSION['usuario']['telefono']))echo $_SESSION['usuario']['telefono']; echo ">";
+    echo'<input type="text" name="telefono" id="telefono" placeholder="Teléfono contacto" value=';if(isset($_SESSION['usuario']['telefono']))echo $_SESSION['usuario']['telefono']; echo ">";
         echo'<label for="genero">Selecciona tu sexo:</label>';
 		echo'<select name="genero" id="genero">';			
 		echo'</select>';
@@ -157,6 +164,7 @@ function displayStep2($missingFields){
     echo '<section id="btns_registrar">';
                         echo"<input type='submit' name='segundo' id='segundo'  value='Next &gt;'>";
                         echo"<input type='submit' name='segundo' id='segundo' value='&lt; Back' >";
+                        echo"<input type='submit' name='segundo' id='segundo' value='Salir' >";
     echo"</section>";
                     
             echo "</form>";
@@ -208,6 +216,7 @@ function displayStep3($missingFields){
     echo '<section id="btns_registrar">';
                         echo"<input type='submit' name='tercero' id='tercero'  value='Next &gt;'>";
                         echo"<input type='submit' name='tercero' id='tercero' value='&lt; Back' >";
+                        echo"<input type='submit' name='tercero' id='tercero' value='Salir' >";
     echo"</section>";
                     
             echo "</form>";
@@ -407,7 +416,9 @@ function processForm($requiredFields, $st){
                 return $test;
                    
             case 'step3':
+                    
                     if(!ValidoForm::validarCodPostal($_SESSION['usuario']['codPostal'])){
+                        
                         $mensaje = CODIGO_POSTAL;
                         $test = false;
                          break;
@@ -442,7 +453,6 @@ function processForm($requiredFields, $st){
                 } else {
                     //Si no sube ninguna foto se le asigna la de default
                     $destino = "datos_usuario/".$_SESSION['usuario']['nick'].'/'.$_SESSION['usuario']['nick'].'.jpg';
-                    echo 'destino vale: '.$destino.'<br>';
                     $test = Sistema::crearDirectorio("photos/".$_SESSION['usuario']['nick']);
                     if($test){$test = Sistema::crearDirectorio("datos_usuario/".$_SESSION['usuario']['nick']);}
                     if($test){ $test = Sistema::copiarFoto("datos_usuario/desconocido.jpg", $destino);}
