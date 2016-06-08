@@ -3,7 +3,7 @@
 define("DB_DNS", "mysql:dbname=portal");
 define("DB_USERNAME", "root");
 define("DB_PASSWORD", "");
-define("PAGE_SIZE", 7);
+define("PAGE_SIZE", 5);
 define("TBL_DATOS_USUARIO", "datos_usuario");
 define("TBL_DIRECCION", "direccion");
 define("TBL_GENERO", "genero");

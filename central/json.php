@@ -42,17 +42,35 @@ if(isset($_POST['srcImg'])){
         if(isset($_GET['srcImg'])){
          $idImg = $_GET['srcImg'];
         }
-    }  
+    } 
+    
+//if(isset($_POST['inicio'])){
+//        $inicio = $_POST['inicio'];
+//    } else if (isset($_GET['inicio'])){
+//         $inicio = $_GET['inicio'];   
+//    } else{
+//        $inicio = 1;
+//    }
     
     
     if($opc == "PPS"){
         
-                $sql = "SELECT idPost FROM post ORDER BY fechaPost  DESC";
-                $stm = $con->query($sql);
+                
+                $sql = "SELECT SQL_CALC_FOUND_ROWS idPost FROM post ORDER BY fechaPost DESC LIMIT :startRow, :numRows";
+                //$sql = "SELECT idPost FROM post ORDER BY fechaPost  DESC";
+                $stm = $con->prepare($sql);
+                $stm->bindValue(":startRow", 1, PDO::PARAM_INT);
+                $stm->bindValue(":numRows", PAGE_SIZE, PDO::PARAM_INT);
+                $stm->execute();
                 $v = $stm->fetchAll();
                 
+                //Calculamos el total final como si  la clausula limit no estuviera
+                $stm = $con->query("SELECT found_rows()  AS totalRows");
+                $row = array ('totalRows' => $stm->fetch());
+                
                 $rs = array();
-               
+                array_push($rs, $row);
+                
                 foreach($v as $id){
                // p.fechaPost as fecha
                 $sqlPost = "select u.nick as nick, prov.nombre as provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, p.titulo as titulo, img.ruta as ruta, p.titulo as titulo, p.comentario as comentario, tc.tiempo as tiempoCambio
@@ -62,12 +80,15 @@ and dir.provincias_idprovincias = prov.idprovincias
 and tc.idTiempoCambio = p.tiempo_cambio_idTiempoCambio  limit 1";
                 $stm2 = $con->query($sqlPost);
                 $tmp = $stm2->fetch();
+                
+                 array_push($rs,$tmp);
+                }  
+                
+                
+                 echo json_encode($rs);
         
-                 array_push($rs, $tmp);
-                }   
-               
-                echo json_encode($rs);
-        
+                
+                
     }else if($opc == "SLD"){
             //Nos quedamos con la parte necesaria para sacar de la tabla imagenes el id del post
              $tmpIdImg = strstr($idImg,'/',false);
@@ -94,6 +115,8 @@ and tc.idTiempoCambio = p.tiempo_cambio_idTiempoCambio  limit 1";
              echo json_encode($rutaTextoPbsBuscadas);
         
     }else{
+
+     
     switch ($opc) {
         case "PP":
             $sql="select nombre from ".TBL_PROVINCIAS.";";     
@@ -119,9 +142,9 @@ and tc.idTiempoCambio = p.tiempo_cambio_idTiempoCambio  limit 1";
         $datos = $resultados; 
         echo json_encode($datos);
        
+         Conne::disconnect($con);
     
-    }
-        Conne::disconnect($con);
+    }   
     }catch(PDOException $ex){
         Conne::disconnect($con);
         die($ex->getMessage());

@@ -61,7 +61,7 @@ body{
 }
 img{width: 100%;}
 
-header,section#menu,section#contenedor, nav, footer{
+header,section#menu,section#contenedor,section#resultados, nav, footer{
 	background-color: #fff;
 	color: #FF5917;
 	margin: 1em auto;
@@ -70,6 +70,7 @@ header,section#menu,section#contenedor, nav, footer{
 	padding: .25em;
 	z-index: 5;
 }
+
 
 figure#logo, section#cabecera{
 	display: inline-block;
@@ -226,7 +227,22 @@ aside#publi{
     width: 95%;
 }
 
+/***Para mostrar el total de lementos encontrados*/
+section#resultados{
+    color: #4F628E;
+    font-size: 1em;
+}
+
+section#resultados h3{
+    display:inline-block;
+    text-align: center;
+    text-decoration: underline;
+    width: 40%;
+}
+
+
 section#posts{
+    border: 1px solid red;
     margin: 1em auto;
     width:95%;
     
@@ -541,7 +557,7 @@ form#registro{
     width: 90%;
 }
 
-/*Estilos para cuando un unsuario selecciona una imagen para borrar*/
+/*Estilos para cuando un un usuario selecciona una imagen para borrar*/
 section#mostrarImgSeleccionada{
     padding-bottom: 1em;
     height: 50%;
@@ -551,8 +567,9 @@ section#mostrarImgSeleccionada{
 section#mostrarImgSeleccionada .img_usuario_tmp{
     border: 1px solid red;
     margin: .3em auto;
-    max-width: 200px;
-    width: 80%;
+    width: 250px;
+    max-width: 250px;
+    
 }
 
 section#btns_registrar{

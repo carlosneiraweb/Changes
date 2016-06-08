@@ -25,6 +25,11 @@ window.onload=function(){
      caption = document.getElementsByClassName('caption');
      lista = document.getElementById('lista');
      
+     //Mostramos el total de elementos encontrados
+     resultados = document.getElementById('resultados');
+     //Botonera para desplazarnos por las paginas de resultados
+     btn_navegacion = document.getElementById('btn_navegacion');
+     
         //Capturamos la img sobre la que se ha hecho click
         //Para mostrar el slider con los datos
          $('#cuerpo').on('click','.lanzar', function(e){
@@ -33,14 +38,13 @@ window.onload=function(){
                 cargarPeticion("SLD", "opcion=SLD&srcImg="+src);
             });
      
-     
-         cargarPeticion("PPS", "opcion=PPS");
+           
          cargarPeticion("PP", "opcion=PP");
          cargarPeticion("PG", "opcion=PG");
          cargarPeticion("PS", "opcion=PS");
          cargarPeticion("PT", "opcion=PT");
          cargarPeticion("UI", "opcion=UI&idPost="+idPost);
-       
+         if(typeof(inicio) !== "undefined"){cargarPeticion("PPS", "opcion=PPS&inicio="+inicio)};
 };
      
      
@@ -194,6 +198,7 @@ function cargarPeticion(tipo, parametros){
 
 /*Cargamos las provincias*/
 function cargarProvincias(objProv){
+    //alert(objProv);
     for(var i = 0; i < objProv.length; i++){
         var objTmpP = objProv[i];
       provincias.options.add(new Option(objTmpP.nombre));
@@ -201,6 +206,7 @@ function cargarProvincias(objProv){
 }
 /*Cargamos los tipos de genero*/   
 function cargarGenero(objGene){
+    //alert(objGene);
     for(var i = 0; i < objGene.length; i++){
         var objTmpG = objGene[i];
       genero.options.add(new Option(objTmpG.genero));
@@ -210,6 +216,7 @@ function cargarGenero(objGene){
 
 /*Cargamos las secciones de los artículos*/   
 function cargarSecciones(objSeccion){
+   // alert(objSeccion);
     for(var i = 0; i < objSeccion.length; i++){
         var objTmpS = objSeccion[i];
       seccion.options.add(new Option(objTmpS.nombre_seccion));
@@ -219,6 +226,7 @@ function cargarSecciones(objSeccion){
 
 /*Cargamos el tiempo para el cambio*/   
 function cargarTiempoDeCambio(objTiempoCambio){
+    //alert(objTiempoCambio);
     for(var i = 0; i < objTiempoCambio.length; i++){
         var objTmpTiempoCambio = objTiempoCambio[i];
       tiempoCambio.options.add(new Option(objTmpTiempoCambio.tiempo));
@@ -228,7 +236,7 @@ function cargarTiempoDeCambio(objTiempoCambio){
 
 /*Cargamos la ultima imagen selecionada por el usuario*/
 function cargarUltimaImagen(objLastImg){
-        
+        //alert(objLastImg);
         var sep = '<section id="capturar" class="contenedor_imagenes" >';
         for (var i= 0 ; i < objLastImg.length; i++){
             //Evitamos cualquier posible error
@@ -260,6 +268,7 @@ function cargarUltimaImagen(objLastImg){
 
 
 function cargarImgEliminar(objImgEliminar){
+        //alert(objImgEliminar);
     //Mostramos la capa opca de fondo
     $("#ocultar").removeClass('oculto').addClass('mostrar_transparencia');
     $("#form_post").addClass('noOcupar');
@@ -298,21 +307,34 @@ function cargarImgEliminar(objImgEliminar){
 
 
 function cargarPost(objPost){
-   
+    //alert(objPost);
+    var acumulador ="";    
     
-    var acumulador = "";    
-    for(var i = 0; i < objPost.length; i++){
+    for(var i = 1; i < objPost.length; i++){
+      
        muestro_post = '<section class="cont_post">'+
        '<h2>'+objPost[i].titulo+'</h2>'+
        '<section class="cont_usuario"><span class="usuario"><p>El usuario: <span class="resaltar">'+objPost[i].nick+'</span> de '+objPost[i].provincia+'.</p></span><span class="tiempo_cambio"><p>Tiempo del cambio <span class="resaltar">'+objPost[i].tiempoCambio+'</span></p></span></section>'+
        '<figure  class="lanzar"><img src="photos'+objPost[i].ruta+'.jpg" alt="Fotos de intercabio de cosas"/></figure><section id='+objPost[i].ruta+' class="comentario"><textarea class="texto_comentario">'+objPost[i].comentario+'</textarea></section>'+
        '<span class="fecha_post"><p>Fecha del Anuncio<span class="date">'+objPost[i].fecha+'</span></p></span>'+
        '</section>';
+       
         acumulador += muestro_post;
     }
+    
     post.innerHTML = "";
     post.innerHTML = acumulador;
-    acumulador = null;
+  
+    resultados.innerHTML += '<h3>De un total de '+objPost[0].totalRows[0]+' posts encontrados </h3>';
+   
+    var totalPost = parseInt(objPost[0].totalRows[0]); //total posts
+    var numLi = totalPost / 5;
+    var entero = true;
+    if (numLi % 2 != 0){
+        entero =  false;
+    }
+    //alert(entero);
+    
 //fin cargarPost    
 }
 
@@ -326,7 +348,7 @@ function cargarPost(objPost){
  * */
 
 function cargarSlider(objSlider){
-       
+       //alert(objSlider);
         //Agregamos las imagenes al Slider 
         
         $("#ocultar").removeClass('oculto').addClass('mostrar_transparencia');

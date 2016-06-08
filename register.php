@@ -324,25 +324,25 @@ function processForm($requiredFields, $st){
     
         switch ($st){
             case "step1":
-                $_SESSION['usuario']["nick"] = isset($_POST["nick"]) ? preg_replace("/[^\-\_a-zAZ0-9]/", "", $_POST["nick"]) : "";
-                $_SESSION['usuario']["password"] = isset($_POST["password"]) ? preg_replace("/[^\-\_a-zAZ0-9]/", "", $_POST["password"]) : "";  
+                $_SESSION['usuario']["nick"] = isset($_POST["nick"]) ? preg_replace("/[^\-\_a-zA-Z0-9]/", "", $_POST["nick"]) : "";
+                $_SESSION['usuario']["password"] = isset($_POST["password"]) ? preg_replace("/[^\-\_a-zA-Z0-9]/", "", $_POST["password"]) : "";  
                 $_SESSION['usuario']["email"] = isset($_POST["email"]) ? preg_replace("/[^\@\.\-\_a-zA-Z0-9]/", "", $_POST["email"]) : "";
                     break;
             case "step2":
-                $_SESSION['usuario']["nombre"] = isset($_POST["nombre"])  ? preg_replace("/[^\-\_a-zAZ.,`'´]/", "", $_POST["nombre"]) : "";
-                $_SESSION['usuario']["apellido_1"] = isset($_POST["apellido_1"]) ? preg_replace("/[^\-\_a-zAZ.,`'´]/", "", $_POST["apellido_1"]) : "";
-                $_SESSION['usuario']["apellido_2"] = isset($_POST["apellido_2"]) ? preg_replace("/[^\-\_a-zAZ.,`'´]/", "", $_POST["apellido_2"]) : "";
+                $_SESSION['usuario']["nombre"] = isset($_POST["nombre"])  ? preg_replace("/[^\-\_a-zA-Z.,`'´]/", "", $_POST["nombre"]) : "";
+                $_SESSION['usuario']["apellido_1"] = isset($_POST["apellido_1"]) ? preg_replace("/[^\-\_a-zA-Z.,`'´]/", "", $_POST["apellido_1"]) : "";
+                $_SESSION['usuario']["apellido_2"] = isset($_POST["apellido_2"]) ? preg_replace("/[^\-\_a-zA-Z.,`'´]/", "", $_POST["apellido_2"]) : "";
                 $_SESSION['usuario']["telefono"] = isset($_POST["telefono"]) ?  $_POST["telefono"] : "";
                 $_SESSION['usuario']["genero"] = isset($_POST["genero"]) ? $_POST['genero'] : "" ;
                     break;
             case "step3":
-                $_SESSION['usuario']["calle"] = isset($_POST['calle']) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´]/", "", $_POST["calle"]) : "";
+                $_SESSION['usuario']["calle"] = isset($_POST['calle']) ? preg_replace("/[^\-\_a-zA-Z0-9.,`'´]/", "", $_POST["calle"]) : "";
                 $_SESSION['usuario']["numeroPortal"] = isset($_POST['numeroPortal']) ? preg_replace("/[^\-\_0-9]/", "", $_POST["numeroPortal"]) : "";
-                $_SESSION['usuario']["ptr"] = isset($_POST['ptr']) ? preg_replace("/[^\-\_a-zAZ0-9]/", "", $_POST["ptr"]) : "";
-                $_SESSION['usuario']["ciudad"] = isset($_POST['ciudad']) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´]/", "", $_POST["ciudad"]) : "";
+                $_SESSION['usuario']["ptr"] = isset($_POST['ptr']) ? preg_replace("/[^\-\_a-zA-Z0-9]/", "", $_POST["ptr"]) : "";
+                $_SESSION['usuario']["ciudad"] = isset($_POST['ciudad']) ? preg_replace("/[^\-\_a-zA-Z0-9.,`'´]/", "", $_POST["ciudad"]) : "";
                 $_SESSION['usuario']["codPostal"] = isset($_POST['codPostal']) ? preg_replace("/[^\-\_0-9]/", "", $_POST["codPostal"]) : "";
                 $_SESSION['usuario']["provincia"] = isset($_POST['provincia']) ? $_POST['provincia'] : "";
-                $_SESSION['usuario']["pais"] = isset($_POST['pais']) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´]/", "", $_POST["pais"]) : "";
+                $_SESSION['usuario']["pais"] = isset($_POST['pais']) ? preg_replace("/[^\-\_a-zA-Z0-9.,`'´]/", "", $_POST["pais"]) : "";
                 //cerramos escritura sobre variable de sesion
                 session_write_close();
                 

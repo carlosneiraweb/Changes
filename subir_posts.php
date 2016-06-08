@@ -59,6 +59,7 @@ $articulo = new Post(array());
         
         
     <?php
+        
         echo'<div id="ocultar" class="oculto"> </div>';   
         
         
@@ -163,7 +164,7 @@ $articulo = new Post(array());
                 echo'<br>';
      
                 
-         
+    
     echo '<section class="contenedor">';
     echo'<label  for="Pa_queridas" class="centrar">Introduce 4 palabras por lo que tú estarías interesado en cambiarlo. </label>';
         echo '<section id="buscadas" class="introducir_palabras">';       

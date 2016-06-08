@@ -5,7 +5,8 @@ require_once 'validar/ValidoForm.php';
 
 session_start(); 
 $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
-
+//Iniciamos el total de resultado de la busqueda a 0
+$inicio = isset($_POST["start"]) ? (int)$_POST["start"] : 0;
 ?>
 <!DOCTYPE html>
 
@@ -80,8 +81,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
                     if(isset($_SESSION["user"]) and $_SESSION != ""){
                         echo'<input type="button" id="salirSesion" name="salirSesion" value="Salir Sesion"/>';
                         echo'<input type="button" id="menu" name="menu" value="menu"/>';
-                        //echo'<a href="abandonar_sesion.php">Salir Sesión</a>';
-                        //echo'<a href="">Menú</a>';
+                     
                     }
                
                 echo '</section>';   
@@ -204,17 +204,28 @@ function processForm(){
             echo'</div>';
 	echo'</aside>';
      
+       //Mostramos el conjunto total de resultados
+        echo '<section id="resultados">';
+        //Pasamos al scrip javascript el valor de inicio 
+        //para que balla mostrando apartir del punto en el que estamos
+        echo '<script type="text/javascript">';
+                echo "var inicio = "; echo "'$inicio'".";";
+            echo '</script>';
+        echo '<h3>Estas viendo del <span id="inicio">'.($inicio +1).'</span>  al '.($inicio+PAGE_SIZE).'</h3>';
+  
+        echo'</section>';
+        
+        
     //para los posts
     echo'<section id="posts">';
     
-    
-            
-        echo'</section>';
-       
-	
-    
     echo'</section>';
    
+    echo '<section id="btn_navegacion">';
+    
+    echo '</section>';
+    
+    
       echo '<section id="mostrarSlider" class="oculto">';
       echo '<section class="slider-container-IMG">';
         echo '<h3>Información del Post</h3>';

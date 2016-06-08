@@ -196,7 +196,7 @@ class Usuarios extends DataObj{
      * insert object
      */
     public function insert(){
-        global $total;
+        global $inicio;
         try{
         $con = Conne::connect();
         $sql = "INSERT INTO ".TBL_USUARIO. "(
@@ -269,7 +269,7 @@ class Usuarios extends DataObj{
                                     $st->bindValue(":provincia", $this->data["provincia"], PDO::PARAM_STR);
                                     $st->bindValue(":pais", $this->data["pais"], PDO::PARAM_STR);
                         
-                                    $total = $st->execute();
+                                    $inicio = $st->execute();
                                     
                             } catch (Exception $ex) {
                                     //Si ha ocurrido un error eliminamos al usuario de la tabla
@@ -277,13 +277,13 @@ class Usuarios extends DataObj{
                                     $this->deleteFrom('datos_usuario');
                                     $this->deleteFrom('usuario');
                                     echo 'El error se produce en la línea: '.$ex->getLine().'<br>';
-                                    return $total;
+                                    return $inicio;
                                     
                                     
                             }
 
            Conne::disconnect($con);
-           return $total;
+           return $inicio;
         } catch (Exception $ex) {
             Conne::disconnect($con);
             echo 'El error se produce en la línea: '.$ex->getLine().'<br>';
