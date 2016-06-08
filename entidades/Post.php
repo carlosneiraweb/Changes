@@ -239,7 +239,13 @@ public function insertArticulo(){
         $tmp = strstr($tmp,'.',true);
         $st->bindValue(":post_idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
         $st->bindValue(":ruta",$tmp, PDO::PARAM_STR);
-        $st->bindValue(":texto", $this->data['figcaption'], PDO::PARAM_STR);
+        //En caso el usuario no escriba una descripcion de la imagen
+        if($this->data['figcaption'] == null){
+            $st->bindValue(":texto", " ", PDO::PARAM_STR);  
+        }else{
+            $st->bindValue(":texto", $this->data['figcaption'], PDO::PARAM_STR);
+        }
+        
         
         $test = $st->execute();
          if($test){

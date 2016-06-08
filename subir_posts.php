@@ -435,7 +435,7 @@ function processForm($requiredFields, $st){
                 break;
             
             case 'step2':
-                $_SESSION['post']['figcaption'] = isset($_POST['figcaption']) ? preg_replace("/[^\-\_a-zAZ0-9.,`'´ ñÑáéíóúäëïöü]/", "", $_POST["figcaption"]) : ""; 
+                $_SESSION['post']['figcaption'] = isset($_POST['figcaption']) ? preg_replace("/[^\-\_a-zA-Z0-9.,ºª`'´ ñÑáéíóúäëïöü]/", "", $_POST["figcaption"]) : ""; 
                 break;
         }
 

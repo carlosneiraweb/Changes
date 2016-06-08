@@ -23,6 +23,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
         <script src="validar/formulario_login.js"></script>
         <script src="mostrar/redireccionar.js"></script>
         <script src="mostrar/script.js"></script>
+        <script src="mostrar/main.js"></script>
     <!--Para navegadores viejos-->
         <!--[if lt IE 9]>
             <script
@@ -32,9 +33,9 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
         
    </head>
    <body id="cuerpo">
-       
         <?php
-         
+    
+  
     global $valido;
     $valido = new ValidoForm();
     
@@ -88,8 +89,8 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
      
     echo'</header>';
     
- echo'<div id="ocultar" class="oculto"> </div>';    
-    
+ echo'<div id="ocultar" class="oculto"> </div>'; 
+ 
       //class="oculto login_form_tamanyo"
 function displayFormLogeo($missingFields, $user, $test){
       global $valido;
@@ -101,9 +102,7 @@ function displayFormLogeo($missingFields, $user, $test){
     }else{
        echo 'class="oculto"'; 
     }
-    
-        
-    
+    //cerramos section
     echo '>';
     	 echo'<h4>Introduzca sus datos</h4>';
     echo'<form name="logeo" action="index.php" method="post" id="form_login">';
@@ -167,6 +166,7 @@ function processForm(){
     }
 //fin processForm
 }
+/*
     echo'<nav class="slider-container">';
 	echo'<figure id="derecha">';
 		echo'<img src="img/derecha.png" class="activar" alt="Botones de desplazamiento"/>';
@@ -190,7 +190,7 @@ function processForm(){
 	echo'</figure>';
     echo'</nav>';
    
- 
+ */
     echo'<section id="contenedor">';
     //para la publicidad
     echo'<aside id="publi">';
@@ -208,13 +208,69 @@ function processForm(){
     
             
         echo'</section>';
-        
+       
 	
     
     echo'</section>';
+    ?>
+       <section id="mostrarSlider" class="oculto">
+       <section class="slider-container-IMG">
+           <h3>Datos del Post</h3>
+            <ul id="slider" class="slider-wrapper-IMG">
+              <li class="slide-current">
+                    <img class="cargar">
+                    <div class="caption"></div>
+                </li>
+                
+                <li>
+                    <img class="cargar">
+                    <div class="caption"></div>
+                </li>
+                <li >
+                    <img class="cargar">
+                    <div class="caption"></div>
+                </li>
+                <li >
+                    <img class="cargar">
+                    <div class="caption"></div> 
+                </li>
+                <li >
+                    <img class="cargar">
+                    <div class="caption"></div>
+                   
+                </li>  
+            </ul>
+            
+            <div class="shadow"></div> 
+            
+            <ul id="slider-controls" class="slider-controls">
                
-         
+                <li class="active"></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+              
+            </ul>
+           
+            
+        </section>
+           
+           <section id="buscadas">
+            <h3>Cosas que podrían interesar</h3>
+            <section id="lista"></section>
+           
+            </section>
+          <section id="salir">
+          <input type="button" id="salirSlider" value="Salir">   
+          </section>
+       </section>
+
+
+       <?php        
+        
      echo' <footer>';
+     
     echo' <div class="medidas"><p>Ventana: <span id="span1"></span></div>';
     echo'<div class="medidas">Ancho Supercontenedor: <span id="span2"></span> px</p>';
     /*
@@ -224,4 +280,7 @@ function processForm(){
                 data-url="https://telocambio.es" >Twittear</a>
                     <br/>
         */
+    
     echo'</footer>';
+    echo '</body>';
+    echo '</html>';

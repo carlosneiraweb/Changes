@@ -363,6 +363,7 @@ form input[type="submit"]:hover{
 }
 
         /*Estilos para el menu horizontal*/
+        /*
 .slider-container{
 	margin: 2em auto;
 	padding: .35em;
@@ -370,14 +371,14 @@ form input[type="submit"]:hover{
 }
 
 .slider-wrapper{
-	 display: inline-block;
+	display: inline-block;
 	vertical-align: top;
 	font-weight: bold;
 	list-style: none;
 	margin: .3em;
 	padding: .5em;
 	position: relative;
-	/*overflow: hidden;*/
+	
 	width: 75%;
 }
 
@@ -426,7 +427,7 @@ ul#slider>li>a:active{
 li.slide-current{
 	display:block;
 }
-
+*/
         /* fin estilos menu horizontal*/
  
         /*posicionamos relative el body para centrar los formularios*/
@@ -605,7 +606,7 @@ section#confirmarRegistro input[type="submit"]{
     color: black;
     font-family: 'berry_rotundaregular', Helvetica, sans-serif;
     text-align: center;
-    font-size: 1.5em;
+    font-size: 1.2em;
 }
 
 .cont_usuario{
@@ -690,7 +691,7 @@ section#confirmarRegistro input[type="submit"]{
 
 
 /*Estilo de border redondeado para todos los elementos de la pagina*/
-section#foto_usuario img, .login_form_tamanyo, .registro_form_tamanyo, #ocultar, figure#imagen_error, section#form_registro, section#form_post, .img_usuario_tmp img, section#mostrarImgSeleccionada{
+section#foto_usuario img, .login_form_tamanyo, .registro_form_tamanyo, #ocultar, figure#imagen_error, section#form_registro, section#form_post, .img_usuario_tmp img, section#mostrarImgSeleccionada, section#mostrarSlider{
 	border-radius: 1em;
 	-moz-border-radius: 1em; /* Firefox 3.5 */
         -webkit-border-radius: 1em; /* Google Chrome y Safari */
@@ -780,6 +781,171 @@ footer{
 	background-color: brown;
 
 }
+
+/*************ESTILOS ESLIDER*********************/
+a{
+    color: #00c5b9;
+    text-decoration: none;
+}
+
+ul{
+    list-style-type: none;
+}
+
+/*
+    Encabezado del slider
+*/
+.slider-title{
+    text-align:center;
+    margin:80px 0 40px;
+    font-size: 2.5em;
+}
+
+/**
+    Contenedor del slider
+*/
+section#mostrarSlider{
+    background: white;
+    height: 765px;
+    margin: auto;
+    width: 450px;
+    z-index: 30;
+    position: absolute;
+    top:0;
+    left: 0;
+    right:0;
+    bottom: 0
+}
+.slider-container-IMG{
+    padding: 1em;
+    margin:0 auto;
+    width: 350px;
+}
+
+.slider-container-IMG h3{
+    color: #0C0792;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.slider-wrapper-IMG{
+    background-color: white;
+    position: relative;
+    padding: .3em;
+    height: 370px;
+    width: 95%;
+    border: 5px solid #415066;
+    overflow: hidden;
+}
+
+.slider-wrapper-IMG li{
+    height: 260px;
+    max-height: 260px;
+    width: 95%;
+    display: none;
+    padding: .3em;
+}
+
+li.slide-current{
+    display: block;
+}
+
+.slider-wrapper-IMG li img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+    max-height: 260px;
+}
+
+/*
+    Caption
+*/
+
+.caption{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 12px;
+    background: rgba(0,0,0,0.8); 
+    width: 100%;
+    min-width: 100%;
+}
+
+.caption-title{
+    color: #00c5b9;
+    font-weight:  700;
+    font-size: 1.6em;
+    margin-bottom: 10px;
+}
+
+.caption h3{
+    color: white;
+    margin: 1em auto;
+    padding: .5em;
+    font-size: 1em;
+    line-height: 1em;
+    text-align: center;
+    width: 95%;
+}
+
+
+/*
+    Silder-controls
+*/
+
+.slider-controls{
+    text-align: center;
+    margin-top: 15px;
+}
+
+.slider-controls li{
+    background: #415066;
+    -webkit-border-radious: 50%;
+    -moz-border-radious: 50%;
+    border-radius: 50%;
+    display: inline-block;
+    height: 12px;
+    width: 12px;
+    margin: 0 4px;
+    cursor: pointer;
+}
+
+.slider-controls li.active{
+    background: #00c5b9;
+}
+
+/*Section donde mostramos las palabras interesadas en el cambio*/
+
+section#buscadas{
+    border: 1px solid blue;
+    margin: 1em auto;
+    width: 95%;
+}
+
+section#buscadas h3{
+    font-size: 1.2em;
+    color: #4F628E;
+    text-align: center;
+    text-decoration: underline;
+    padding: .3em;
+}
+
+section#lista{
+    font-size: 1em;
+    margin: .5em auto;
+    text-align: center;
+}
+
+section#salir{
+    margin: .5em auto;
+    width: 125px;
+}
+
+
+/*********************FIN ESTILOS SLIDER ******************************/
+
 
 		/*MediaQuery*/
 

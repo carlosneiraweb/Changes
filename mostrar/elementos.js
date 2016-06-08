@@ -7,12 +7,13 @@ var READY_STATE_INTERACTIVE = 3;
 var READY_STATE_COMPLETE = 4;
 
 var objPro, petPro, objGen, petGen, objSeccion, petSeccion, objTiempoCambio, petTiempoCambio,
-        objLastImg, petLastImg, idPost, petImgEliminar, objImgEliminar, petPost, objPost;
+        objLastImg, petLastImg, idPost, petImgEliminar, objImgEliminar, petPost, objPost,
+        objSlider, petSlider;
 
 var fecha = new Date();
 
 window.onload=function(){
-   
+     X = document.getElementById('cuerpo');
      post = document.getElementById('posts');
      provincias = document.getElementById('provincia');
      genero = document.getElementById('genero');
@@ -20,19 +21,29 @@ window.onload=function(){
      tiempoCambio = document.getElementById('tiempoCambio');
      verImagenes = document.getElementById('cnt_img');
      imgSeleccionada = document.getElementById('mostrarImgSeleccionada');
+     imagenes = document.getElementsByClassName('cargar');
+     caption = document.getElementsByClassName('caption');
+     lista = document.getElementById('lista');
+     
+        //Capturamos la img sobre la que se ha hecho click
+        //Para mostrar el slider con los datos
+         $('#cuerpo').on('click','.lanzar', function(e){
+                var src = $(this).children().attr('src');
+               // alert(src);
+                cargarPeticion("SLD", "opcion=SLD&srcImg="+src);
+            });
      
      
-     
-     cargarPeticion("PPS", "opcion=PPS");
-     cargarPeticion("PP", "opcion=PP");
-     cargarPeticion("PG", "opcion=PG");
-     cargarPeticion("PS", "opcion=PS");
-     cargarPeticion("PT", "opcion=PT");
-     cargarPeticion("UI", "opcion=UI&idPost="+idPost);
-     
-     
+         cargarPeticion("PPS", "opcion=PPS");
+         cargarPeticion("PP", "opcion=PP");
+         cargarPeticion("PG", "opcion=PG");
+         cargarPeticion("PS", "opcion=PS");
+         cargarPeticion("PT", "opcion=PT");
+         cargarPeticion("UI", "opcion=UI&idPost="+idPost);
+       
 };
-
+     
+     
 /*  Metodo que recive el id del post y el id de la imagen
  *      para mostrar por si el usuario quiere eliminar o modificar la descripcion
  *  Los parametros se los mandamos una vez se muestra al usuario la imagen
@@ -96,6 +107,13 @@ function cargarPeticion(tipo, parametros){
            petPost.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petPost.send(parametros);
                 break;   
+        case('SLD'):
+           petSlider = inicializaPeticion();
+           petSlider.onreadystatechange = procesaRespuesta;
+           petSlider.open('POST', "./central/json.php?", true);
+           petSlider.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+           petSlider.send(parametros);
+                break;   
     //fin switch
     }
     
@@ -118,6 +136,8 @@ function cargarPeticion(tipo, parametros){
                     objImgEliminar = JSON.parse(petImgEliminar.responseText);
                 } else if(tipo === 'PPS'){
                     objPost= JSON.parse(petPost.responseText);
+                } else if(tipo === 'SLD'){
+                    objSlider = JSON.parse(petSlider.responseText);
                 }
                 
                 
@@ -155,6 +175,9 @@ function cargarPeticion(tipo, parametros){
                         break;
                 case 'PPS':
                     cargarPost(objPost);
+                        break;
+                case 'SLD':
+                    cargarSlider(objSlider);
                         break;
             //fin switch
             }
@@ -281,8 +304,8 @@ function cargarPost(objPost){
     for(var i = 0; i < objPost.length; i++){
        muestro_post = '<section class="cont_post">'+
        '<h2>'+objPost[i].titulo+'</h2>'+
-       '<section class="cont_usuario"><span class="usuario"><p>El usuario: <span class="resaltar">'+objPost[i].nick+'</span></p></span><span class="tiempo_cambio"><p>Tiempo del cambio <span class="resaltar">'+objPost[i].tiempoCambio+'</span></p></span></section>'+
-       '<figure><img src="photos/'+objPost[i].ruta+'.jpg" alt="Fotos de intercabio de cosas"/></figure><section class="comentario"><textarea class="texto_comentario">'+objPost[i].comentario+'</textarea></section>'+
+       '<section class="cont_usuario"><span class="usuario"><p>El usuario: <span class="resaltar">'+objPost[i].nick+'</span> de '+objPost[i].provincia+'.</p></span><span class="tiempo_cambio"><p>Tiempo del cambio <span class="resaltar">'+objPost[i].tiempoCambio+'</span></p></span></section>'+
+       '<figure  class="lanzar"><img src="photos'+objPost[i].ruta+'.jpg" alt="Fotos de intercabio de cosas"/></figure><section id='+objPost[i].ruta+' class="comentario"><textarea class="texto_comentario">'+objPost[i].comentario+'</textarea></section>'+
        '<span class="fecha_post"><p>Fecha del Anuncio<span class="date">'+objPost[i].fecha+'</span></p></span>'+
        '</section>';
         acumulador += muestro_post;
@@ -292,6 +315,47 @@ function cargarPost(objPost){
     acumulador = null;
 //fin cargarPost    
 }
+
+
+/**
+    Metodo que muestra todo el slider 
+    despues el usuario halla hecho click 
+    sobre una imagen
+ * @returns {ActiveXObject|XMLHttpRequest} 
+ * 
+ * */
+
+function cargarSlider(objSlider){
+       
+        //Agregamos las imagenes al Slider 
+        
+        $("#ocultar").removeClass('oculto').addClass('mostrar_transparencia');
+        $("#mostrarSlider").removeClass('oculto');
+        
+        for(var i = 0; i < objSlider[0].length; i++){
+        var h3 = document.createElement('h3');
+        imagenes[i].setAttribute('src', 'photos'+objSlider[0][i].ruta+'.jpg');
+        var txt = document.createTextNode(objSlider[0][i].texto);
+        h3.appendChild(txt);
+        caption[i].appendChild(h3);
+        
+        }   
+        
+        var ul = '<ol>';
+        for (var i =0; i < objSlider[1].length; i++){
+           ul += '<li>'+objSlider[1][i].pbsQueridas+'</li>'; 
+        }
+        ul += '</ol>';
+        
+        lista.innerHTML ="";
+        lista.innerHTML = ul;
+//fin cargarSlider    
+}
+
+
+
+
+
 //------------------------funcion inicializa peticion ----------------------------
   function inicializaPeticion(){
          var peticion;

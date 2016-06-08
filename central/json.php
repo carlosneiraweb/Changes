@@ -34,7 +34,16 @@ if(isset($_POST['ruta'])){
         if(isset($_GET['ruta'])){
             $ruta = $_GET['ruta'];
         }
+    }
+    
+if(isset($_POST['srcImg'])){
+        $idImg = $_POST['srcImg'];
+    } else {
+        if(isset($_GET['srcImg'])){
+         $idImg = $_GET['srcImg'];
+        }
     }  
+    
     
     if($opc == "PPS"){
         
@@ -59,8 +68,32 @@ and tc.idTiempoCambio = p.tiempo_cambio_idTiempoCambio  limit 1";
                
                 echo json_encode($rs);
         
+    }else if($opc == "SLD"){
+            //Nos quedamos con la parte necesaria para sacar de la tabla imagenes el id del post
+             $tmpIdImg = strstr($idImg,'/',false);
+             $tmpIdImg = strstr($tmpIdImg,'.',true);
+             
+             $sql = 'select post_idPost from imagenes where ruta = "'.$tmpIdImg.'";' ;
+           
+             $smt3 = $con->query($sql);
+             //Recuperamos el id del post
+             $idImgSLD = $smt3->fetch();
+             //Almacenaremos varios arrays para mostrar todos los datos
+             //La ruta de las imagenes, el texto que dscribe la imagen y las palabras buscadas
+             $rutaTextoPbsBuscadas = array();
+             //Recuperamos la ruta de la imagen y la descripcion de cada una
+             $sql = "select ruta, texto from imagenes where post_idPost =".$idImgSLD[0].";";
+             $smt3 = $con->query($sql);
+             $tmpRutaTexto = $smt3->fetchAll();
+             //Recuperamos las palabras queridas o buscadas del usuario
+             $sql ="select palabra as pbsQueridas from pbs_queridas where idPost = ".$idImgSLD[0].";";
+             $smt3 = $con->query($sql);
+             $tmpPbsBuscadas = $smt3->fetchAll();
+             array_push($rutaTextoPbsBuscadas, $tmpRutaTexto, $tmpPbsBuscadas);
+             
+             echo json_encode($rutaTextoPbsBuscadas);
+        
     }else{
-
     switch ($opc) {
         case "PP":
             $sql="select nombre from ".TBL_PROVINCIAS.";";     

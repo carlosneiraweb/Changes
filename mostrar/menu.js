@@ -1,4 +1,4 @@
-      
+    
 $(function(){
        currentSlider = 0,
        nextSlider = 1,
@@ -74,3 +74,4 @@ $(function(){
    
 //fin script
 });
+
