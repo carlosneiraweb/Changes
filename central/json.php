@@ -54,8 +54,8 @@ if(isset($_POST['srcImg'])){
                 $rs = array();
                
                 foreach($v as $id){
-               
-                $sqlPost = "select u.nick as nick, prov.nombre as provincia, p.fechaPost as fecha, p.titulo as titulo, img.ruta as ruta, p.titulo as titulo, p.comentario as comentario, tc.tiempo as tiempoCambio
+               // p.fechaPost as fecha
+                $sqlPost = "select u.nick as nick, prov.nombre as provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, p.titulo as titulo, img.ruta as ruta, p.titulo as titulo, p.comentario as comentario, tc.tiempo as tiempoCambio
 from usuario AS u, post AS p, imagenes AS img, provincias AS prov, direccion as dir, tiempo_cambio as tc
 where p.idUsuario = u.idUsuario and p.idPost = $id[0] and img.post_idPost = $id[0]
 and dir.provincias_idprovincias = prov.idprovincias 

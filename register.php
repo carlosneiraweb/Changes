@@ -68,26 +68,26 @@ function volverAnterior(){
     }
     
     /*Mandamos a comprobar los campos del primer formulario*/
-    if(isset($_POST['primero']) and $_POST['primero'] == "Next >"){
+    if(isset($_POST['primero']) and $_POST['primero'] == "Siguiente"){
         $requiredFields = array('nick', 'password', 'email');
         processForm($requiredFields, "step1");
     } elseif(isset($_POST['primero']) and $_POST['primero'] == "Salir"){
         volverAnterior();
-    } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Next >"){
+    } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Siguiente"){
         $requiredFields = array('nombre');
         processForm($requiredFields, "step2");
-    } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "< Back"){
+    } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Atras"){
         displayStep1(array());
     } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Salir"){
         volverAnterior();
-    } elseif(isset($_POST['tercero']) and $_POST['tercero'] == "Next >"){
+    } elseif(isset($_POST['tercero']) and $_POST['tercero'] == "Siguiente"){
         $requiredFields = array('codPostal');
         processForm($requiredFields, "step3");
-    } elseif(isset($_POST['tercero']) and $_POST['tercero'] == "< Back"){
+    } elseif(isset($_POST['tercero']) and $_POST['tercero'] == "Atras"){
         displayStep2(array());
     } elseif(isset($_POST['tercero']) and $_POST['tercero'] == "Salir"){
         volverAnterior();
-    } elseif(isset($_POST['cuarto']) and $_POST['cuarto'] == "< Back"){
+    } elseif(isset($_POST['cuarto']) and $_POST['cuarto'] == "Atras"){
         displayStep3(array());
     } elseif(isset($_POST['cuarto']) and $_POST['cuarto'] == "Aceptar"){
         $requiredFields = array();
@@ -120,7 +120,7 @@ function displayStep1($missingFields){
     echo'<input type="text" name="email" id="email" placeholder="info@developerji.com" value=';if(isset($_SESSION['usuario']['email'])){echo $_SESSION['usuario']['email'];} echo ">";
     
     echo '<section id="btns_registrar">';
-                echo"<input type='submit' name='primero' id='primero'  value='Next &gt;' >";
+                echo"<input type='submit' name='primero' id='primero'  value='Siguiente' >";
                 echo"<input type='submit' name='primero' id='primero'  value='Salir' >";
     echo '</section>';
                     
@@ -162,8 +162,8 @@ function displayStep2($missingFields){
                 echo'<br>';        
     
     echo '<section id="btns_registrar">';
-                        echo"<input type='submit' name='segundo' id='segundo'  value='Next &gt;'>";
-                        echo"<input type='submit' name='segundo' id='segundo' value='&lt; Back' >";
+                        echo"<input type='submit' name='segundo' id='segundo'  value='Siguiente'>";
+                        echo"<input type='submit' name='segundo' id='segundo' value='Atras' >";
                         echo"<input type='submit' name='segundo' id='segundo' value='Salir' >";
     echo"</section>";
                     
@@ -214,8 +214,8 @@ function displayStep3($missingFields){
     
     
     echo '<section id="btns_registrar">';
-                        echo"<input type='submit' name='tercero' id='tercero'  value='Next &gt;'>";
-                        echo"<input type='submit' name='tercero' id='tercero' value='&lt; Back' >";
+                        echo"<input type='submit' name='tercero' id='tercero'  value='Siguiente'>";
+                        echo"<input type='submit' name='tercero' id='tercero' value='Atras' >";
                         echo"<input type='submit' name='tercero' id='tercero' value='Salir' >";
     echo"</section>";
                     
@@ -248,7 +248,7 @@ function displayStep4($missingFields){
             
     echo '<section id="btns_registrar">';
                         echo"<input type='submit' name='cuarto' id='cuarto'  value='Aceptar'>";
-                        echo"<input type='submit' name='cuarto' id='cuarto' value='&lt; Back' >";
+                        echo"<input type='submit' name='cuarto' id='cuarto' value='Atras' >";
     echo"</section>";
                     
             echo "</form>";

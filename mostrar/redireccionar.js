@@ -4,6 +4,7 @@ $(document).ready(function(){
    $('#volver_intentar').on('click', volverAnterior);
    $("#registrar").on('click', redireccionarRegistrarse);
    $("#salirSlider").on('click', recargarPagina);
+   $("#salirSesion").on('click', salirDeSesion);
    
    function redireccionarSubirPost(){
        
@@ -21,6 +22,10 @@ $(document).ready(function(){
    
    function recargarPagina(){
        location.reload();
+   }
+   
+   function salirDeSesion(){
+       location.href = "abandonar_sesion.php";
    }
    
 });

@@ -84,14 +84,14 @@ $articulo = new Post(array());
     }
     
     /*Mandamos a comprobar los campos del primer formulario*/
-    if(isset($_POST['primero']) and $_POST['primero'] == "Next >"){
+    if(isset($_POST['primero']) and $_POST['primero'] == "Siguiente"){
         $requiredFields = array('seccion', 'comentario', 'Pa_queridas', 'Pa_ofrecidas');
         processForm($requiredFields, "step1");
     } elseif(isset($_POST['segundo']) and $_POST['segundo'] === "Enviar"){     
          //El usario quiere subir una foto al post
         $requiredFields = array();
         processForm($requiredFields, "step2");
-    } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "< Back"){
+    } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Atras"){
         //Esto significa que el usuario ha dado un paso atras en el formulario
         //Lo que hacemos es actualizar los datos, no volver a registrarlo
         $_SESSION['atras'] = 'atras'; //Ver ingresarPost
@@ -196,7 +196,7 @@ $articulo = new Post(array());
     echo '</section>';
            
     echo '<section id="btns_registrar">';    
-        echo"<input type='submit' name='primero' id='primero'  value='Next &gt' >";
+        echo"<input type='submit' name='primero' id='primero'  value='Siguiente' >";
     echo '<section>';
     
         //Mostramos cualquier errror al validar el formulario            
@@ -271,7 +271,7 @@ function displayStep2($missingFields){
     echo '<section id="btns_registrar">';
         
         
-                        echo"<input type='submit' name='segundo' id='segundo'  value='&lt; Back'>";
+                        echo"<input type='submit' name='segundo' id='segundo'  value='Atras'>";
                     if($_SESSION['contador'] < 5){
                         echo"<input type='submit' name='segundo' id='segundo'  value='Enviar'>";
                     }    

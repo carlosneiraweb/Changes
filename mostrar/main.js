@@ -4,7 +4,7 @@ $(function(){
        //creamos objeto contiene el slider
        var pb = {};
        //le agregamos el slider
-       pb.el = $('#slider');
+       pb.el = $('#sliderImg');
        //le agregamos los elementos items
        pb.items = {
            //los items van en un array

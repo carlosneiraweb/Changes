@@ -1,4 +1,4 @@
-insert into provincias (nombre) values('Otro');
+insert into provincias (nombre) values('Otro lugar');
 insert into provincias (nombre) values('Alava');
 insert into provincias (nombre) values('Albacete');
 insert into provincias (nombre) values('Alicante');

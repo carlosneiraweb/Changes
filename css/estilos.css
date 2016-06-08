@@ -123,30 +123,21 @@ section#btns_sesion{
                 width: 60%;
                 margin: .8em auto;
 }
-input[type="button"], section#btns_sesion a{
+input[type="button"]{
 	cursor: pointer;
 	color: #0C0792;
 	font-weight: 300;
 	margin: .15em;
 	width: 100px;
-        min-width: 90px;
+        min-width: 100px;
 	border-top: 1px solid #FF5917;
 	border-bottom: 1px solid #FF5917;
 }
 
-
-
-input[type="button"]:hover, section#btns_sesion a:hover{
+input[type="button"]:hover{
 	color: #FF5917;
 	border-top: 1px solid #0C0792;
 	border-bottom: 1px solid #0C0792;
-}
-section#btns_sesion > a{
-    background-color: #F0F0F0;
-    margin-left: 2em;
-    text-decoration: none;
-    text-align: center;
-    min-width: 110px;
 }
 
 
@@ -351,7 +342,7 @@ form input[type="submit"]{
 	min-width: 90px;
 	padding: .5em;
         cursor: pointer;
-	width: 90px;
+	width: 100px;
 	
 }
 form input[type="submit"]:hover{
@@ -363,7 +354,7 @@ form input[type="submit"]:hover{
 }
 
         /*Estilos para el menu horizontal*/
-        /*
+        
 .slider-container{
 	margin: 2em auto;
 	padding: .35em;
@@ -427,7 +418,7 @@ ul#slider>li>a:active{
 li.slide-current{
 	display:block;
 }
-*/
+
         /* fin estilos menu horizontal*/
  
         /*posicionamos relative el body para centrar los formularios*/
@@ -606,7 +597,7 @@ section#confirmarRegistro input[type="submit"]{
     color: black;
     font-family: 'berry_rotundaregular', Helvetica, sans-serif;
     text-align: center;
-    font-size: 1.2em;
+    font-size: 1.1em;
 }
 
 .cont_usuario{
@@ -838,7 +829,7 @@ section#mostrarSlider{
     overflow: hidden;
 }
 
-.slider-wrapper-IMG li{
+.slider-wrapper-IMG>li{
     height: 260px;
     max-height: 260px;
     width: 95%;
@@ -846,7 +837,7 @@ section#mostrarSlider{
     padding: .3em;
 }
 
-li.slide-current{
+.slider-wrapper-IMG>li.slide-current{
     display: block;
 }
 
@@ -887,7 +878,7 @@ li.slide-current{
     font-size: 1em;
     line-height: 1em;
     text-align: center;
-    width: 95%;
+    width: 90%;
 }
 
 
@@ -919,7 +910,6 @@ li.slide-current{
 /*Section donde mostramos las palabras interesadas en el cambio*/
 
 section#buscadas{
-    border: 1px solid blue;
     margin: 1em auto;
     width: 95%;
 }

@@ -78,8 +78,10 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
             echo '<section id="btns_sesion">';
           
                     if(isset($_SESSION["user"]) and $_SESSION != ""){
-                        echo'<a href="abandonar_sesion.php">Salir Sesión</a>';
-                        echo'<a href="">Menú</a>';
+                        echo'<input type="button" id="salirSesion" name="salirSesion" value="Salir Sesion"/>';
+                        echo'<input type="button" id="menu" name="menu" value="menu"/>';
+                        //echo'<a href="abandonar_sesion.php">Salir Sesión</a>';
+                        //echo'<a href="">Menú</a>';
                     }
                
                 echo '</section>';   
@@ -166,7 +168,7 @@ function processForm(){
     }
 //fin processForm
 }
-/*
+
     echo'<nav class="slider-container">';
 	echo'<figure id="derecha">';
 		echo'<img src="img/derecha.png" class="activar" alt="Botones de desplazamiento"/>';
@@ -190,7 +192,7 @@ function processForm(){
 	echo'</figure>';
     echo'</nav>';
    
- */
+ 
     echo'<section id="contenedor">';
     //para la publicidad
     echo'<aside id="publi">';
@@ -212,62 +214,56 @@ function processForm(){
 	
     
     echo'</section>';
-    ?>
-       <section id="mostrarSlider" class="oculto">
-       <section class="slider-container-IMG">
-           <h3>Datos del Post</h3>
-            <ul id="slider" class="slider-wrapper-IMG">
-              <li class="slide-current">
-                    <img class="cargar">
-                    <div class="caption"></div>
-                </li>
+   
+      echo '<section id="mostrarSlider" class="oculto">';
+      echo '<section class="slider-container-IMG">';
+        echo '<h3>Información del Post</h3>';
+            echo '<ul id="sliderImg" class="slider-wrapper-IMG">';
+                echo '<li class="slide-current">';
+                    echo '<img class="cargar">';
+                    echo '<div class="caption"></div>';
+                echo '</li>';
                 
-                <li>
-                    <img class="cargar">
-                    <div class="caption"></div>
-                </li>
-                <li >
-                    <img class="cargar">
-                    <div class="caption"></div>
-                </li>
-                <li >
-                    <img class="cargar">
-                    <div class="caption"></div> 
-                </li>
-                <li >
-                    <img class="cargar">
-                    <div class="caption"></div>
-                   
-                </li>  
-            </ul>
+                echo '<li>';
+                    echo'<img class="cargar">';
+                    echo '<div class="caption"></div>';
+                echo '</li>';
+                echo '<li>';
+                    echo'<img class="cargar">';
+                    echo '<div class="caption"></div>';
+                echo '</li>';
+                echo '<li>';
+                    echo'<img class="cargar">';
+                    echo '<div class="caption"></div>';
+                echo '</li>';
+                echo '<li>';
+                    echo'<img class="cargar">';
+                    echo '<div class="caption"></div>';
+                echo '</li>';
+            echo'</ul>';
             
-            <div class="shadow"></div> 
-            
-            <ul id="slider-controls" class="slider-controls">
+            echo'<ul id="slider-controls" class="slider-controls">';
                
-                <li class="active"></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
+                echo'<li class="active"></li>';
+                    echo'<li></li>';
+                    echo'<li></li>';
+                    echo'<li></li>';
+                    echo'<li></li>';
               
-            </ul>
+            echo'</ul>';
            
             
-        </section>
+        echo '</section>';
            
-           <section id="buscadas">
-            <h3>Cosas que podrían interesar</h3>
-            <section id="lista"></section>
-           
-            </section>
-          <section id="salir">
-          <input type="button" id="salirSlider" value="Salir">   
-          </section>
-       </section>
-
-
-       <?php        
+        echo '<section id="buscadas">';
+            echo'<h3>Cosas que podrían interesar</h3>';
+                echo'<section id="lista"></section>';
+            echo'</section>';
+        echo'<section id="salir">';
+            echo'<input type="button" id="salirSlider" value="Salir">';   
+        echo'</section>';
+       
+        echo'</section>';      
         
      echo' <footer>';
      
