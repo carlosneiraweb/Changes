@@ -226,7 +226,9 @@ public function insertArticulo(){
  * y comntarios de cada imagen subida
  */
  function insertarFotos(){
-          
+  
+    $_SESSION['idImgadenIngresar'] = $this->getValue('idImagen');
+   echo 'en insertar idImagen: '.$_SESSION['idImgadenIngresar'].'<br>';
     try{
         $con = Conne::connect();
         
@@ -235,8 +237,11 @@ public function insertArticulo(){
         $st = $con->prepare($sql);
         //Nos quedamos con la parte imprescindible de la ruta de la imagen
         //Para ocupar menos espacio en la tabla de la bbdd
-        $tmp = strstr($_SESSION['nombreImagen'],'/',false);
-        $tmp = strstr($tmp,'.',true);
+        //El primer caso es si no se ha eliminado ninguna imagen
+        
+            $tmp = strstr($_SESSION['idImgadenIngresar'],'/',false);
+            $tmp = strstr($tmp,'.',true);// $tmp => /admin/1/2
+        echo 'tmp en ingresar vale: '.$tmp.'<br>';
         $st->bindValue(":post_idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
         $st->bindValue(":ruta",$tmp, PDO::PARAM_STR);
         //En caso el usuario no escriba una descripcion de la imagen
@@ -245,12 +250,12 @@ public function insertArticulo(){
         }else{
             $st->bindValue(":texto", $this->data['figcaption'], PDO::PARAM_STR);
         }
+   
         
-        
-        $test = $st->execute();
+         $test = $st->execute();
+        //Si la foto se ha subido con exito el contador de imagenes se incrementa en 1
          if($test){
          $_SESSION['contador'] = $_SESSION['contador'] + 1;
-         
          }
         //                    IMPORTANTE
         //Cuando insertamos una imagen eliminamos de la tabla imagenes
@@ -286,21 +291,41 @@ public function insertArticulo(){
  */
 
 function eliminarImg(){
+    
+        if(!isset($_SESSION['imgTMP']['imagenesBorradas'])){
+            $_SESSION['imgTMP']['imagenesBorradas'][0] = null;
+        } else{
+            echo 'en eliminar imagen si existe imgTMP<BR>';
+        }
      
      try{
+        
         $con = Conne::connect();
         $sql = "DELETE FROM ".TBL_IMAGENES." WHERE post_idPost = :post_idPost and ruta = :url";
         //echo 'Sql eliminarImagen: '.$sql.'<br>';
         $st = $con->prepare($sql);
-        $st->bindValue(":post_idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);       
+        $st->bindValue(":post_idPost", $_SESSION['lastId'][0], PDO::PARAM_INT); 
+        //Iniciamos una variable de sesion para asignarle a la siguiente 
+            //imagen ingresada el nombre de la eliminada.
+            //Creamos un array de arrays por si el usuario quiere
+            // eliminar varias imagenes a la vez
+        
+        for($i = 0; $i< 5; $i++ ){
+            
+            if (empty($_SESSION['imgTMP']['imagenesBorradas'][$i])){
+              $_SESSION['imgTMP']['imagenesBorradas'][$i] = $this->getValue('idImagen');
+                           break;
+            }
+        }
+        
+        
+        //echo 'Hemos borrado la imagen y nos guardamos su id para la siguiente '.$_SESSION['imgTMP'].'<BR>';
         $st->bindValue(":url", $this->getValue('idImagen'), PDO::PARAM_STR);
        
         $test = $st->execute();
         //En caso de ser todo correcto eliminamos la imagen 
         //del sistema y restamos 1 al contador de imagenes
         if($test){
-           
-            
             $test = Sistema::eliminarImagen("photos".$this->getValue('idImagen').".jpg");
             if($test){ $_SESSION['contador'] = $_SESSION['contador'] - 1;}
             

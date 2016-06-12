@@ -59,7 +59,7 @@ if(isset($_POST['srcImg'])){
                 $sql = "SELECT SQL_CALC_FOUND_ROWS idPost FROM post ORDER BY fechaPost DESC LIMIT :startRow, :numRows";
                 //$sql = "SELECT idPost FROM post ORDER BY fechaPost  DESC";
                 $stm = $con->prepare($sql);
-                $stm->bindValue(":startRow", 1, PDO::PARAM_INT);
+                $stm->bindValue(":startRow", 0, PDO::PARAM_INT);
                 $stm->bindValue(":numRows", PAGE_SIZE, PDO::PARAM_INT);
                 $stm->execute();
                 $v = $stm->fetchAll();

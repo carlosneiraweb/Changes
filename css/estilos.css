@@ -170,6 +170,7 @@ h1, section#salir_sesion h2{
 	font-size: 4.5em;
 	text-align: center;
 	text-shadow: 5px 5px 5px rgba(000,000,000,0.7);
+        
 }
 /*Modificamos el tamaño */
 section#salir_sesion h2{
@@ -305,10 +306,10 @@ section#login_form{
         max-height: 385px;
         max-width: 300px;
 	position:absolute;
-	top: 0;
+	top: 30px;
 	left: 0;
 	right: 0;
-	bottom: 0;
+	
 	visibility: visible;
 	z-index: 20;     
 }
@@ -476,19 +477,17 @@ textarea {
 	outline: none;
 	border: 1px solid #f00 !important;
 }
-.bordegris { border: 1px solid #d4d4d; }
+/*.bordegris { border: 1px solid #d4d4d4; }*/
 
 /*Estilos para las imagenes que se muestran segun el usuario va subiendo imagenes*/
 section#img_ingresadas{
-    border: 1px solid black;
     margin:.8em auto;
     padding: .15em;
     width: 95%;
 }
 #contador{
-    border:1px solid blue;
     display:inline-block;
-    vertical-align: middle;
+    vertical-align: bottom;
     font-size: 3em;
     color: #0C0792;
     margin: .3em;
@@ -496,9 +495,9 @@ section#img_ingresadas{
     width: 5%;
 }
 section#cnt_img{
-    border: 1px solid red;
+    border-bottom: 1px solid red;
     display:inline-block;
-    vertical-align: middle;
+    vertical-align: bottom;
     width: 85%;
 }
 .contenedor_imagenes .img_usuario_tmp{
@@ -511,8 +510,8 @@ section#cnt_img{
 }
 
 .img_usuario_tmp img{
-    max-height: 100px;
-    max-width: 100px;
+    max-height: 250px;
+    max-width: 250px;
 }
 
 .img_usuario_tmp :hover{cursor: pointer;}
@@ -602,12 +601,13 @@ section#confirmarRegistro input[type="submit"]{
 
 /****************ESTILOS MOSTRAR LOS POSTS***************/
 .cont_post{
-    border-top: 1px solid #FF5917;
+    /*border-top: 1px solid #FF5917;*/
     color: black;
     margin: 1.3em auto;
     padding: .3em;
     position: relative;
     width: 95%;
+    box-shadow: 5px 5px 5px rgba(000,000,000,0.7);
 }
 
 .cont_post>h2{

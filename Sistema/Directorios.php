@@ -49,7 +49,8 @@ class Sistema {
                         
                 }
                
-            }        
+            }    
+            
             return $test;
            
         //fin validar foto    
@@ -62,8 +63,8 @@ class Sistema {
          */
         final static  function moverImagen($nombreFoto, $nuevoDirectorio){
             $test = null;
-            //echo 'moverImagen nombre foto: '.$nombreFoto.'<br>';
-            //echo 'moverImagen nuevoDirectorio al que mover: '.$nuevoDirectorio.'<br>';
+            echo 'moverImagen nombre Imagen foto: '.$nombreFoto.'<br>';
+            echo 'moverImagen nuevoDirectorio al que mover: '.$nuevoDirectorio.'<br>';
          try{
              $test = move_uploaded_file($nombreFoto, $nuevoDirectorio);
               return $test;  
@@ -90,11 +91,10 @@ class Sistema {
             if (file_exists($ruta)) {
                $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
                $test = false;
-               return $test;
             }  else {
                $test = mkdir($ruta);
-               return $test;
             }
+            return $test;
          }catch(Exception $ex){
             $test = false;
             echo $ex->getMessage();
@@ -114,7 +114,6 @@ class Sistema {
         static function crearSubdirectorio($usuario){
           
         try{
-            //echo 'en crear subdirectorio la ruta recivida es: '.$usuario.'<br>';
             $dir = $usuario;
             $count = 0;
             $nuevoDirectorio;
@@ -156,11 +155,8 @@ class Sistema {
         static function copiarFoto($imagen, $nuevaImagen){
             $test;
             try{
-               //echo 'imagen a copiar: '.$imagen.'<br>';
-               //echo 'imagen copiada: '.$nuevaImagen.'<br>';
                $test =  copy($imagen, $nuevaImagen);
-               //echo 'en copiar foto dice: '.$test.'<br>';
-                return $test; 
+               return $test; 
             } catch (Exception $ex) {
                 $_SESSION['error'] = ERROR_INSERTAR_FOTO;
                 echo $ex->getMessage();
@@ -174,39 +170,94 @@ class Sistema {
         /**
          * Metodo que cambia el nombre de la foto subida 
          * por el usuario para su perfil
-         * @param type $nombre
+         * Recive 2 parametros.
+         * OJO devuelve el nuevo nombre con la extension .jpg cuando se pasa null como 2º parametro
+         * 1º Nombre de la foto para cambiar el nombre
+         * 2º Si lo recive el nombre por el que cambiarlo
+         * 
          */
         final static function renombrarFoto($nombreViejo, $nombreNuevo){
             
-                    //echo 'en renombrar: nombreViejo: '.$nombreViejo.'<br>';
-                    //echo 'en renombrar nombreNuevo: '.$nombreNuevo.'<br>';
-            //Si el nombreNuevo es null este metodo es llamado 
-            //desde subir_post. Lo que hacemos es cambiarle el nombre
-            //de la imagen del usuario de modo que no tengamos problemas
-            //ni por duplicados al insertar ni acentos o signos raros en el nombre de las imagenes
-            if($nombreNuevo == null){
+    echo 'en renombrar: nombreViejo: '.$nombreViejo.'<br>';//datos_usuario/aaaaa/bici2.jpg
+    echo 'en renombrar nombreNuevo: '.$nombreNuevo.'<br>';//admin => $_SESSION['usuario']['nick']
+            
+            if($nombreNuevo === 0){
+                try{
+                    
+                //Extraemos del array de imagenes borradas el ultimo elemento   
+                $ultimaImagenBorrada = array_pop($_SESSION['imgTMP']['imagenesBorradas']);
+                var_dump($ultimaImagenBorrada);
+                    
+                //Nos quedamos con el numero de la imagen, tipo /admin/2/4 => 4
+                //$imgTMP = array_pop($ultimaImagenBorrada);
+                $tmp = explode('/', $ultimaImagenBorrada );
+                //OJO este parametro esta en la tercera posicion
+                var_dump($tmp);
+                $newNombre = $_SESSION['nuevoSubdirectorio'].'/'.$tmp[3].'.jpg';
+                rename($nombreViejo, $newNombre);
+                //Controlamos que el array de Imagenes borradas aun contenga imagenes.
+                    //Si hemos ingresado el primer elemento, destruimos la variable de
+                    //Sesion para que el programa vuelva a funcionar 
+                    //como si el usuario no hubiera borrado ninguna imagen
+                if(count($_SESSION['imgTMP']['imagenesBorradas']) == 0){
+                    unset($_SESSION['imgTMP']);
+                }
+                return $newNombre;
+                
+                }catch(Exception $ex){
+                    $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
+                    $ex->getMessage();
+                }
+
+            }else if($nombreNuevo === 1){
+                echo 'el usuario no ha borrado ninguna imagen<br>';
                 //Renombramos las imagenes por el numero de imagenes en su subdirectorio
-                $_SESSION['nombreNuevo']  = Sistema::contarArchivos($_SESSION['nuevoSubdirectorio']);
-            }else{
-                //En caso de que no sea null se le asigna el nombre pasado
-                $_SESSION['nombreNuevo'] = $nombreNuevo;
-            }
-           
-            try{
-               if($nombreViejo){
-                   $original = basename($nombreViejo);
+                $nombreRenombrado= Sistema::contarArchivos($_SESSION['nuevoSubdirectorio']);
+                try{
+                    
+                if($nombreViejo){
+                   //datos_usuario/admin/indice.jpg
+                   $original = basename($nombreViejo); //quedando en => indice.jpg
+                        // echo 'Nombre viejo despues de pasar por basename '.$original.'<br>';
                    $tmp = strstr($nombreViejo, $original, true);//OJO
-                   $nuevoNombre = $tmp.$_SESSION['nombreNuevo'].'.jpg';
-                   rename($nombreViejo, $nuevoNombre);
+                   //En este paso nos quedamos con la parte del directorio
+                    //datos_usuario/admin/
+                        //echo 'Nombre temporal '.$tmp.'<br>';
+                   $newNombre = $tmp.$nombreRenombrado.'.jpg';
+                    //Le asignamos el nuevo nombre a la parte del directorio substraida antes
+                        //datos_usuario/aaaaa/aaaaa.jpg
+                        //echo 'Nombre nuevo es: '.$nuevoNombre.'<br>';
+                   rename($nombreViejo, $newNombre);
                    
                }
              
-             return $nuevoNombre;
+             return $newNombre;
             } catch (Exception $ex) {
                 $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
                 $ex->getMessage();
             }
 
+            }else{
+                //Si el metodo recive un nombre nuevo se le asigna ese nombre. Esto ocurre
+                    //cuando se registra un usuario y sube una foto de perfil
+                $nombreRenombrado = $nombreNuevo;
+                //datos_usuario/admin/indice.jpg
+                   $original = basename($nombreViejo); //quedando en => indice.jpg
+                        // echo 'Nombre viejo despues de pasar por basename '.$original.'<br>';
+                   $tmp = strstr($nombreViejo, $original, true);//OJO
+                   //En este paso nos quedamos con la parte del directorio
+                    //datos_usuario/admin/
+                        //echo 'Nombre temporal '.$tmp.'<br>';
+                   $newNombre = $tmp.$nombreRenombrado.'.jpg';
+                    //Le asignamos el nuevo nombre a la parte del directorio substraida antes
+                        //datos_usuario/aaaaa/aaaaa.jpg
+                        //echo 'Nombre nuevo es: '.$nuevoNombre.'<br>';
+                   rename($nombreViejo, $newNombre);
+                   
+                   return $newNombre;
+            }
+           
+            
         //fin renombrarImagenes
         }
     
@@ -245,7 +296,7 @@ static function eliminarImagen($ruta){
     $test = true;
     
     try{
-        
+        echo 'Eliminar imagen recive: '.$ruta.'<br>';
         $test = unlink($ruta);
         return $test;
     } catch (Exception $ex) {

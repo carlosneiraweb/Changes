@@ -8,6 +8,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
 //Iniciamos el total de resultado de la busqueda a 0
 $inicio = isset($_POST["start"]) ? (int)$_POST["start"] : 0;
 ?>
+
 <!DOCTYPE html>
 
 <html>

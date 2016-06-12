@@ -4,7 +4,7 @@ function mostrarError(){
     header('Location: mostrar_error.php');
 }
 function volverAnterior(){
-    echo 'la session url vale: '.$_SESSION["url"].'<br>';
+    //echo 'la session url vale: '.$_SESSION["url"].'<br>';
     header('Location:'. $_SESSION["url"]);
 }
 
@@ -437,14 +437,17 @@ function processForm($requiredFields, $st){
                             //Recupreamos el nombre del archivo y ruta
                             $destino = 'datos_usuario/'.$_SESSION['usuario']['nick'].'/'.basename($_FILES['photo']['name']);
                             $foto = $_FILES['photo']['tmp_name'];
-                            //Creamos dos directorios en el sistema
+                                                    //Creamos dos directorios en el sistema
                             //El primero donde almacenamos la foto de su perfil, en el futuro guardaremos mas cosas
-                           //Si ha ido bien creamos el directorio donde el usuario
-                            
+                            //Si ha ido bien creamos el directorio donde al usuario se le almacenaran las imagenes
+                                //de los posts
                             $test = Sistema::crearDirectorio("photos/".$_SESSION['usuario']['nick']);
+                            //Creamos el directorio con la foto de perfil
                             if($test){ $test = Sistema::crearDirectorio("datos_usuario/".$_SESSION['usuario']['nick']);}
+                            //Se mueve la foto de perfil subida
                             if($test){ $test = Sistema::moverImagen($foto, $destino);}
-                            if($test){ $test = Sistema::renombrarFoto($destino, $_SESSION['usuario']['nick']);}  
+                            //La renombramos con su nombre
+                            if($test){ $test = Sistema::renombrarFoto($destino, $_SESSION['usuario']['nick'], false);}  
                             if(!$test){$_SESSION['error'] = ERROR_FOTO_GENERAL;}
                             
                         }else{

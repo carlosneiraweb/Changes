@@ -10,24 +10,20 @@ session_start();
 if(!isset($_SESSION['contador'])){
     $_SESSION['contador'] = 0; 
 }
-
 //Recuperamos la url de la anterior pagina
-$url = $_SESSION["url"];
-
-/**
+$url = $_SESSION["url"]; 
+ /**
  * Metodo que nos devuelve a la pagina anterior
  */
 function volverAnterior(){
     header('Location:'. $_SESSION["url"]);
 }
-
 /**
  * Metodo que nos redirige a la pagina de mostrar error
  */
 function mostrarError(){
     header('Location: mostrar_error.php');
 }
-
 global $articulo;
 $articulo = new Post(array());
 ?>
@@ -88,10 +84,12 @@ $articulo = new Post(array());
     if(isset($_POST['primero']) and $_POST['primero'] == "Siguiente"){
         $requiredFields = array('seccion', 'comentario', 'Pa_queridas', 'Pa_ofrecidas');
         processForm($requiredFields, "step1");
-    } elseif(isset($_POST['segundo']) and $_POST['segundo'] === "Enviar"){     
+    } elseif(isset($_POST['segundo']) and $_POST['segundo'] === "Enviar"){  
+//        $_SESSION['test'] = true;
          //El usario quiere subir una foto al post
         $requiredFields = array();
         processForm($requiredFields, "step2");
+        
     } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Atras"){
         //Esto significa que el usuario ha dado un paso atras en el formulario
         //Lo que hacemos es actualizar los datos, no volver a registrarlo
@@ -100,7 +98,11 @@ $articulo = new Post(array());
     } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Fin"){
         //El usuario ha terminado de ingresar los datos del post
         //Le redirigimos a cualqier url que estubiera
-        //Destruimos la sesion atras y la sesion contador
+        //Destruimos la sesion atras, la sesion contador y si existiera la 
+            //la variable de imagenes borradas
+        if(isset($_SESSION['imgTMP'])){
+            unset($_SESSION['imgTMP']);
+        }
         unset($_SESSION['atras']);
         unset($_SESSION['contador']);
         volverAnterior();
@@ -112,11 +114,8 @@ $articulo = new Post(array());
         displayStep2(array());
     }
 
-    
-    
     function displayStep1($missingFields){
         global $mensaje; 
-        
         
     echo'<section id="form_post">';
                 echo'<h4>Introduzca los datos del artículo</h4>';
@@ -214,7 +213,7 @@ $articulo = new Post(array());
 
 function displayStep2($missingFields){
     global $mensaje; 
-    
+
      //Aqui recuperamos el id del post en el que estamos
         //Se lo pasamos a javascript para que nos muestre 
         //todas las fotos que vamos subiendo via JSON
@@ -301,7 +300,7 @@ function displayStep2($missingFields){
 function ingresarPost(){
     global $articulo;
     
-        
+    
         $articulo = new Post(array(
             "idUsuario" => $_SESSION['user']->getValue('nick'),
             "secciones_idsecciones" => $_SESSION['post']['seccion'],
@@ -331,14 +330,16 @@ function ingresarPost(){
         }else{
             $result = $articulo->insertArticulo();
         }
-        
-        //Si hay algun tipo de error al subir la foto
-                //Redirigimos a la pagina de mostrar error
-                //Para que el usuario vuelva a intentarlo    
+        //En caso de error nos redirige a la pagina de error 
+        //para que el usuario pueda intentarlo otra vez
             if(!$result){
                 mostrarError();
                 exit();
+            } else{
+                //Destruimos el objeto para no ocupar memoria
+                unset($articulo);
             }
+
 //fin ingresarPost    
 }
 
@@ -349,20 +350,21 @@ function ingresarPost(){
  */
 
 function ingresarImagenes(){
-      
+  
     $articulo = new Post(array(
        "figcaption" => $_SESSION['post']['figcaption'],
-       "idImagen" => $_SESSION['nombreImagen']
+       "idImagen" => $_SESSION['idImagen']
     ));
     
     $result = $articulo->insertarFotos();
-    
-    //Incrementamos el contador del total de fotos
-    //Si ha habido un error mostramos la pagina de error
+   //En caso de error nos redirige a la pagina de error 
+        //para que el usuario pueda intentarlo otra vez
     if(!$result){
-       
         mostrarError();
         exit();      
+    }else{
+        //Destruimos el objeto para no ocupar memorio
+        unset($articulo);
     }
     
 //fin ingresarImagenes    
@@ -372,7 +374,7 @@ function ingresarImagenes(){
  * Metodo que actualiza una imagen
  */
 function actualizarImagen(){
-    
+     
     $articulo = new Post(array(
        "figcaption" => $_POST['txtModificar'],
        "idImagen" => $_POST['ruta']
@@ -383,12 +385,14 @@ function actualizarImagen(){
     if(!$result){
         mostrarError();
         exit();
+    } else{
+        //En caso de error nos redirige a la pagina de error 
+        //para que el usuario pueda intentarlo otra vez
+        unset($articulo);
     }
     
 //fin actualizarImagen    
 }
-
-
 
 /**
  * Metodo que elimina una imagen
@@ -406,6 +410,10 @@ function eliminarImagen(){
     if(!$result){
         mostrarError();
         exit();
+    } else{
+        //En caso de error nos redirige a la pagina de error 
+        //para que el usuario pueda intentarlo otra vez
+        unset($articulo);
     }
 //    
 //fin eliminar imagen   
@@ -463,7 +471,7 @@ function validarCampos($st){
     switch ($st){
             
         case("step1"):
-                        
+
                 //Creamos un subdirectorio para almacenar las imagenes 
                 //IMPORTANTE CONOCER EL CONTENIDO DE 'nuevoSubdirectorio' 
                 //Es la usada para mover, copiar, eliminar he ingresar en la bbdd
@@ -473,47 +481,72 @@ function validarCampos($st){
                 //ninguna imagen
                 //Esto solo se hace la primera vez y se evita crearlo otra vez si el usuario 
                 // vuelve atras en el formulario
-                if($_SESSION['contador'] == 0 and !isset($_SESSION['atras'])){
+                if($_SESSION['contador'] == 0 and !isset($_SESSION['atras']) ){
                     
                     $_SESSION['nuevoSubdirectorio'] = Sistema::crearSubdirectorio("photos/".$_SESSION['user']->getValue('nick'));
                     $test = Sistema::copiarFoto("photos/demo.jpg",$_SESSION['nuevoSubdirectorio']."/demo.jpg");
+                    
                     return $test;
                 }
+
             break;
                  
     case('step2'):
         
         $test = false;
-       
-                
+        
         if(isset($_FILES['photoArticulo']['tmp_name']) and $_FILES['photoArticulo']['tmp_name'] != null){
             
             if(Sistema::validarFoto('photoArticulo')){
                
-                //eliminamos la foto que subimos de demo
-                                             
-                if(is_file($_SESSION['nuevoSubdirectorio'].'/demo.jpg')){
-            $test = unlink($_SESSION['nuevoSubdirectorio'].'/demo.jpg');  
-                }
-               
-                    
-            $destino = $_SESSION['nuevoSubdirectorio'].'/'.basename($_FILES['photoArticulo']['name']);                   
-            $foto = $_FILES['photoArticulo']['tmp_name'];
-            $test = Sistema::moverImagen($foto, $destino);
-            //mandamos cambiar el nombre de la imagen
-            if($test){ $_SESSION['nombreImagen'] = Sistema::renombrarFoto($destino, null);}
+                //Si la foto es correcta entonces eliminamos la imagen default 
+                    //que subimos
             
-            }else{
+                if(is_file($_SESSION['nuevoSubdirectorio'].'/demo.jpg')){
+                    $test = unlink($_SESSION['nuevoSubdirectorio'].'/demo.jpg');  
+                }
+                  
+                    $destino = $_SESSION['nuevoSubdirectorio'].'/'.basename($_FILES['photoArticulo']['name']);                   
+                    $foto = $_FILES['photoArticulo']['tmp_name'];
+            
+                        $test = Sistema::moverImagen($foto, $destino);
+                
+            //Comprobamos que subiendo imagenes el usuario no ha eliminado ninguna
+                //Si lo ha hecho le asignamos en el directorio photos/subdirectorio 
+                //Ese nombre
+                if(isset($_SESSION['imgTMP']) and $_SESSION['imgTMP'] != null){
+                    echo 'imgTMP EXISTE Y MANDO RENOMBRAR <BR>';
+                    if($test){ $_SESSION['idImagen'] = Sistema::renombrarFoto($destino, 0);}  
+            
+            //Aqui vamos subiendo las fotos al post mientras el usuario no 
+                //halla eliminado ninguna mientras subia las fotos
+                }elseif (!isset($_SESSION['imgTMP'])){
+            
+                    if($test){ $_SESSION['idImagen'] = Sistema::renombrarFoto($destino, 1);}
+                
+                }
                
                 //Si hay algun tipo de error al subir la foto
                 //Redirigimos a la pagina de mostrar error
                  //Para que el usuario vuelva a intentarlo
-                    mostrarError();
-                   exit();  
+                    if(!$test){
+                        mostrarError();
+                       
+                    }
+            }else{
+                
+                //Si hay algun tipo de error al subir la foto
+                //Redirigimos a la pagina de mostrar error
+                 //Para que el usuario vuelva a intentarlo
+                    if(!$test){
+                        mostrarError();
+                       
+                    }
+                
             }
-        } 
+        }
+        
     }
-    
        
        return $test;
 //fin de validarCampos   
@@ -525,7 +558,7 @@ function validarCampos($st){
     switch ($st){
    
         case 'step1':
-            
+           
             //Si ha habido algun error volvemos a mostrar el paso del formulario
             //  correcto y un mensaje con los campos correspondientes
             if($missingFields || !validarCampos($st)){

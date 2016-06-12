@@ -36,6 +36,7 @@ session_start();
         }
       ?>
       <h4>Puedes volver a intentarlo</h4>
+      
       <input type="button" id="volver_intentar" value="Aceptar"/>
               </section>  
       </section>      

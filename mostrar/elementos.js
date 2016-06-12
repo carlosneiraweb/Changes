@@ -327,12 +327,12 @@ function cargarPost(objPost){
   
     resultados.innerHTML += '<h3>De un total de '+objPost[0].totalRows[0]+' posts encontrados </h3>';
    
-    var totalPost = parseInt(objPost[0].totalRows[0]); //total posts
-    var numLi = totalPost / 5;
-    var entero = true;
-    if (numLi % 2 != 0){
-        entero =  false;
-    }
+//    var totalPost = parseInt(objPost[0].totalRows[0]); //total posts
+//    var numLi = totalPost / 5;
+//    var entero = true;
+//    if (numLi % 2 != 0){
+//        entero =  false;
+//    }
     //alert(entero);
     
 //fin cargarPost    
