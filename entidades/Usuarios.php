@@ -59,7 +59,8 @@ class Usuarios extends DataObj{
             
             if($row) return new Member($row);
         } catch (Exception $ex) {
-            echo $ex->getLine();
+            echo $ex->getLine().'<br>';
+            echo $ex->getFile().'<br>';
             Conne::disconnect($con);
             die("Query failed: ".$ex->getMessage());
         }
@@ -116,6 +117,8 @@ class Usuarios extends DataObj{
             if($row) return new Usuarios($row);    
         } catch(Exception $ex) {
             Conne::disconnect($con);
+            echo $ex->getLine().'<br>';
+            echo $ex->getFile().'<br>';
             die("Query failed: ".$ex->getMessage());
         }
         
@@ -143,6 +146,8 @@ class Usuarios extends DataObj{
             if($row) return new Member($row);    
         } catch(Exception $ex) {
             Conne::disconnect($con);
+            echo $ex->getLine().'<br>';
+            echo $ex->getFile().'<br>';
             die("Query failed: ".$ex->getMessage());
         }
         
@@ -183,7 +188,8 @@ class Usuarios extends DataObj{
         } catch (Exception $ex) {
            echo $ex->getCode();
            echo '<br>';
-           echo $ex->getLine();
+           echo $ex->getLine().'<br>';
+            echo $ex->getFile().'<br>';
            Conne::disconnect($con);
            die("Query failed: ".$ex->getMessage());
         }
@@ -286,7 +292,8 @@ class Usuarios extends DataObj{
            return $inicio;
         } catch (Exception $ex) {
             Conne::disconnect($con);
-            echo 'El error se produce en la línea: '.$ex->getLine().'<br>';
+            echo $ex->getLine().'<br>';
+            echo $ex->getFile().'<br>';
             die("Query failed: ".$ex->getMessage());
         }
    
@@ -314,7 +321,8 @@ class Usuarios extends DataObj{
                 
         } catch (Exception $ex) {
             Conne::disconnect($con);
-            echo 'Error al extraer el id: '.$ex->getLine();
+            echo $ex->getLine().'<br>';
+            echo $ex->getFile().'<br>';
             die("Query failed: ".$ex->getMessage());
         }
    //fin devuelve id     
@@ -347,6 +355,8 @@ class Usuarios extends DataObj{
             Conne::disconnect($con);
         } catch (Exception $ex) {
             Conne::disconnect($con);
+            echo $ex->getLine().'<br>';
+            echo $ex->getFile().'<br>';
             die("Query failed: ".$ex->getMessage());
         }
     //fin delete    

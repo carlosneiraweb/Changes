@@ -226,7 +226,8 @@ public function insertArticulo(){
  * y comntarios de cada imagen subida
  */
  function insertarFotos(){
-  
+    
+      
     $_SESSION['idImgadenIngresar'] = $this->getValue('idImagen');
    echo 'en insertar idImagen: '.$_SESSION['idImgadenIngresar'].'<br>';
     try{
@@ -280,6 +281,9 @@ public function insertArticulo(){
         echo 'El error se produce en la línea: '.$ex->getLine().'<br>';
         die("Query failed: ".$ex->getMessage());
     }
+    
+    
+   
 //fin insertarFotos  
 }
 

@@ -56,7 +56,7 @@ if(isset($_POST['srcImg'])){
     if($opc == "PPS"){
         
                 
-                $sql = "SELECT SQL_CALC_FOUND_ROWS idPost FROM post ORDER BY fechaPost DESC LIMIT :startRow, :numRows";
+                $sql = "SELECT SQL_CALC_FOUND_ROWS idPost FROM post ORDER BY fechaPost ASC LIMIT :startRow, :numRows";
                 //$sql = "SELECT idPost FROM post ORDER BY fechaPost  DESC";
                 $stm = $con->prepare($sql);
                 $stm->bindValue(":startRow", 0, PDO::PARAM_INT);

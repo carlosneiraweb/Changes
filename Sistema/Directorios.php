@@ -105,10 +105,14 @@ class Sistema {
         }
         
          /**
-          * Metodo que cuenta el numero de directorios
+          * Metodo que cuenta el numero de subdirectorios
           * que tiene un usuario. Se utiliza a la hora de crear
-          * uno nuevo asignarle el nombre.
+          * un nuevo POST.
           * Los directorios tienen nombre consecutivo.
+          * Se calcula el total de subdirectorios y se le suma uno para el siguiente.
+          * OJO se vigila que al borrar un POST el directorio
+          * que contenia sus imagenes vuelva a ser asignado. Ya que sino
+          * habría un error al asignar uno nuevo.
           */
             
         static function crearSubdirectorio($usuario){
@@ -117,30 +121,42 @@ class Sistema {
             $dir = $usuario;
             $count = 0;
             $nuevoDirectorio;
+            $test = true; //Bandera para saber cuando se crea el subdirectorio
+            
             if(!($handle = opendir($dir))) die("Cannot open $dir.");
              
                 while($file = readdir($handle)){
-                    if($file != "." && $file != ".."){
-                        if(is_dir($usuario.'/'.$file)){
-                            $count++;
+                    clearstatcache();
+                                    
+                    if($file != "." && $file != ".." ){
+                         $count++;
+                       if(is_dir($usuario.'/'.$file) and file_exists($usuario.'/'.$count)){
+                           //Este directorio ya existe y altamos
+                           continue;
+                           //En el caso que un subdirectorio halla sido borrado al eliminar un POST
+                        } else if(is_dir($usuario.'/'.$file) and !file_exists($usuario.'/'.$count)){
+                            mkdir($usuario.'/'.$count); 
+                            $nuevoDirectorio = $usuario.'/'.$count;
+                            $test = false; //Cambiamos la bandera para que no se cree uno al final
+                            break;
                         }
+                 
                     }
                 }
-            
-            if($count === 0){
-                mkdir($usuario.'/1');
-                $nuevoDirectorio = $usuario.'/1';
-            }else{
-                $nuevo= $count+1;
-                mkdir($usuario.'/'.$nuevo); 
-                $nuevoDirectorio = $usuario.'/'.$nuevo;
+            //Sino ha sido borrado ninguno se suma uno al total de subdirectorios y se crea    
+            if ($test) {
+            echo 'aaaaa<br>';
+            $nuevo = $count + 1;
+            mkdir($usuario.'/'.$nuevo); 
+            $nuevoDirectorio = $usuario.'/'.$nuevo;              
             }
+            echo 'nuevo subdirectorio: '.$nuevoDirectorio.'<br>';
             //echo 'Nuevo Subdirectorio creado en el metodo crearsubdirectorio: '.$nuevoDirectorio.'<br>';
-            //el nuevo subidrectorio creado siempre es: usuario/total directorio => admin/1
+            //el nuevo subidrectorio creado siempre es: usuario/total subdirectorio => admin/1
             return $nuevoDirectorio; 
         }catch(Exception $ex){
             $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-                echo $ex->getMessage();
+            echo $ex->getMessage();
         }
         //fin crearSubdirectorio
 
@@ -275,9 +291,7 @@ class Sistema {
              
                 while($file = readdir($handle)){
                     if($file != "." && $file != ".."){
-                        
                             $count++;
-                        
                     }
                 }
                 

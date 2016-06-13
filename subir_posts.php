@@ -5,6 +5,7 @@ require_once ('entidades/DataObj.php');
 require_once('validar/ValidoForm.php');
 require_once('Sistema/Directorios.php');
 session_start();
+
 //Iniciamos la variable de session contador a 0
 //Iremos incrementando el numero de fotos subidas
 if(!isset($_SESSION['contador'])){
@@ -24,6 +25,7 @@ function volverAnterior(){
 function mostrarError(){
     header('Location: mostrar_error.php');
 }
+
 global $articulo;
 $articulo = new Post(array());
 ?>
@@ -84,9 +86,8 @@ $articulo = new Post(array());
     if(isset($_POST['primero']) and $_POST['primero'] == "Siguiente"){
         $requiredFields = array('seccion', 'comentario', 'Pa_queridas', 'Pa_ofrecidas');
         processForm($requiredFields, "step1");
-    } elseif(isset($_POST['segundo']) and $_POST['segundo'] === "Enviar"){  
-//        $_SESSION['test'] = true;
-         //El usario quiere subir una foto al post
+    } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Enviar" ){    
+        //El usario quiere subir una foto al post
         $requiredFields = array();
         processForm($requiredFields, "step2");
         
@@ -273,6 +274,7 @@ function displayStep2($missingFields){
         
                         echo"<input type='submit' name='segundo' id='segundo'  value='Atras'>";
                     if($_SESSION['contador'] < 5){
+                        $_SESSION['recargar'] = true;
                         echo"<input type='submit' name='segundo' id='segundo'  value='Enviar'>";
                     }    
                         echo"<input type='submit' name='segundo' id='segundo' value='Fin' >";
@@ -350,7 +352,7 @@ function ingresarPost(){
  */
 
 function ingresarImagenes(){
-  
+   
     $articulo = new Post(array(
        "figcaption" => $_SESSION['post']['figcaption'],
        "idImagen" => $_SESSION['idImagen']
@@ -362,9 +364,6 @@ function ingresarImagenes(){
     if(!$result){
         mostrarError();
         exit();      
-    }else{
-        //Destruimos el objeto para no ocupar memorio
-        unset($articulo);
     }
     
 //fin ingresarImagenes    
@@ -389,6 +388,7 @@ function actualizarImagen(){
         //En caso de error nos redirige a la pagina de error 
         //para que el usuario pueda intentarlo otra vez
         unset($articulo);
+        
     }
     
 //fin actualizarImagen    
@@ -576,6 +576,7 @@ function validarCampos($st){
             } else {
                 ingresarImagenes();
                 displayStep2(array());
+                
             }
             
         
