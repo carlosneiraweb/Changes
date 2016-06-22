@@ -38,13 +38,26 @@ window.onload=function(){
                 cargarPeticion("SLD", "opcion=SLD&srcImg="+src);
             });
      
-           
+            
          cargarPeticion("PP", "opcion=PP");
          cargarPeticion("PG", "opcion=PG");
          cargarPeticion("PS", "opcion=PS");
          cargarPeticion("PT", "opcion=PT");
          cargarPeticion("UI", "opcion=UI&idPost="+idPost);
-         if(typeof(inicio) !== "undefined"){cargarPeticion("PPS", "opcion=PPS&inicio="+inicio)};
+         //Inicializamos la variable inicio que mostrara por donde empezar a mostrar los posts
+         if(typeof(inicio) === "undefined"){ inicio = 0};
+         //Limite para controlar los <li> en cada pagina, para la paginacion
+         if(typeof(limite) === "undefined"){ limite = 0};
+         cargarPeticion("PPS", "opcion=PPS&inicio="+inicio);
+         
+         //Cada vez que pulsamos un <li> de navegacion se muestran los siguientes Posts
+            //Esto se limitan con la constante PHP PAGE_SIZE
+        $('#cuerpo').on('click', '.pagina', function(e){
+            var numero = parseInt($(this).text());
+            inicio = numero * PAGESIZE;
+            //alert(inicio);
+            cargarPeticion("PPS", "opcion=PPS&inicio="+inicio);
+        });
 };
      
      
@@ -314,6 +327,7 @@ function cargarPost(objPost){
       
        muestro_post = '<section class="cont_post">'+
        '<h2>'+objPost[i].titulo+'</h2>'+
+       '<h3>'+objPost[i].idPost+'</h3>'+
        '<section class="cont_usuario"><span class="usuario"><p>El usuario: <span class="resaltar">'+objPost[i].nick+'</span> de '+objPost[i].provincia+'.</p></span><span class="tiempo_cambio"><p>Tiempo del cambio <span class="resaltar">'+objPost[i].tiempoCambio+'</span></p></span></section>'+
        '<figure  class="lanzar"><img src="photos'+objPost[i].ruta+'.jpg" alt="Fotos de intercabio de cosas"/></figure><section id='+objPost[i].ruta+' class="comentario"><textarea class="texto_comentario">'+objPost[i].comentario+'</textarea></section>'+
        '<span class="fecha_post"><p>Fecha del Anuncio<span class="date">'+objPost[i].fecha+'</span></p></span>'+
@@ -325,20 +339,34 @@ function cargarPost(objPost){
     post.innerHTML = "";
     post.innerHTML = acumulador;
   
-    resultados.innerHTML += '<h3>De un total de '+objPost[0].totalRows[0]+' posts encontrados </h3>';
+    resultados.innerHTML = '<h3>Se muestran desde '+(inicio+ 1)+' al '+(inicio+ PAGESIZE)+' De un total de '+objPost[0].totalRows[0]+' posts encontrados </h3>';
    
-//    var totalPost = parseInt(objPost[0].totalRows[0]); //total posts
-//    var numLi = totalPost / 5;
-//    var entero = true;
-//    if (numLi % 2 != 0){
-//        entero =  false;
-//    }
-    //alert(entero);
-    
+    //Calculamos el total de <li> que se van a mostrar para navegar por el conjunto de resultados
+    totalPost = parseInt(objPost[0].totalRows[0]); //total posts
+    numLi = totalPost / PAGESIZE; //Numeros de <li>
+    //Si al dividir sale decimal le sumamos un <li>
+    if (numLi % 1 !== 0){
+        numLi++;
+    }
+    //Parseamos a Integer y ya tenemos el total de <li> a mostrar
+    numLi = parseInt(numLi);
+    //Mostramos los primeros <li>, empezamos en 0 y el limite de PAGESIZE
+    mostrarPosts(0);
 //fin cargarPost    
 }
 
-
+//Funcion que recive como parametro por donde empezar a mostrar los  posts
+function mostrarPosts(start){
+    
+    
+    
+    var listaLi = '<ul><li class="atras">Atras</li>';
+    for (z = 0; z < numLi; z++){
+        listaLi += '<li class="pagina">'+z+'</li>';
+    }
+    listaLi +='<li class="adelante">Adelante</ul>';
+    btn_navegacion.innerHTML = listaLi;
+    }
 /**
     Metodo que muestra todo el slider 
     despues el usuario halla hecho click 

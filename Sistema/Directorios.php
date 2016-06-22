@@ -131,7 +131,7 @@ class Sistema {
                     if($file != "." && $file != ".." ){
                          $count++;
                        if(is_dir($usuario.'/'.$file) and file_exists($usuario.'/'.$count)){
-                           //Este directorio ya existe y altamos
+                           //Este directorio ya existe y saltamos
                            continue;
                            //En el caso que un subdirectorio halla sido borrado al eliminar un POST
                         } else if(is_dir($usuario.'/'.$file) and !file_exists($usuario.'/'.$count)){
@@ -145,12 +145,12 @@ class Sistema {
                 }
             //Sino ha sido borrado ninguno se suma uno al total de subdirectorios y se crea    
             if ($test) {
-            echo 'aaaaa<br>';
+            
             $nuevo = $count + 1;
             mkdir($usuario.'/'.$nuevo); 
             $nuevoDirectorio = $usuario.'/'.$nuevo;              
             }
-            echo 'nuevo subdirectorio: '.$nuevoDirectorio.'<br>';
+           
             //echo 'Nuevo Subdirectorio creado en el metodo crearsubdirectorio: '.$nuevoDirectorio.'<br>';
             //el nuevo subidrectorio creado siempre es: usuario/total subdirectorio => admin/1
             return $nuevoDirectorio; 
@@ -190,6 +190,10 @@ class Sistema {
          * OJO devuelve el nuevo nombre con la extension .jpg cuando se pasa null como 2º parametro
          * 1º Nombre de la foto para cambiar el nombre
          * 2º Si lo recive el nombre por el que cambiarlo
+         *  si el segundo parametro es un 0 esque ha eliminado una foto de las que
+         *  ya habia subido, entonces se le asigna una.
+         *  Si recive un 1 es que no ha borrado ninguna imagen y se cuenta el numero total de
+         *  imagenes asignandole el total + 1
          * 
          */
         final static function renombrarFoto($nombreViejo, $nombreNuevo){

@@ -5,8 +5,15 @@ require_once 'validar/ValidoForm.php';
 
 session_start(); 
 $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
-//Iniciamos el total de resultado de la busqueda a 0
-$inicio = isset($_POST["start"]) ? (int)$_POST["start"] : 0;
+//Pasamos a JavaScript el tamaño de paginado de las paginas.
+    //Solo es necesario para mostrarlos ya que es una constante y accedemos 
+    //a ella directamente desde el script JSON
+    //Por donde empezar a mostrar y la URL de la pagina concreta que llama al script JSON
+ echo '<script type="text/javascript">';
+               echo "var PAGESIZE = "; echo PAGE_SIZE;
+ echo '</script>';
+            
+           
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +24,7 @@ $inicio = isset($_POST["start"]) ? (int)$_POST["start"] : 0;
        <title>Tú portal de intercambio</title>
 	<meta name="description" content="Portal para intercambiar las cosas que ya no usas o utilizas por otras que necesitas o te gustan."/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
-	<link href="img/fabicon.ico" rel="icon" type="image/x-icon">
+	<link href="img/fabicon.ico" rel="icon" type="image/x-icon"/>
 	<link rel="stylesheet" href="css/estilos.css"/>
         <script src="jquery-2.2.2.js" type="text/javascript"></script>
         <script src="mostrar/menu.js"></script>	
@@ -207,12 +214,8 @@ function processForm(){
      
        //Mostramos el conjunto total de resultados
         echo '<section id="resultados">';
-        //Pasamos al scrip javascript el valor de inicio 
-        //para que balla mostrando apartir del punto en el que estamos
-        echo '<script type="text/javascript">';
-                echo "var inicio = "; echo "'$inicio'".";";
-            echo '</script>';
-        echo '<h3>Estas viendo del <span id="inicio">'.($inicio +1).'</span>  al '.($inicio+PAGE_SIZE).'</h3>';
+     
+        
   
         echo'</section>';
         
@@ -222,6 +225,8 @@ function processForm(){
     
     echo'</section>';
    
+    
+    //Botones de navegacion
     echo '<section id="btn_navegacion">';
     
     echo '</section>';
@@ -276,9 +281,13 @@ function processForm(){
         echo'</section>';
        
         echo'</section>';      
+     
+    echo "</section>";
+    
+        
         
      echo' <footer>';
-     
+    
     echo' <div class="medidas"><p>Ventana: <span id="span1"></span></div>';
     echo'<div class="medidas">Ancho Supercontenedor: <span id="span2"></span> px</p>';
     /*
