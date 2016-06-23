@@ -67,8 +67,9 @@ if(isset($_POST['inicio'])){
                 array_push($rs, $row);
                 
                 foreach($v as $id){
-               // p.fechaPost 
-                $sqlPost = "select p.idPost, u.nick as nick, prov.nombre as provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, p.titulo as titulo, img.ruta as ruta, p.titulo as titulo, p.comentario as comentario, tc.tiempo as tiempoCambio
+                
+                //$sqlPost = "Select p.idPost from post as p where p.idPost = $id[0]";
+                $sqlPost = "select  u.nick as nick, prov.nombre as provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, p.titulo as titulo, img.ruta as ruta, p.titulo as titulo, p.comentario as comentario, tc.tiempo as tiempoCambio
 from usuario AS u, post AS p, imagenes AS img, provincias AS prov, direccion as dir, tiempo_cambio as tc
 where p.idUsuario = u.idUsuario and p.idPost = $id[0] and img.post_idPost = $id[0]  limit 1";
                 $stm2 = $con->query($sqlPost);
