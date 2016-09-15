@@ -1,7 +1,7 @@
 <?php 
-require_once('entidades/Usuarios.php');
-require_once('entidades/DataObj.php');
-require_once 'validar/ValidoForm.php';
+require_once('../Modelo/Usuarios.php');
+require_once('../Modelo/DataObj.php');
+require_once '../Controlador/Validar/ValidoForm.php';
 
 session_start(); 
 $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
@@ -24,15 +24,15 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
        <title>Tú portal de intercambio</title>
 	<meta name="description" content="Portal para intercambiar las cosas que ya no usas o utilizas por otras que necesitas o te gustan."/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
-	<link href="img/fabicon.ico" rel="icon" type="image/x-icon"/>
-	<link rel="stylesheet" href="css/estilos.css"/>
-        <script src="jquery-2.2.2.js" type="text/javascript"></script>
-        <script src="mostrar/menu.js"></script>	
-        <script src="mostrar/elementos.js"></script>
-        <script src="validar/formulario_login.js"></script>
-        <script src="mostrar/redireccionar.js"></script>
-        <script src="mostrar/script.js"></script>
-        <script src="mostrar/main.js"></script>
+	<link href="../img/fabicon.ico" rel="icon" type="image/x-icon"/>
+	<link rel="stylesheet" href="../css/estilos.css"/>
+        <script src="../Controlador/jquery-2.2.2.js" type="text/javascript"></script>
+        <script src="../Controlador/menu.js"></script>	
+        <script src="../Controlador/elementos.js"></script>
+        <script src="../Controlador/Validar/formulario_login.js"></script>
+        <script src="../Controlador/redireccionar.js"></script>
+        <script src="../Controlador/script.js"></script>
+        <script src="../Controlador/main.js"></script>
     <!--Para navegadores viejos-->
         <!--[if lt IE 9]>
             <script
@@ -64,7 +64,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
     }
     echo'<header>';
 	echo'<figure id="logo" class="fade">';
-		echo'<img src="img/logo.png" alt="Logo del portal"/>';
+		echo'<img src="../img/logo.png" alt="Logo del portal"/>';
 		echo'<figcaption id="titulo">Cambia todo lo que ya no uses.</figcaption>';
 	echo'</figure>';
 	echo'<section id="cabecera">';
@@ -74,7 +74,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
                         if(isset($_SESSION["user"]) and $_SESSION != ""){
                             echo '<section id="foto_usuario">';
                                 echo '<figure id="img_usuario">';
-                                    echo '<img src='."datos_usuario/".$_SESSION['user']->getValue('nick')."/".$_SESSION['user']->getValue('nick').".jpg".' alt="imagen del usuario" />';
+                                    echo '<img src='."../datos_usuario/".$_SESSION['user']->getValue('nick')."/".$_SESSION['user']->getValue('nick').".jpg".' alt="imagen del usuario" />';
                             echo '</section>';
                         }
                 echo'<input type="button" id="ingresar" name="ingresar" value="Ingresar"/>';
@@ -119,9 +119,9 @@ function displayFormLogeo($missingFields, $user, $test){
         echo'<fieldset>';
   
             echo'<legend>Formulario de ingreso</legend>';
-echo'<label '.$valido->validateField("nick", $missingFields). ' for="nick" >Introduce nombre de usuario:</label><span class="obligatorio"><img src="img/obligado.png" ></span>';
+echo'<label '.$valido->validateField("nick", $missingFields). ' for="nick" >Introduce nombre de usuario:</label><span class="obligatorio"><img src="../img/obligado.png" ></span>';
 echo'<input  type="text" name="nick" id="nick" autofocus placeholder="Escribe tú nick" value="'.$user->getValueEncoded("nick").'" ><br></br>';            
-echo'<label '.$valido->validateField("password", $missingFields).' for="password">Introduce tú password</label><span class="obligatorio"><img src="img/obligado.png" ></span>';
+echo'<label '.$valido->validateField("password", $missingFields).' for="password">Introduce tú password</label><span class="obligatorio"><img src="../img/obligado.png" ></span>';
 echo'<input type="password" name="password" id="password" placeholder="Escribe tú password" value="'.$user->getValueEncoded("password").'" ><br><br>';
 
 //Mostramos un error en el login
@@ -179,11 +179,11 @@ function processForm(){
 
     echo'<nav class="slider-container">';
 	echo'<figure id="derecha">';
-		echo'<img src="img/derecha.png" class="activar" alt="Botones de desplazamiento"/>';
+		echo'<img src="../img/derecha.png" class="activar" alt="Botones de desplazamiento"/>';
 	echo'</figure>';
 	
         echo'<figure id="arriba" class="noOcupar">';
-		echo'<img src="img/arriba.png" class="activar" alt="Botones de desplazamiento"/>';
+		echo'<img src="../img/arriba.png" class="activar" alt="Botones de desplazamiento"/>';
         echo'</figure>';	
 	
             echo'<ul id="slider" class="slider-wrapper">';
@@ -193,10 +193,10 @@ function processForm(){
             echo'</ul>';
 	
 	echo'<figure id="abajo" class="noOcupar">';
-		echo'<img src="img/abajo.png" class="activar" alt="Botones de desplazamiento"/>';
+		echo'<img src="../img/abajo.png" class="activar" alt="Botones de desplazamiento"/>';
 	echo'</figure>';
 	echo'<figure id="izquierda" class="slider-controls, ocultar">';
-		echo'<img src="img/izquierda.png" class="activar"  alt="Botones de desplazamiento"/>';
+		echo'<img src="../img/izquierda.png" class="activar"  alt="Botones de desplazamiento"/>';
 	echo'</figure>';
     echo'</nav>';
    

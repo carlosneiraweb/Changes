@@ -5,7 +5,7 @@
  *
  * @author Carlos Neira Sanchez
  */
-require_once('Sistema/Conne.php');
+require_once('../Sistema/Conne.php');
 require_once('DataObj.php');
 
 

@@ -14,16 +14,16 @@ session_start();
     <head>
         <meta charset="UTF-8">
         <title>Error en web</title>
-        <link href="img/fabicon.ico" rel="icon" type="image/x-icon">
-	<link rel="stylesheet" href="css/estilos.css"/>
-        <script src="jquery-2.2.2.js" type="text/javascript"></script>
-        <script src="mostrar/redireccionar.js"></script>
+        <link href="../img/fabicon.ico" rel="icon" type="image/x-icon">
+	<link rel="stylesheet" href="../css/estilos.css"/>
+        <script src="../Controlador/jquery-2.2.2.js" type="text/javascript"></script>
+        <script src="../Controlador/redireccionar.js"></script>
     </head>
     <body class="mi_body">
      
         
       <section id="error">
-      <figure id="imagen_error"><img src="img/error.png" alt="error"></figure>
+      <figure id="imagen_error"><img src="../img/error.png" alt="error"></figure>
       <section id="mensaje_error">
           <h2>Upss <span class="separarLetras">!!!</span> </h2>
       <h3>Hemos tenido un problema.</h3>

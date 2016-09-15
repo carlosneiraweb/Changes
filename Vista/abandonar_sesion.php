@@ -16,8 +16,8 @@ session_start();
         <title>Abandono de sesion</title>
         <meta name="description" content="Portal para intercambiar las cosas que ya no usas o utilizas por otras que necesitas o te gustan."/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
-	<link href="img/fabicon.ico" rel="icon" type="image/x-icon">
-	<link rel="stylesheet" href="css/estilos.css"/>
+	<link href="../img/fabicon.ico" rel="icon" type="image/x-icon">
+	<link rel="stylesheet" href="../css/estilos.css"/>
         <script language="javascript">
             function volverInicio(){
                 // http://localhost/Changes/index.php

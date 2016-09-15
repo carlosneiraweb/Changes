@@ -123,56 +123,56 @@ function cargarPeticion(tipo, parametros){
         case('PP'):
            petPro = inicializaPeticion();
            petPro.onreadystatechange = procesaRespuesta;
-           petPro.open('POST', "./central/json.php?", true);
+           petPro.open('POST', "../Controlador/json.php?", true);
            petPro.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petPro.send(parametros);
                 break;
         case('PG'):
            petGen = inicializaPeticion();
            petGen.onreadystatechange = procesaRespuesta;
-           petGen.open('POST', "./central/json.php?", true);
+           petGen.open('POST', "../Controlador/json.php?", true);
            petGen.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petGen.send(parametros);
                 break;
         case('PS'):
            petSeccion = inicializaPeticion();
            petSeccion.onreadystatechange = procesaRespuesta;
-           petSeccion.open('POST', "./central/json.php?", true);
+           petSeccion.open('POST', "../Controlador/json.php?", true);
            petSeccion.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petSeccion.send(parametros);
                 break;        
         case('PT'):
            petTiempoCambio = inicializaPeticion();
            petTiempoCambio.onreadystatechange = procesaRespuesta;
-           petTiempoCambio.open('POST', "./central/json.php?", true);
+           petTiempoCambio.open('POST', "../Controlador/json.php?", true);
            petTiempoCambio.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petTiempoCambio.send(parametros);
                 break;
         case('UI'):
            petLastImg = inicializaPeticion();
            petLastImg.onreadystatechange = procesaRespuesta;
-           petLastImg.open('POST', "./central/json.php?", true);
+           petLastImg.open('POST', "../Controlador/json.php?", true);
            petLastImg.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petLastImg.send(parametros);
                 break;
         case('PMI'):
            petImgEliminar = inicializaPeticion();
            petImgEliminar.onreadystatechange = procesaRespuesta;
-           petImgEliminar.open('POST', "./central/json.php?", true);
+           petImgEliminar.open('POST', "../Controlador/json.php?", true);
            petImgEliminar.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petImgEliminar.send(parametros);
                 break;
         case('PPS'):
            petPost = inicializaPeticion();
            petPost.onreadystatechange = procesaRespuesta;
-           petPost.open('POST', "./central/json.php?", true);
+           petPost.open('POST', "../Controlador/json.php?", true);
            petPost.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petPost.send(parametros);
                 break;   
         case('SLD'):
            petSlider = inicializaPeticion();
            petSlider.onreadystatechange = procesaRespuesta;
-           petSlider.open('POST', "./central/json.php?", true);
+           petSlider.open('POST', "../Controlador/json.php?", true);
            petSlider.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petSlider.send(parametros);
                 break;   

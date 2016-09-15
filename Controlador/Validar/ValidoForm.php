@@ -2,8 +2,8 @@
 
 //use Usuarios;
 
-    require_once 'entidades/Usuarios.php';
-    require_once 'entidades/DataObj.php';
+    require_once '../Modelo/Usuarios.php';
+    require_once '../Modelo/DataObj.php';
         
         
     class ValidoForm{

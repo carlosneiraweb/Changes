@@ -17,11 +17,12 @@ function volverAnterior(){
        <title>Tú portal de intercambio</title>
 	<meta name="description" content="Portal para intercambiar las cosas que ya no usas o utilizas por otras que necesitas o te gustan."/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
-	<link href="img/fabicon.ico" rel="icon" type="image/x-icon">
-	<link rel="stylesheet" href="css/estilos.css"/>
-        <script src="jquery-2.2.2.js" type="text/javascript"></script>
-        <script src="mostrar/elementos.js"></script>
-        <script src="validar/formulario_reg.js"></script>
+	<link href="../img/fabicon.ico" rel="icon" type="image/x-icon">
+	<link rel="stylesheet" href="../css/estilos.css"/>
+        <script src="../Controlador/jquery-2.2.2.js" type="text/javascript"></script>
+        <script src="../Controlador/elementos.js"></script>
+        <script src="../Controlador/Validar/formulario_reg.js"></script>
+        
     <!--Para navegadores viejos-->
         <!--[if lt IE 9]>
             <script
@@ -34,10 +35,10 @@ function volverAnterior(){
        
         <?php
     
-        require_once('entidades/Usuarios.php');
-        require_once('entidades/DataObj.php');
-        require_once('validar/ValidoForm.php');
-        require_once('Sistema/Directorios.php');
+        require_once('../Modelo/Usuarios.php');
+        require_once('../Modelo/DataObj.php');
+        require_once('../Controlador/Validar/ValidoForm.php');
+        require_once('../Sistema/Directorios.php');
         
         //Variable global para mostrar los errores de validacion
         global $mensaje;
@@ -47,7 +48,7 @@ function volverAnterior(){
  
         echo'<header>';
 	echo'<figure id="logo" class="fade">';
-		echo'<img src="img/logo.png" alt="Logo del portal"/>';
+		echo'<img src="../img/logo.png" alt="Logo del portal"/>';
 		echo'<figcaption id="titulo">Cambia todo lo que ya no uses.</figcaption>';
 	echo'</figure>';
 	echo'<section id="cabecera">';
@@ -110,13 +111,13 @@ function displayStep1($missingFields){
         echo'<fieldset>';
         	echo'<legend>Formulario de Registro Primer Paso</legend>';
         echo"<input type='hidden' name='step' value='1'>";  
-    echo'<label '.ValidoForm::validateField("nick", $missingFields).' for="nick">Introduce nombre de usuario:</label> <span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
+    echo'<label '.ValidoForm::validateField("nick", $missingFields).' for="nick">Introduce nombre de usuario:</label> <span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="text" name="nick" id="nick" autofocus placeholder="Tú nombre usuario"  value=';if(isset($_SESSION['usuario']['nick'])){echo $_SESSION['usuario']['nick'];} echo ">";       
-    echo'<label '.ValidoForm::validateField("password", $missingFields). ' for="password">Introduce tú password</label><span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
+    echo'<label '.ValidoForm::validateField("password", $missingFields). ' for="password">Introduce tú password</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="password" name="password" id="password"  maxlength="12" >';	
-    echo'<label '.ValidoForm::validateField("passReg2", $missingFields). ' for="passReg2">Repite el password</label><span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio" ></span>';
+    echo'<label '.ValidoForm::validateField("passReg2", $missingFields). ' for="passReg2">Repite el password</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio" ></span>';
     echo'<input type="password" name="passReg2" id="passReg2" maxlength="12"  >';       
-    echo'<label '.ValidoForm::validateField("email", $missingFields).' for="email">Email:</label> <span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
+    echo'<label '.ValidoForm::validateField("email", $missingFields).' for="email">Email:</label> <span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="text" name="email" id="email" placeholder="info@developerji.com" value=';if(isset($_SESSION['usuario']['email'])){echo $_SESSION['usuario']['email'];} echo ">";
     
     echo '<section id="btns_registrar">';
@@ -147,13 +148,13 @@ function displayStep2($missingFields){
         echo'<fieldset>';
         	echo'<legend>Formulario de Registro Segundo Paso</legend>';
     echo"<input type='hidden' name='step' value='2'>";
-    echo'<label '.ValidoForm::validateField("nombre", $missingFields). ' for="nombre">Nombre:</label> <span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
+    echo'<label '.ValidoForm::validateField("nombre", $missingFields). ' for="nombre">Nombre:</label> <span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="text" name="nombre" id="nombre" autofocus  placeholder="Escribe tú nombre" value=';if(isset($_SESSION['usuario']['nombre']))echo $_SESSION['usuario']['nombre']; echo ">";
     echo'<label for="apellido_1">Primer Apellido:</label>';
     echo'<input type="text" name="apellido_1" id="apellido_1" placeholder="Escribe tú apellido"  />';
     echo'<label for="apellido_2">Segundo Apellido:</label>';
     echo'<input type="text" name="apellido_2" id="apellido_2" placeholder="Escribe tú apellido"  />';        
-    echo'<label '.ValidoForm::validateField("telefono", $missingFields). ' for="telefono">Teléfono:</label><span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
+    echo'<label '.ValidoForm::validateField("telefono", $missingFields). ' for="telefono">Teléfono:</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="text" name="telefono" id="telefono" placeholder="Teléfono contacto" value=';if(isset($_SESSION['usuario']['telefono']))echo $_SESSION['usuario']['telefono']; echo ">";
         echo'<label for="genero">Selecciona tu sexo:</label>';
 		echo'<select name="genero" id="genero">';			
@@ -196,7 +197,7 @@ function displayStep3($missingFields){
     echo'<input type="text" name="ptr" id="ptr" placeholder="Escribe el número de la puerta"  />';
     echo'<label for="ciudad">Ciudad:</label>';
     echo'<input type="text" name="ciudad" id="ciudad" placeholder="Nombre de tu Localidad"  />';
-    echo'<label for="codPostal">Código Postal:</label><span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
+    echo'<label for="codPostal">Código Postal:</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="text" name="codPostal" id="codPostal" placeholder="Escribe el número del código postal"  maxlength="5" />';
     
     echo'<label for="provincia">Provincia:</label>';
