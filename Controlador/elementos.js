@@ -33,10 +33,10 @@ window.onload=function(){
      btn_navegacion = document.getElementById('btn_navegacion');
      
         //Capturamos la img sobre la que se ha hecho click
-        //Para mostrar el slider con los datos
+        //Para mostrar el slider con los datos de esta
+        
          $('#cuerpo').on('click','.lanzar', function(e){
                 var src = $(this).children().attr('src');
-               // alert(src);
                 cargarPeticion("SLD", "opcion=SLD&srcImg="+src);
             });
      
@@ -263,7 +263,7 @@ function cargarPost(objPost){
        muestro_post = '<section class="cont_post">'+
        '<h2>'+objPost[i].titulo+'</h2>'+
        '<section class="cont_usuario"><span class="usuario"><p>El usuario: <span class="resaltar">'+objPost[i].nick+'</span> de '+objPost[i].provincia+'.</p></span><span class="tiempo_cambio"><p>Tiempo del cambio <span class="resaltar">'+objPost[i].tiempoCambio+'</span></p></span></section>'+
-       '<figure  class="lanzar"><img src="photos'+objPost[i].ruta+'.jpg" alt="Fotos de intercabio de cosas"/></figure><section id='+objPost[i].ruta+' class="comentario"><textarea class="texto_comentario">'+objPost[i].comentario+'</textarea></section>'+
+       '<figure  class="lanzar"><img src="../photos/'+objPost[i].ruta+'.jpg" alt="Fotos de intercambio de cosas"/></figure><section id='+objPost[i].ruta+' class="comentario"><textarea class="texto_comentario">'+objPost[i].comentario+'</textarea></section>'+
        '<span class="fecha_post"><p>Fecha del Anuncio<span class="date">'+objPost[i].fecha+'</span></p></span>'+
        '</section>';
        
@@ -358,8 +358,13 @@ function cargarTiempoDeCambio(objTiempoCambio){
 //fin cargarSecciones   
 }
 
-/*Cargamos la ultima imagen selecionada por el usuario*/
+/**
+* Metodo que muestra la ultima imagen subida por el usuario
+
+ * @param {type} objLastImg
+ * @returns {undefined} */
 function cargarUltimaImagen(objLastImg){
+    
         //alert(objLastImg);
         var sep = '<section id="capturar" class="contenedor_imagenes" >';
         for (var i= 0 ; i < objLastImg.length; i++){
@@ -367,11 +372,11 @@ function cargarUltimaImagen(objLastImg){
                 if(objLastImg[i].ruta == "/demo"){
                    //No mostramos la imagen /demo. Esta imagen aqui es opaca al usuario
                    //Solo se muestra en la pagina principal si el usuario no
-                   //Ha subido ninguna foto.
+                   //Ha subido ninguna foto al Post.
                     continue;
                 }else{
                     sep += "<figure class='img_usuario_tmp'>";
-                    sep += '<img src="photos'+objLastImg[i].ruta+'.jpg" id="'+objLastImg[i].ruta+'" alt="imagen subida por el usuario" title="Pinchame para ver la información.">';
+                    sep += '<img src="../photos/'+objLastImg[i].ruta+'.jpg" id="'+objLastImg[i].ruta+'" alt="imagen subida por el usuario" title="Pinchame para ver la información.">';
                     sep += '</figure>';
                 }
                                
@@ -390,9 +395,15 @@ function cargarUltimaImagen(objLastImg){
 //  cargarUltimaImagen  
 }
 
-
+/**
+* Metodo que muestra la imagen seleccionada por el usuario
+* Para poder modificar la descripcion o eliminar la imagen
+* del post
+ * @param {type} objImgEliminar
+ * @returns {undefined} 
+ * */
 function cargarImgEliminar(objImgEliminar){
-        //alert(objImgEliminar);
+        //alert('objEliminar'+objImgEliminar[0]);
     //Mostramos la capa opca de fondo
     $("#ocultar").removeClass('oculto').addClass('mostrar_transparencia');
     $("#form_post").addClass('noOcupar');
@@ -405,7 +416,7 @@ function cargarImgEliminar(objImgEliminar){
                '<input type="hidden" name="step" value="1">'+
                '<input type="hidden" name="ruta" value="'+objImgEliminar[0].ruta+'">'+
                '<figure class="img_usuario_tmp">'+
-               '<img src="photos'+objImgEliminar[0].ruta+'.jpg" alt="Puedes modificar la imagen o el texto" title="Puedes modificar la descripción y eliminar la imagen.">'+
+               '<img src="../photos/'+objImgEliminar[0].ruta+'.jpg" alt="Puedes modificar la imagen o el texto" title="Puedes modificar la descripción y eliminar la imagen.">'+
                '</figure>'+
                '<section class="contenedor">'+
                '<label for="txtModificar" >Modifica la descripcion y dale a OK</label>'+
@@ -434,7 +445,7 @@ function cargarImgEliminar(objImgEliminar){
  * */
 
 function cargarSlider(objSlider){
-       //alert(objSlider);
+      
         //Agregamos las imagenes al Slider 
         
         $("#ocultar").removeClass('oculto').addClass('mostrar_transparencia');
@@ -442,7 +453,7 @@ function cargarSlider(objSlider){
         
         for(var i = 0; i < objSlider[0].length; i++){
         var h3 = document.createElement('h3');
-        imagenes[i].setAttribute('src', 'photos'+objSlider[0][i].ruta+'.jpg');
+        imagenes[i].setAttribute('src', '../photos/'+objSlider[0][i].ruta+'.jpg');
         var txt = document.createTextNode(objSlider[0][i].texto);
         h3.appendChild(txt);
         caption[i].appendChild(h3);

@@ -1,9 +1,9 @@
 <?php 
-require_once ('entidades/Post.php');
-require_once ('entidades/Usuarios.php');
-require_once ('entidades/DataObj.php');
-require_once('validar/ValidoForm.php');
-require_once('Sistema/Directorios.php');
+require_once ('../Modelo/Post.php');
+require_once ('../Modelo/Usuarios.php');
+require_once ('../Modelo/DataObj.php');
+require_once('../Controlador/Validar/ValidoForm.php');
+require_once('../Sistema/Directorios.php');
 session_start();
 
 //Iniciamos la variable de session contador a 0
@@ -45,12 +45,12 @@ $articulo = new Post(array());
         <link rel='stylesheet' type='text/css' href="css/estilos.css"/>
         <meta name="description" content="Sube lo que quieras cambiar con otras personas."/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
-	<link href="img/fabicon.ico" rel="icon" type="image/x-icon">
-	<link rel="stylesheet" href="css/estilos.css"/>
-        <script src="jquery-2.2.2.js" type="text/javascript"></script>
-        <script src="mostrar/elementos.js"></script>
-        <script src="validar/formulario_reg.js"></script>
-        <script src="validar/contador.js"></script>
+	<link href="../img/fabicon.ico" rel="icon" type="image/x-icon">
+	<link rel="stylesheet" href="../css/estilos.css"/>
+        <script src="../Controlador/jquery-2.2.2.js" type="text/javascript"></script>
+        <script src="../Controlador/elementos.js"></script>
+        <script src="../Controlador/Validar/formulario_reg.js"></script>
+        <script src="../Controlador/Validar/contador.js"></script>
        
     </head>
     <body>
@@ -64,7 +64,7 @@ $articulo = new Post(array());
         echo'<section id="fecha"></section>';
         echo'<header>';
 	echo'<figure id="logo" class="fade">';
-		echo'<img src="img/logo.png" alt="Logo del portal"/>';
+		echo'<img src="../img/logo.png" alt="Logo del portal"/>';
 		echo'<figcaption id="titulo">Cambia todo lo que ya no uses.</figcaption>';
 	echo'</figure>';
 	echo'<section id="cabecera">';
@@ -87,14 +87,16 @@ $articulo = new Post(array());
         $requiredFields = array('seccion', 'comentario', 'Pa_queridas', 'Pa_ofrecidas');
         processForm($requiredFields, "step1");
     } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Enviar" ){    
-        //El usario quiere subir una foto al post
+        //El usario  quiere subir una foto al post
         $requiredFields = array();
         processForm($requiredFields, "step2");
         
     } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Atras"){
         //Esto significa que el usuario ha dado un paso atras en el formulario
         //Lo que hacemos es actualizar los datos, no volver a registrarlo
-        $_SESSION['atras'] = 'atras'; //Ver ingresarPost
+        //Para ello instanciamos una variable de session para que lo tenga en cuenta
+        //Al ingresar en la bbdd
+        $_SESSION['atras'] = 'atras'; 
         displayStep1(array());
     } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Fin"){
         //El usuario ha terminado de ingresar los datos del post
@@ -104,8 +106,11 @@ $articulo = new Post(array());
         if(isset($_SESSION['imgTMP'])){
             unset($_SESSION['imgTMP']);
         }
-        unset($_SESSION['atras']);
-        unset($_SESSION['contador']);
+        
+            unset($_SESSION['atras']);
+            unset($_SESSION['contador']); 
+        
+        
         volverAnterior();
     } elseif(isset($_POST['modificar']) && $_POST['modificar'] == 'Borrar'){
         eliminarImagen();
@@ -126,12 +131,12 @@ $articulo = new Post(array());
         echo"<input type='hidden' name='step' value='1'>"; 
         
     echo '<section class="contenedor">';    
-    echo'<label '.ValidoForm::validateField("titulo", $missingFields).' for="titulo">Introduce un titulo para el anuncio. </label> <span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
+    echo'<label '.ValidoForm::validateField("titulo", $missingFields).' for="titulo">Introduce un titulo para el anuncio. </label> <span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="text" maxlength="60" name="titulo" id="titulo" autofocus placeholder="Máximo 60 caracteres."  value="';if(isset($_SESSION['post']['titulo'])){echo $_SESSION['post']['titulo'];} echo '">'; 
     echo'<label><span class="cnt">0</span></label>';
     echo'</section>';
 
-    echo'<label for="seccion">Seccion:</label> <span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
+    echo'<label for="seccion">Seccion:</label> <span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
  
 	echo'<select name="seccion" id="seccion">';
            
@@ -142,7 +147,7 @@ $articulo = new Post(array());
    
                 
     echo '<section class="contenedor">';
-    echo'<label '.ValidoForm::validateField("comentario", $missingFields). ' for="comentario">Introduce una descripción general del artículo. </label>';
+    echo'<label '.ValidoForm::validateField("comentario", $missingFields). ' for="comentario">Introduce una descripción general del artículo. </label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<textarea maxlength="255" name="comentario" id="comentario" placeholder= "Máximo 255 caracteres." value="';if(isset($_SESSION['post']['comentario'])){echo $_SESSION['post']['comentario'];} echo '">'; 
     echo'</textarea>';
     echo'<label><span class="cnt">0</span></label>';
@@ -150,11 +155,12 @@ $articulo = new Post(array());
     
     echo '<section class="contenedor">';
     echo'<label  for="precio">Introduce un precio aproximado  artículo. </label>';
-    echo'<input type="text" name="precio" id="precio" placeholder="Precio aproximado" value="';if(isset($_SESSION['post']['precio'])){echo $_SESSION['post']['precio'];} echo '">';
+    echo'<input type="text" maxlength="10" name="precio" id="precio" placeholder="Precio aproximado, máximo 10 caracteres." value="';if(isset($_SESSION['post']['precio'])){echo $_SESSION['post']['precio'];} echo '">';
+    echo'<label><span class="cnt">0</span></label>';
     echo'</section>';
     
     
-    echo'<label for="tiempoCambio">Elige por cuanto tiempo deseas hacer el cambio.</label> <span class="obligatorio"><img src="img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
+    echo'<label for="tiempoCambio">Elige por cuanto tiempo deseas hacer el cambio.</label> <span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
  
 	echo'<select name="tiempoCambio" id="tiempoCambio">';
            
@@ -253,7 +259,7 @@ function displayStep2($missingFields){
         echo'<fieldset>';
         	echo'<legend>Introduce alguna imagen.</legend>';
         echo"<input type='hidden' name='step' value='2'>"; 
-        
+        //Limitamos el valor máximo del archivo
         echo'<input type="hidden" name="MAX_FILE_SIZE" value="50000" />';
         echo'<label for="photoArticulo">Solo fotos .jpg</label>';
         echo '<br>';    
@@ -268,7 +274,7 @@ function displayStep2($missingFields){
         echo'<label><span class="cnt">0</span></label>';
         echo '</section>';
         
-        
+   
     echo '<section id="btns_registrar">';
         
         
@@ -325,8 +331,9 @@ function ingresarPost(){
             "fechaPost" => ""        
         ));
         
-        //Por si el usuario quiere cambiar 
-        //algun dato en el paso anterior
+        //Aqui comprobamos que el usuario ya ha ingresado el post
+        // y ha ido un paso atras y ha modificado algun dato
+        
         if(isset($_SESSION['atras'])){           
             $result = $articulo->actualizarArticulo();  
         }else{
@@ -359,13 +366,13 @@ function ingresarImagenes(){
     ));
     
     $result = $articulo->insertarFotos();
-   //En caso de error nos redirige a la pagina de error 
-        //para que el usuario pueda intentarlo otra vez
-    if(!$result){
-        mostrarError();
-        exit();      
-    }
-    
+//   //En caso de error nos redirige a la pagina de error 
+     //para que el usuario pueda intentarlo otra vez
+        if(!$result){
+            mostrarError();
+            exit();      
+        }
+  
 //fin ingresarImagenes    
 }
 
@@ -378,6 +385,7 @@ function actualizarImagen(){
        "figcaption" => $_POST['txtModificar'],
        "idImagen" => $_POST['ruta']
     ));
+    
     
     $result = $articulo->actualizarTexto();
     
@@ -401,8 +409,12 @@ function actualizarImagen(){
 function eliminarImagen(){
     
     $articulo = new Post(array(
-        "idImagen" => $_POST['ruta']
+        //Este ruta sale del script  elementos.js
+        //Ya que el formulario esta generado totalmente con JQUERY
+        //Metodo cargarImgEliminar
+        "idImagen" => $_POST['ruta'] 
     ));
+    
     $result = $articulo->eliminarImg();
     
     //Si ha habido algun error, nos redirige a la pagina que muestra un error
@@ -411,8 +423,7 @@ function eliminarImagen(){
         mostrarError();
         exit();
     } else{
-        //En caso de error nos redirige a la pagina de error 
-        //para que el usuario pueda intentarlo otra vez
+        //Si todo ha ido bien eliminamos el objeto 
         unset($articulo);
     }
 //    
@@ -475,16 +486,16 @@ function validarCampos($st){
                 //Creamos un subdirectorio para almacenar las imagenes 
                 //IMPORTANTE CONOCER EL CONTENIDO DE 'nuevoSubdirectorio' 
                 //Es la usada para mover, copiar, eliminar he ingresar en la bbdd
-                //Su contenido es del tipo photos/nombreUsuario/totalSubdirectorios
+                //Su contenido es del tipo ../photos/nombreUsuario/totalSubdirectorios
                 
                 //Agregamos una foto demo por si el usuario no quiere subir
                 //ninguna imagen
                 //Esto solo se hace la primera vez y se evita crearlo otra vez si el usuario 
-                // vuelve atras en el formulario
+                // vuelve atras en el formulario comprobando que $_SESSION['atras'] no existe
                 if($_SESSION['contador'] == 0 and !isset($_SESSION['atras']) ){
                     
-                    $_SESSION['nuevoSubdirectorio'] = Sistema::crearSubdirectorio("photos/".$_SESSION['user']->getValue('nick'));
-                    $test = Sistema::copiarFoto("photos/demo.jpg",$_SESSION['nuevoSubdirectorio']."/demo.jpg");
+                    $_SESSION['nuevoSubdirectorio'] = Sistema::crearSubdirectorio("../photos/".$_SESSION['user']->getValue('nick'));
+                    $test = Sistema::copiarFoto("../photos/demo.jpg",$_SESSION['nuevoSubdirectorio']."/demo.jpg");
                     
                     return $test;
                 }
@@ -515,9 +526,9 @@ function validarCampos($st){
                 //Si lo ha hecho le asignamos en el directorio photos/subdirectorio 
                 //Ese nombre
                 if(isset($_SESSION['imgTMP']) and $_SESSION['imgTMP'] != null){
-                    echo 'imgTMP EXISTE Y MANDO RENOMBRAR <BR>';
+                    
                     if($test){ $_SESSION['idImagen'] = Sistema::renombrarFoto($destino, 0);}  
-            
+                    
             //Aqui vamos subiendo las fotos al post mientras el usuario no 
                 //halla eliminado ninguna mientras subia las fotos
                 }elseif (!isset($_SESSION['imgTMP'])){
@@ -530,14 +541,10 @@ function validarCampos($st){
                 //Redirigimos a la pagina de mostrar error
                  //Para que el usuario vuelva a intentarlo
                     if(!$test){
-                        mostrarError();
-                       
+                        mostrarError();   
                     }
             }else{
-                
-                //Si hay algun tipo de error al subir la foto
-                //Redirigimos a la pagina de mostrar error
-                 //Para que el usuario vuelva a intentarlo
+                //Si hay algun problema en la validacion mostramos un error
                     if(!$test){
                         mostrarError();
                        

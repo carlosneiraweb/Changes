@@ -3,6 +3,9 @@ session_start();
 function mostrarError(){
     header('Location: mostrar_error.php');
 }
+
+//No podemos usar el redireccionamiento de javascript por que 
+    //Utilizamos la misma url para mostrar los pasos
 function volverAnterior(){
     //echo 'la session url vale: '.$_SESSION["url"].'<br>';
     header('Location:'. $_SESSION["url"]);
@@ -45,7 +48,7 @@ function volverAnterior(){
         //Variable global de usuario, Instanciaremos una vez validado todos los campos
         global $user;
         $user = new Usuarios(array());
- 
+        
         echo'<header>';
 	echo'<figure id="logo" class="fade">';
 		echo'<img src="../img/logo.png" alt="Logo del portal"/>';
@@ -195,7 +198,7 @@ function displayStep3($missingFields){
     echo'<input type="text" name="numeroPortal" id="numeroPortal" placeholder="Escribe el número del portal"  />';
     echo'<label for="ptr">Puerta:</label>';
     echo'<input type="text" name="ptr" id="ptr" placeholder="Escribe el número de la puerta"  />';
-    echo'<label for="ciudad">Ciudad:</label>';
+    echo'<label for="ciudad">Ciudad:</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="text" name="ciudad" id="ciudad" placeholder="Nombre de tu Localidad"  />';
     echo'<label for="codPostal">Código Postal:</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="text" name="codPostal" id="codPostal" placeholder="Escribe el número del código postal"  maxlength="5" />';
@@ -435,16 +438,16 @@ function processForm($requiredFields, $st){
                         if(Sistema::validarFoto('photo')){  
                             
                             //Importante
-                            //Recupreamos el nombre del archivo y ruta
-                            $destino = 'datos_usuario/'.$_SESSION['usuario']['nick'].'/'.basename($_FILES['photo']['name']);
+                            //Recuperamos el nombre del archivo y ruta a la que mover la imagen
+                            $destino = '../datos_usuario/'.$_SESSION['usuario']['nick'].'/'.basename($_FILES['photo']['name']);
                             $foto = $_FILES['photo']['tmp_name'];
                                                     //Creamos dos directorios en el sistema
                             //El primero donde almacenamos la foto de su perfil, en el futuro guardaremos mas cosas
                             //Si ha ido bien creamos el directorio donde al usuario se le almacenaran las imagenes
                                 //de los posts
-                            $test = Sistema::crearDirectorio("photos/".$_SESSION['usuario']['nick']);
+                            $test = Sistema::crearDirectorio("../photos/".$_SESSION['usuario']['nick']);
                             //Creamos el directorio con la foto de perfil
-                            if($test){ $test = Sistema::crearDirectorio("datos_usuario/".$_SESSION['usuario']['nick']);}
+                            if($test){ $test = Sistema::crearDirectorio("../datos_usuario/".$_SESSION['usuario']['nick']);}
                             //Se mueve la foto de perfil subida
                             if($test){ $test = Sistema::moverImagen($foto, $destino);}
                             //La renombramos con su nombre
@@ -456,19 +459,19 @@ function processForm($requiredFields, $st){
                         } 
                 } else {
                     //Si no sube ninguna foto se le asigna la de default
-                    $destino = "datos_usuario/".$_SESSION['usuario']['nick'].'/'.$_SESSION['usuario']['nick'].'.jpg';
-                    $test = Sistema::crearDirectorio("photos/".$_SESSION['usuario']['nick']);
-                    if($test){$test = Sistema::crearDirectorio("datos_usuario/".$_SESSION['usuario']['nick']);}
-                    if($test){ $test = Sistema::copiarFoto("datos_usuario/desconocido.jpg", $destino);}
+                    $destino = "../datos_usuario/".$_SESSION['usuario']['nick'].'/'.$_SESSION['usuario']['nick'].'.jpg';
+                    $test = Sistema::crearDirectorio("../photos/".$_SESSION['usuario']['nick']);
+                    if($test){$test = Sistema::crearDirectorio("../datos_usuario/".$_SESSION['usuario']['nick']);}
+                    if($test){ $test = Sistema::copiarFoto("../datos_usuario/desconocido.jpg", $destino);}
                    
                 }
             //Si hay algun tipo de error al subir la foto
                 //Redirigimos a la pagina de mostrar error
                 //Para que el usuario vuelva a intentarlo
-                if(!$test){
-                    mostrarError();
-                    exit();
-                }
+//                if(!$test){
+//                    mostrarError();
+//                    exit();
+//                }
             return $test;
    
         }

@@ -1,6 +1,6 @@
 $(document).ready(function(){
-     
-	var emailReg = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;
+        ///^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/
+	var emailReg = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
 	var passReg = /^[0-9a-zA-Z]{6,10}$/;
         var telefReg = /^[0-9-()+]{3,20}/;
         var codPostal = /^([1-9]{2}|[0-9][1-9]|[1-9][0-9])[0-9]{3}$/;
@@ -82,8 +82,8 @@ $(document).ready(function(){
         //Validamos el email
         function validarEmail(){
             $(".error").remove();
-            
-                if($("#email").val() === "" || !emailReg.test($("#email").val()) ){
+            //emailReg.test($("#email").val()
+                if($("#email").val() === "" || !emailReg.test($('#email').val().trim()) ){
 			$("#email").focus().after("<span class='error'><p>Introduce un email correcto.</p></span>");
 			$('#email').addClass('borderColor');
                         return false;
@@ -110,7 +110,22 @@ $(document).ready(function(){
             //fin validarNombre    
             }
             
-            
+        function validarCiudad(){
+            $(".error").remove();        
+            // 
+
+                if ($("#ciudad").val() === "" ){
+                    $("#ciudad").focus().after("<span class='error'><p>Tienes que introducir una ciudad o pueblo.</p></span>");
+			$('#ciudad').addClass('borderColor');
+                        return false;
+                    }else{
+                        return true;
+                    }
+         
+        //fin  validarCodigoPostal   
+        }
+        
+        
         function validarCodigoPostal(){
             $(".error").remove();        
             // 
@@ -155,7 +170,7 @@ $(document).ready(function(){
         });
         
         $('#tercero').on("mouseover", function(){
-           if(validarCodigoPostal()){}
+           if(validarCiudad() && validarCodigoPostal()){}
             
         });
         

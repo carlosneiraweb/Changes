@@ -14,11 +14,16 @@
 abstract class DataObj {
     
     protected  $data = array();
+
     /**
      * Constructor public
      * @param type $data
      */
-    public function __construct($data){       
+    public function __construct($data){ 
+        //Para comprobar que se instancia el array $data
+            //cada vez que se instancia un objeto usuario
+             //var_dump($this->data);
+
         
         foreach ($data as $k => $v){
            // echo 'Clave: '.$k. ': valor: '.$v.'<br>';

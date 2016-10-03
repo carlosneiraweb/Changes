@@ -58,7 +58,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
         //Un bolean para saber si la validacion ha sido correcto
         displayFormLogeo(array(), new Usuarios(array()), true); 
         }
-    //en caso de error se muestra la capa de fondo
+    //en caso de error en la validacion PHP se muestra la capa de fondo
     function mostrarOculto(){
        echo'<div id="ocultarPHP" class="mostrar_transparencia"></div>';
     }
@@ -71,6 +71,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
             echo'<section id="btns_logueo">';
 			
                         //Mostramos la foto del usuario una vez se ha logueado
+                            //Sin consultar la BBDD
                         if(isset($_SESSION["user"]) and $_SESSION != ""){
                             echo '<section id="foto_usuario">';
                                 echo '<figure id="img_usuario">';
@@ -105,10 +106,14 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
 function displayFormLogeo($missingFields, $user, $test){
       global $valido;
  echo"<section id='login_form' ";
-    if($missingFields){ 
-        echo 'class="mostrar_formulario"'; 
+    //Aqui se muestra o esconde el formulario login despues de las comprobaciones PHP
+        //Dependiendo si el usuario ha rellenado todos los campos
+    if($missingFields){
+        echo 'class="mostrar_formulario"';
+        //Que PHP no detecte ningun error, usuario no existe, error en el password
     } elseif (!$test) {
-        echo 'class="mostrar_formulario"';    
+        echo 'class="mostrar_formulario"'; 
+        //En caso de que en los casos contrarios no se den, se esconde el formulario
     }else{
        echo 'class="oculto"'; 
     }

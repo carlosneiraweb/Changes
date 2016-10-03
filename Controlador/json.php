@@ -85,7 +85,7 @@ where p.idUsuario = u.idUsuario and p.idPost = $id[0] and img.post_idPost = $id[
                 
     }else if($opc == "SLD"){
             //Nos quedamos con la parte necesaria para sacar de la tabla imagenes el id del post
-             $tmpIdImg = strstr($idImg,'/',false);
+             $tmpIdImg = substr($idImg, 10);
              $tmpIdImg = strstr($tmpIdImg,'.',true);
              
              $sql = 'select post_idPost from imagenes where ruta = "'.$tmpIdImg.'";' ;

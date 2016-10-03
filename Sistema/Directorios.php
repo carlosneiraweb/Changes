@@ -63,8 +63,8 @@ class Sistema {
          */
         final static  function moverImagen($nombreFoto, $nuevoDirectorio){
             $test = null;
-            echo 'moverImagen nombre Imagen foto: '.$nombreFoto.'<br>';
-            echo 'moverImagen nuevoDirectorio al que mover: '.$nuevoDirectorio.'<br>';
+            //echo 'moverImagen nombre Imagen foto: '.$nombreFoto.'<br>';
+            //echo 'moverImagen nuevoDirectorio al que mover: '.$nuevoDirectorio.'<br>';
          try{
              $test = move_uploaded_file($nombreFoto, $nuevoDirectorio);
               return $test;  
@@ -168,10 +168,12 @@ class Sistema {
          * 
          */   
             
-        static function copiarFoto($imagen, $nuevaImagen){
-            $test;
+        static function copiarFoto($imagen, $destino){
+            //echo 'imagen a copiar: '.$imagen.'<br>';
+            //echo 'en copiar foto: '.$destino.'<br>';
+           
             try{
-               $test =  copy($imagen, $nuevaImagen);
+               $test =  copy($imagen, $destino);
                return $test; 
             } catch (Exception $ex) {
                 $_SESSION['error'] = ERROR_INSERTAR_FOTO;
@@ -183,45 +185,57 @@ class Sistema {
         //fin copiarFoto    
         }
             
-        /**
-         * Metodo que cambia el nombre de la foto subida 
-         * por el usuario para su perfil
-         * Recive 2 parametros.
-         * OJO devuelve el nuevo nombre con la extension .jpg cuando se pasa null como 2º parametro
-         * 1º Nombre de la foto para cambiar el nombre
-         * 2º Si lo recive el nombre por el que cambiarlo
-         *  si el segundo parametro es un 0 esque ha eliminado una foto de las que
-         *  ya habia subido, entonces se le asigna una.
-         *  Si recive un 1 es que no ha borrado ninguna imagen y se cuenta el numero total de
-         *  imagenes asignandole el total + 1
-         * 
-         */
+       /**
+        * OJO ESTE METODO ES IMPORTANTE COMPRENDERLO
+        * 
+        *       Este metodo se utiliza para:
+        * 1º Si este metodo recibe como segundo parametro un 0
+        *   Si ocurre esto es que el usuario al subir imagenes para un Post a
+        *   eliminado una imagen o varias. Entonces lo que sucede es que accedemos
+        *   a un array con el nombre de la imagen borrada dentro de la variable 
+        *   " $_SESSION['imgTMP']['imagenesBorradas'] " instanciada en la clase Post.
+        *   Lo que hacemos es ir recuperando su nombre y vamos asignando ese nombre 
+        *   a las fotos que el usuario va subiendo.
+        * 
+        * 2º Si como segundo parametro recibe  un 1
+        *    Si ocurre esto es que subiendo imagenes para el Post no ha borrado ninguna.
+        *    Entonces lo unico que hace es contar el total de imagenes que hay en el
+        *    directorio donde se guardan en cada Post.
+        * 
+        *  3º El usuario se registra y le cambiamos el nombre de la foto que
+        *       ha subido por el nick que tiene, de esta forma sabemos que nombre
+        *       va a tener esa foto. Podemos mostrarla en la web sin consultar la bbdd
+        *       En este caso se comprueba que el segundo parametro no es ni true ni false.
+        * @param type $nombreViejo
+        * @param type $nombreNuevo
+        * @return string
+        */
         final static function renombrarFoto($nombreViejo, $nombreNuevo){
-            
-    echo 'en renombrar: nombreViejo: '.$nombreViejo.'<br>';//datos_usuario/aaaaa/bici2.jpg
-    echo 'en renombrar nombreNuevo: '.$nombreNuevo.'<br>';//admin => $_SESSION['usuario']['nick']
             
             if($nombreNuevo === 0){
                 try{
                     
                 //Extraemos del array de imagenes borradas el ultimo elemento   
                 $ultimaImagenBorrada = array_pop($_SESSION['imgTMP']['imagenesBorradas']);
-                var_dump($ultimaImagenBorrada);
                     
-                //Nos quedamos con el numero de la imagen, tipo /admin/2/4 => 4
-                //$imgTMP = array_pop($ultimaImagenBorrada);
+                //Nos quedamos con el numero de la imagen, tipo admin/2/4 => 4 
+                //este numero es el que interesa, y que es el nombre de la imagen + .jpg
+                //explode nos devuelve un array
                 $tmp = explode('/', $ultimaImagenBorrada );
-                //OJO este parametro esta en la tercera posicion
-                var_dump($tmp);
-                $newNombre = $_SESSION['nuevoSubdirectorio'].'/'.$tmp[3].'.jpg';
+                
+                //OJO este parametro esta en la segunda posicion
+                $newNombre = $_SESSION['nuevoSubdirectorio'].'/'.$tmp[2].'.jpg';
+               
                 rename($nombreViejo, $newNombre);
                 //Controlamos que el array de Imagenes borradas aun contenga imagenes.
                     //Si hemos ingresado el primer elemento, destruimos la variable de
                     //Sesion para que el programa vuelva a funcionar 
                     //como si el usuario no hubiera borrado ninguna imagen
-                if(count($_SESSION['imgTMP']['imagenesBorradas']) == 0){
+                if(count($_SESSION['imgTMP']['imagenesBorradas']) == 0){    
                     unset($_SESSION['imgTMP']);
                 }
+                
+                //Devolvemos el nuevo nombre para ser ingresado si el usuario sube una nueva imagen
                 return $newNombre;
                 
                 }catch(Exception $ex){
@@ -230,7 +244,7 @@ class Sistema {
                 }
 
             }else if($nombreNuevo === 1){
-                echo 'el usuario no ha borrado ninguna imagen<br>';
+                //echo 'el usuario no ha borrado ninguna imagen<br>';
                 //Renombramos las imagenes por el numero de imagenes en su subdirectorio
                 $nombreRenombrado= Sistema::contarArchivos($_SESSION['nuevoSubdirectorio']);
                 try{
@@ -288,7 +302,6 @@ class Sistema {
     static function contarArchivos($ruta){
         
         $count = 0;
-        //echo 'La ruta al contar archivos es: '.$ruta.'<br>';
         $dir =  $ruta;
     
     if(!($handle = opendir($dir))) die("Cannot open $dir.");
@@ -314,7 +327,7 @@ static function eliminarImagen($ruta){
     $test = true;
     
     try{
-        echo 'Eliminar imagen recive: '.$ruta.'<br>';
+        //echo 'Eliminar imagen recive: '.$ruta.'<br>';
         $test = unlink($ruta);
         return $test;
     } catch (Exception $ex) {

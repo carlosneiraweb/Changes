@@ -20,8 +20,8 @@ session_start();
 	<link rel="stylesheet" href="../css/estilos.css"/>
         <script language="javascript">
             function volverInicio(){
-                // http://localhost/Changes/index.php
-                setTimeout("location.href='<?php echo $_SESSION["url"] ?>'", 3000);  
+               
+                setTimeout('location.href="<?php echo $_SESSION['url'] ?>"', 3000);  
             }
         
         </script>   
@@ -32,7 +32,7 @@ session_start();
         echo '<section id="salir_sesion">';
         echo '<h2>Te lo cambio</h2>';
             echo'<figure id="logo_salir_sesion">';
-		echo'<img src="img/logo.png" alt="Logo del portal"/>';
+		echo'<img src="../img/logo.png" alt="Logo del portal"/>';
 		echo'<figcaption id="titulo">Acabas de abandonar tu sesión<br>'.
                  '<strong>Gracias por participar.</strong></figcaption>';
 	echo'</figure>';

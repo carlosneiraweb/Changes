@@ -15,7 +15,9 @@ require_once('../Sistema/Conne.php');
 require_once('DataObj.php');
 
 
-
+//Importante
+    // Las clases que extienden esta clase instancian la propiedad data de dataObj
+   
 class Usuarios extends DataObj{
     
     protected $data = array(

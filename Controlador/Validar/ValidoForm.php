@@ -1,11 +1,13 @@
 <?php
 
-//use Usuarios;
+//En esta clase la mayoria de metodos son final para evitar que un 
+    //programador pueda por error sobreescribir el metodo
+    //y static por que nos evitamos tener que instanciar un objeto de la clase;
 
     require_once '../Modelo/Usuarios.php';
     require_once '../Modelo/DataObj.php';
         
-        
+       
     class ValidoForm{
         
     /**
@@ -26,11 +28,12 @@
         /*
      * Metodo que valida que el campo 
      * recivido no se encuentrar en el array 
-     * de elementos obligatorios.
+     * de elementos no rellenados.
      * retorna un string con class="error"
      * Se define como final para evitar la sobreescritura,
      * medida de seguridad.
-     * 
+     * @param type array con los campos no rellenados
+     * @param type string con el nombre del campo a comprobar
      */
     final static function validateField($nombreCampo, $camposPerdidos){
           
@@ -44,7 +47,7 @@
        * Recibe objeto de la clase usuario
        * Devuelve true o false.
        * Utilizamos la indicación para decirle al método que va 
-       * a recivir un objeto de Usuarios
+       * a recivir un objeto de DataObj
        * @param type $obj
        */  
     final function validarEntrada(DataObj $obj){
@@ -52,7 +55,7 @@
           $nick = $this->htmlCaracteres($obj->getValue('nick'));
           $pass = $this->htmlCaracteres($obj->getValue('password')); 
         if($this->campoVacio($nick) and $this->campoVacio($pass) and $this->validarPassword($pass)){        
-            return true;
+                return true;
             }else{ 
                 return false;
             }
@@ -125,6 +128,9 @@
                 return false;
             }
         }
+        
+        
+        
       /**
        * Metodo que recive un email
        * para validar
