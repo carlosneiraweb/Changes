@@ -31,7 +31,7 @@ class Post extends DataObj{
      
     /**
      * Metodo que actualiza un articulo de un Post
-     * Se utiliza si el usuaro de mueve de adelante a atras
+     * Se utiliza si el usuaro se mueve de adelante a atras
      * por el formulario
      */
     
@@ -156,10 +156,13 @@ public function insertArticulo(){
             $st->bindValue(":fechaPost", $date, PDO::PARAM_STR);
 
             $test = $st->execute();
-      
+            //Como estamos haciendo un commit es seguro de recuperar el ultimo id
             $sql2 = "SELECT last_insert_id() FROM ".TBL_POST;
             $st2 = $con->prepare($sql2);
             $st2->execute();
+            //Esta variable luego se usa tambien 
+            //Por en el segundo paso de subir un Post, cuando se sube una imagen
+            //Si el usuario quiere eliminar una imagen en el proceso
             $_SESSION['lastId'] =  $st2->fetch();
             
             
@@ -223,13 +226,13 @@ public function insertArticulo(){
 
 /**
  * Metodo que inserta las imagenes
- * y comntarios de cada imagen subida
+ * y comentarios de cada imagen subida
  */
  function insertarFotos(){
     
       
     $_SESSION['idImgadenIngresar'] = $this->getValue('idImagen');
-   echo 'en insertar idImagen: '.$_SESSION['idImgadenIngresar'].'<br>';
+   //echo 'en insertar idImagen: '.$_SESSION['idImgadenIngresar'].'<br>';
     try{
         $con = Conne::connect();
         
@@ -239,10 +242,12 @@ public function insertArticulo(){
         //Nos quedamos con la parte imprescindible de la ruta de la imagen
         //Para ocupar menos espacio en la tabla de la bbdd
         //El primer caso es si no se ha eliminado ninguna imagen
-        
-            $tmp = strstr($_SESSION['idImgadenIngresar'],'/',false);
-            $tmp = strstr($tmp,'.',true);// $tmp => /admin/1/2
-        echo 'tmp en ingresar vale: '.$tmp.'<br>';
+            //echo 'recibo: ',$_SESSION['idImgadenIngresar'].'<br>';
+            $tmp = substr($_SESSION['idImgadenIngresar'], 10);
+            //echo $tmp.'<br>';
+            
+        $tmp = strstr($tmp,'.',true);// $tmp => /admin/1/2
+        //echo 'tmp en ingresar vale: '.$tmp.'<br>';
         $st->bindValue(":post_idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
         $st->bindValue(":ruta",$tmp, PDO::PARAM_STR);
         //En caso el usuario no escriba una descripcion de la imagen
@@ -253,11 +258,11 @@ public function insertArticulo(){
         }
    
         
-         $test = $st->execute();
+        $test = $st->execute();
         //Si la foto se ha subido con exito el contador de imagenes se incrementa en 1
-         if($test){
-         $_SESSION['contador'] = $_SESSION['contador'] + 1;
-         }
+            if($test){
+                $_SESSION['contador'] = $_SESSION['contador'] + 1;
+            }
         //                    IMPORTANTE
         //Cuando insertamos una imagen eliminamos de la tabla imagenes
         // la imagen demo que subimos.Unicamente hacemos eso si contador == 1
@@ -295,13 +300,13 @@ public function insertArticulo(){
  */
 
 function eliminarImg(){
-    
+        //Si es la primera imagen que borra el usuario se instancia
+        //Para guardar en el array su ruta
         if(!isset($_SESSION['imgTMP']['imagenesBorradas'])){
             $_SESSION['imgTMP']['imagenesBorradas'][0] = null;
-        } else{
-            echo 'en eliminar imagen si existe imgTMP<BR>';
-        }
-     
+            echo 'Post creamos la variable de session imgTMP <BR>';
+        } 
+        
      try{
         
         $con = Conne::connect();
@@ -321,22 +326,25 @@ function eliminarImg(){
                            break;
             }
         }
+         echo 'en Post eliminar: '.var_dump($_SESSION['imgTMP']['imagenesBorradas']).'<br>';
         
-        
-        //echo 'Hemos borrado la imagen y nos guardamos su id para la siguiente '.$_SESSION['imgTMP'].'<BR>';
         $st->bindValue(":url", $this->getValue('idImagen'), PDO::PARAM_STR);
-       
+        // echo 'lastId: '.$_SESSION['lastId'][0].' : '. 'idImagen: '.$this->getValue('idImagen').'<br>';
         $test = $st->execute();
         //En caso de ser todo correcto eliminamos la imagen 
         //del sistema y restamos 1 al contador de imagenes
         if($test){
-            $test = Sistema::eliminarImagen("photos".$this->getValue('idImagen').".jpg");
-            if($test){ $_SESSION['contador'] = $_SESSION['contador'] - 1;}
+            $test = Sistema::eliminarImagen("../photos/".$this->getValue('idImagen').".jpg");
+            if($test){
+                
+                $_SESSION['contador'] = $_SESSION['contador'] - 1;
+                echo 'Hemos eliminado de la bbdd y del sistema, restamos contador <br>';
+            }
             
             //Si el contador vuelve a 0, volvemos a copiar la foto demo
-            //Evitamos que en cada momento el que el usuario no ingrese ninguna imagen
+            //Evitamos que en cada momento el que el usuario no tenga una  imagen en el Post
             if(isset($_SESSION['contador']) and $_SESSION['contador'] == 0){
-            $test = Sistema::copiarFoto("photos/demo.jpg",$_SESSION['nuevoSubdirectorio']."/demo.jpg");
+            $test = Sistema::copiarFoto("../photos/demo.jpg",$_SESSION['nuevoSubdirectorio']."/demo.jpg");
             //                    IMPORTANTE
             //  Volvemos a ingresar en la bbdd la ruta de la imagen /demo
             // para poder mostrar siempre una imagen
@@ -355,12 +363,15 @@ function eliminarImg(){
                 
         Conne::disconnect($con);
         return $test;
+      
+      
     } catch (Exception $ex) {
         Conne::disconnect($con);
         $_SESSION['error'] = ERROR_ELIMINAR_FOTO;
         echo 'El error se produce en la línea: '.$ex->getLine().'<br>';
         die("Query failed: ".$ex->getMessage());
     }  
+     
 //fin eliminarImg    
 }
 
