@@ -61,7 +61,7 @@ body{
 }
 img{width: 100%;}
 
-header,section#menu,section#contenedor,section#resultados,section#btn_navegacion, nav, footer{
+header,section#menu,section#buscar_datos,section#contenedor,section#resultados,section#btn_navegacion, nav, footer{
 	background-color: #fff;
 	color: #FF5917;
 	margin: 1em auto;
@@ -353,7 +353,7 @@ fieldset {
 	font-size: .8em;
 	padding: 1em;	
 }
-form input[type="text"], input[type="email"], input[type="tel"], input[type="password"]{
+form input[type="text"], input[type="email"], input[type="tel"], input[type="password"], section#buscar_datos input[type="text"]{
 	border-bottom: 1px solid black;
 	border-top: 1px solid black;
 	margin: .3em auto;
@@ -451,6 +451,30 @@ li.slide-current{
 }
 
         /* fin estilos menu horizontal*/
+        
+        
+ /*********************ESTILOS BUSCADOR************/
+ 
+ 
+ section#buscar_datos{
+     
+     border: 1px solid black;
+     padding:1em;
+     
+ }      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
  
         /*posicionamos relative el body para centrar los formularios*/
 .mi_body{
@@ -865,12 +889,12 @@ section#mostrarSlider{
     max-height: 260px;
     width: 95%;
     display: none;
-    padding: .3em;
+    padding: 1em;
 }
 
-.slider-wrapper-IMG>li.slide-current{
+/*.slider-wrapper-IMG>li.slide-current{
     display: block;
-}
+}*/
 
 .slider-wrapper-IMG li img{
     position: absolute;

@@ -1,7 +1,7 @@
 <?php
 
-    require_once("../Sistema/Conne.php");
-    require_once("../Sistema/Constantes.php");
+    require_once("../../Sistema/Conne.php");
+    require_once("../../Sistema/Constantes.php");
     
   
 
@@ -80,6 +80,7 @@ where p.idUsuario = u.idUsuario and p.idPost = $id[0] and img.post_idPost = $id[
                 
                 
                  echo json_encode($rs);
+                 Conne::disconnect($con);
         
                 
                 
@@ -107,6 +108,7 @@ where p.idUsuario = u.idUsuario and p.idPost = $id[0] and img.post_idPost = $id[
              array_push($rutaTextoPbsBuscadas, $tmpRutaTexto, $tmpPbsBuscadas);
              
              echo json_encode($rutaTextoPbsBuscadas);
+             Conne::disconnect($con);
         
     }else{
      

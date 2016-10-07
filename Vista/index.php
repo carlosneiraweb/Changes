@@ -28,11 +28,11 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
 	<link rel="stylesheet" href="../css/estilos.css"/>
         <script src="../Controlador/jquery-2.2.2.js" type="text/javascript"></script>
         <script src="../Controlador/menu.js"></script>	
-        <script src="../Controlador/elementos.js"></script>
+        <script src="../Controlador/Elementos_JSON/elementos.js"></script>
         <script src="../Controlador/Validar/formulario_login.js"></script>
         <script src="../Controlador/redireccionar.js"></script>
         <script src="../Controlador/script.js"></script>
-        <script src="../Controlador/main.js"></script>
+       
     <!--Para navegadores viejos-->
         <!--[if lt IE 9]>
             <script
@@ -127,7 +127,7 @@ function displayFormLogeo($missingFields, $user, $test){
 echo'<label '.$valido->validateField("nick", $missingFields). ' for="nick" >Introduce nombre de usuario:</label><span class="obligatorio"><img src="../img/obligado.png" ></span>';
 echo'<input  type="text" name="nick" id="nick" autofocus placeholder="Escribe tú nick" value="'.$user->getValueEncoded("nick").'" ><br></br>';            
 echo'<label '.$valido->validateField("password", $missingFields).' for="password">Introduce tú password</label><span class="obligatorio"><img src="../img/obligado.png" ></span>';
-echo'<input type="password" name="password" id="password" placeholder="Escribe tú password" value="'.$user->getValueEncoded("password").'" ><br><br>';
+echo'<input type="password" name="password" id="password" placeholder="Escribe tú password" value="'.$user->getValueEncoded("password").'" ><br></br>';
 
 //Mostramos un error en el login
 if(!$test){
@@ -205,7 +205,43 @@ function processForm(){
 	echo'</figure>';
     echo'</nav>';
    
- 
+    /********************************************************************/
+    
+    
+    echo'<section id="buscar_datos">';
+        echo '<h3>Selecciona una opción de busqueda</h3>';
+        
+        echo'<label for="Busco">Cosas que la gente Busca</label>';
+        echo'<input type="radio" name="busqueda" id="Busco">';
+        echo'<br />';
+        echo'<label for="Ofreco">Cosas que tú ofreces y la gente podría querer.</label>';
+        echo '<input type="radio" name="busqueda" id="Ofrezco">';
+        echo '<br />';
+        echo '<br />';
+        
+        echo'<label for="porProvincia">Selecciona la provincia:</label>';
+		echo'<select name="selectProvincia" id="porProvincia">';			
+        echo'</select>';
+        echo'<label for="porPrecio">Selecciona precio:</label>';
+		echo'<select name="selectPrecio" id="porPrecio">';			
+        echo'</select>';
+        echo'<label for="porTiempoCambio">Selecciona el tiempo de cambio:</label>';
+		echo'<select name="selectTiempoCambio" id="porTiempoCambio">';			
+        echo'</select>'; 
+        
+        
+        echo '<input type="text" id="buscador" class="buscador">';
+        echo '<section id="mostrar_resultados">';
+            //Aqui mostraremos os resultados
+        echo '<ul id="contenido_buscado">';
+        
+        echo '</ul>';
+        echo '</section>';
+        
+    echo'</section>';
+    
+    
+    /**********************************************************************/
     echo'<section id="contenedor">';
     //para la publicidad
     echo'<aside id="publi">';
@@ -238,9 +274,12 @@ function processForm(){
     
     
       echo '<section id="mostrarSlider" class="oculto">';
-      echo '<section class="slider-container-IMG">';
-        echo '<h3>Información del Post</h3>';
+      
+      echo '<section class="slider-container-IMG" >';
+       // echo '<h3>Información del Post</h3>';
+        /*
             echo '<ul id="sliderImg" class="slider-wrapper-IMG">';
+                
                 echo '<li class="slide-current">';
                     echo '<img class="cargar">';
                     echo '<div class="caption"></div>';
@@ -262,6 +301,8 @@ function processForm(){
                     echo'<img class="cargar">';
                     echo '<div class="caption"></div>';
                 echo '</li>';
+             
+             
             echo'</ul>';
             
             echo'<ul id="slider-controls" class="slider-controls">';
@@ -274,9 +315,12 @@ function processForm(){
               
             echo'</ul>';
            
-            
+        */    
         echo '</section>';
-           
+        
+        
+        
+        
         echo '<section id="buscadas">';
             echo'<h3>Cosas que podrían interesar</h3>';
                 echo'<section id="lista"></section>';
