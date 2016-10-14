@@ -2,7 +2,7 @@
 
 var inputs = "input[maxlength], textarea[maxlength]";
 	$(document).on('keyup', "[maxlength]", function (e) {
-            
+                
 		var este = $(this),
 			maxlength = este.attr('maxlength'),
 			maxlengthint = parseInt(maxlength),

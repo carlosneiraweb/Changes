@@ -35,7 +35,7 @@ if(isset($_POST['ruta'])){
             $ruta = $_GET['ruta'];
         }
     }
-    
+
 if(isset($_POST['srcImg'])){
         $idImg = $_POST['srcImg'];
     } else {
@@ -53,27 +53,38 @@ if(isset($_POST['inicio'])){
     if($opc == "PPS"){
                 $sql = "SELECT SQL_CALC_FOUND_ROWS idPost FROM post  ORDER BY idPost DESC LIMIT :startRow, :numRows";
                 //$sql = "SELECT idPost FROM post ORDER BY fechaPost  DESC";
-                $stm = $con->prepare($sql);
-                $stm->bindValue(":startRow", $inicio, PDO::PARAM_INT);
-                $stm->bindValue(":numRows", PAGE_SIZE, PDO::PARAM_INT);
-                $stm->execute();
-                $v = $stm->fetchAll();
+                $stmBus = $con->prepare($sql);
+                $stmBus->bindValue(":startRow", $inicio, PDO::PARAM_INT);
+                $stmBus->bindValue(":numRows", PAGE_SIZE, PDO::PARAM_INT);
+                $stmBus->execute();
+                $v = $stmBus->fetchAll();
+                $stmBus->closeCursor();
                 
                 //Calculamos el total final como si  la clausula limit no estuviera
-                $stm = $con->query("SELECT found_rows()  AS totalRows");
-                $row = array ('totalRows' => $stm->fetch());
+                $stm2Bus = $con->query("SELECT found_rows()  AS totalRows");
+                $row = array ('totalRows' => $stm2Bus->fetch());
+                $stm2Bus->closeCursor();
                 
                 $rs = array();
-                array_push($rs, $row);
+                 array_push($rs, $row);
                 
                 foreach($v as $id){
                 
-                //$sqlPost = "Select p.idPost from post as p where p.idPost = $id[0]";
-                $sqlPost = "select  u.nick as nick, prov.nombre as provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, p.titulo as titulo, img.ruta as ruta, p.titulo as titulo, p.comentario as comentario, tc.tiempo as tiempoCambio
-from usuario AS u, post AS p, imagenes AS img, provincias AS prov, direccion as dir, tiempo_cambio as tc
-where p.idUsuario = u.idUsuario and p.idPost = $id[0] and img.post_idPost = $id[0]  limit 1";
-                $stm2 = $con->query($sqlPost);
-                $tmp = $stm2->fetch();
+         
+                $sqlPost = "select u.nick, prov.nombre AS provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, p.titulo, img.ruta, p.titulo, p.comentario, tc.tiempo as tiempoCambio
+from post p
+inner join usuario u on u.idUsuario= p.idusuario
+inner join direccion dire on dire.idDireccion = u.idUsuario
+inner join provincias prov on prov.idProvincias = dire.provincias_idprovincias
+inner join imagenes img on img.post_idPost = :idPost 
+inner join tiempo_cambio tc on tc.idTiempoCambio = p.tiempo_cambio_idTiempoCambio
+where p.idPost = :idPost limit 1";
+                
+                $stm3Bus = $con->prepare($sqlPost);
+                $stm3Bus->bindValue(":idPost", $id[0], PDO::PARAM_INT);
+                $stm3Bus->execute();
+                $tmp = $stm3Bus->fetch();
+                $stm3Bus->closeCursor();
                 
                  array_push($rs,$tmp);
                 }  
@@ -90,20 +101,25 @@ where p.idUsuario = u.idUsuario and p.idPost = $id[0] and img.post_idPost = $id[
              
              $sql = 'select post_idPost from imagenes where ruta = "'.$tmpIdImg.'";' ;
            
-             $smt3 = $con->query($sql);
+             $stm4 = $con->query($sql);
              //Recuperamos el id del post
-             $idImgSLD = $smt3->fetch();
+             $idImgSLD = $stm4->fetch();
+             $stm4->closeCursor();
+             
              //Almacenaremos varios arrays para mostrar todos los datos
-             //La ruta de las imagenes, el texto que dscribe la imagen y las palabras buscadas
+             //La ruta de las imagenes, el texto que describe la imagen y las palabras buscadas
              $rutaTextoPbsBuscadas = array();
              //Recuperamos la ruta de la imagen y la descripcion de cada una
              $sql = "select ruta, texto from imagenes where post_idPost =".$idImgSLD[0].";";
-             $smt3 = $con->query($sql);
-             $tmpRutaTexto = $smt3->fetchAll();
-             //Recuperamos las palabras queridas o buscadas del usuario
+             $stm5 = $con->query($sql);
+             $tmpRutaTexto = $stm5->fetchAll();
+             $stm5->closeCursor();
+             
+            //Recuperamos las palabras queridas o buscadas del usuario
              $sql ="select palabra as pbsQueridas from pbs_queridas where idPost = ".$idImgSLD[0].";";
-             $smt3 = $con->query($sql);
-             $tmpPbsBuscadas = $smt3->fetchAll();
+             $stm6 = $con->query($sql);
+             $tmpPbsBuscadas = $stm6->fetchAll();
+             $stm6->closeCursor();
              array_push($rutaTextoPbsBuscadas, $tmpRutaTexto, $tmpPbsBuscadas);
              
              echo json_encode($rutaTextoPbsBuscadas);
@@ -134,8 +150,8 @@ where p.idUsuario = u.idUsuario and p.idPost = $id[0] and img.post_idPost = $id[
         $resultados= $st->fetchAll();
         $datos = $resultados; 
         echo json_encode($datos);
-       
-         Conne::disconnect($con);
+        $st->closeCursor();
+        Conne::disconnect($con);
     
     }  
     }catch(PDOException $ex){

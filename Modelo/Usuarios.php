@@ -184,7 +184,8 @@ class Usuarios extends DataObj{
             if(!$opc){ $st->bindValue(":email", $this->data["email"], PDO::PARAM_STR); }  
             $st->execute();
             $row =  $st->fetch();
-            //var_dump($row);
+            
+           $st->closeCursor();
            Conne::disconnect($con);
            if($row) return new Usuarios($row);
         } catch (Exception $ex) {
@@ -354,6 +355,7 @@ class Usuarios extends DataObj{
             $st = $con->prepare($sql);
             $st->bindValue(":idUsuario", $id, PDO::PARAM_INT);
             $st->execute();
+            $st->closeCursor();
             Conne::disconnect($con);
         } catch (Exception $ex) {
             Conne::disconnect($con);

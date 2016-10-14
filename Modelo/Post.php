@@ -99,7 +99,7 @@ class Post extends DataObj{
                         }
                     }
                 }
-             
+        $stm->closeCursor();     
         Conne::disconnect($con);  
         return $test;   
     }catch(Exception $ex){
@@ -304,7 +304,7 @@ function eliminarImg(){
         //Para guardar en el array su ruta
         if(!isset($_SESSION['imgTMP']['imagenesBorradas'])){
             $_SESSION['imgTMP']['imagenesBorradas'][0] = null;
-            echo 'Post creamos la variable de session imgTMP <BR>';
+            //echo 'Post creamos la variable de session imgTMP <BR>';
         } 
         
      try{
@@ -326,7 +326,7 @@ function eliminarImg(){
                            break;
             }
         }
-         echo 'en Post eliminar: '.var_dump($_SESSION['imgTMP']['imagenesBorradas']).'<br>';
+         //echo 'en Post eliminar: '.var_dump($_SESSION['imgTMP']['imagenesBorradas']).'<br>';
         
         $st->bindValue(":url", $this->getValue('idImagen'), PDO::PARAM_STR);
         // echo 'lastId: '.$_SESSION['lastId'][0].' : '. 'idImagen: '.$this->getValue('idImagen').'<br>';
@@ -338,7 +338,7 @@ function eliminarImg(){
             if($test){
                 
                 $_SESSION['contador'] = $_SESSION['contador'] - 1;
-                echo 'Hemos eliminado de la bbdd y del sistema, restamos contador <br>';
+                //echo 'Hemos eliminado de la bbdd y del sistema, restamos contador <br>';
             }
             
             //Si el contador vuelve a 0, volvemos a copiar la foto demo

@@ -28,7 +28,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
 	<link rel="stylesheet" href="../css/estilos.css"/>
         <script src="../Controlador/jquery-2.2.2.js" type="text/javascript"></script>
         <script src="../Controlador/menu.js"></script>	
-        <script src="../Controlador/Elementos_JSON/elementos.js"></script>
+        <script src="../Controlador/Elementos_AJAX/elementos.js"></script>
         <script src="../Controlador/Validar/formulario_login.js"></script>
         <script src="../Controlador/redireccionar.js"></script>
         <script src="../Controlador/script.js"></script>
@@ -211,7 +211,7 @@ function processForm(){
     echo'<section id="buscar_datos">';
         echo '<h3>Selecciona una opción de busqueda</h3>';
         
-        echo'<label for="Busco">Cosas que la gente Busca</label>';
+        echo'<label for="Busco">Cosas que la tú buscas</label>';
         echo'<input type="radio" name="busqueda" id="Busco">';
         echo'<br />';
         echo'<label for="Ofreco">Cosas que tú ofreces y la gente podría querer.</label>';
@@ -223,7 +223,11 @@ function processForm(){
 		echo'<select name="selectProvincia" id="porProvincia">';			
         echo'</select>';
         echo'<label for="porPrecio">Selecciona precio:</label>';
-		echo'<select name="selectPrecio" id="porPrecio">';			
+		echo'<select name="selectPrecio" id="porPrecio">';
+                    echo '<option>No me importa</option>';
+                    echo '<option>0€ a 500€</option>';
+                    echo '<option>500€ a 3000€</option>';
+                    echo '<option>Más de 3000€</option>';
         echo'</select>';
         echo'<label for="porTiempoCambio">Selecciona el tiempo de cambio:</label>';
 		echo'<select name="selectTiempoCambio" id="porTiempoCambio">';			
@@ -276,53 +280,14 @@ function processForm(){
       echo '<section id="mostrarSlider" class="oculto">';
       
       echo '<section class="slider-container-IMG" >';
-       // echo '<h3>Información del Post</h3>';
-        /*
-            echo '<ul id="sliderImg" class="slider-wrapper-IMG">';
-                
-                echo '<li class="slide-current">';
-                    echo '<img class="cargar">';
-                    echo '<div class="caption"></div>';
-                echo '</li>';
-                
-                echo '<li>';
-                    echo'<img class="cargar">';
-                    echo '<div class="caption"></div>';
-                echo '</li>';
-                echo '<li>';
-                    echo'<img class="cargar">';
-                    echo '<div class="caption"></div>';
-                echo '</li>';
-                echo '<li>';
-                    echo'<img class="cargar">';
-                    echo '<div class="caption"></div>';
-                echo '</li>';
-                echo '<li>';
-                    echo'<img class="cargar">';
-                    echo '<div class="caption"></div>';
-                echo '</li>';
-             
-             
-            echo'</ul>';
-            
-            echo'<ul id="slider-controls" class="slider-controls">';
-               
-                echo'<li class="active"></li>';
-                    echo'<li></li>';
-                    echo'<li></li>';
-                    echo'<li></li>';
-                    echo'<li></li>';
-              
-            echo'</ul>';
-           
-        */    
+      
         echo '</section>';
         
         
         
         
         echo '<section id="buscadas">';
-            echo'<h3>Cosas que podrían interesar</h3>';
+           
                 echo'<section id="lista"></section>';
             echo'</section>';
         echo'<section id="salir">';

@@ -53,15 +53,15 @@ if(isset($_POST['inicio'])){
     if($opc == "PPS"){
                 $sql = "SELECT SQL_CALC_FOUND_ROWS idPost FROM post  ORDER BY idPost DESC LIMIT :startRow, :numRows";
                 //$sql = "SELECT idPost FROM post ORDER BY fechaPost  DESC";
-                $stm = $con->prepare($sql);
-                $stm->bindValue(":startRow", $inicio, PDO::PARAM_INT);
-                $stm->bindValue(":numRows", PAGE_SIZE, PDO::PARAM_INT);
-                $stm->execute();
-                $v = $stm->fetchAll();
+                $stmBus = $con->prepare($sql);
+                $stmBus->bindValue(":startRow", $inicio, PDO::PARAM_INT);
+                $stmBus->bindValue(":numRows", PAGE_SIZE, PDO::PARAM_INT);
+                $stmBus->execute();
+                $v = $stmBus->fetchAll();
                 
                 //Calculamos el total final como si  la clausula limit no estuviera
-                $stm = $con->query("SELECT found_rows()  AS totalRows");
-                $row = array ('totalRows' => $stm->fetch());
+                $stmBus = $con->query("SELECT found_rows()  AS totalRows");
+                $row = array ('totalRows' => $stmBus->fetch());
                 
                 $rs = array();
                 array_push($rs, $row);
@@ -72,8 +72,8 @@ if(isset($_POST['inicio'])){
                 $sqlPost = "select  u.nick as nick, prov.nombre as provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, p.titulo as titulo, img.ruta as ruta, p.titulo as titulo, p.comentario as comentario, tc.tiempo as tiempoCambio
 from usuario AS u, post AS p, imagenes AS img, provincias AS prov, direccion as dir, tiempo_cambio as tc
 where p.idUsuario = u.idUsuario and p.idPost = $id[0] and img.post_idPost = $id[0]  limit 1";
-                $stm2 = $con->query($sqlPost);
-                $tmp = $stm2->fetch();
+                $stm2Bus = $con->query($sqlPost);
+                $tmp = $stm2Bus->fetch();
                 
                  array_push($rs,$tmp);
                 }  

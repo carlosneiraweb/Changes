@@ -7,20 +7,25 @@ var READY_STATE_INTERACTIVE = 3;
 var READY_STATE_COMPLETE = 4;
 
 var objPro, petPro, objGen, petGen, objSeccion, petSeccion, objTiempoCambio, petTiempoCambio,
-        objLastImg, petLastImg, idPost, petImgEliminar, objImgEliminar, petPost, objPost,
+        objPorPrecio, petPorPrecio,objLastImg, petLastImg, idPost, petImgEliminar, 
+        objImgEliminar, petPost, objPost,
         objSlider, petSlider, objBuscador, petBuscador, objEncontrado, petEncontrado;
 //Variables globales para los <li> de navegacion
 var z, tmpLi, liPinchado, ultimoLi;
 
 var fecha = new Date();
 
-
+var X, post, provincias, porProvincia, porPrecio, porTiempoCambio, genero, seccion, tiempoCambio,
+        verImagenes, imgSeleccionada, lista, provincia, precio, tiempCambio;
 
 
 window.onload=function(){
      X = document.getElementById('cuerpo');
      post = document.getElementById('posts');
      provincias = document.getElementById('provincia');
+     porProvincia = document.getElementById('porProvincia');
+     porPrecio = document.getElementById('porPrecio');
+     porTiempoCambio = document.getElementById('porTiempoCambio');
      genero = document.getElementById('genero');
      seccion = document.getElementById('seccion');
      tiempoCambio = document.getElementById('tiempoCambio');
@@ -28,23 +33,39 @@ window.onload=function(){
      imgSeleccionada = document.getElementById('mostrarImgSeleccionada');
      lista = document.getElementById('lista');
      
-     //Inicializamos la variable inicio que mostrara por donde empezar a mostrar los posts
-        if(typeof(inicio) === "undefined"){  inicio = 0;};
+    
      
-     
-     //Elementos para el buscador
+     /*     ELEMENTOS PARA EL BUSCADOR      */
      
     $('#buscador').keyup(function(e){
          //Algunas teclas dan problemas como el ir hacia atras <- 
          //Por eso anulamos el evento si se pulsan
          //En este caso solo he anulado esta
          if(e.which !== 8){
-//Primero eliminamos las busquedas anteriores
+            //Primero eliminamos las busquedas anteriores
         $('ul li').remove();
+        
+        //Recuperamos el valor de los filtros de busqueda
+        
+        $('#porProvincia').on('change',function(){
+             provincia = $(this).val();
+            });
+        $('#porPrecio').on('change',function(){
+             precio = $(this).val();
+            });
+        $('#porTiempoCambio').on('change',function(){
+            tiempoCambio = $(this).val();
+        });
+        
+        if(typeof(provincia) === "undefined"){  provincia = 'hola'; };
+        //alert('provincia'+provincia+" por precio "+precio+ " por tiempo "+tiempoCambio);
+        
+        
         
         //Recuperamos los que el usuario ha escrito en el campo
         var txtBuscar = $(this).val();
-        cargarPeticion('BUSCADOR', "opcion=BUSCADOR&BUSCAR="+txtBuscar);
+        //"&provincia="+provincia+"&precio="+precio+"&tiempoCambio="+tiempoCambio
+        cargarPeticion('BUSCADOR', "opcion=BUSCADOR&BUSCAR="+txtBuscar+"&provincia="+provincia);
          }
          
           //Recuperamos el contenido del li que se ha pulsado
@@ -60,12 +81,10 @@ window.onload=function(){
 	}); 
     
     
-     
-     
-     //Mostramos el total de elementos encontrados
-     resultados = document.getElementById('resultados');
-     //Botonera para desplazarnos por las paginas de resultados
-     btn_navegacion = document.getElementById('btn_navegacion');
+        /*      METODO QUE LANZA EL SLIDER CON EL 
+         *      CONTENIDO DEL POST SELECCIONADO POR
+         *      EL USUARIO AL HACER CLICK SOBRE LA IMAGEN
+         */
      
         //Capturamos la img sobre la que se ha hecho click
         //Para mostrar el slider con los datos de esta
@@ -75,17 +94,34 @@ window.onload=function(){
                 cargarPeticion("SLD", "opcion=SLD&srcImg="+src);
             });
      
-            
-        //cargarPeticion("PP", "opcion=PP");
-        //cargarPeticion("PG", "opcion=PG");
-        //cargarPeticion("PS", "opcion=PS");
-        //cargarPeticion("PT", "opcion=PT");
-        //cargarPeticion("UI", "opcion=UI&idPost="+idPost);
          
-         //Esta lamada a JSON solo se realiza en la primera carga del script
+        /*          FIN LANZAR      */
+    
+        cargarPeticion("PP", "opcion=PP"); //Peticion provincias
+        cargarPeticion("PG", "opcion=PG"); //Peticion Generos
+        cargarPeticion("PS", "opcion=PS"); //Peticion Seccion
+        cargarPeticion("PT", "opcion=PT"); //Peticion tiempoCambio
+        cargarPeticion("PPVP", "opcion=PPVP"); //Peticion por PRECIO
+        cargarPeticion("UI", "opcion=UI&idPost="+idPost); //Peticion ultima imagen
+        
+    
+    
+    
+            /*      ELEMENTOS PAGINACION     */
+    //Inicializamos la variable inicio que mostrara por donde empezar a mostrar los posts
+    //Comprobamos sin ya se ha inicializado, sino cada vez que el script
+    //se cargara machacaria su valor.
+    if(typeof(inicio) === "undefined"){  inicio = 0;};
+     
+     
+     //Mostramos el total de elementos encontrados
+     resultados = document.getElementById('resultados');
+     //Botonera para desplazarnos por las paginas de resultados
+     btn_navegacion = document.getElementById('btn_navegacion');
+         //Esta llamada a JSON solo se realiza en la primera carga del script
          //Despues se iran mostrando los posts a traves de los botones 
             if(inicio === 0){
-                cargarPeticion("PPS", "opcion=PPS&inicio="+inicio);
+                cargarPeticion("PPS", "opcion=PPS&inicio="+inicio); //Cargar Post
             }
             
          //Cada vez que pulsamos un <li> de navegacion se muestran los siguientes Posts
@@ -97,7 +133,7 @@ window.onload=function(){
                 //adecuados a cada paso, sea del 1-10 o 110-120
             tmpLi = parseInt($('.pagina').last().html())+ 1;
             z = tmpLi - 10;
-            cargarPeticion("PPS", "opcion=PPS&inicio="+inicio);
+            cargarPeticion("PPS", "opcion=PPS&inicio="+inicio); //Cargar Post
             
            //Reseteamos el inicio otra vez en caso el usuario pulse un <li> para desplazarse
             //en el rango actual. Por ejemplo si pincha el <li> 22 y luego pulsa el <li>
@@ -121,7 +157,7 @@ window.onload=function(){
                 tmpLi = ultimoLi + 10;
                 z = ultimoLi;
                 inicio = inicio + 50;
-                cargarPeticion("PPS", "opcion=PPS&inicio="+inicio);
+                cargarPeticion("PPS", "opcion=PPS&inicio="+inicio); //Peticion CargarPost
             } 
         });
         
@@ -134,9 +170,11 @@ window.onload=function(){
                 tmpLi = primerLi;
                 z = primerLi - 10;
                 inicio = inicio - 50;
-                cargarPeticion("PPS", "opcion=PPS&inicio="+inicio);
+                cargarPeticion("PPS", "opcion=PPS&inicio="+inicio); //Peticion CargarPost
             }
         });   
+        
+                    /* FIN PAGINACION */
 };
      
 
@@ -146,7 +184,7 @@ window.onload=function(){
  *      desde el metodo cargarUltimaImgen
  */
 function mandarId(id){
-    cargarPeticion("PMI", "opcion=PMI&idPost="+idPost+"&ruta="+id);
+    cargarPeticion("PMI", "opcion=PMI&idPost="+idPost+"&ruta="+id); //Peticion IMAGEN A ELIMINAR
 }
 
 
@@ -157,70 +195,77 @@ function cargarPeticion(tipo, parametros){
         case('PP'):
            petPro = inicializaPeticion();
            petPro.onreadystatechange = procesaRespuesta;
-           petPro.open('POST', "../Controlador/Elementos_JSON/json.php?", true);
+           petPro.open('POST', "../Controlador/Elementos_AJAX/json.php?", true);
            petPro.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petPro.send(parametros);
                 break;
         case('PG'):
            petGen = inicializaPeticion();
            petGen.onreadystatechange = procesaRespuesta;
-           petGen.open('POST', "../Controlador/Elementos_JSON/json.php?", true);
+           petGen.open('POST', "../Controlador/Elementos_AJAX/json.php?", true);
            petGen.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petGen.send(parametros);
                 break;
         case('PS'):
            petSeccion = inicializaPeticion();
            petSeccion.onreadystatechange = procesaRespuesta;
-           petSeccion.open('POST', "../Controlador/Elementos_JSON/json.php?", true);
+           petSeccion.open('POST', "../Controlador/Elementos_AJAX/json.php?", true);
            petSeccion.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petSeccion.send(parametros);
                 break;        
         case('PT'):
            petTiempoCambio = inicializaPeticion();
            petTiempoCambio.onreadystatechange = procesaRespuesta;
-           petTiempoCambio.open('POST', "../Controlador/Elementos_JSON/json.php?", true);
+           petTiempoCambio.open('POST', "../Controlador/Elementos_AJAX/json.php?", true);
            petTiempoCambio.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petTiempoCambio.send(parametros);
+                break;
+         case('PPVP'):
+           petPorPrecio= inicializaPeticion();
+           petPorPrecio.onreadystatechange = procesaRespuesta;
+           petPorPrecio.open('POST', "../Controlador/Elementos_AJAX/json.php?", true);
+           petPorPrecio.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+           petPorPrecio.send(parametros);
                 break;
         case('UI'):
            petLastImg = inicializaPeticion();
            petLastImg.onreadystatechange = procesaRespuesta;
-           petLastImg.open('POST', "../Controlador/Elementos_JSON/json.php?", true);
+           petLastImg.open('POST', "../Controlador/Elementos_AJAX/json.php?", true);
            petLastImg.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petLastImg.send(parametros);
                 break;
         case('PMI'):
            petImgEliminar = inicializaPeticion();
            petImgEliminar.onreadystatechange = procesaRespuesta;
-           petImgEliminar.open('POST', "../Controlador/Elementos_JSON/json.php?", true);
+           petImgEliminar.open('POST', "../Controlador/Elementos_AJAX/json.php?", true);
            petImgEliminar.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petImgEliminar.send(parametros);
                 break;
         case('PPS'):
            petPost = inicializaPeticion();
            petPost.onreadystatechange = procesaRespuesta;
-           petPost.open('POST', "../Controlador/Elementos_JSON/json.php?", true);
+           petPost.open('POST', "../Controlador/Elementos_AJAX/json.php?", true);
            petPost.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petPost.send(parametros);
                 break;   
         case('SLD'):
            petSlider = inicializaPeticion();
            petSlider.onreadystatechange = procesaRespuesta;
-           petSlider.open('POST', "../Controlador/Elementos_JSON/json.php?", true);
+           petSlider.open('POST', "../Controlador/Elementos_AJAX/json.php?", true);
            petSlider.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petSlider.send(parametros);
                 break;
         case('BUSCADOR'):
            petBuscador = inicializaPeticion();
            petBuscador.onreadystatechange = procesaRespuesta;
-           petBuscador.open('POST', "../Controlador/Elementos_JSON/busquedas.php?", true);
+           petBuscador.open('POST', "../Controlador/Elementos_AJAX/busquedas.php?", true);
            petBuscador.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petBuscador.send(parametros);
                 break; 
         case('ENCONTRADO'):
            petEncontrado = inicializaPeticion();
            petEncontrado.onreadystatechange = procesaRespuesta;
-           petEncontrado.open('POST', "../Controlador/Elementos_JSON/busquedas.php?", true);
+           petEncontrado.open('POST', "../Controlador/Elementos_AJAX/busquedas.php?", true);
            petEncontrado.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petEncontrado.send(parametros);
                 break;  
@@ -240,6 +285,8 @@ function cargarPeticion(tipo, parametros){
                     objSeccion = JSON.parse(petSeccion.responseText);
                 } else if(tipo === 'PT'){
                     objTiempoCambio = JSON.parse(petTiempoCambio.responseText);
+                }else if(tipo === 'PPVP'){
+                    objPorPrecio = JSON.parse(petPorPrecio.responseText);
                 } else if(tipo === 'UI'){
                     objLastImg = JSON.parse(petLastImg.responseText);
                 } else if(tipo === 'PMI'){
@@ -378,13 +425,19 @@ function mostrarLis(){
 }     
     
     
-/*Cargamos las provincias*/
+/*Cargamos las provincias, tanto para cuando un usuario se registra
+* como para el filtro del buscador*/
 function cargarProvincias(objProv){
     //alert(objProv);
+   
     for(var i = 0; i < objProv.length; i++){
         var objTmpP = objProv[i];
-      provincias.options.add(new Option(objTmpP.nombre));
-    }   
+      if(provincias  != null){
+        provincias.options.add(new Option(objTmpP.nombre));
+      } else {
+        porProvincia.options.add(new Option(objTmpP.nombre));
+            }
+    }
 }
 /*Cargamos los tipos de genero*/   
 function cargarGenero(objGene){
@@ -401,17 +454,25 @@ function cargarSecciones(objSeccion){
    // alert(objSeccion);
     for(var i = 0; i < objSeccion.length; i++){
         var objTmpS = objSeccion[i];
+        
       seccion.options.add(new Option(objTmpS.nombre_seccion));
     }  
 //fin cargarSecciones   
 }
 
-/*Cargamos el tiempo para el cambio*/   
+/*Cargamos el tiempo para el cambio, tanto cuando el usuario sube un Post
+* como para el buscador
+* */   
 function cargarTiempoDeCambio(objTiempoCambio){
     //alert(objTiempoCambio);
     for(var i = 0; i < objTiempoCambio.length; i++){
         var objTmpTiempoCambio = objTiempoCambio[i];
-      tiempoCambio.options.add(new Option(objTmpTiempoCambio.tiempo));
+        if(tiempoCambio  !== null){
+            tiempoCambio.options.add(new Option(objTmpTiempoCambio.tiempo));
+      } else {
+            porTiempoCambio.options.add(new Option(objTmpTiempoCambio.tiempo));
+            }
+      
     }  
 //fin cargarSecciones   
 }
@@ -509,10 +570,7 @@ function cargarSlider(objSlider){
         $("#ocultar").removeClass('oculto').addClass('mostrar_transparencia');
         $("#mostrarSlider").removeClass('oculto');
         ///Creamos elementos
-        
-        
-        
-        
+   
         $(".slider-container-IMG").append($('<figure>',{
             id : 'sliderIMG',
             class : 'slider-wrapper-IMG'
@@ -594,7 +652,9 @@ function cargarSlider(objSlider){
                
         )).append($('<section>',{
             id : 'buscadas'
-        }).append( $('<section>', {
+        }).append($('<h3>',{
+            text : 'Cosas que podrían interesar'
+        })).append( $('<section>', {
             id : 'lista'
             }).append($('<ol>', {
                 
@@ -613,8 +673,8 @@ function cargarSlider(objSlider){
 }
 
 /**
-* Metodo que carga los resultados del buscador
-
+ * Metodo que carga los resultados del buscador
+ * en los <li> va mostrando los resultados segun escribe el usuario
  * @returns {ActiveXObject|XMLHttpRequest} */
 function cargarBuscador(objBuscador){
     
