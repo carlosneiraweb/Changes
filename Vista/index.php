@@ -211,11 +211,11 @@ function processForm(){
     echo'<section id="buscar_datos">';
         echo '<h3>Selecciona una opción de busqueda</h3>';
         
-        echo'<label for="Busco">Cosas que la tú buscas</label>';
-        echo'<input type="radio" name="busqueda" id="Busco">';
+        echo'<label for="Busco">Cosas que tú buscas</label>';
+        echo'<input type="radio" name="busqueda" id="Busco" value="busco"  checked="checked">';
         echo'<br />';
         echo'<label for="Ofreco">Cosas que tú ofreces y la gente podría querer.</label>';
-        echo '<input type="radio" name="busqueda" id="Ofrezco">';
+        echo '<input type="radio" name="busqueda" id="Ofrezco" value="buscan">';
         echo '<br />';
         echo '<br />';
         
@@ -224,9 +224,9 @@ function processForm(){
         echo'</select>';
         echo'<label for="porPrecio">Selecciona precio:</label>';
 		echo'<select name="selectPrecio" id="porPrecio">';
-                    echo '<option>No me importa</option>';
-                    echo '<option>0€ a 500€</option>';
-                    echo '<option>500€ a 3000€</option>';
+                    echo '<option>No importa</option>';
+                    echo '<option>Hasta 500€</option>';
+                    echo '<option>Hasta 3000€</option>';
                     echo '<option>Más de 3000€</option>';
         echo'</select>';
         echo'<label for="porTiempoCambio">Selecciona el tiempo de cambio:</label>';

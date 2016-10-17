@@ -16,7 +16,7 @@ var z, tmpLi, liPinchado, ultimoLi;
 var fecha = new Date();
 
 var X, post, provincias, porProvincia, porPrecio, porTiempoCambio, genero, seccion, tiempoCambio,
-        verImagenes, imgSeleccionada, lista, provincia, precio, tiempCambio;
+        verImagenes, imgSeleccionada, lista, radioBusqueda, buscarPorProvincia, buscarPorPrecio, buscarPorTiempoCambio;
 
 
 window.onload=function(){
@@ -43,29 +43,34 @@ window.onload=function(){
          //En este caso solo he anulado esta
          if(e.which !== 8){
             //Primero eliminamos las busquedas anteriores
-        $('ul li').remove();
+        $('#contenido_buscado li').remove();
         
         //Recuperamos el valor de los filtros de busqueda
         
-        $('#porProvincia').on('change',function(){
-             provincia = $(this).val();
-            });
-        $('#porPrecio').on('change',function(){
-             precio = $(this).val();
-            });
-        $('#porTiempoCambio').on('change',function(){
-            tiempoCambio = $(this).val();
-        });
+        radioBusqueda = $('input:radio[name=busqueda]:checked').val();
         
-        if(typeof(provincia) === "undefined"){  provincia = 'hola'; };
-        //alert('provincia'+provincia+" por precio "+precio+ " por tiempo "+tiempoCambio);
+        buscarPorProvincia = $('#porProvincia').val();
+        
+        indice = porPrecio.selectedIndex;//$(this).index();
+             if(indice === 0){buscarPorPrecio = "No importa";};
+             if(indice === 1){buscarPorPrecio = 500;};
+             if(indice === 2){buscarPorPrecio = 3000;};
+             if(indice === 3){buscarPorPrecio = 3001;};
+           
+        buscarPorTiempoCambio = $('#porTiempoCambio').val();;
+            
+        if(buscarPorProvincia === "No importa"){  buscarPorProvincia = 0; };
+        if(buscarPorPrecio === "No importa"){ buscarPorPrecio = 0; };
+        if(buscarPorTiempoCambio === "No importa"){  buscarPorTiempoCambio = 0; };
+        //alert('provincia'+buscarPorProvincia+" por precio "+buscarPorPrecio+ " por tiempo "+buscarPorTiempoCambio);
         
         
-        
+    
         //Recuperamos los que el usuario ha escrito en el campo
-        var txtBuscar = $(this).val();
+        txtBuscar = $(this).val();
         //"&provincia="+provincia+"&precio="+precio+"&tiempoCambio="+tiempoCambio
-        cargarPeticion('BUSCADOR', "opcion=BUSCADOR&BUSCAR="+txtBuscar+"&provincia="+provincia);
+        cargarPeticion('BUSCADOR', "opcion=BUSCADOR&BUSCAR="+txtBuscar+"&tabla="+radioBusqueda+"&buscarPorProvincia="+buscarPorProvincia+
+                '&buscarPorPrecio='+buscarPorPrecio+'&buscarPorTiempoCambio='+buscarPorTiempoCambio);
          }
          
           //Recuperamos el contenido del li que se ha pulsado
@@ -74,7 +79,7 @@ window.onload=function(){
         
         //Ahora hacemos un select de todos los Posts donde tengan ese texto
         //En sus palabras de busquedas o queridas
-        cargarPeticion('ENCONTRADO', "opcion=ENCONTRADO&ENCONTRAR="+textoElegido+"&inicio="+inicio);
+        cargarPeticion('ENCONTRADO', "opcion=ENCONTRADO&ENCONTRAR="+textoElegido+"&tabla="+radioBusqueda+"&inicio="+inicio);
         });
         
       
@@ -97,7 +102,8 @@ window.onload=function(){
          
         /*          FIN LANZAR      */
     
-        cargarPeticion("PP", "opcion=PP"); //Peticion provincias
+       
+        cargarPeticion("PP", "opcion=PP"); //Peticion provincias para busquedas
         cargarPeticion("PG", "opcion=PG"); //Peticion Generos
         cargarPeticion("PS", "opcion=PS"); //Peticion Seccion
         cargarPeticion("PT", "opcion=PT"); //Peticion tiempoCambio
@@ -432,8 +438,14 @@ function cargarProvincias(objProv){
    
     for(var i = 0; i < objProv.length; i++){
         var objTmpP = objProv[i];
-      if(provincias  != null){
-        provincias.options.add(new Option(objTmpP.nombre));
+      if(provincias  !== null){
+          //Evitamos insertar el primer valo de la tabla 
+          //de provincias en el formulario de registro
+          if(i === 0){
+                continue;
+          }else{
+                provincias.options.add(new Option(objTmpP.nombre));
+            }
       } else {
         porProvincia.options.add(new Option(objTmpP.nombre));
             }
@@ -679,10 +691,16 @@ function cargarSlider(objSlider){
 function cargarBuscador(objBuscador){
     
     //alert(objBuscador[0]);
-    
-    for(var b = 0; b < objBuscador.length; b++){
-       
-        $('#contenido_buscado').append('<li class="d">'+objBuscador[b].palabra+'</li>');
+    var vacio = "<li>No se han encontrado resultados con la busqueda <strong>"+txtBuscar+"</strong></li>";
+    if(typeof objBuscador[0] === "undefined"){
+        $('#mostrar_resultados ul').append(vacio); 
+    }else{
+         
+     
+        for(var b = 0; b < objBuscador.length; b++){
+        $('#mostrar_resultados ul').append('<li class="d">'+objBuscador[b].palabra+'</li>');
+        
+        }
     }
     
     

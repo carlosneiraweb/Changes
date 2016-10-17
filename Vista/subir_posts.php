@@ -155,7 +155,7 @@ $articulo = new Post(array());
     
     echo '<section class="contenedor">';
     echo'<label  for="precio">Introduce un precio aproximado  artículo. </label>';
-    echo'<input type="text" maxlength="10" name="precio" id="precio" placeholder="Precio aproximado, máximo 10 caracteres." value="';if(isset($_SESSION['post']['precio'])){echo $_SESSION['post']['precio'];} echo '">';
+    echo'<input type="text" maxlength="10" name="precio" id="precio" placeholder="Precio aproximado, máximo 10 caracteres, solo se aceptan dígitos." value="';if(isset($_SESSION['post']['precio'])){echo $_SESSION['post']['precio'];} echo '">';
     echo'<label><span class="cnt">0</span></label>';
     echo'</section>';
     
@@ -441,7 +441,7 @@ function processForm($requiredFields, $st){
                 $_SESSION['post']['seccion'] = isset($_POST['seccion']) ? $_POST['seccion'] : "";
                 $_SESSION['post']['tiempoCambio'] = isset($_POST['tiempoCambio']) ? $_POST['tiempoCambio'] : "";
                 $_SESSION['post']['titulo'] = isset($_POST["titulo"]) ? preg_replace("/[^\-\_a-zA-Z0-9.,`'´ ñÑáéíóúäëïöü]/", "", $_POST["titulo"]) : "";       
-                $_SESSION['post']['comentario'] = isset($_POST['comentario']) ? preg_replace("/[^\-\_a-zA-Z0-9.,ºª`'´ Ññáéíóúäëïöü]/", "", $_POST["comentario"]) : "";
+                $_SESSION['post']['comentario'] = isset($_POST['comentario']) ? preg_replace("/[^\-\_a-zA-Z0-9.,ºª`'´ Ññáéíóúäëïöü \n\r\rn\s]/", "", nl2br($_POST["comentario"])) : "";
                 $_SESSION['post']['precio'] = isset($_POST['precio']) ? preg_replace("/[^\-\_a-zAZ0-9., €$]/", "", $_POST["precio"]) : "";
                 $_SESSION['post']['Pa_queridas'][0] = isset($_POST["querida_1"]) ? preg_replace("/[^\-\_a-zA-Z0-9ºª., '``'´ñÑáéíóúäëïöü]/", "", $_POST["querida_1"]) : "";
                 $_SESSION['post']['Pa_queridas'][1] = isset($_POST["querida_2"]) ? preg_replace("/[^\-\_a-zA-Z0-9ºª., `'´Ññáéíóúäëïöü]/", "", $_POST["querida_2"]) : "";

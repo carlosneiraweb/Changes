@@ -13,7 +13,7 @@
   // -------   Crear la conexión al servidor y ejecutar la consulta.
     try{
     
-    $con= Conne::connect();
+    $conBusquedas= Conne::connect();
   
   // -------- párametro opción para determinar la select a realizar -------
 if (isset($_POST['opcion'])) 
@@ -53,14 +53,14 @@ if(isset($_POST['inicio'])){
     if($opc == "PPS"){
                 $sql = "SELECT SQL_CALC_FOUND_ROWS idPost FROM post  ORDER BY idPost DESC LIMIT :startRow, :numRows";
                 //$sql = "SELECT idPost FROM post ORDER BY fechaPost  DESC";
-                $stmBus = $con->prepare($sql);
+                $stmBus = $conBusquedas->prepare($sql);
                 $stmBus->bindValue(":startRow", $inicio, PDO::PARAM_INT);
                 $stmBus->bindValue(":numRows", PAGE_SIZE, PDO::PARAM_INT);
                 $stmBus->execute();
                 $v = $stmBus->fetchAll();
                 
                 //Calculamos el total final como si  la clausula limit no estuviera
-                $stmBus = $con->query("SELECT found_rows()  AS totalRows");
+                $stmBus = $conBusquedas->query("SELECT found_rows()  AS totalRows");
                 $row = array ('totalRows' => $stmBus->fetch());
                 
                 $rs = array();
@@ -72,7 +72,7 @@ if(isset($_POST['inicio'])){
                 $sqlPost = "select  u.nick as nick, prov.nombre as provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, p.titulo as titulo, img.ruta as ruta, p.titulo as titulo, p.comentario as comentario, tc.tiempo as tiempoCambio
 from usuario AS u, post AS p, imagenes AS img, provincias AS prov, direccion as dir, tiempo_cambio as tc
 where p.idUsuario = u.idUsuario and p.idPost = $id[0] and img.post_idPost = $id[0]  limit 1";
-                $stm2Bus = $con->query($sqlPost);
+                $stm2Bus = $conBusquedas->query($sqlPost);
                 $tmp = $stm2Bus->fetch();
                 
                  array_push($rs,$tmp);
@@ -80,7 +80,7 @@ where p.idUsuario = u.idUsuario and p.idPost = $id[0] and img.post_idPost = $id[
                 
                 
                  echo json_encode($rs);
-                 Conne::disconnect($con);
+                 Conne::disconnect($conBusquedas);
         
                 
                 
@@ -91,7 +91,7 @@ where p.idUsuario = u.idUsuario and p.idPost = $id[0] and img.post_idPost = $id[
              
              $sql = 'select post_idPost from imagenes where ruta = "'.$tmpIdImg.'";' ;
            
-             $smt3 = $con->query($sql);
+             $smt3 = $conBusquedas->query($sql);
              //Recuperamos el id del post
              $idImgSLD = $smt3->fetch();
              //Almacenaremos varios arrays para mostrar todos los datos
@@ -99,16 +99,16 @@ where p.idUsuario = u.idUsuario and p.idPost = $id[0] and img.post_idPost = $id[
              $rutaTextoPbsBuscadas = array();
              //Recuperamos la ruta de la imagen y la descripcion de cada una
              $sql = "select ruta, texto from imagenes where post_idPost =".$idImgSLD[0].";";
-             $smt3 = $con->query($sql);
+             $smt3 = $conBusquedas->query($sql);
              $tmpRutaTexto = $smt3->fetchAll();
              //Recuperamos las palabras queridas o buscadas del usuario
              $sql ="select palabra as pbsQueridas from pbs_queridas where idPost = ".$idImgSLD[0].";";
-             $smt3 = $con->query($sql);
+             $smt3 = $conBusquedas->query($sql);
              $tmpPbsBuscadas = $smt3->fetchAll();
              array_push($rutaTextoPbsBuscadas, $tmpRutaTexto, $tmpPbsBuscadas);
              
              echo json_encode($rutaTextoPbsBuscadas);
-             Conne::disconnect($con);
+             Conne::disconnect($conBusquedas);
         
     }else{
      
@@ -132,16 +132,16 @@ where p.idUsuario = u.idUsuario and p.idPost = $id[0] and img.post_idPost = $id[
             $sql = "SELECT ruta as ruta, texto as texto from ".TBL_IMAGENES." WHERE post_idPost = '".$idPost."' and ruta = '".$ruta."'";
             break;
     }   
-        $st = $con->query($sql);
+        $st = $conBusquedas->query($sql);
         $resultados= $st->fetchAll();
         $datos = $resultados; 
         echo json_encode($datos);
        
-         Conne::disconnect($con);
+         Conne::disconnect($conBusquedas);
     
     }  
     }catch(PDOException $ex){
-        Conne::disconnect($con);
+        Conne::disconnect($conBusquedas);
         die($ex->getMessage());
     }
     
