@@ -24,7 +24,9 @@ function volverAnterior(){
 	<link rel="stylesheet" href="../css/estilos.css"/>
         <script src="../Controlador/jquery-2.2.2.js" type="text/javascript"></script>
         <script src="../Controlador/Elementos_AJAX/elementos.js"></script>
+        <script src="../Controlador/Elementos_AJAX/cargarElementos.js"></script>
         <script src="../Controlador/Validar/formulario_reg.js"></script>
+        
         
     <!--Para navegadores viejos-->
         <!--[if lt IE 9]>
@@ -32,7 +34,16 @@ function volverAnterior(){
         src="//html5shiv.googlecode.com/svn/trunk/html5.js">
         </script>
         <![endif]-->
+    
         
+    <script type="text/javascript">
+           //Indicamos que elementos vamos a cargar
+           //De esta manera controlamos que peticiones hacemos en cada pagina
+           var PP = true;
+           var PG = true;
+           var PS = true;
+           var PT = true;
+       </script>
    </head>
    <body id="cuerpo">
        

@@ -161,7 +161,7 @@ public function insertArticulo(){
             $st2 = $con->prepare($sql2);
             $st2->execute();
             //Esta variable luego se usa tambien 
-            //Por en el segundo paso de subir un Post, cuando se sube una imagen
+            //en el segundo paso de subir un Post, cuando se sube una imagen
             //Si el usuario quiere eliminar una imagen en el proceso
             $_SESSION['lastId'] =  $st2->fetch();
             

@@ -49,9 +49,18 @@ $articulo = new Post(array());
 	<link rel="stylesheet" href="../css/estilos.css"/>
         <script src="../Controlador/jquery-2.2.2.js" type="text/javascript"></script>
         <script src="../Controlador/Elementos_AJAX/elementos.js"></script>
-        <!--<script src="../Controlador/Validar/formulario_reg.js"></script>-->
+        <script src="../Controlador/Elementos_AJAX/cargarElementos.js"></script>
+        <script src="../Controlador/Validar/formulario_reg.js"></script>
         <script src="../Controlador/Validar/contador.js"></script>
         <script src="../Controlador/Validar/otras_validaciones.js"></script>
+        
+        <script type="text/javascript">
+           //Indicamos que elementos vamos a cargar
+           //De esta manera controlamos que peticiones hacemos en cada pagina
+           var PS = true;
+           var PT = true;
+       </script>
+        
     </head>
     <body>
         
@@ -84,7 +93,7 @@ $articulo = new Post(array());
     
     /*Mandamos a comprobar los campos del primer formulario*/
     if(isset($_POST['primero']) and $_POST['primero'] == "Siguiente"){
-        $requiredFields = array('seccion', 'comentario', 'Pa_queridas', 'Pa_ofrecidas');
+        $requiredFields = array('seccion', 'comentario');
         processForm($requiredFields, "step1");
     } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Enviar" ){    
         //El usario  quiere subir una foto al post

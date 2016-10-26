@@ -5,12 +5,13 @@ require_once '../Controlador/Validar/ValidoForm.php';
 
 session_start(); 
 $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
+
 //Pasamos a JavaScript el tamaño de paginado de las paginas.
-    //Solo es necesario para mostrarlos ya que es una constante y accedemos 
-    //a ella directamente desde el script JSON
-    //Por donde empezar a mostrar y la URL de la pagina concreta que llama al script JSON
+//La utilizamos en el script elementos de javascript para mostrar 
+//paginados los posts y en json.php para la peticion 
  echo '<script type="text/javascript">';
                echo "var PAGESIZE = "; echo PAGE_SIZE;
+               
  echo '</script>';
             
            
@@ -26,13 +27,13 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link href="../img/fabicon.ico" rel="icon" type="image/x-icon"/>
 	<link rel="stylesheet" href="../css/estilos.css"/>
-        <script src="../Controlador/jquery-2.2.2.js" type="text/javascript"></script>
-        <script src="../Controlador/menu.js"></script>	
+        <script src="../Controlador/jquery-2.2.2.js"></script>
         <script src="../Controlador/Elementos_AJAX/elementos.js"></script>
+        <script src="../Controlador/Elementos_AJAX/cargarElementos.js"></script>
         <script src="../Controlador/Validar/formulario_login.js"></script>
         <script src="../Controlador/redireccionar.js"></script>
         <script src="../Controlador/script.js"></script>
-       
+        
     <!--Para navegadores viejos-->
         <!--[if lt IE 9]>
             <script
@@ -40,6 +41,13 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
         </script>
         <![endif]-->
         
+       <script type="text/javascript">
+           //Indicamos que elementos vamos a cargar
+           //De esta manera controlamos que peticiones hacemos en cada pagina
+           var PP = true;
+           var PT = true;
+           
+       </script>
    </head>
    <body id="cuerpo">
         <?php
@@ -304,14 +312,7 @@ function processForm(){
     
     echo' <div class="medidas"><p>Ventana: <span id="span1"></span></div>';
     echo'<div class="medidas">Ancho Supercontenedor: <span id="span2"></span> px</p>';
-    /*
-        <script src="http://platform.twitter.com/widgets.js"></script>
-            <a href="http://twitter.com/share" class="twitter-share-button"
-                data-text="#te lo cambio.es | Portal de intercambio de objetos entre particulares"
-                data-url="https://telocambio.es" >Twittear</a>
-                    <br/>
-        */
-    
+   
     echo'</footer>';
     echo '</body>';
     echo '</html>';

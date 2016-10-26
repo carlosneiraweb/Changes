@@ -128,20 +128,7 @@ where p.idPost = :idPost limit 1";
              echo json_encode($rutaTextoPbsBuscadas);
         
     }else{
-     
-    switch ($opc) {
-        case "PP":
-            $sql="select nombre from ".TBL_PROVINCIAS.";"; 
-                break;
-        case "PG":
-            $sql = "select genero from ".TBL_GENERO.";";
-            break;
-        case "PS":
-            $sql = "Select nombre_seccion from ".TBL_SECCIONES.";";
-            break;
-        case "PT":
-            $sql = "Select * from ".TBL_TIEMPO_CAMBIO." ;";
-            break;
+         switch ($opc) {
         case "UI":
             $sql = "Select ruta  as ruta  from ".TBL_IMAGENES." WHERE post_idPost = '".$idPost."'";
             break;

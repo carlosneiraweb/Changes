@@ -1,11 +1,5 @@
 /* global nombre */
-/**
- * @author Carlos Neira Sanchez
- * @mail arj.123@hotmail.es
- * @telefono ""
- * @nameAndExt elementos.js
- * @fecha 26-oct-2016
- */
+
 var READY_STATE_UNINITIALIZED = 0;
 var READY_STATE_LOADING = 1;
 var READY_STATE_LOADED = 2;
@@ -20,8 +14,7 @@ var z, tmpLi, liPinchado, ultimoLi;
 
 var fecha = new Date();
 
-var X, post,elementos, provincias, porProvincia, porPrecio, porTiempoCambio, genero, seccion, tiempoCambio,
-        PP = null, PG = null, PS = null, PT = null,
+var X, post, provincias, porProvincia, porPrecio, porTiempoCambio, genero, seccion, tiempoCambio,
         verImagenes, imgSeleccionada, lista, radioBusqueda, buscarPorProvincia, buscarPorPrecio, buscarPorTiempoCambio;
 
 
@@ -37,23 +30,11 @@ window.onload=function(){
      verImagenes = document.getElementById('cnt_img');
      imgSeleccionada = document.getElementById('mostrarImgSeleccionada');
      lista = document.getElementById('lista');
-    
-     //Mandamos cargar los elementos solicitados en cada pagina, tipo selects o combos
-     elementos = [provincias, porProvincia, porTiempoCambio, genero, seccion, tiempoCambio];
-     if(PP){
-         cargar(elementos, 'PP');
-     } 
-     if(PG){
-         cargar(elementos, 'PG');
-     } 
-     if(PS){
-         cargar(elementos, 'PS');
-     } 
-     if(PT){
-         cargar(elementos, 'PT');
-     }
-    
-    /*     ELEMENTOS PARA EL BUSCADOR      */
+     
+     var elementos = [provincias, porProvincia, porTiempoCambio, genero, seccion, tiempoCambio];
+     cargar(elementos);
+     
+     /*     ELEMENTOS PARA EL BUSCADOR      */
      
     $('#buscador').keyup(function(e){
          //Algunas teclas dan problemas como el ir hacia atras <- 
@@ -121,9 +102,12 @@ window.onload=function(){
         /*          FIN LANZAR      */
     
        
-        
-  
-    cargarPeticion("UI", "opcion=UI&idPost="+idPost); //Peticion ultima imagen
+        //cargarPeticion("PP", "opcion=PP"); //Peticion provincias para busquedas
+        //cargarPeticion("PG", "opcion=PG"); //Peticion Generos
+        //cargarPeticion("PS", "opcion=PS"); //Peticion Seccion
+        //cargarPeticion("PT", "opcion=PT"); //Peticion tiempoCambio
+        cargarPeticion("PPVP", "opcion=PPVP"); //Peticion por PRECIO
+        cargarPeticion("UI", "opcion=UI&idPost="+idPost); //Peticion ultima imagen
         
     
     
@@ -197,7 +181,7 @@ window.onload=function(){
         
                     /* FIN PAGINACION */
 };
-
+     
 
 /*  Metodo que recive el id del post y el id de la imagen
  *      para mostrar por si el usuario quiere eliminar o modificar la descripcion
@@ -213,8 +197,41 @@ function cargarPeticion(tipo, parametros){
 //alert('Estamos en cargarPeticion y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
     //para comprobar el tipo de peticion
     switch(tipo){
-        
-        
+        case('PP'):
+           petPro = inicializaPeticion();
+           petPro.onreadystatechange = procesaRespuesta;
+           petPro.open('POST', "../Controlador/Elementos_AJAX/json.php?", true);
+           petPro.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+           petPro.send(parametros);
+                break;
+        case('PG'):
+           petGen = inicializaPeticion();
+           petGen.onreadystatechange = procesaRespuesta;
+           petGen.open('POST', "../Controlador/Elementos_AJAX/json.php?", true);
+           petGen.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+           petGen.send(parametros);
+                break;
+        case('PS'):
+           petSeccion = inicializaPeticion();
+           petSeccion.onreadystatechange = procesaRespuesta;
+           petSeccion.open('POST', "../Controlador/Elementos_AJAX/json.php?", true);
+           petSeccion.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+           petSeccion.send(parametros);
+                break;        
+        case('PT'):
+           petTiempoCambio = inicializaPeticion();
+           petTiempoCambio.onreadystatechange = procesaRespuesta;
+           petTiempoCambio.open('POST', "../Controlador/Elementos_AJAX/json.php?", true);
+           petTiempoCambio.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+           petTiempoCambio.send(parametros);
+                break;
+         case('PPVP'):
+           petPorPrecio= inicializaPeticion();
+           petPorPrecio.onreadystatechange = procesaRespuesta;
+           petPorPrecio.open('POST', "../Controlador/Elementos_AJAX/json.php?", true);
+           petPorPrecio.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+           petPorPrecio.send(parametros);
+                break;
         case('UI'):
            petLastImg = inicializaPeticion();
            petLastImg.onreadystatechange = procesaRespuesta;
@@ -265,7 +282,17 @@ function cargarPeticion(tipo, parametros){
        if(this.readyState === READY_STATE_COMPLETE && this.status === 200){
             try{
                 
-               if(tipo === 'UI'){
+               if(tipo === 'PP'){
+                    objPro = JSON.parse(petPro.responseText);
+                } else if(tipo === 'PG'){
+                    objGen = JSON.parse(petGen.responseText);
+                } else if(tipo === 'PS'){
+                    objSeccion = JSON.parse(petSeccion.responseText);
+                } else if(tipo === 'PT'){
+                    objTiempoCambio = JSON.parse(petTiempoCambio.responseText);
+                }else if(tipo === 'PPVP'){
+                    objPorPrecio = JSON.parse(petPorPrecio.responseText);
+                } else if(tipo === 'UI'){
                     objLastImg = JSON.parse(petLastImg.responseText);
                 } else if(tipo === 'PMI'){
                     objImgEliminar = JSON.parse(petImgEliminar.responseText);
@@ -293,7 +320,18 @@ function cargarPeticion(tipo, parametros){
             }
             
             switch (tipo){
-               
+                case 'PP':
+                    cargarProvincias(objPro);
+                        break;
+                case 'PG':
+                    cargarGenero(objGen);
+                        break;
+                case 'PS':
+                    cargarSecciones(objSeccion);
+                        break;
+                case 'PT':
+                    cargarTiempoDeCambio(objTiempoCambio);
+                        break;
                 case 'UI':
                     cargarUltimaImagen(objLastImg);
                         break;
@@ -392,6 +430,63 @@ function mostrarLis(){
 }     
     
     
+/*Cargamos las provincias, tanto para cuando un usuario se registra
+* como para el filtro del buscador*/
+function cargarProvincias(objProv){
+    //alert(objProv);
+   
+    for(var i = 0; i < objProv.length; i++){
+        var objTmpP = objProv[i];
+      if(provincias  !== null){
+          //Evitamos insertar el primer valo de la tabla 
+          //de provincias en el formulario de registro
+          if(i === 0){
+                continue;
+          }else{
+                provincias.options.add(new Option(objTmpP.nombre));
+            }
+      } else {
+        porProvincia.options.add(new Option(objTmpP.nombre));
+            }
+    }
+}
+/*Cargamos los tipos de genero*/   
+function cargarGenero(objGene){
+    //alert(objGene);
+    for(var i = 0; i < objGene.length; i++){
+        var objTmpG = objGene[i];
+      genero.options.add(new Option(objTmpG.genero));
+    }  
+//fin cargarProvincias    
+}
+
+/*Cargamos las secciones de los artículos*/   
+function cargarSecciones(objSeccion){
+   // alert(objSeccion);
+    for(var i = 0; i < objSeccion.length; i++){
+        var objTmpS = objSeccion[i];
+        
+      seccion.options.add(new Option(objTmpS.nombre_seccion));
+    }  
+//fin cargarSecciones   
+}
+
+/*Cargamos el tiempo para el cambio, tanto cuando el usuario sube un Post
+* como para el buscador
+* */   
+function cargarTiempoDeCambio(objTiempoCambio){
+    //alert(objTiempoCambio);
+    for(var i = 0; i < objTiempoCambio.length; i++){
+        var objTmpTiempoCambio = objTiempoCambio[i];
+        if(tiempoCambio  !== null){
+            tiempoCambio.options.add(new Option(objTmpTiempoCambio.tiempo));
+      } else {
+            porTiempoCambio.options.add(new Option(objTmpTiempoCambio.tiempo));
+            }
+      
+    }  
+//fin cargarSecciones   
+}
 
 /**
 * Metodo que muestra la ultima imagen subida por el usuario
