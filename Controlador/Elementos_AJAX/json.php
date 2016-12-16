@@ -13,28 +13,16 @@
   // -------   Crear la conexión al servidor y ejecutar la consulta.
     try{
     
-    $conBusquedas= Conne::connect();
+    $conPost = Conne::connect();
   
   // -------- párametro opción para determinar la select a realizar -------
-if (isset($_POST['opcion'])) 
-      $opc=$_POST['opcion'];
-else
-     if (isset($_GET['opcion'])) 
-        $opc=$_GET['opcion'];
-
-if (isset($_POST['idPost'])) 
-        $idPost=$_POST['idPost'];
-  else
-     if (isset($_GET['idPost'])) 
-        $idPost=$_GET['idPost'];
-     
-if(isset($_POST['ruta'])){
-        $ruta = $_POST['ruta'];
-    } else {
-        if(isset($_GET['ruta'])){
-            $ruta = $_GET['ruta'];
-        }
-    }
+if (isset($_POST['opcion'])){ 
+      $opc = $_POST['opcion'];
+}else{
+     if (isset($_GET['opcion'])){ 
+        $opc = $_GET['opcion'];
+     }
+}
 
 if(isset($_POST['srcImg'])){
         $idImg = $_POST['srcImg'];
@@ -56,7 +44,7 @@ if(isset($_POST['inicio'])){
     if($opc == "PPS"){
                 $sql = "SELECT SQL_CALC_FOUND_ROWS idPost FROM post  ORDER BY idPost DESC LIMIT :startRow, :numRows";
                 //$sql = "SELECT idPost FROM post ORDER BY fechaPost  DESC";
-                $stmBus = $conBusquedas->prepare($sql);
+                $stmBus = $conPost->prepare($sql);
                 $stmBus->bindValue(":startRow", $inicio, PDO::PARAM_INT);
                 $stmBus->bindValue(":numRows", PAGE_SIZE, PDO::PARAM_INT);
                 $stmBus->execute();
@@ -64,7 +52,7 @@ if(isset($_POST['inicio'])){
                 $stmBus->closeCursor();
                 
                 //Calculamos el total final como si  la clausula limit no estuviera
-                $stm2Bus = $conBusquedas->query("SELECT found_rows()  AS totalRows");
+                $stm2Bus = $conPost->query("SELECT found_rows()  AS totalRows");
                 $row = array ('totalRows' => $stm2Bus->fetch());
                 $stm2Bus->closeCursor();
                 
@@ -74,7 +62,7 @@ if(isset($_POST['inicio'])){
                 foreach($v as $id){
                 
          
-                $sqlPost = "select u.nick, prov.nombre AS provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, p.titulo, img.ruta, p.titulo, p.comentario, tc.tiempo as tiempoCambio
+                $sqlPost = "select p.idPost, u.nick, prov.nombre AS provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, p.titulo, img.ruta, p.titulo, p.comentario, tc.tiempo as tiempoCambio
 from post p
 inner join usuario u on u.idUsuario= p.idusuario
 inner join direccion dire on dire.idDireccion = u.idUsuario
@@ -83,7 +71,7 @@ inner join imagenes img on img.post_idPost = :idPost
 inner join tiempo_cambio tc on tc.idTiempoCambio = p.tiempo_cambio_idTiempoCambio
 where p.idPost = :idPost limit 1";
                 
-                $stm3Bus = $conBusquedas->prepare($sqlPost);
+                $stm3Bus = $conPost->prepare($sqlPost);
                 $stm3Bus->bindValue(":idPost", $id[0], PDO::PARAM_INT);
                 $stm3Bus->execute();
                 $tmp = $stm3Bus->fetch();
@@ -104,7 +92,7 @@ where p.idPost = :idPost limit 1";
              
              $sql = 'select post_idPost from imagenes where ruta = "'.$tmpIdImg.'";' ;
            
-             $stm4 = $conBusquedas->query($sql);
+             $stm4 = $conPost->query($sql);
              //Recuperamos el id del post
              $idImgSLD = $stm4->fetch();
              $stm4->closeCursor();
@@ -114,38 +102,22 @@ where p.idPost = :idPost limit 1";
              $rutaTextoPbsBuscadas = array();
              //Recuperamos la ruta de la imagen y la descripcion de cada una
              $sql = "select ruta, texto from imagenes where post_idPost =".$idImgSLD[0].";";
-             $stm5 = $conBusquedas->query($sql);
+             $stm5 = $conPost->query($sql);
              $tmpRutaTexto = $stm5->fetchAll();
              $stm5->closeCursor();
              
             //Recuperamos las palabras queridas o buscadas del usuario
              $sql ="select palabra as pbsQueridas from pbs_queridas where idPost = ".$idImgSLD[0].";";
-             $stm6 = $conBusquedas->query($sql);
+             $stm6 = $conPost->query($sql);
              $tmpPbsBuscadas = $stm6->fetchAll();
              $stm6->closeCursor();
              array_push($rutaTextoPbsBuscadas, $tmpRutaTexto, $tmpPbsBuscadas);
              
              echo json_encode($rutaTextoPbsBuscadas);
         
-    }else{
-         switch ($opc) {
-        case "UI":
-            $sql = "Select ruta  as ruta  from ".TBL_IMAGENES." WHERE post_idPost = '".$idPost."'";
-            break;
-        case "PMI":
-            $sql = "SELECT ruta as ruta, texto as texto from ".TBL_IMAGENES." WHERE post_idPost = '".$idPost."' and ruta = '".$ruta."'";
-            break;
-    }   
-        $st = $conBusquedas->query($sql);
-        $resultados= $st->fetchAll();
-        $datos = $resultados; 
-        echo json_encode($datos);
-        $st->closeCursor();
-        Conne::disconnect($conBusquedas);
-    
-    }  
+    }
     }catch(PDOException $ex){
-        Conne::disconnect($conBusquedas);
+        Conne::disconnect($conPost);
         die($ex->getMessage());
     }
     

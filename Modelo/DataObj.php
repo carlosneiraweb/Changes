@@ -10,6 +10,9 @@
  * Description of DataObj
  *
  * @author Carlos Neira Sanchez
+ * Esta clase es la padre de la mayoria del resto de clase
+ * Dispone de un unico metodo que nos devuelve
+ * CUALQUIER PROPIEDAD de un objeto que extienda
  */
 abstract class DataObj {
     

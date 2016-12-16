@@ -1,8 +1,18 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+
+/**
+ * @author Carlos Neira Sanchez
+ * @mail arj.123@hotmail.es
+ * @telefono ""
+ * @nameAndExt busquedas.php
+ * @fecha 04-oct-2016
  */
+
+var READY_STATE_UNINITIALIZED = 0;
+var READY_STATE_LOADING = 1;
+var READY_STATE_LOADED = 2;
+var READY_STATE_INTERACTIVE = 3;
+var READY_STATE_COMPLETE = 4;
+
 
 // Variables para las peticiones JSON
 var objPro, petPro, objGen, petGen, objSeccion, petSeccion, objTiempoCambio, petTiempoCambio;
@@ -45,29 +55,29 @@ function cargarPeticionElementos(tipo, parametros){
     //para comprobar el tipo de peticion
     switch(tipo){
         case('PP'):
-           petPro = inicializaPeticion();
-           petPro.onreadystatechange = procesaRespuesta;
+           petPro = inicializaPeticionElementos();
+           petPro.onreadystatechange = procesaRespuestaPeticionElementos;
            petPro.open('POST', "../Controlador/Elementos_AJAX/cargarElementos.php?", true);
            petPro.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petPro.send(parametros);
                 break;
         case('PG'):
-           petGen = inicializaPeticion();
-           petGen.onreadystatechange = procesaRespuesta;
+           petGen = inicializaPeticionElementos();
+           petGen.onreadystatechange = procesaRespuestaPeticionElementos;
            petGen.open('POST', "../Controlador/Elementos_AJAX/cargarElementos.php?", true);
            petGen.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petGen.send(parametros);
                 break;
         case('PS'):
-           petSeccion = inicializaPeticion();
-           petSeccion.onreadystatechange = procesaRespuesta;
+           petSeccion = inicializaPeticionElementos();
+           petSeccion.onreadystatechange = procesaRespuestaPeticionElementos;
            petSeccion.open('POST', "../Controlador/Elementos_AJAX/cargarElementos.php?", true);
            petSeccion.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petSeccion.send(parametros);
                 break;        
         case('PT'):
-           petTiempoCambio = inicializaPeticion();
-           petTiempoCambio.onreadystatechange = procesaRespuesta;
+           petTiempoCambio = inicializaPeticionElementos();
+           petTiempoCambio.onreadystatechange = procesaRespuestaPeticionElementos;
            petTiempoCambio.open('POST', "../Controlador/Elementos_AJAX/cargarElementos.php?", true);
            petTiempoCambio.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petTiempoCambio.send(parametros);
@@ -76,7 +86,7 @@ function cargarPeticionElementos(tipo, parametros){
     //fin switch
     }
     
-    function procesaRespuesta(){
+    function procesaRespuestaPeticionElementos(){
        
        if(this.readyState === READY_STATE_COMPLETE && this.status === 200){
             try{
@@ -129,8 +139,7 @@ function cargarPeticionElementos(tipo, parametros){
 //fin cargarPeticion    
 }
     
-//fin cargarElementos    
-//}
+
 
 /*Cargamos las provincias, tanto para cuando un usuario se registra
 * como para el filtro del buscador*/

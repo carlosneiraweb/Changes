@@ -31,7 +31,7 @@ function volverAnterior(){
     <!--Para navegadores viejos-->
         <!--[if lt IE 9]>
             <script
-        src="//html5shiv.googlecode.com/svn/trunk/html5.js">
+        src="http://html5shiv.googlecode.com/svn/trunk/html5.js">
         </script>
         <![endif]-->
     
@@ -53,6 +53,8 @@ function volverAnterior(){
         require_once('../Modelo/DataObj.php');
         require_once('../Controlador/Validar/ValidoForm.php');
         require_once('../Sistema/Directorios.php');
+        require_once('../Sistema/Constantes.php');
+        require_once('../Sistema/Email/mandarEmails.php');
         
         //Variable global para mostrar los errores de validacion
         global $mensaje;
@@ -290,6 +292,8 @@ function confirmarRegistro(){
                     echo '</section>';
             echo "</form>";
     echo "</section>";
+    
+//Fin confirmar registro    
 }
 
 /**
@@ -321,10 +325,15 @@ function confirmarRegistro(){
      
             $test = $user->insert();
             
-            if($test){
-                confirmarRegistro();
+            if($test === true){
+             //Si todo va bien le mandamos a la pagina para confirmar registro
+                //y le mandamos un email de bienvenida
+               confirmarRegistro();
+               mandarEmails::mandarEmailWelcome($user);
             } else{
-                mostrarError();
+                echo 'Mandamos email <br />';
+                 mandarEmails::mandarEmailProblemasRegistro($user, $test);
+                 mostrarError();
             }
             
             
@@ -396,7 +405,7 @@ function processForm($requiredFields, $st){
                 //En caso de que exista el nombre de usuario o email
                 //Los passwords se repitan o el email sea incorrecto
                     if($user->getByUserName($_SESSION['usuario']['nick'])){
-                        $mensaje = PASSWORD_EXISTE;
+                        $mensaje = NOMBRE_USUARIO_EXISTE;
                         $test = false;
                         break;
                     }elseif(!ValidoForm::validarPassword($_SESSION['usuario']['password'])){
@@ -479,10 +488,10 @@ function processForm($requiredFields, $st){
             //Si hay algun tipo de error al subir la foto
                 //Redirigimos a la pagina de mostrar error
                 //Para que el usuario vuelva a intentarlo
-//                if(!$test){
-//                    mostrarError();
-//                    exit();
-//                }
+                if(!$test){
+                    mostrarError();
+                    exit();
+                }
             return $test;
    
         }

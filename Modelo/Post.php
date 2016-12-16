@@ -8,7 +8,11 @@
 require_once('../Sistema/Conne.php');
 require_once('DataObj.php');
 
-
+/**
+ * Esta clase extiende de DataObject
+ * Crea objetos Post y tiene varios metodos
+ * para crear, actualizar y eliminar objetos de la clase Post
+ */
 class Post extends DataObj{
     
     

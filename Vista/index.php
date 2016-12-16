@@ -30,6 +30,8 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
         <script src="../Controlador/jquery-2.2.2.js"></script>
         <script src="../Controlador/Elementos_AJAX/elementos.js"></script>
         <script src="../Controlador/Elementos_AJAX/cargarElementos.js"></script>
+        <script src="../Controlador/Elementos_AJAX/imagenesAlSubirPost.js"></script>
+        <script src="../Controlador/Elementos_AJAX/buscador.js"></script>
         <script src="../Controlador/Validar/formulario_login.js"></script>
         <script src="../Controlador/redireccionar.js"></script>
         <script src="../Controlador/script.js"></script>
@@ -46,7 +48,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
            //De esta manera controlamos que peticiones hacemos en cada pagina
            var PP = true;
            var PT = true;
-           
+           var PPS = true;
        </script>
    </head>
    <body id="cuerpo">
@@ -213,9 +215,7 @@ function processForm(){
 	echo'</figure>';
     echo'</nav>';
    
-    /********************************************************************/
-    
-    
+    /*******************  BUSCADOR ************************************/ 
     echo'<section id="buscar_datos">';
         echo '<h3>Selecciona una opción de busqueda</h3>';
         
@@ -269,7 +269,7 @@ function processForm(){
         echo '<section id="resultados">';
      
         
-  
+        
         echo'</section>';
         
         

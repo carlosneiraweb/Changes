@@ -13,11 +13,15 @@
  */
 require_once('../Sistema/Conne.php');
 require_once('DataObj.php');
+require_once('../Sistema/Email/mandarEmails.php');
 
 
-//Importante
-    // Las clases que extienden esta clase instancian la propiedad data de dataObj
-   
+
+ /**
+  * Esta clase extiende DataObj
+  * Crea usuarios y dispone de varios metodos para 
+  * insertar, actualizar o borrar un obj de Usuarios
+  */  
 class Usuarios extends DataObj{
     
     protected $data = array(
@@ -200,11 +204,12 @@ class Usuarios extends DataObj{
   //fin authenticate     
    }
    
-         /**
-     * Metodo public
-     * insert object
-     */
-    public function insert(){
+/**
+ * Metodo que inserta en la bbdd un usuario
+ * @global type $inicio
+ * @return type el resultado de la insercion en la bbdd
+ */    
+public function insert(){
         global $inicio;
         try{
         $con = Conne::connect();
@@ -226,7 +231,7 @@ class Usuarios extends DataObj{
       
             $date = date('Y-m-d');
             $st = $con->prepare($sql);
-            $st->bindValue(":nick", $this->data["nick"], PDO::PARAM_STR);
+            //$st->bindValue(":nick", $this->data["nick"], PDO::PARAM_STR);
             $st->bindValue(":password", $this->data["password"], PDO::PARAM_STR);
             $st->bindValue(":email", $this->data["email"], PDO::PARAM_STR);
             $st->bindValue(":fecha", $date, PDO::PARAM_STR);
@@ -297,6 +302,7 @@ class Usuarios extends DataObj{
             Conne::disconnect($con);
             echo $ex->getLine().'<br>';
             echo $ex->getFile().'<br>';
+            return $ex->getMessage();
             die("Query failed: ".$ex->getMessage());
         }
    

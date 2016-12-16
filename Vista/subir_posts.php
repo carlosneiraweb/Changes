@@ -50,19 +50,21 @@ $articulo = new Post(array());
         <script src="../Controlador/jquery-2.2.2.js" type="text/javascript"></script>
         <script src="../Controlador/Elementos_AJAX/elementos.js"></script>
         <script src="../Controlador/Elementos_AJAX/cargarElementos.js"></script>
+        <script src="../Controlador/Elementos_AJAX/imagenesAlSubirPost.js"></script>
         <script src="../Controlador/Validar/formulario_reg.js"></script>
         <script src="../Controlador/Validar/contador.js"></script>
         <script src="../Controlador/Validar/otras_validaciones.js"></script>
         
         <script type="text/javascript">
-           //Indicamos que elementos vamos a cargar
-           //De esta manera controlamos que peticiones hacemos en cada pagina
-           var PS = true;
-           var PT = true;
-       </script>
+                    //Indicamos que elementos vamos a cargar
+                    //De esta manera controlamos que peticiones hacemos en cada pagina
+                        var PS = true;
+                        var PT = true;
+                        var UI = true;
+        </script>
         
     </head>
-    <body>
+    <body id="cuerpo">
         
         
     <?php
@@ -87,12 +89,12 @@ $articulo = new Post(array());
     
     //Si no se ha recivido el step
     //se muestra el formulario por primera vez
-    if(!isset($_POST['step'])){
+    if(!isset($_POST['step'])){      
         displayStep1(array());
     }
     
     /*Mandamos a comprobar los campos del primer formulario*/
-    if(isset($_POST['primero']) and $_POST['primero'] == "Siguiente"){
+    if(isset($_POST['primero']) and $_POST['primero'] == "Siguiente"){        
         $requiredFields = array('seccion', 'comentario');
         processForm($requiredFields, "step1");
     } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Enviar" ){    
@@ -289,7 +291,6 @@ function displayStep2($missingFields){
         
                         echo"<input type='submit' name='segundo' id='segundo'  value='Atras'>";
                     if($_SESSION['contador'] < 5){
-                        $_SESSION['recargar'] = true;
                         echo"<input type='submit' name='segundo' id='segundo'  value='Enviar'>";
                     }    
                         echo"<input type='submit' name='segundo' id='segundo' value='Fin' >";
@@ -375,13 +376,13 @@ function ingresarImagenes(){
     ));
     
     $result = $articulo->insertarFotos();
-//   //En caso de error nos redirige a la pagina de error 
+   
+     //En caso de error nos redirige a la pagina de error 
      //para que el usuario pueda intentarlo otra vez
         if(!$result){
             mostrarError();
             exit();      
-        }
-  
+        } 
 //fin ingresarImagenes    
 }
 
@@ -582,6 +583,7 @@ function validarCampos($st){
             } else{
                     ingresarPost();
                     displayStep2(array());
+               
             }
                 break;
         

@@ -63,8 +63,8 @@ class Sistema {
          */
         final static  function moverImagen($nombreFoto, $nuevoDirectorio){
             $test = null;
-            //echo 'moverImagen nombre Imagen foto: '.$nombreFoto.'<br>';
-            //echo 'moverImagen nuevoDirectorio al que mover: '.$nuevoDirectorio.'<br>';
+            echo 'moverImagen nombre Imagen foto: '.$nombreFoto.'<br>';
+            echo 'moverImagen nuevoDirectorio al que mover: '.$nuevoDirectorio.'<br>';
          try{
              $test = move_uploaded_file($nombreFoto, $nuevoDirectorio);
               return $test;  
@@ -85,6 +85,7 @@ class Sistema {
          * @param type $ruta
          */
         final static function crearDirectorio($ruta){
+           echo "crearDirectorio recibe la ruta: $ruta <br />";
          $test = true;
          try{
              //Comprobamos que los directorios ya no existan
@@ -94,6 +95,7 @@ class Sistema {
             }  else {
                $test = mkdir($ruta);
             }
+            echo "crear directorio dice: ".$test.'<br />';
             return $test;
          }catch(Exception $ex){
             $test = false;
@@ -151,7 +153,7 @@ class Sistema {
             $nuevoDirectorio = $usuario.'/'.$nuevo;              
             }
            
-            //echo 'Nuevo Subdirectorio creado en el metodo crearsubdirectorio: '.$nuevoDirectorio.'<br>';
+            echo 'Nuevo Subdirectorio creado en el metodo crearsubdirectorio: '.$nuevoDirectorio.'<br>';
             //el nuevo subidrectorio creado siempre es: usuario/total subdirectorio => admin/1
             return $nuevoDirectorio; 
         }catch(Exception $ex){
@@ -169,8 +171,8 @@ class Sistema {
          */   
             
         static function copiarFoto($imagen, $destino){
-            //echo 'imagen a copiar: '.$imagen.'<br>';
-            //echo 'en copiar foto: '.$destino.'<br>';
+            echo 'imagen a copiar: '.$imagen.'<br>';
+            echo 'en copiar foto: '.$destino.'<br>';
            
             try{
                $test =  copy($imagen, $destino);
@@ -327,7 +329,7 @@ static function eliminarImagen($ruta){
     $test = true;
     
     try{
-        //echo 'Eliminar imagen recive: '.$ruta.'<br>';
+        echo 'Eliminar imagen recive: '.$ruta.'<br>';
         $test = unlink($ruta);
         return $test;
     } catch (Exception $ex) {

@@ -169,7 +169,7 @@ where p.idPost = :idPost limit 1";
         switch ($opc) {
     
             case "BUSCADOR":
-                if($buscarPorPrecio == 0 && $buscarPorProvincia == 0 && $buscarPorTiempoCambio == 0 ){
+                if($buscarPorPrecio === 0 && $buscarPorProvincia === 0 && $buscarPorTiempoCambio === 0 ){
                     $sqlBuscador="Select palabra from ".$tabla." where palabra like  :buscar order by idPost DESC limit 5;";    
                 }else{
                     
@@ -195,11 +195,11 @@ inner join usuario u on u.idUsuario= p.idusuario
 inner join direccion dire on dire.idDireccion = u.idUsuario
 inner join provincias prov on prov.idProvincias = dire.provincias_idprovincias ".(isset($buscarPorProvincia) ? " and prov.nombre = '$buscarPorProvincia'" : "").
 " inner join tiempo_cambio tmc on tmc.idTiempoCambio = p.tiempo_cambio_idTiempoCambio ".(isset($buscarPorTiempoCambio) ? " and tmc.tiempo = '$buscarPorTiempoCambio'" : "").
-" inner join ".$tabla. " pbs on pbs.idPost = p.idPost and pbs.palabra like :buscar ".(isset($buscarPorPrecio) ? $pvp : ""). " order by pbs.idPost DESC;";
+" inner join ".$tabla. " pbs on pbs.idPost = p.idPost and pbs.palabra like :buscar ".(isset($buscarPorPrecio) ? $pvp : ""). "  order by pbs.idPost DESC limit 5;";
         
     } 
         
-                //echo $sqlBuscador; 
+                echo $sqlBuscador; 
                 $stm4Bus = $conBusquedas->prepare($sqlBuscador);
                 $stm4Bus->bindValue(":buscar", "{$buscar}%", PDO::PARAM_STR);
             

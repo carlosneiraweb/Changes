@@ -12,8 +12,7 @@ var READY_STATE_LOADED = 2;
 var READY_STATE_INTERACTIVE = 3;
 var READY_STATE_COMPLETE = 4;
 
-var objLastImg, petLastImg, idPost, petImgEliminar, 
-        objImgEliminar, petPost, objPost,
+var  petPost, objPost, objBuscador, petBuscador, objEncontrado, petEncontrado,
         objSlider, petSlider, objBuscador, petBuscador, objEncontrado, petEncontrado;
 //Variables globales para los <li> de navegacion
 var z, tmpLi, liPinchado, ultimoLi;
@@ -21,7 +20,8 @@ var z, tmpLi, liPinchado, ultimoLi;
 var fecha = new Date();
 
 var X, post,elementos, provincias, porProvincia, porPrecio, porTiempoCambio, genero, seccion, tiempoCambio,
-        PP = null, PG = null, PS = null, PT = null,
+        PP = null, PG = null, PS = null, PT = null, UI = null,idPost = null, PPS = null,
+        porProvincia, porPrecio, porTiempoCambio, txtBuscar, 
         verImagenes, imgSeleccionada, lista, radioBusqueda, buscarPorProvincia, buscarPorPrecio, buscarPorTiempoCambio;
 
 
@@ -30,16 +30,21 @@ window.onload=function(){
      post = document.getElementById('posts');
      provincias = document.getElementById('provincia');
      porProvincia = document.getElementById('porProvincia');
+     porPrecio = document.getElementById('porPrecio');
      porTiempoCambio = document.getElementById('porTiempoCambio');
      genero = document.getElementById('genero');
      seccion = document.getElementById('seccion');
      tiempoCambio = document.getElementById('tiempoCambio');
+     /* Mandamos el elemnto contenedor de las imagenes
+      * cuando un usuario sube una imagen a un post*/
      verImagenes = document.getElementById('cnt_img');
-     imgSeleccionada = document.getElementById('mostrarImgSeleccionada');
+     /***********************/
      lista = document.getElementById('lista');
     
-     //Mandamos cargar los elementos solicitados en cada pagina, tipo selects o combos
-     elementos = [provincias, porProvincia, porTiempoCambio, genero, seccion, tiempoCambio];
+    //Mandamos cargar los elementos solicitados en cada pagina, tipo selects o combos
+    //Le mandamos los elementos por que la carga se hace en el onload
+    //No hay un evento asociado con el que hacer on
+    elementos = [provincias, porProvincia, porTiempoCambio, genero, seccion, tiempoCambio];
      if(PP){
          cargar(elementos, 'PP');
      } 
@@ -51,6 +56,9 @@ window.onload=function(){
      } 
      if(PT){
          cargar(elementos, 'PT');
+     }
+     if(UI){
+         cargarImagenesSubirPost(verImagenes, 'UI', "opcion=UI&idPost="+idPost);
      }
     
     /*     ELEMENTOS PARA EL BUSCADOR      */
@@ -70,6 +78,7 @@ window.onload=function(){
         buscarPorProvincia = $('#porProvincia').val();
         
         indice = porPrecio.selectedIndex;//$(this).index();
+        
              if(indice === 0){buscarPorPrecio = "No importa";};
              if(indice === 1){buscarPorPrecio = 500;};
              if(indice === 2){buscarPorPrecio = 3000;};
@@ -104,6 +113,9 @@ window.onload=function(){
 	}); 
     
     
+    
+    
+    
         /*      METODO QUE LANZA EL SLIDER CON EL 
          *      CONTENIDO DEL POST SELECCIONADO POR
          *      EL USUARIO AL HACER CLICK SOBRE LA IMAGEN
@@ -119,11 +131,6 @@ window.onload=function(){
      
          
         /*          FIN LANZAR      */
-    
-       
-        
-  
-    cargarPeticion("UI", "opcion=UI&idPost="+idPost); //Peticion ultima imagen
         
     
     
@@ -132,7 +139,7 @@ window.onload=function(){
     //Inicializamos la variable inicio que mostrara por donde empezar a mostrar los posts
     //Comprobamos sin ya se ha inicializado, sino cada vez que el script
     //se cargara machacaria su valor.
-    if(typeof(inicio) === "undefined"){  inicio = 0;};
+    if(typeof(inicio) === "undefined"){ inicio = 0; };
      
      
      //Mostramos el total de elementos encontrados
@@ -141,7 +148,7 @@ window.onload=function(){
      btn_navegacion = document.getElementById('btn_navegacion');
          //Esta llamada a JSON solo se realiza en la primera carga del script
          //Despues se iran mostrando los posts a traves de los botones 
-            if(inicio === 0){
+            if(inicio === 0 && PPS === true){
                 cargarPeticion("PPS", "opcion=PPS&inicio="+inicio); //Cargar Post
             }
             
@@ -150,6 +157,8 @@ window.onload=function(){
         $('#cuerpo').on('click', '.pagina', function(e){
             liPinchado = parseInt($(this).text());
             inicio = liPinchado * PAGESIZE;
+            inicioTmp = inicio;
+            alert('cuando se pincha'+inicioTmp);
             //Tambien nos aseguramos de recargar la lista <li> con los numeros 
                 //adecuados a cada paso, sea del 1-10 o 110-120
             tmpLi = parseInt($('.pagina').last().html())+ 1;
@@ -162,8 +171,10 @@ window.onload=function(){
             // y no del 22 al 32.
             if(inicio < 50){
                 inicio = parseInt($('.pagina').first().html());
+                inicioTmp = inicio;
             }else{
                 inicio = inicio - (liPinchado - parseInt($('.pagina').first().html())) * 5;
+                inicioTmp = inicio;
             }
             
         });
@@ -178,6 +189,7 @@ window.onload=function(){
                 tmpLi = ultimoLi + 10;
                 z = ultimoLi;
                 inicio = inicio + 50;
+                inicioTmp = inicio;
                 cargarPeticion("PPS", "opcion=PPS&inicio="+inicio); //Peticion CargarPost
             } 
         });
@@ -191,6 +203,7 @@ window.onload=function(){
                 tmpLi = primerLi;
                 z = primerLi - 10;
                 inicio = inicio - 50;
+                inicioTmp = inicio;
                 cargarPeticion("PPS", "opcion=PPS&inicio="+inicio); //Peticion CargarPost
             }
         });   
@@ -199,14 +212,6 @@ window.onload=function(){
 };
 
 
-/*  Metodo que recive el id del post y el id de la imagen
- *      para mostrar por si el usuario quiere eliminar o modificar la descripcion
- *  Los parametros se los mandamos una vez se muestra al usuario la imagen
- *      desde el metodo cargarUltimaImgen
- */
-function mandarId(id){
-    cargarPeticion("PMI", "opcion=PMI&idPost="+idPost+"&ruta="+id); //Peticion IMAGEN A ELIMINAR
-}
 
 
 function cargarPeticion(tipo, parametros){
@@ -214,21 +219,6 @@ function cargarPeticion(tipo, parametros){
     //para comprobar el tipo de peticion
     switch(tipo){
         
-        
-        case('UI'):
-           petLastImg = inicializaPeticion();
-           petLastImg.onreadystatechange = procesaRespuesta;
-           petLastImg.open('POST', "../Controlador/Elementos_AJAX/json.php?", true);
-           petLastImg.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-           petLastImg.send(parametros);
-                break;
-        case('PMI'):
-           petImgEliminar = inicializaPeticion();
-           petImgEliminar.onreadystatechange = procesaRespuesta;
-           petImgEliminar.open('POST', "../Controlador/Elementos_AJAX/json.php?", true);
-           petImgEliminar.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-           petImgEliminar.send(parametros);
-                break;
         case('PPS'):
            petPost = inicializaPeticion();
            petPost.onreadystatechange = procesaRespuesta;
@@ -257,6 +247,7 @@ function cargarPeticion(tipo, parametros){
            petEncontrado.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petEncontrado.send(parametros);
                 break;  
+        
     //fin switch
     }
     
@@ -265,11 +256,7 @@ function cargarPeticion(tipo, parametros){
        if(this.readyState === READY_STATE_COMPLETE && this.status === 200){
             try{
                 
-               if(tipo === 'UI'){
-                    objLastImg = JSON.parse(petLastImg.responseText);
-                } else if(tipo === 'PMI'){
-                    objImgEliminar = JSON.parse(petImgEliminar.responseText);
-                } else if(tipo === 'PPS'){
+                if(tipo === 'PPS'){
                     objPost= JSON.parse(petPost.responseText);
                 } else if(tipo === 'SLD'){
                     objSlider = JSON.parse(petSlider.responseText);
@@ -281,11 +268,7 @@ function cargarPeticion(tipo, parametros){
                 
             } catch(e){
                 switch(tipo){        
-                    case 'PP':
-                            break;
-                    case 'UI':
-                        fotos.innerHTML = "<h3>No hemos podido recuperar esa imagen</h3>";
-                            break;
+
                     default:
                        // location.href= 'mostrar_error.php';
                 }
@@ -293,13 +276,7 @@ function cargarPeticion(tipo, parametros){
             }
             
             switch (tipo){
-               
-                case 'UI':
-                    cargarUltimaImagen(objLastImg);
-                        break;
-                case 'PMI':
-                    cargarImgEliminar(objImgEliminar);
-                        break;
+            
                 case 'PPS':
                     cargarPost(objPost);
                         break;
@@ -313,6 +290,7 @@ function cargarPeticion(tipo, parametros){
                     cargarPost(objEncontrado);
                     
                         break;
+                        
             //fin switch
             }
         //fin if
@@ -344,8 +322,8 @@ function cargarPost(objPost){
     
     post.innerHTML = "";
     post.innerHTML = acumulador;
-  
-    resultados.innerHTML = '<h3>Se muestran desde '+(inicio+ 1)+' al '+(inicio+ PAGESIZE)+' De un total de '+objPost[0].totalRows[0]+' posts encontrados </h3>';
+     
+    resultados.innerHTML = '<h3>Se muestran desde '+(inicio + 1)+' al '+(inicio+ PAGESIZE)+' De un total de '+objPost[0].totalRows[0]+' posts encontrados </h3>';
    
     //Calculamos el total de <li> que se van a mostrar para navegar por el conjunto de resultados
     totalPost = parseInt(objPost[0].totalRows[0]); //total posts
@@ -393,81 +371,7 @@ function mostrarLis(){
     
     
 
-/**
-* Metodo que muestra la ultima imagen subida por el usuario
 
- * @param {type} objLastImg
- * @returns {undefined} */
-function cargarUltimaImagen(objLastImg){
-    
-        //alert(objLastImg);
-        var sep = '<section id="capturar" class="contenedor_imagenes" >';
-        for (var i= 0 ; i < objLastImg.length; i++){
-            //Evitamos cualquier posible error
-                if(objLastImg[i].ruta === "/demo"){
-                   //No mostramos la imagen /demo. Esta imagen aqui es opaca al usuario
-                   //Solo se muestra en la pagina principal si el usuario no
-                   //Ha subido ninguna foto al Post.
-                    continue;
-                }else{
-                    sep += "<figure class='img_usuario_tmp'>";
-                    sep += '<img src="../photos/'+objLastImg[i].ruta+'.jpg" id="'+objLastImg[i].ruta+'" alt="imagen subida por el usuario" title="Pinchame para ver la información.">';
-                    sep += '</figure>';
-                }
-                               
-            }
-        sep += '</section>';
-        verImagenes.innerHTML = "";
-        verImagenes.innerHTML += sep;
-        
-        /* Si el usuario hace click sobre una imagen le mostramos la imagen y descripcion
-         * Por si desea eliminar o actualizar
-         */
-        $(".img_usuario_tmp").click(function(){
-            var id = $(this).children('img').attr('id');
-            mandarId(id);
-    });
-//  cargarUltimaImagen  
-}
-
-/**
-* Metodo que muestra la imagen seleccionada por el usuario
-* Para poder modificar la descripcion o eliminar la imagen
-* del post
- * @param {type} objImgEliminar
- * @returns {undefined} 
- * */
-function cargarImgEliminar(objImgEliminar){
-        //alert('objEliminar'+objImgEliminar[0]);
-    //Mostramos la capa opca de fondo
-    $("#ocultar").removeClass('oculto').addClass('mostrar_transparencia');
-    $("#form_post").addClass('noOcupar');
-    //Creamos los elementos para mostrar la imagen y el texto
-    
-    var form = '<h4>Elimina la imagen o modifica la descrición.</h4>'+
-               '<form name="eliminarImagen" action="subir_posts.php" method="POST" id="eliminarImagen" >'+
-               '<fieldset>'+
-               '<legend>Rellena los campos</legend>'+
-               '<input type="hidden" name="step" value="1">'+
-               '<input type="hidden" name="ruta" value="'+objImgEliminar[0].ruta+'">'+
-               '<figure class="img_usuario_tmp">'+
-               '<img src="../photos/'+objImgEliminar[0].ruta+'.jpg" alt="Puedes modificar la imagen o el texto" title="Puedes modificar la descripción y eliminar la imagen.">'+
-               '</figure>'+
-               '<section class="contenedor">'+
-               '<label for="txtModificar" >Modifica la descripcion y dale a OK</label>'+
-               '<input type="text" name="txtModificar" id="txtModificar" maxlength="70" value="'+objImgEliminar[0].texto+'">'+
-               '<label><span class="cnt">0</span></label>'+
-               '</section>'+
-               '<section id="btns_registrar">'+
-               '<input type="submit" name="modificar" id="modificar"  value="OK">'+
-               '<input type="submit" name="modificar" id="modificar"  value="Borrar">'+
-               '</fieldset>'+
-               '</from>';
-       
-    imgSeleccionada.innerHTML = "";
-    imgSeleccionada.innerHTML = form;
-//fin cargarImgEliminar    
-}
 
 
 
@@ -609,7 +513,6 @@ function cargarBuscador(objBuscador){
     
     
 }
-
 
 //------------------------funcion inicializa peticion ----------------------------
   function inicializaPeticion(){
