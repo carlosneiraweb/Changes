@@ -48,14 +48,15 @@ function volverAnterior(){
    <body id="cuerpo">
        
         <?php
-    
+        
         require_once('../Modelo/Usuarios.php');
         require_once('../Modelo/DataObj.php');
         require_once('../Controlador/Validar/ValidoForm.php');
-        require_once('../Sistema/Directorios.php');
+        require_once('../Sistema/Sistema.php');
         require_once('../Sistema/Constantes.php');
         require_once('../Sistema/Email/mandarEmails.php');
-        
+      
+           
         //Variable global para mostrar los errores de validacion
         global $mensaje;
         //Variable global de usuario, Instanciaremos una vez validado todos los campos
@@ -325,15 +326,23 @@ function confirmarRegistro(){
      
             $test = $user->insert();
             
+            $objMandarEmails = new mandarEmails();
             if($test === true){
              //Si todo va bien le mandamos a la pagina para confirmar registro
                 //y le mandamos un email de bienvenida
                confirmarRegistro();
-               mandarEmails::mandarEmailWelcome($user);
+               //este metodo destruye el objeto $user
+               $objMandarEmails->mandarEmailWelcome($user);
+            //Si algo ha ido mal le mandamos a la pagina mostrar Error
+               //Y nos mandamos un email con los datos introducidos por el usuario  y el error SQL
             } else{
-                echo 'Mandamos email <br />';
-                 mandarEmails::mandarEmailProblemasRegistro($user, $test);
-                 mostrarError();
+                //Destruimos las carpetas que se creaban para almacenar sus datos
+                 $repElimarPhotos = Sistema::eliminarDirectorioRegistro("../photos/".$_SESSION['usuario']['nick']);
+                 $repElimarDatosUsuario = Sistema::eliminarDirectorioRegistro("../datos_usuario/".$_SESSION['usuario']['nick']);
+                echo "en register photos dice: $repElimarPhotos and datos_usuario dice $repElimarDatosUsuario <br>";
+                //este metodo destruye el objeto $user
+                $objMandarEmails->mandarEmailProblemasRegistro($user, $test, $repElimarDatosUsuario,$repElimarPhotos);
+                // mostrarError();
             }
             
             
@@ -348,25 +357,25 @@ function processForm($requiredFields, $st){
     
         switch ($st){
             case "step1":
-                $_SESSION['usuario']["nick"] = isset($_POST["nick"]) ? preg_replace("/[^\-\_a-zA-Z0-9]/", "", $_POST["nick"]) : "";
-                $_SESSION['usuario']["password"] = isset($_POST["password"]) ? preg_replace("/[^\-\_a-zA-Z0-9]/", "", $_POST["password"]) : "";  
-                $_SESSION['usuario']["email"] = isset($_POST["email"]) ? preg_replace("/[^\@\.\-\_a-zA-Z0-9]/", "", $_POST["email"]) : "";
+                $_SESSION['usuario']["nick"] = isset($_POST["nick"]) ? preg_replace("/[^\-\_a-zA-Z0-9ñÑ]/", "", $_POST["nick"]) : "";
+                $_SESSION['usuario']["password"] = isset($_POST["password"]) ? preg_replace("/[^\-\_a-zA-Z0-9ñÑ]/", "", $_POST["password"]) : "";  
+                $_SESSION['usuario']["email"] = isset($_POST["email"]) ? preg_replace("/[^\@\.\-\_a-zA-Z0-9ñÑ]/", "", $_POST["email"]) : "";
                     break;
             case "step2":
-                $_SESSION['usuario']["nombre"] = isset($_POST["nombre"])  ? preg_replace("/[^\-\_a-zA-Z.,`'´]/", "", $_POST["nombre"]) : "";
-                $_SESSION['usuario']["apellido_1"] = isset($_POST["apellido_1"]) ? preg_replace("/[^\-\_a-zA-Z.,`'´]/", "", $_POST["apellido_1"]) : "";
-                $_SESSION['usuario']["apellido_2"] = isset($_POST["apellido_2"]) ? preg_replace("/[^\-\_a-zA-Z.,`'´]/", "", $_POST["apellido_2"]) : "";
+                $_SESSION['usuario']["nombre"] = isset($_POST["nombre"])  ? preg_replace("/[^\-\_a-zA-Z.,`'´ñÑ]/", "", $_POST["nombre"]) : "";
+                $_SESSION['usuario']["apellido_1"] = isset($_POST["apellido_1"]) ? preg_replace("/[^\-\_a-zA-Z.,`'´ñÑ]/", "", $_POST["apellido_1"]) : "";
+                $_SESSION['usuario']["apellido_2"] = isset($_POST["apellido_2"]) ? preg_replace("/[^\-\_a-zA-Z.,`'´ñÑ]/", "", $_POST["apellido_2"]) : "";
                 $_SESSION['usuario']["telefono"] = isset($_POST["telefono"]) ?  $_POST["telefono"] : "";
                 $_SESSION['usuario']["genero"] = isset($_POST["genero"]) ? $_POST['genero'] : "" ;
                     break;
             case "step3":
-                $_SESSION['usuario']["calle"] = isset($_POST['calle']) ? preg_replace("/[^\-\_a-zA-Z0-9.,`'´]/", "", $_POST["calle"]) : "";
+                $_SESSION['usuario']["calle"] = isset($_POST['calle']) ? preg_replace("/[^\-\_a-zA-Z0-9.,`'´ñÑ]/", "", $_POST["calle"]) : "";
                 $_SESSION['usuario']["numeroPortal"] = isset($_POST['numeroPortal']) ? preg_replace("/[^\-\_0-9]/", "", $_POST["numeroPortal"]) : "";
-                $_SESSION['usuario']["ptr"] = isset($_POST['ptr']) ? preg_replace("/[^\-\_a-zA-Z0-9]/", "", $_POST["ptr"]) : "";
-                $_SESSION['usuario']["ciudad"] = isset($_POST['ciudad']) ? preg_replace("/[^\-\_a-zA-Z0-9.,`'´]/", "", $_POST["ciudad"]) : "";
+                $_SESSION['usuario']["ptr"] = isset($_POST['ptr']) ? preg_replace("/[^\-\_a-zA-Z0-9ñÑ]/", "", $_POST["ptr"]) : "";
+                $_SESSION['usuario']["ciudad"] = isset($_POST['ciudad']) ? preg_replace("/[^\-\_a-zA-Z0-9.,`'´ñÑ]/", "", $_POST["ciudad"]) : "";
                 $_SESSION['usuario']["codPostal"] = isset($_POST['codPostal']) ? preg_replace("/[^\-\_0-9]/", "", $_POST["codPostal"]) : "";
                 $_SESSION['usuario']["provincia"] = isset($_POST['provincia']) ? $_POST['provincia'] : "";
-                $_SESSION['usuario']["pais"] = isset($_POST['pais']) ? preg_replace("/[^\-\_a-zA-Z0-9.,`'´]/", "", $_POST["pais"]) : "";
+                $_SESSION['usuario']["pais"] = isset($_POST['pais']) ? preg_replace("/[^\-\_a-zA-Z0-9.,`'´ñÑ]/", "", $_POST["pais"]) : "";
                 //cerramos escritura sobre variable de sesion
                 session_write_close();
                 

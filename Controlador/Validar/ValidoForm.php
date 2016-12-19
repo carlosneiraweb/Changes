@@ -20,9 +20,9 @@
     final private function htmlCaracteres($string){
         $cadena = trim($string);
         $cadena = htmlspecialchars($cadena, ENT_QUOTES, 'UTF-8');
+   
         return $cadena;
-      
-       
+          
     }
    
         /*
@@ -138,7 +138,7 @@
        */
     final static function validarEmail($elemento){
           
-        $expresion = "/^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$/";
+        $expresion = "/^[_a-zA-ZñÑ0-9-]+(.[_a-zÑñ0-9-]+)*@[a-zñÑ0-9-]+(.[a-zÑñ0-9-]+)*(.[a-z]{2,4})$/";
         $result = preg_match($expresion, $elemento);
         
             return $result;

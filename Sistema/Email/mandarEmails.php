@@ -21,10 +21,12 @@ require_once('../Modelo/Email.php');
 /**
  * Esta clase tiene metodos concretos
  *  para mandar emails segun el caso
+ * Siempre destruyen los objetos que recive DataObject
+ * 
  */
 class mandarEmails {
  
- static function mandarEmailProblemasRegistro(DataObj $obj, $mensaje){
+  final function mandarEmailProblemasRegistro(DataObj $obj, $mensaje,$repEliminarDatosUsuario, $repEliminarPhotos){
      //Creamos el cuerpo del email
      $cuerpoEmail = '<section id="mensaje">
             <h3> Con fecha:'. FECHA_DIA. ' Ha habido un problema de registro de un usuario.</h3>
@@ -46,25 +48,42 @@ class mandarEmails {
             email '.$obj->getValue("email").'
             nick '.$obj->getValue("nick").'
             password '.$obj->getValue("password").'
-            password_2 '.$obj->getValue("password_2").'
+            pais '.$obj->getValue("pais").'
             </pre>';
-          
-         $emailAcabado = EMAIL_CABECERA.$cuerpoEmail.EMAIL_FOOTER;
+            if ($repEliminarDatosUsuario && $repEliminarPhotos){
+               $cuerpoEmail .= "<h4>Los directorios de Datos_usuario y Photos se han elimanado</h4>"; 
+            } else{
+                $cuerpoEmail .= "<h4>Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: </h4>";
+                    if($repEliminarDatosUsuario){
+                        $cuerpoEmail .= "Ha sido eliminada la carpeta datos_usuario. <br>";         
+                    }else{
+                        $cuerpoEmail .= "<strong>No ha sido eliminada la carpeta datos_usuario. </strong><br>";      
+                    }
+                    if($repEliminarPhotos){
+                        $cuerpoEmail .= "Ha sido eliminada la carpeta Photos de este usuario. <br>";         
+                    }else{
+                        $cuerpoEmail .= "<strong>No ha sido eliminada la carpeta Photos de este usuario. </strong><br>";      
+                    }
+              
+            }
+
+
+
+            $emailAcabado = EMAIL_CABECERA.$cuerpoEmail.EMAIL_FOOTER;
     
     $email = new Email($emailAcabado);
     //MANDAMOS EL EMAIL
-    $test = $email->mandarEmail("carlosneirasanchez@gmail.com");
+    $test = $email->mandarEmail(EMAIL_USERNAME);
     //echo $test.'<br />';
         if($test === true) {
             //Si todo ha ido bien eliminamos los objetos user y email
             unset($obj);
             unset($email);
         }
-        llamar();
      
  }
  
- static function mandarEmailWelcome(DataObj $obj){
+  final function mandarEmailWelcome(DataObj $obj){
     
     //Creamos el objeto email con los datos
     //Que necesitamos de $user para el cuerpo del email
@@ -103,15 +122,13 @@ class mandarEmails {
             $email->mandarEmail(EMAIL_USERNAME);
             //Acabamos destruyendo el objeto user
             unset($user);
-                }
+            unset($email);
+                        }
    //FIN  mandarEmailWelcome 
     }
 
 
-    function llamar(){
-        echo "<h1>he sido llamado</h1>";
-    }
-
+    
 //fin clase
 }
   

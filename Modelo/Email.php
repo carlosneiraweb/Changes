@@ -37,13 +37,13 @@ class Email {
             $mail = new PHPMailer(); //creo un objeto de tipo PHPMailer
             $mail->IsSMTP(); //protocolo SMTP
             $mail->SMTPAuth = true;//autenticaci�n en el SMTP
-            $mail->SMTPSecure = "ssl";//SSL security socket layer
-            $mail->Host = "smtp.strato.com";//servidor de SMTP de gmail
-            $mail->Port = 465;//puerto seguro del servidor SMTP de gmail
-            $mail->From = "administracion@ichangeityou.com"; //Remitente del correo
+            $mail->SMTPSecure =  EMAIL_SMTPSECURE;//SSL security socket layer
+            $mail->Host = EMAIL_HOST;//servidor de SMTP de gmail
+            $mail->Port = EMAIL_PORT_EMAIL;//puerto seguro del servidor SMTP de gmail
+            $mail->From = EMAIL_FROM;//Remitente del correo
             $mail->FromName = "Te lo cambio.";
             $mail->AddAddress($destino);// Destinatario
-            $mail->Username ="administracion@ichangeityou.com";//"administracion@ichangeityou.com";//;Aqui pon tu correo de gmail// //
+            $mail->Username = EMAIL_USERNAME;//"administracion@ichangeityou.com";//;Aqui pon tu correo de gmail// //
             $mail->Password = EMAIL_PASSWORD;//Aqui pon tu contrase�a de gmail
             $mail->IsHTML(true);
             //$mail->AltBody = "Usted esta viendo este mensaje simple debido a que su servidor de correo no admite formato HTML.";
@@ -65,20 +65,7 @@ class Email {
             die("Error crear EMAIL: ".$ex->getMessage());
             
         }
-	
-                
-                
-	
-        
-         
-        //POR SI SE SUBEN ARCHIVOS
-//} else {
-//	$respuesta = "Ocurrio un error al subir el archivo adjunto =(";
-//}
 
-//unlink($destino); //borramos el archivo del servidor
-
-//header("Location: formulario-phpmailer.php?respuesta=$respuesta");
     }
     
 //fin clase    

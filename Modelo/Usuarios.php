@@ -1,10 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  * Description of Usuarios
@@ -231,7 +226,7 @@ public function insert(){
       
             $date = date('Y-m-d');
             $st = $con->prepare($sql);
-            //$st->bindValue(":nick", $this->data["nick"], PDO::PARAM_STR);
+            $st->bindValue(":nick", $this->data["nick"], PDO::PARAM_STR);
             $st->bindValue(":password", $this->data["password"], PDO::PARAM_STR);
             $st->bindValue(":email", $this->data["email"], PDO::PARAM_STR);
             $st->bindValue(":fecha", $date, PDO::PARAM_STR);
@@ -259,6 +254,7 @@ public function insert(){
                 } catch (Exception $ex) {
                         //Si ha ocurrido un error eliminamos al usuario de la tabla
                         $this->deleteFrom('usuario');
+                        echo 'El error se produce en la archivo: '.$ex->getFile().'<br>';
                         echo 'El error se produce en la línea: '.$ex->getLine().'<br>';
                         die("Query failed: ".$ex->getMessage());
                 }
@@ -290,6 +286,7 @@ public function insert(){
                                     //y sus datos
                                     $this->deleteFrom('datos_usuario');
                                     $this->deleteFrom('usuario');
+                                    echo 'El error se produce en la archivo: '.$ex->getFile().'<br>';
                                     echo 'El error se produce en la línea: '.$ex->getLine().'<br>';
                                     return $inicio;
                                     
@@ -302,8 +299,10 @@ public function insert(){
             Conne::disconnect($con);
             echo $ex->getLine().'<br>';
             echo $ex->getFile().'<br>';
+            echo $ex->getMessage().'<br />';
             return $ex->getMessage();
-            die("Query failed: ".$ex->getMessage());
+        } finally {
+            //die("Query failed: ".$ex->getMessage());
         }
    
     //fin insert    

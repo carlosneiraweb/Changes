@@ -2,7 +2,8 @@
 
 /**
  * Description of Sistema
- *
+ *  Esta clase se encarga de crear, eliminar o mover archivos
+ *  en toda la aplicacion
  * @author Carlos Neira Sanchez
  */
 class Sistema {
@@ -63,8 +64,8 @@ class Sistema {
          */
         final static  function moverImagen($nombreFoto, $nuevoDirectorio){
             $test = null;
-            echo 'moverImagen nombre Imagen foto: '.$nombreFoto.'<br>';
-            echo 'moverImagen nuevoDirectorio al que mover: '.$nuevoDirectorio.'<br>';
+            //echo 'moverImagen nombre Imagen foto: '.$nombreFoto.'<br>';
+            //echo 'moverImagen nuevoDirectorio al que mover: '.$nuevoDirectorio.'<br>';
          try{
              $test = move_uploaded_file($nombreFoto, $nuevoDirectorio);
               return $test;  
@@ -85,7 +86,7 @@ class Sistema {
          * @param type $ruta
          */
         final static function crearDirectorio($ruta){
-           echo "crearDirectorio recibe la ruta: $ruta <br />";
+        //echo "crearDirectorio recibe la ruta: $ruta <br />";
          $test = true;
          try{
              //Comprobamos que los directorios ya no existan
@@ -95,7 +96,7 @@ class Sistema {
             }  else {
                $test = mkdir($ruta);
             }
-            echo "crear directorio dice: ".$test.'<br />';
+            //echo "crear directorio dice: ".$test.'<br />';
             return $test;
          }catch(Exception $ex){
             $test = false;
@@ -153,7 +154,7 @@ class Sistema {
             $nuevoDirectorio = $usuario.'/'.$nuevo;              
             }
            
-            echo 'Nuevo Subdirectorio creado en el metodo crearsubdirectorio: '.$nuevoDirectorio.'<br>';
+            //echo 'Nuevo Subdirectorio creado en el metodo crearsubdirectorio: '.$nuevoDirectorio.'<br>';
             //el nuevo subidrectorio creado siempre es: usuario/total subdirectorio => admin/1
             return $nuevoDirectorio; 
         }catch(Exception $ex){
@@ -171,8 +172,8 @@ class Sistema {
          */   
             
         static function copiarFoto($imagen, $destino){
-            echo 'imagen a copiar: '.$imagen.'<br>';
-            echo 'en copiar foto: '.$destino.'<br>';
+            //echo 'imagen a copiar: '.$imagen.'<br>';
+            //echo 'en copiar foto: '.$destino.'<br>';
            
             try{
                $test =  copy($imagen, $destino);
@@ -329,7 +330,7 @@ static function eliminarImagen($ruta){
     $test = true;
     
     try{
-        echo 'Eliminar imagen recive: '.$ruta.'<br>';
+        //echo 'Eliminar imagen recive: '.$ruta.'<br>';
         $test = unlink($ruta);
         return $test;
     } catch (Exception $ex) {
@@ -340,5 +341,55 @@ static function eliminarImagen($ruta){
     
 //fin eliminar imagen    
 }
+
+/**
+ * Metodo que elimina los directorios creados 
+ * cuando hay un error al registrarse.
+ * Si la bbdd no hace el isert correcto ente metodo 
+ * elimina las carpetas creadas en datos_usuario y photos
+ * Recive una ruta con el directorio a eliminar.
+ * Devuelve true o false
+ */
+
+static function eliminarDirectorioRegistro($src){
+    $test; 
+   
+    try{
+            foreach(glob($src . "/*") as $archivos_carpeta)
+            {   
+                if (is_dir($archivos_carpeta))
+                {
+                    Sistema::eliminarDirectorioRegistro($archivos_carpeta);   
+                }
+                else
+                {
+                    try{
+                        unlink($archivos_carpeta);
+                       
+                    }catch (Exception $ex){
+                        echo "Error al borrar el archivo: ".$ex->getCode();
+                        echo "Error al borrar el archivo: ".$ex->getLine();
+                        echo "Error al borrar el archivo: ".$ex->getMessage();
+                            
+                    }  
+                }
+            }
+
+            
+                $test = rmdir($src);
+                return $test;
+    } catch (Exception $ex) {
+        echo "Error al borrar el directorio: ".$ex->getCode();
+        echo "Error al borrar el directorio: ".$ex->getLine();
+        echo "Error al borrar el directorio: ".$ex->getMessage();
+        
+    }
+     
+//eliminarDirectorioRegistro    
+}
+
+
+
+
 //fin sistema    
 }
