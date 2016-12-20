@@ -3,7 +3,9 @@
 
 /**
  * Description of Usuarios
- *
+ * Esta clase extiende DataObj
+  * Crea usuarios y dispone de varios metodos para 
+  * insertar, actualizar o borrar un obj de Usuarios
  * @author Carlos Neira Sanchez
  */
 require_once('../Sistema/Conne.php');
@@ -13,9 +15,7 @@ require_once('../Sistema/Email/mandarEmails.php');
 
 
  /**
-  * Esta clase extiende DataObj
-  * Crea usuarios y dispone de varios metodos para 
-  * insertar, actualizar o borrar un obj de Usuarios
+  *
   */  
 class Usuarios extends DataObj{
     
@@ -201,11 +201,11 @@ class Usuarios extends DataObj{
    
 /**
  * Metodo que inserta en la bbdd un usuario
- * @global type $inicio
+ * @global type $testInsert
  * @return type el resultado de la insercion en la bbdd
  */    
 public function insert(){
-        global $inicio;
+        global $testInsert;
         try{
         $con = Conne::connect();
         $sql = "INSERT INTO ".TBL_USUARIO. "(
@@ -231,7 +231,7 @@ public function insert(){
             $st->bindValue(":email", $this->data["email"], PDO::PARAM_STR);
             $st->bindValue(":fecha", $date, PDO::PARAM_STR);
 
-            $st->execute();
+            $testInsert = $st->execute();
 
                 try{
                     $sql = "INSERT INTO ".TBL_DATOS_USUARIO." ( idDatosUsuario, idGenero, nombre, apellido_1, apellido_2, telefono)".
@@ -249,14 +249,14 @@ public function insert(){
                         $st->bindValue(":apellido_2", $this->data["apellido_2"], PDO::PARAM_STR);
                         $st->bindValue(":telefono", $this->data["telefono"], PDO::PARAM_STR);
                         
-                        $st->execute();
+                        $testInsert= $st->execute();
                         
                 } catch (Exception $ex) {
                         //Si ha ocurrido un error eliminamos al usuario de la tabla
                         $this->deleteFrom('usuario');
                         echo 'El error se produce en la archivo: '.$ex->getFile().'<br>';
                         echo 'El error se produce en la línea: '.$ex->getLine().'<br>';
-                        die("Query failed: ".$ex->getMessage());
+                        //die("Query failed: ".$ex->getMessage());
                 }
                         
                             try{
@@ -279,7 +279,7 @@ public function insert(){
                                     $st->bindValue(":provincia", $this->data["provincia"], PDO::PARAM_STR);
                                     $st->bindValue(":pais", $this->data["pais"], PDO::PARAM_STR);
                         
-                                    $inicio = $st->execute();
+                                    $testInsert = $st->execute();
                                     
                             } catch (Exception $ex) {
                                     //Si ha ocurrido un error eliminamos al usuario de la tabla
@@ -288,13 +288,13 @@ public function insert(){
                                     $this->deleteFrom('usuario');
                                     echo 'El error se produce en la archivo: '.$ex->getFile().'<br>';
                                     echo 'El error se produce en la línea: '.$ex->getLine().'<br>';
-                                    return $inicio;
+                                    return $testInsert;
                                     
                                     
                             }
 
            Conne::disconnect($con);
-           return $inicio;
+           return $testInsert;
         } catch (Exception $ex) {
             Conne::disconnect($con);
             echo $ex->getLine().'<br>';
