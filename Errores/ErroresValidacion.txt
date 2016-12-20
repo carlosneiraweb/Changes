@@ -1,0 +1,236 @@
+
+   	
+
+            Nueva entrada Con fecha:Día 20, de December, del año 2016, a la hora 23: 41 Ha habido un problema de registro de un usuario.
+
+            El error es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre => ewgtw
+
+            apellido_1 WWWW\n
+            apellido_2 ssss\t
+            calle sss\t
+            numeroPortal 96\t
+            ptr 666s\t
+            ciudad sss\t
+            codigoPostal 44444\t
+            provincia Alava\t
+            telefono 963258741\t
+            pais sssss\t
+            genero hombre\t
+            email ssSSss@hhff.com\t
+            nick Ssss\t
+            password SSSSSSSSS\t
+            pais sssss\t Los directorios de Datos_usuario y Photos se han elimanado. 	
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 20, de December, del año 2016, a la hora 23: 51 Ha habido un problema de registro de un usuario.
+
+            El error es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre ewgtw
+
+            apellido_1 qqqqfqrfqrfrgtg
+
+            apellido_2 ssdcqdq
+
+            calle regvht3v
+
+            numeroPortal 96
+
+            ptr 666
+
+            ciudad valencia
+
+            codigoPostal 44444
+
+            provincia Alava
+
+            telefono 963258741
+
+            pais fegtgat
+
+            genero hombre
+
+            email ssSSss@hhff.com
+
+            nick ssss
+
+            password qqqqqqq
+
+            pais fegtgat\t Los directorios de Datos_usuario y Photos se han elimanado.
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 20, de December, del año 2016, a la hora 23: 54 Ha habido un problema de registro de un usuario.
+
+            El error es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre: rgrgbg
+
+            1º Apellido: grbrbee
+
+            2º Apellido rvrgvrtg
+
+            calle gebegrg
+
+            numero del Portal 96
+
+            puerta 6
+
+            ciudad ffffffff
+
+            codigo Postal 44444
+
+            provincia Alava
+
+            telefono 963258741
+
+            pais fvwvg
+
+            genero hombre
+
+            email rrrrr@hggg.com
+
+            nick ggeew
+
+            password rrrrrrrrrr
+
+            pais fvwvg
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 20, de December, del año 2016, a la hora 23: 58 Ha habido un problema de registro de un usuario.
+
+            El error es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  rgrgbg
+
+            1º Apellido: = EEEEE
+
+            2º Apellido = EEEE
+
+            calle = HTHT
+
+            numero del Portal = 
+
+            puerta = fa
+
+            ciudad = agg
+
+            codigo Postal = 44444
+
+            provincia = Alava
+
+            telefono = 963258741
+
+            pais = frfqgrq
+
+            genero = hombre
+
+            email = rrrrr@hggg.com
+
+            nick = ggeew
+
+            password = EEEEEEEEE
+
+            pais = frfqgrq
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 21, de December, del año 2016, a la hora 0: 8 Ha habido un problema de registro de un usuario.
+
+            El error es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  rgrgbg
+
+            1º Apellido: = ccccc
+
+            2º Apellido = cccc
+
+            calle = cccc
+
+            numero del Portal = 
+
+            puerta = cccc
+
+            ciudad = ccccc
+
+            codigo Postal = 44444
+
+            provincia = Alava
+
+            telefono = 963258741
+
+            pais = cccccc
+
+            genero = hombre
+
+            email = rrrrr@hggg.com
+
+            nick = ggeew
+
+            password = ccccccc
+
+            pais = cccccc
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 21, de December, del año 2016, a la hora 0: 12 Ha habido un problema de registro de un usuario.
+
+            El error es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+            La IP del visitante es: ::1
+
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  rgrgbg
+
+            1º Apellido: = HHHHHHHHHHH
+
+            2º Apellido = HHHHHHHHHHHHHHHHH
+
+            calle = HHHH
+
+            numero del Portal = 96
+
+            puerta = 36
+
+            ciudad = VALFREF
+
+            codigo Postal = 44444
+
+            provincia = Alava
+
+            telefono = 963258741
+
+            pais = RFREWGE
+
+            genero = hombre
+
+            email = rrrrr@hggg.com
+
+            nick = ggeew
+
+            password = HHHHHHHHHHH
+
+            pais = RFREWGE
+Los directorios de Datos_usuario y Photos se han elimanado.
+

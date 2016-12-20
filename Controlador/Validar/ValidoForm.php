@@ -6,9 +6,9 @@
 
     require_once '../Modelo/Usuarios.php';
     require_once '../Modelo/DataObj.php';
-        
+    require_once 'Interf_comprobar.php';   
        
-    class ValidoForm{
+    class ValidoForm implements Interf_comprobar{
         
     /**
      * Metodo que recive un string y 
@@ -69,8 +69,9 @@
        * Solo acepta letras y numeros 
        */
     final static function validarPassword($cadena){
-
-         $patron = "/^[0-9a-zA-Z]{6,12}$/";
+        //0-9a-zA-ZñÑ
+                        
+         $patron = "/^[_a-zA-ZñÑ0-9-]{6,12}$/";
          $result = preg_match($patron,$cadena);
              return $result;
         
@@ -199,10 +200,11 @@
             return true;
         }  
   
-    }    
-  
-    
-   //fin clase
+    }
+
+   
+
+    //fin clase
     }
        
    

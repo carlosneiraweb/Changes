@@ -9,7 +9,7 @@ define("EMAIL_SMTPAUTH", 1);
 define("EMAIL_SMTPSECURE", "ssl");
 define("EMAIL_HOST", "smtp.strato.com");
 define("EMAIL_PORT_EMAIL", 465);
-
+define("TXT_ERROR_VALIDACION", "../Errores/ErroresValidacion.txt");
 
 ///////////////////
 
@@ -27,8 +27,8 @@ define("TBL_TIEMPO_CAMBIO", "tiempo_cambio");
 define("ERROR", "Revisa tu formulario.");
 define("ERROR_VALIDACION_LOGIN", '<h5>El usuario o la contraseña <br> <strong>no son validos</strong>.</h5>');
 define("NOMBRE_USUARIO_EXISTE", '<h5>El nombre de usuario ya existe</h5>');
-define("PASSWORD_INCORRECTO", '<h5>El password introducido no cumple las normas<h5>'.
-                                "<h5>Recuerda que solo acepta letras y números/<h5>".
+define("PASSWORD_INCORRECTO", '<h5>El password introducido no cumple las normas</h5>'.
+                                "<h5>Recuerda que solo acepta letras y números</h5>".
                                 "<h5>Un minimo de 6 y máximo 12 caracteres.</h5>");
 define("IGUALDAD_PASSWORD", '<h5>Los passwords no son iguales</h5>'.
                                 '<h5>Por favor revisalos</h5>');

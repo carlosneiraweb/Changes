@@ -86,7 +86,7 @@ class Sistema {
          * @param type $ruta
          */
         final static function crearDirectorio($ruta){
-        //echo "crearDirectorio recibe la ruta: $ruta <br />";
+       
          $test = true;
          try{
              //Comprobamos que los directorios ya no existan
@@ -118,7 +118,7 @@ class Sistema {
           * habría un error al asignar uno nuevo.
           */
             
-        static function crearSubdirectorio($usuario){
+        final static function crearSubdirectorio($usuario){
           
         try{
             $dir = $usuario;
@@ -171,7 +171,7 @@ class Sistema {
          * 
          */   
             
-        static function copiarFoto($imagen, $destino){
+        final static function copiarFoto($imagen, $destino){
             //echo 'imagen a copiar: '.$imagen.'<br>';
             //echo 'en copiar foto: '.$destino.'<br>';
            
@@ -302,7 +302,7 @@ class Sistema {
      * Metodo que cuenta el numero de archivos de un
      * directorio
      */
-    static function contarArchivos($ruta){
+    final static function contarArchivos($ruta){
         
         $count = 0;
         $dir =  $ruta;
@@ -326,18 +326,18 @@ class Sistema {
      * Metodo que elimina una imagen
      * recive como parametro la ruta
      */ 
-static function eliminarImagen($ruta){
+    final static function eliminarImagen($ruta){
     $test = true;
     
-    try{
-        //echo 'Eliminar imagen recive: '.$ruta.'<br>';
-        $test = unlink($ruta);
-        return $test;
-    } catch (Exception $ex) {
-        $_SESSION['error'] = ERROR_ELIMINAR_FOTO;
-        echo $ex->getMessage();
-        return $test;
-    }
+        try{
+            //echo 'Eliminar imagen recive: '.$ruta.'<br>';
+            $test = unlink($ruta);
+            return $test;
+        } catch (Exception $ex) {
+            $_SESSION['error'] = ERROR_ELIMINAR_FOTO;
+            echo $ex->getMessage();
+            return $test;
+        }
     
 //fin eliminar imagen    
 }
@@ -351,7 +351,7 @@ static function eliminarImagen($ruta){
  * Devuelve true o false
  */
 
-static function eliminarDirectorioRegistro($src){
+final static function eliminarDirectorioRegistro($src){
     $test; 
    
     try{
@@ -388,8 +388,70 @@ static function eliminarDirectorioRegistro($src){
 //eliminarDirectorioRegistro    
 }
 
-
-
-
+/**
+ * Metodo que recive los datos introducidos 
+ * por el usuario en caso de error para poder
+ * Ademas de los los datos de los fallos, tanto
+ * de la bbdd y de los archivos creados
+ */
+final static function escribirErrorValidacion(DataObj $obj, $mensaje,$repEliminarDatosUsuario, $repEliminarPhotos){
+    $test;
+    
+    try{
+         $cuerpoMensaje = '
+            ******************************************************
+            Nueva entrada Con fecha:'. FECHA_DIA. ' Ha habido un problema de registro de un usuario.'.PHP_EOL.'
+            El error es: '.$mensaje. ''.PHP_EOL.'
+            La IP del visitante es: '.$_SERVER['REMOTE_ADDR'].PHP_EOL.'
+            Los datos intruducidos por el usuario son: '.PHP_EOL.'
+            
+            nombre =  '.$obj->getValue("nombre").''.PHP_EOL.'
+            1º Apellido: = '.$obj->getValue("apellido_1").''.PHP_EOL.'
+            2º Apellido = '.$obj->getValue("apellido_2").''.PHP_EOL.'
+            calle = '.$obj->getValue("calle").''.PHP_EOL.'
+            numero del Portal = '.$obj->getValue("numeroPortal").''.PHP_EOL.'
+            puerta = '.$obj->getValue("ptr").''.PHP_EOL.'
+            ciudad = '.$obj->getValue("ciudad").''.PHP_EOL.'
+            codigo Postal = '.$obj->getValue("codigoPostal").''.PHP_EOL.'
+            provincia = '.$obj->getValue("provincia").''.PHP_EOL.'
+            telefono = '.$obj->getValue("telefono").''.PHP_EOL.'
+            pais = '.$obj->getValue("pais").''.PHP_EOL.'
+            genero = '.$obj->getValue("genero").''.PHP_EOL.'
+            email = '.$obj->getValue("email").''.PHP_EOL.'
+            nick = '.$obj->getValue("nick").''.PHP_EOL.'
+            password = '.$obj->getValue("password").''.PHP_EOL.'
+            pais = '.$obj->getValue("pais"). ''.PHP_EOL;
+            if (!$repEliminarDatosUsuario || !$repEliminarPhotos){
+               $cuerpoMensaje .= "Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: ".PHP_EOL;
+                    if($repEliminarDatosUsuario){
+                        $cuerpoMensaje .= "Ha sido eliminada la carpeta datos_usuario.".PHP_EOL;         
+                    }else{
+                        $cuerpoMensaje .= "No ha sido eliminada la carpeta datos_usuario.".PHP_EOL;      
+                    }
+                    if($repEliminarPhotos){
+                        $cuerpoMensaje .= "Ha sido eliminada la carpeta Photos de este usuario.".PHP_EOL;         
+                    }else{
+                        $cuerpoMensaje .= "No ha sido eliminada la carpeta Photos de este usuario.".PHP_EOL;      
+                    }
+            } else{
+                
+              $cuerpoMensaje .= "Los directorios de Datos_usuario y Photos se han elimanado.".PHP_EOL; 
+            }
+            
+        if(!($archivo = fopen(TXT_ERROR_VALIDACION, 'a'))) die("No se puede abrir el archivo");
+           $test =  fwrite($archivo, $cuerpoMensaje. PHP_EOL);
+           $test =  fclose($archivo);
+      
+           return $test;
+    }catch(Exception $ex){
+        echo "Error al abrir y escribir en el archivo.".$ex->getCode();
+        echo "Error al abrir y escribir en el archivo.".$ex->getMessage();
+        echo "Error al abrir y escribir en el archivo.".$ex->getLine();
+    }
+    
+    
+    
+//escribirErrorValidacion   
+}
 //fin sistema    
 }

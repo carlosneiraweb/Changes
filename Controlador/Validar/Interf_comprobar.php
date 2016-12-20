@@ -11,7 +11,7 @@
  * @author Carlos Neira Sanchez
  */
 interface Interf_comprobar{
-   public function validateField($nombreCampo, $camposPerdidos);
-   public function setValue($nombreCampo);
-   public function eliminarObjeto($obj);
+   public static function validateField($nombreCampo, $camposPerdidos);
+   public static function comprobarCheck($nombreCampo);
+   public static function campoVacio($elemento);
 }

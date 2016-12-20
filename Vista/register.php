@@ -55,8 +55,8 @@ function volverAnterior(){
         require_once('../Sistema/Sistema.php');
         require_once('../Sistema/Constantes.php');
         require_once('../Sistema/Email/mandarEmails.php');
-      
-           
+        
+        
         //Variable global para mostrar los errores de validacion
         global $mensaje;
         //Variable global de usuario, Instanciaremos una vez validado todos los campos
@@ -304,6 +304,9 @@ function confirmarRegistro(){
      */
     function ingresarUsuario(){
         global $user;
+        $repElimarPhotos = false;
+        $repElimarDatosUsuario = false;
+        
         
         $user = new Usuarios(array(
             "nombre" => $_SESSION['usuario']['nombre'],
@@ -339,10 +342,15 @@ function confirmarRegistro(){
                 //Destruimos las carpetas que se creaban para almacenar sus datos
                  $repElimarPhotos = Sistema::eliminarDirectorioRegistro("../photos/".$_SESSION['usuario']['nick']);
                  $repElimarDatosUsuario = Sistema::eliminarDirectorioRegistro("../datos_usuario/".$_SESSION['usuario']['nick']);
-                echo "en register photos dice: $repElimarPhotos and datos_usuario dice $repElimarDatosUsuario <br>";
-                //este metodo destruye el objeto $user
-                $objMandarEmails->mandarEmailProblemasRegistro($user, $test, $repElimarDatosUsuario,$repElimarPhotos);
-                // mostrarError();
+                
+               
+                $testTxt = Sistema::escribirErrorValidacion($user, $test, $repElimarDatosUsuario, $repElimarPhotos);
+                
+                if($testTxt) {
+                    $objMandarEmails->mandarEmailProblemasRegistro($test); 
+                }
+                    unset($user);
+                 mostrarError();
             }
             
             
