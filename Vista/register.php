@@ -23,6 +23,7 @@ function volverAnterior(){
 	<link href="../img/fabicon.ico" rel="icon" type="image/x-icon">
 	<link rel="stylesheet" href="../css/estilos.css"/>
         <script src="../Controlador/jquery-2.2.2.js" type="text/javascript"></script>
+        <script src="../Controlador/Elementos_AJAX/CONEXION_AJAX.js"></script>
         <script src="../Controlador/Elementos_AJAX/elementos.js"></script>
         <script src="../Controlador/Elementos_AJAX/cargarElementos.js"></script>
         <script src="../Controlador/Validar/formulario_reg.js"></script>
@@ -36,14 +37,7 @@ function volverAnterior(){
         <![endif]-->
     
         
-    <script type="text/javascript">
-           //Indicamos que elementos vamos a cargar
-           //De esta manera controlamos que peticiones hacemos en cada pagina
-           var PP = true;
-           var PG = true;
-           var PS = true;
-           var PT = true;
-       </script>
+    
    </head>
    <body id="cuerpo">
        
@@ -52,7 +46,7 @@ function volverAnterior(){
         require_once('../Modelo/Usuarios.php');
         require_once('../Modelo/DataObj.php');
         require_once('../Controlador/Validar/ValidoForm.php');
-        require_once('../Sistema/Sistema.php');
+        require_once('../Sistema/Directorios.php');
         require_once('../Sistema/Constantes.php');
         require_once('../Sistema/Email/mandarEmails.php');
         
@@ -158,7 +152,14 @@ function displayStep1($missingFields){
 function displayStep2($missingFields){
     global $mensaje;
   
-    
+           //Indicamos que elementos vamos a cargar
+           //De esta manera controlamos que peticiones hacemos
+           //en cada paso del formulario
+           //Evitamos peticiones innecesarias
+            echo '<script type="text/javascript">';
+                echo 'var PG = true';
+            echo '</script>';
+       
     echo'<section id="form_registro">';
                 echo'<h4>Introduzca sus datos</h4>';
     echo'<form name="registro" action="register.php" method="POST" id="registro">';
@@ -166,13 +167,13 @@ function displayStep2($missingFields){
         	echo'<legend>Formulario de Registro Segundo Paso</legend>';
     echo"<input type='hidden' name='step' value='2'>";
     echo'<label '.ValidoForm::validateField("nombre", $missingFields). ' for="nombre">Nombre:</label> <span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
-    echo'<input type="text" name="nombre" id="nombre" autofocus  placeholder="Escribe tú nombre" value=';if(isset($_SESSION['usuario']['nombre']))echo $_SESSION['usuario']['nombre']; echo ">";
+    echo'<input type="text" name="nombre" id="nombre" autofocus  placeholder="Escribe tú nombre" value=';if(isset($_SESSION['usuario']['nombre'])){echo $_SESSION['usuario']['nombre'];} echo ">";
     echo'<label for="apellido_1">Primer Apellido:</label>';
-    echo'<input type="text" name="apellido_1" id="apellido_1" placeholder="Escribe tú apellido"  />';
+    echo'<input type="text" name="apellido_1" id="apellido_1" placeholder="Escribe tú apellido"  value=';if(isset($_SESSION['usuario']['apellido_1'])){echo $_SESSION['usuario']['apellido_1'];} echo ">";
     echo'<label for="apellido_2">Segundo Apellido:</label>';
-    echo'<input type="text" name="apellido_2" id="apellido_2" placeholder="Escribe tú apellido"  />';        
+    echo'<input type="text" name="apellido_2" id="apellido_2" placeholder="Escribe tú sefundo apellido" value= ';if(isset($_SESSION['usuario']['apellido_2'])){echo $_SESSION['usuario']['apellido_2'];} echo ">";        
     echo'<label '.ValidoForm::validateField("telefono", $missingFields). ' for="telefono">Teléfono:</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
-    echo'<input type="text" name="telefono" id="telefono" placeholder="Teléfono contacto" value=';if(isset($_SESSION['usuario']['telefono']))echo $_SESSION['usuario']['telefono']; echo ">";
+    echo'<input type="text" name="telefono" id="telefono" placeholder="Teléfono contacto" value=';if(isset($_SESSION['usuario']['telefono'])){echo $_SESSION['usuario']['telefono'];} echo ">";
         echo'<label for="genero">Selecciona tu sexo:</label>';
 		echo'<select name="genero" id="genero">';			
 		echo'</select>';
@@ -199,6 +200,14 @@ function displayStep2($missingFields){
  
 function displayStep3($missingFields){
     global $mensaje;
+        
+            //Indicamos que elementos vamos a cargar
+           //De esta manera controlamos que peticiones hacemos
+           //en cada paso del formulario
+           //Evitamos peticiones innecesarias
+            echo '<script type="text/javascript">';
+                echo 'var PP = true';
+            echo '</script>';
     
     echo'<section id="form_registro">';
                 echo'<h4>Introduzca sus datos</h4>';
@@ -207,15 +216,15 @@ function displayStep3($missingFields){
         	echo'<legend>Formulario de Registro ya casi estamos</legend>';
     echo"<input type='hidden' name='step' value='3'>";
     echo'<label for="calle">Nombre de la calle o vía:</label>';
-    echo'<input type="text" name="calle" id="calle" placeholder="Escribe el nombre de la calle"  />';
+    echo'<input type="text" name="calle" id="calle" placeholder="Escribe el nombre de la calle"  value= ';if(isset($_SESSION['usuario']['calle'])){echo $_SESSION['usuario']['calle'];} echo ">";     
     echo'<label for="numeroPortal">Número del portal:</label>';
-    echo'<input type="text" name="numeroPortal" id="numeroPortal" placeholder="Escribe el número del portal"  />';
+    echo'<input type="text" name="numeroPortal" id="numeroPortal" placeholder="Escribe el número del portal" value= ';if(isset($_SESSION['usuario']['numeroPortal'])){echo $_SESSION['usuario']['numeroPortal'];} echo ">";     
     echo'<label for="ptr">Puerta:</label>';
-    echo'<input type="text" name="ptr" id="ptr" placeholder="Escribe el número de la puerta"  />';
+    echo'<input type="text" name="ptr" id="ptr" placeholder="Escribe el número de la puerta"  value= ';if(isset($_SESSION['usuario']['ptr'])){echo $_SESSION['usuario']['ptr'];} echo ">";     
     echo'<label for="ciudad">Ciudad:</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
-    echo'<input type="text" name="ciudad" id="ciudad" placeholder="Nombre de tu Localidad"  />';
+    echo'<input type="text" name="ciudad" id="ciudad" placeholder="Nombre de tu Localidad" value= ';if(isset($_SESSION['usuario']['ciudad'])){echo $_SESSION['usuario']['ciudad'];} echo ">";     
     echo'<label for="codPostal">Código Postal:</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
-    echo'<input type="text" name="codPostal" id="codPostal" placeholder="Escribe el número del código postal"  maxlength="5" />';
+    echo'<input type="text" name="codPostal" id="codPostal" placeholder="Escribe el número del código postal"  maxlength="5" value= ';if(isset($_SESSION['usuario']['codPostal'])){echo $_SESSION['usuario']['codPostal'];} echo ">";     
     
     echo'<label for="provincia">Provincia:</label>';
  
@@ -328,7 +337,7 @@ function confirmarRegistro(){
                 ));
      
             $test = $user->insert();
-            
+         
             $objMandarEmails = new mandarEmails();
             if($test === true){
              //Si todo va bien le mandamos a la pagina para confirmar registro
@@ -339,18 +348,23 @@ function confirmarRegistro(){
             //Si algo ha ido mal le mandamos a la pagina mostrar Error
                //Y nos mandamos un email con los datos introducidos por el usuario  y el error SQL
             } else{
-                //Destruimos las carpetas que se creaban para almacenar sus datos
-                 $repElimarPhotos = Sistema::eliminarDirectorioRegistro("../photos/".$_SESSION['usuario']['nick']);
-                 $repElimarDatosUsuario = Sistema::eliminarDirectorioRegistro("../datos_usuario/".$_SESSION['usuario']['nick']);
-                
+
                
-                $testTxt = Sistema::escribirErrorValidacion($user, $test, $repElimarDatosUsuario, $repElimarPhotos);
+                //Redirigimos a la pagina error
+                mostrarError();
+                
+                //Destruimos las carpetas que se creaban para almacenar sus datos
+                $repElimarPhotos = Directorios::eliminarDirectorioRegistro("../photos/".$_SESSION['usuario']['nick']);
+                $repElimarDatosUsuario = Directorios::eliminarDirectorioRegistro("../datos_usuario/".$_SESSION['usuario']['nick']);
+           
+                $testTxt = Directorios::escribirErrorValidacion($user, $test, $repElimarDatosUsuario, $repElimarPhotos);
                 
                 if($testTxt) {
                     $objMandarEmails->mandarEmailProblemasRegistro($test); 
                 }
+                  //Destruimos el objeto user
                     unset($user);
-                 mostrarError();
+                 
             }
             
             
@@ -472,7 +486,7 @@ function processForm($requiredFields, $st){
             //Si el usuario sube una foto para su perfil la validamos
                 if(isset($_FILES['photo']['tmp_name']) and $_FILES['photo']['tmp_name'] != null){
                         
-                        if(Sistema::validarFoto('photo')){  
+                        if(Directorios::validarFoto('photo')){  
                             
                             //Importante
                             //Recuperamos el nombre del archivo y ruta a la que mover la imagen
@@ -482,13 +496,13 @@ function processForm($requiredFields, $st){
                             //El primero donde almacenamos la foto de su perfil, en el futuro guardaremos mas cosas
                             //Si ha ido bien creamos el directorio donde al usuario se le almacenaran las imagenes
                                 //de los posts
-                            $test = Sistema::crearDirectorio("../photos/".$_SESSION['usuario']['nick']);
+                            $test = Directorios::crearDirectorio("../photos/".$_SESSION['usuario']['nick']);
                             //Creamos el directorio con la foto de perfil
-                            if($test){ $test = Sistema::crearDirectorio("../datos_usuario/".$_SESSION['usuario']['nick']);}
+                            if($test){ $test = Directorios::crearDirectorio("../datos_usuario/".$_SESSION['usuario']['nick']);}
                             //Se mueve la foto de perfil subida
-                            if($test){ $test = Sistema::moverImagen($foto, $destino);}
+                            if($test){ $test = Directorios::moverImagen($foto, $destino);}
                             //La renombramos con su nombre
-                            if($test){ $test = Sistema::renombrarFoto($destino, $_SESSION['usuario']['nick'], false);}  
+                            if($test){ $test = Directorios::renombrarFoto($destino, $_SESSION['usuario']['nick'], false);}  
                             if(!$test){$_SESSION['error'] = ERROR_FOTO_GENERAL;}
                             
                         }else{
@@ -497,9 +511,9 @@ function processForm($requiredFields, $st){
                 } else {
                     //Si no sube ninguna foto se le asigna la de default
                     $destino = "../datos_usuario/".$_SESSION['usuario']['nick'].'/'.$_SESSION['usuario']['nick'].'.jpg';
-                    $test = Sistema::crearDirectorio("../photos/".$_SESSION['usuario']['nick']);
-                    if($test){$test = Sistema::crearDirectorio("../datos_usuario/".$_SESSION['usuario']['nick']);}
-                    if($test){ $test = Sistema::copiarFoto("../datos_usuario/desconocido.jpg", $destino);}
+                    $test = Directorios::crearDirectorio("../photos/".$_SESSION['usuario']['nick']);
+                    if($test){$test = Directorios::crearDirectorio("../datos_usuario/".$_SESSION['usuario']['nick']);}
+                    if($test){ $test = Directorios::copiarFoto("../datos_usuario/desconocido.jpg", $destino);}
                    
                 }
             //Si hay algun tipo de error al subir la foto

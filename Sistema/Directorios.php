@@ -6,7 +6,7 @@
  *  en toda la aplicacion
  * @author Carlos Neira Sanchez
  */
-class Sistema {
+class Directorios {
    
     
         /**
@@ -249,7 +249,7 @@ class Sistema {
             }else if($nombreNuevo === 1){
                 //echo 'el usuario no ha borrado ninguna imagen<br>';
                 //Renombramos las imagenes por el numero de imagenes en su subdirectorio
-                $nombreRenombrado= Sistema::contarArchivos($_SESSION['nuevoSubdirectorio']);
+                $nombreRenombrado= Directorios::contarArchivos($_SESSION['nuevoSubdirectorio']);
                 try{
                     
                 if($nombreViejo){
@@ -359,7 +359,7 @@ final static function eliminarDirectorioRegistro($src){
             {   
                 if (is_dir($archivos_carpeta))
                 {
-                    Sistema::eliminarDirectorioRegistro($archivos_carpeta);   
+                    Directorios::eliminarDirectorioRegistro($archivos_carpeta);   
                 }
                 else
                 {
@@ -388,6 +388,7 @@ final static function eliminarDirectorioRegistro($src){
 //eliminarDirectorioRegistro    
 }
 
+
 /**
  * Metodo que recive los datos introducidos 
  * por el usuario en caso de error para poder
@@ -397,12 +398,13 @@ final static function eliminarDirectorioRegistro($src){
 final static function escribirErrorValidacion(DataObj $obj, $mensaje,$repEliminarDatosUsuario, $repEliminarPhotos){
     $test;
     
+ 
     try{
          $cuerpoMensaje = '
             ******************************************************
             Nueva entrada Con fecha:'. FECHA_DIA. ' Ha habido un problema de registro de un usuario.'.PHP_EOL.'
             El error es: '.$mensaje. ''.PHP_EOL.'
-            La IP del visitante es: '.$_SERVER['REMOTE_ADDR'].PHP_EOL.'
+            La IP del visitante es: '.Directorios::ipVisitante().'
             Los datos intruducidos por el usuario son: '.PHP_EOL.'
             
             nombre =  '.$obj->getValue("nombre").''.PHP_EOL.'
@@ -452,6 +454,40 @@ final static function escribirErrorValidacion(DataObj $obj, $mensaje,$repElimina
     
     
 //escribirErrorValidacion   
+}
+
+/*
+* Metodo para optener la direción real 
+ * del visistante
+ */
+final static function ipVisitante (){
+    
+    if (isset($_SERVER["HTTP_CLIENT_IP"]))
+    {
+        return $_SERVER["HTTP_CLIENT_IP"];
+    }
+    elseif (isset($_SERVER["HTTP_X_FORWARDED_FOR"]))
+    {
+        return $_SERVER["HTTP_X_FORWARDED_FOR"];
+    }
+    elseif (isset($_SERVER["HTTP_X_FORWARDED"]))
+    {
+        return $_SERVER["HTTP_X_FORWARDED"];
+    }
+    elseif (isset($_SERVER["HTTP_FORWARDED_FOR"]))
+    {
+        return $_SERVER["HTTP_FORWARDED_FOR"];
+    }
+    elseif (isset($_SERVER["HTTP_FORWARDED"]))
+    {
+        return $_SERVER["HTTP_FORWARDED"];
+    }
+    else
+    {
+        return $_SERVER["REMOTE_ADDR"];
+    }
+    
+    //Fin optener ip real
 }
 //fin sistema    
 }

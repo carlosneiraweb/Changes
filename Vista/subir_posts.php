@@ -48,6 +48,7 @@ $articulo = new Post(array());
 	<link href="../img/fabicon.ico" rel="icon" type="image/x-icon">
 	<link rel="stylesheet" href="../css/estilos.css"/>
         <script src="../Controlador/jquery-2.2.2.js" type="text/javascript"></script>
+        <script src="../Controlador/Elementos_AJAX/CONEXION_AJAX.js"></script>
         <script src="../Controlador/Elementos_AJAX/elementos.js"></script>
         <script src="../Controlador/Elementos_AJAX/cargarElementos.js"></script>
         <script src="../Controlador/Elementos_AJAX/imagenesAlSubirPost.js"></script>
@@ -263,6 +264,7 @@ function displayStep2($missingFields){
             echo '</span>';
                 echo'<section id="cnt_img">';
             //Aqui el section creado con JS para las imagenes
+                //Que el usuario va subiendo en cada nuevo post
                 echo '</section>';
         echo '</section>';
         
@@ -504,8 +506,8 @@ function validarCampos($st){
                 // vuelve atras en el formulario comprobando que $_SESSION['atras'] no existe
                 if($_SESSION['contador'] == 0 and !isset($_SESSION['atras']) ){
                     
-                    $_SESSION['nuevoSubdirectorio'] = Sistema::crearSubdirectorio("../photos/".$_SESSION['user']->getValue('nick'));
-                    $test = Sistema::copiarFoto("../photos/demo.jpg",$_SESSION['nuevoSubdirectorio']."/demo.jpg");
+                    $_SESSION['nuevoSubdirectorio'] = Directorios::crearSubdirectorio("../photos/".$_SESSION['user']->getValue('nick'));
+                    $test = Directorios::copiarFoto("../photos/demo.jpg",$_SESSION['nuevoSubdirectorio']."/demo.jpg");
                     
                     return $test;
                 }
@@ -518,7 +520,7 @@ function validarCampos($st){
         
         if(isset($_FILES['photoArticulo']['tmp_name']) and $_FILES['photoArticulo']['tmp_name'] != null){
             
-            if(Sistema::validarFoto('photoArticulo')){
+            if(Directorios::validarFoto('photoArticulo')){
                
                 //Si la foto es correcta entonces eliminamos la imagen default 
                     //que subimos
@@ -530,20 +532,20 @@ function validarCampos($st){
                     $destino = $_SESSION['nuevoSubdirectorio'].'/'.basename($_FILES['photoArticulo']['name']);                   
                     $foto = $_FILES['photoArticulo']['tmp_name'];
             
-                        $test = Sistema::moverImagen($foto, $destino);
+                        $test = Directorios::moverImagen($foto, $destino);
                 
             //Comprobamos que subiendo imagenes el usuario no ha eliminado ninguna
                 //Si lo ha hecho le asignamos en el directorio photos/subdirectorio 
                 //Ese nombre
                 if(isset($_SESSION['imgTMP']) and $_SESSION['imgTMP'] != null){
                     
-                    if($test){ $_SESSION['idImagen'] = Sistema::renombrarFoto($destino, 0);}  
+                    if($test){ $_SESSION['idImagen'] = Directorios::renombrarFoto($destino, 0);}  
                     
             //Aqui vamos subiendo las fotos al post mientras el usuario no 
                 //halla eliminado ninguna mientras subia las fotos
                 }elseif (!isset($_SESSION['imgTMP'])){
             
-                    if($test){ $_SESSION['idImagen'] = Sistema::renombrarFoto($destino, 1);}
+                    if($test){ $_SESSION['idImagen'] = Directorios::renombrarFoto($destino, 1);}
                 
                 }
                

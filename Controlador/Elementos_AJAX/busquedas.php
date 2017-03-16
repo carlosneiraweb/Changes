@@ -199,7 +199,7 @@ inner join provincias prov on prov.idProvincias = dire.provincias_idprovincias "
         
     } 
         
-                echo $sqlBuscador; 
+                //echo $sqlBuscador; 
                 $stm4Bus = $conBusquedas->prepare($sqlBuscador);
                 $stm4Bus->bindValue(":buscar", "{$buscar}%", PDO::PARAM_STR);
             

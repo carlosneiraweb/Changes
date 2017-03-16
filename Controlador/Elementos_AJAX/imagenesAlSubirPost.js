@@ -7,21 +7,20 @@
  * @fecha 04-oct-2016
  */
 
-var READY_STATE_UNINITIALIZED = 0;
-var READY_STATE_LOADING = 1;
-var READY_STATE_LOADED = 2;
-var READY_STATE_INTERACTIVE = 3;
-var READY_STATE_COMPLETE = 4;
 
 
-var objLastImg, petLastImg, idPost, petImgEliminar, objImgEliminar;
 
+var objLastImg, petLastImg, idPost, petImgEliminar, objImgEliminar, imgCargar;
 
-function cargarImagenesSubirPost(verImagenes, tipo, parametro){
+      //Creamos una instancia de la clase CONEXION_AJAX
+    //Nos devuelve una conexion AJAX y propiedades 
+        var ConSubPost  = new Conexion();
+        
+function cargarImagenesSubirPost(verImgSubidasEnPostNuevo, tipo, parametro){
     
-    imgCargar = verImagenes;
+    imgCargar = verImgSubidasEnPostNuevo;
     pedido = parametro;
-    
+   
     
     switch(tipo){
             case('UI'):
@@ -32,19 +31,20 @@ function cargarImagenesSubirPost(verImagenes, tipo, parametro){
 
 
 function cargarPeticionImgSubirPost(tipo, parametros){
-alert('Estamos en cargarPeticionImgSubirPost y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
+//alert('Estamos en cargarPeticionImgSubirPost y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
     //para comprobar el tipo de peticion
   
     switch(tipo){
+       
         case('UI'):
-           petLastImg = inicializaPeticionAlSubirImgPost();
+           petLastImg = ConSubPost.conection();
            petLastImg.onreadystatechange = procesaRespuestaPeticionElementos;
            petLastImg.open('POST', "../Controlador/Elementos_AJAX/imagenesAlSubirPost.php?", true);
            petLastImg.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petLastImg.send(parametros);
                 break;
         case('PMI'):
-           petImgEliminar = inicializaPeticionAlSubirImgPost();
+           petImgEliminar = ConSubPost.conection();
            petImgEliminar.onreadystatechange = procesaRespuestaPeticionElementos;
            petImgEliminar.open('POST', "../Controlador/Elementos_AJAX/imagenesAlSubirPost.php?", true);
            petImgEliminar.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
@@ -56,13 +56,17 @@ alert('Estamos en cargarPeticionImgSubirPost y tipo vale: ' +tipo+ ' parametros 
     
     function procesaRespuestaPeticionElementos(){
        
-       if(this.readyState === READY_STATE_COMPLETE && this.status === 200){
+       if(this.readyState === ConSubPost.READY_STATE_COMPLETE && this.status === 200){
             try{
                 
                if(tipo === 'UI'){
                     objLastImg = JSON.parse(petLastImg.responseText);
+                    //Eliminamos el objeto conexion
+                    delete ConSubPost;
                 }else if(tipo === 'PMI'){
                     objImgEliminar = JSON.parse(petImgEliminar.responseText);
+                    //Eliminamos el objeto conexion
+                    delete ConSubPost;
                 } 
                 
             } catch(e){
@@ -116,7 +120,7 @@ function mandarId(id){
  * @returns {undefined} */
 function cargarUltimaImagen(objLastImg){
     
-       
+      
         var sep = '<section id="capturar" class="contenedor_imagenes" >';
         for (var i= 0 ; i < objLastImg.length; i++){
             //Evitamos cualquier posible error
@@ -231,39 +235,6 @@ function cargarImgEliminar(objImgEliminar){
             value : "Borrar"        
         })))//section    
         )//fieldset
-        )//form;
+        );//form;
 //fin cargarImgEliminar    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//------------------------funcion inicializa peticion ----------------------------
-  function inicializaPeticionAlSubirImgPost(){
-         var peticionImgSubirPost;
-        if(window.XMLHttpRequest){
-            peticionImgSubirPost = new XMLHttpRequest(); 
-                }else if (window.ActiveXObject){
-                    peticionImgSubirPost= new ActiveXObject('Microsoft.XMLHTTP'); 
-                }
-             return peticionImgSubirPost;
-      }  

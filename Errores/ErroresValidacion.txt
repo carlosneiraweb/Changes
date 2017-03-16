@@ -1,219 +1,27 @@
 
-   	
-
-            Nueva entrada Con fecha:Día 20, de December, del año 2016, a la hora 23: 41 Ha habido un problema de registro de un usuario.
-
-            El error es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
-
-            Los datos intruducidos por el usuario son: 
-
-            
-            nombre => ewgtw
-
-            apellido_1 WWWW\n
-            apellido_2 ssss\t
-            calle sss\t
-            numeroPortal 96\t
-            ptr 666s\t
-            ciudad sss\t
-            codigoPostal 44444\t
-            provincia Alava\t
-            telefono 963258741\t
-            pais sssss\t
-            genero hombre\t
-            email ssSSss@hhff.com\t
-            nick Ssss\t
-            password SSSSSSSSS\t
-            pais sssss\t Los directorios de Datos_usuario y Photos se han elimanado. 	
-
+ 
             ******************************************************
-            Nueva entrada Con fecha:Día 20, de December, del año 2016, a la hora 23: 51 Ha habido un problema de registro de un usuario.
+            Nueva entrada Con fecha:Día 15, de March, del año 2017, a la hora 19: 34 Ha habido un problema de registro de un usuario.
 
-            El error es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
-
-            Los datos intruducidos por el usuario son: 
-
-            
-            nombre ewgtw
-
-            apellido_1 qqqqfqrfqrfrgtg
-
-            apellido_2 ssdcqdq
-
-            calle regvht3v
-
-            numeroPortal 96
-
-            ptr 666
-
-            ciudad valencia
-
-            codigoPostal 44444
-
-            provincia Alava
-
-            telefono 963258741
-
-            pais fegtgat
-
-            genero hombre
-
-            email ssSSss@hhff.com
-
-            nick ssss
-
-            password qqqqqqq
-
-            pais fegtgat\t Los directorios de Datos_usuario y Photos se han elimanado.
-
-            ******************************************************
-            Nueva entrada Con fecha:Día 20, de December, del año 2016, a la hora 23: 54 Ha habido un problema de registro de un usuario.
-
-            El error es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
-
-            Los datos intruducidos por el usuario son: 
-
-            
-            nombre: rgrgbg
-
-            1º Apellido: grbrbee
-
-            2º Apellido rvrgvrtg
-
-            calle gebegrg
-
-            numero del Portal 96
-
-            puerta 6
-
-            ciudad ffffffff
-
-            codigo Postal 44444
-
-            provincia Alava
-
-            telefono 963258741
-
-            pais fvwvg
-
-            genero hombre
-
-            email rrrrr@hggg.com
-
-            nick ggeew
-
-            password rrrrrrrrrr
-
-            pais fvwvg
-Los directorios de Datos_usuario y Photos se han elimanado.
-
-            ******************************************************
-            Nueva entrada Con fecha:Día 20, de December, del año 2016, a la hora 23: 58 Ha habido un problema de registro de un usuario.
-
-            El error es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
-
-            Los datos intruducidos por el usuario son: 
-
-            
-            nombre =  rgrgbg
-
-            1º Apellido: = EEEEE
-
-            2º Apellido = EEEE
-
-            calle = HTHT
-
-            numero del Portal = 
-
-            puerta = fa
-
-            ciudad = agg
-
-            codigo Postal = 44444
-
-            provincia = Alava
-
-            telefono = 963258741
-
-            pais = frfqgrq
-
-            genero = hombre
-
-            email = rrrrr@hggg.com
-
-            nick = ggeew
-
-            password = EEEEEEEEE
-
-            pais = frfqgrq
-Los directorios de Datos_usuario y Photos se han elimanado.
-
-
-            ******************************************************
-            Nueva entrada Con fecha:Día 21, de December, del año 2016, a la hora 0: 8 Ha habido un problema de registro de un usuario.
-
-            El error es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
-
-            Los datos intruducidos por el usuario son: 
-
-            
-            nombre =  rgrgbg
-
-            1º Apellido: = ccccc
-
-            2º Apellido = cccc
-
-            calle = cccc
-
-            numero del Portal = 
-
-            puerta = cccc
-
-            ciudad = ccccc
-
-            codigo Postal = 44444
-
-            provincia = Alava
-
-            telefono = 963258741
-
-            pais = cccccc
-
-            genero = hombre
-
-            email = rrrrr@hggg.com
-
-            nick = ggeew
-
-            password = ccccccc
-
-            pais = cccccc
-Los directorios de Datos_usuario y Photos se han elimanado.
-
-
-            ******************************************************
-            Nueva entrada Con fecha:Día 21, de December, del año 2016, a la hora 0: 12 Ha habido un problema de registro de un usuario.
-
-            El error es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+            El error es: El error es: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'nick' cannot be nullEn la linea: 219En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
 
             La IP del visitante es: ::1
-
             Los datos intruducidos por el usuario son: 
 
             
-            nombre =  rgrgbg
+            nombre =  wwwww
 
-            1º Apellido: = HHHHHHHHHHH
+            1º Apellido: = 
 
-            2º Apellido = HHHHHHHHHHHHHHHHH
+            2º Apellido = 
 
-            calle = HHHH
+            calle = 
 
-            numero del Portal = 96
+            numero del Portal = 
 
-            puerta = 36
+            puerta = 
 
-            ciudad = VALFREF
+            ciudad = wwwwww
 
             codigo Postal = 44444
 
@@ -221,16 +29,61 @@ Los directorios de Datos_usuario y Photos se han elimanado.
 
             telefono = 963258741
 
-            pais = RFREWGE
+            pais = 
 
             genero = hombre
 
-            email = rrrrr@hggg.com
+            email = aaaaa@gmail.com
 
-            nick = ggeew
+            nick = lucas
 
-            password = HHHHHHHHHHH
+            password = aaaaaaaaaaa
 
-            pais = RFREWGE
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 15, de March, del año 2017, a la hora 19: 38 Ha habido un problema de registro de un usuario.
+
+            El error es: El error es: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'nick' cannot be null
+En la linea: 219
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  wwwww
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = WWWW
+
+            codigo Postal = 44444
+
+            provincia = Alava
+
+            telefono = 963258741
+
+            pais = 
+
+            genero = hombre
+
+            email = aaaaa@gmail.com
+
+            nick = lucas
+
+            password = WWWWWWWW
+
+            pais = 
 Los directorios de Datos_usuario y Photos se han elimanado.
 

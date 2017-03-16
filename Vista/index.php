@@ -5,7 +5,13 @@ require_once '../Controlador/Validar/ValidoForm.php';
 
 session_start(); 
 $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
-
+/**
+ * @author Carlos Neira Sanchez
+ * @mail arj.123@hotmail.es
+ * @telefono ""
+ * @nameAndExt busquedas.php
+ * @fecha 04-oct-2016
+ */
 //Pasamos a JavaScript el tamaño de paginado de las paginas.
 //La utilizamos en el script elementos de javascript para mostrar 
 //paginados los posts y en json.php para la peticion 
@@ -28,13 +34,16 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
 	<link href="../img/fabicon.ico" rel="icon" type="image/x-icon"/>
 	<link rel="stylesheet" href="../css/estilos.css"/>
         <script src="../Controlador/jquery-2.2.2.js"></script>
-        <script src="../Controlador/Elementos_AJAX/elementos.js"></script>
+        
+        <script src="../Controlador/Elementos_AJAX/CONEXION_AJAX.js"></script>
         <script src="../Controlador/Elementos_AJAX/cargarElementos.js"></script>
         <script src="../Controlador/Elementos_AJAX/imagenesAlSubirPost.js"></script>
         <script src="../Controlador/Elementos_AJAX/buscador.js"></script>
         <script src="../Controlador/Validar/formulario_login.js"></script>
         <script src="../Controlador/redireccionar.js"></script>
-        <script src="../Controlador/script.js"></script>
+        <script src="../Controlador/menu.js"></script>
+        <script src="../Controlador/script.js"></script>-->
+        <script src="../Controlador/Elementos_AJAX/elementos.js"></script>
         
     <!--Para navegadores viejos-->
         <!--[if lt IE 9]>
@@ -85,7 +94,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
                         if(isset($_SESSION["user"]) and $_SESSION != ""){
                             echo '<section id="foto_usuario">';
                                 echo '<figure id="img_usuario">';
-                                    echo '<img src='."../datos_usuario/".$_SESSION['user']->getValue('nick')."/".$_SESSION['user']->getValue('nick').".jpg".' alt="imagen del usuario" />';
+                                    echo '<img src='."../datos_usuario/".$_SESSION['user']->getValue('nick')."/".$_SESSION['user']->getValue('nick').".jpg".' alt="imagen del usuario" title="este eres tú"/>';
                             echo '</section>';
                         }
                 echo'<input type="button" id="ingresar" name="ingresar" value="Ingresar"/>';
@@ -176,18 +185,14 @@ function processForm(){
     
     if($missingFields){
        displayFormLogeo($missingFields, $user, true);
-    } elseif(!$loggedInMember = $user->authenticate(1)) {
-       $test = false;
-       mostrarOculto();
-       displayFormLogeo($missingFields, $user, $test);
+    }elseif(!$loggedInMember = $user->authenticate(1)) {
+            $test = false;
+            mostrarOculto();
+            displayFormLogeo($missingFields, $user, $test);
        
-       
-    } else {
-       //var_dump($loggedInMember);
-       $_SESSION["user"] = $loggedInMember;
-       
-       session_write_close();
-      
+    } else {       
+       $_SESSION["user"] = $loggedInMember;       
+       session_write_close();      
     }
 //fin processForm
 }

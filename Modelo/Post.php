@@ -2,6 +2,8 @@
 
 /**
  * Description of Post
+ * Clase encargada de los posts,
+ * crear, eliminar, etc
  *
  * @author Carlos Neira Sanchez
  */
@@ -338,7 +340,7 @@ function eliminarImg(){
         //En caso de ser todo correcto eliminamos la imagen 
         //del sistema y restamos 1 al contador de imagenes
         if($test){
-            $test = Sistema::eliminarImagen("../photos/".$this->getValue('idImagen').".jpg");
+            $test = Directorios::eliminarImagen("../photos/".$this->getValue('idImagen').".jpg");
             if($test){
                 
                 $_SESSION['contador'] = $_SESSION['contador'] - 1;
@@ -348,7 +350,7 @@ function eliminarImg(){
             //Si el contador vuelve a 0, volvemos a copiar la foto demo
             //Evitamos que en cada momento el que el usuario no tenga una  imagen en el Post
             if(isset($_SESSION['contador']) and $_SESSION['contador'] == 0){
-            $test = Sistema::copiarFoto("../photos/demo.jpg",$_SESSION['nuevoSubdirectorio']."/demo.jpg");
+            $test = Directorios::copiarFoto("../photos/demo.jpg",$_SESSION['nuevoSubdirectorio']."/demo.jpg");
             //                    IMPORTANTE
             //  Volvemos a ingresar en la bbdd la ruta de la imagen /demo
             // para poder mostrar siempre una imagen

@@ -7,19 +7,15 @@
  * @fecha 04-oct-2016
  */
 
-var READY_STATE_UNINITIALIZED = 0;
-var READY_STATE_LOADING = 1;
-var READY_STATE_LOADED = 2;
-var READY_STATE_INTERACTIVE = 3;
-var READY_STATE_COMPLETE = 4;
-
 
 // Variables para las peticiones JSON
 var objPro, petPro, objGen, petGen, objSeccion, petSeccion, objTiempoCambio, petTiempoCambio;
+    //Creamos una instancia de la clase CONEXION_AJAX
+    //Nos devuelve una conexion AJAX y propiedades 
+        var ConCargarElementos  = new Conexion();
+        
 
-
-
-function cargar(elementos, elemento){
+function cargar(elementos, opcionCargaElementos){
    
     // Variables elementos HTML
     provincias = elementos[0];
@@ -29,7 +25,7 @@ function cargar(elementos, elemento){
     seccion = elementos[4];
     tiempoCambio = elementos[5];
     
-        switch(elemento){
+        switch(opcionCargaElementos){
             case('PP'):
                 cargarPeticionElementos("PP", "opcion=PP"); //Peticion provincias para busquedas y hacer login
                     break;
@@ -54,51 +50,60 @@ function cargarPeticionElementos(tipo, parametros){
 //alert('Estamos en cargarPeticion y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
     //para comprobar el tipo de peticion
     switch(tipo){
+        
         case('PP'):
-           petPro = inicializaPeticionElementos();
+           petPro = ConCargarElementos.conection();
            petPro.onreadystatechange = procesaRespuestaPeticionElementos;
            petPro.open('POST', "../Controlador/Elementos_AJAX/cargarElementos.php?", true);
            petPro.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petPro.send(parametros);
-                break;
+                  
         case('PG'):
-           petGen = inicializaPeticionElementos();
+           petGen = ConCargarElementos.conection();
            petGen.onreadystatechange = procesaRespuestaPeticionElementos;
            petGen.open('POST', "../Controlador/Elementos_AJAX/cargarElementos.php?", true);
            petGen.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petGen.send(parametros);
                 break;
         case('PS'):
-           petSeccion = inicializaPeticionElementos();
+           petSeccion = ConCargarElementos.conection();
            petSeccion.onreadystatechange = procesaRespuestaPeticionElementos;
            petSeccion.open('POST', "../Controlador/Elementos_AJAX/cargarElementos.php?", true);
            petSeccion.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petSeccion.send(parametros);
                 break;        
         case('PT'):
-           petTiempoCambio = inicializaPeticionElementos();
+           petTiempoCambio = ConCargarElementos.conection();
            petTiempoCambio.onreadystatechange = procesaRespuestaPeticionElementos;
            petTiempoCambio.open('POST', "../Controlador/Elementos_AJAX/cargarElementos.php?", true);
            petTiempoCambio.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petTiempoCambio.send(parametros);
                 break;
-         
+       
     //fin switch
     }
     
     function procesaRespuestaPeticionElementos(){
        
-       if(this.readyState === READY_STATE_COMPLETE && this.status === 200){
+       if(this.readyState === ConCargarElementos.READY_STATE_COMPLETE && this.status === 200){
             try{
                 
                if(tipo === 'PP'){
                     objPro = JSON.parse(petPro.responseText);
+                    //Eliminamos el objeto conexion
+                    delete ConCargarElementos;
                 } else if(tipo === 'PG'){
                     objGen = JSON.parse(petGen.responseText);
+                    //Eliminamos el objeto conexion
+                    delete ConCargarElementos;
                 } else if(tipo === 'PS'){
                     objSeccion = JSON.parse(petSeccion.responseText);
+                    //Eliminamos el objeto conexion
+                    delete ConCargarElementos;
                 } else if(tipo === 'PT'){
                     objTiempoCambio = JSON.parse(petTiempoCambio.responseText);
+                    //Eliminamos el objeto conexion
+                    delete ConCargarElementos;
                 }
                 
             } catch(e){
@@ -199,18 +204,3 @@ function cargarTiempoDeCambio(objTiempoCambio){
     }  
 //fin cargarSecciones   
 }
-
-
-
-
-
-//------------------------funcion inicializa peticion ----------------------------
-  function inicializaPeticionElementos(){
-         var peticionElementos;
-        if(window.XMLHttpRequest){
-            peticionElementos = new XMLHttpRequest(); 
-        }else if (window.ActiveXObject){
-                peticionElementos= new ActiveXObject('Microsoft.XMLHTTP'); 
-            }
-             return peticionElementos;
-      }  

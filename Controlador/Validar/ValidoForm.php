@@ -1,9 +1,12 @@
 <?php
 
-//En esta clase la mayoria de metodos son final para evitar que un 
-    //programador pueda por error sobreescribir el metodo
-    //y static por que nos evitamos tener que instanciar un objeto de la clase;
-
+/**
+ * Clase encargada de validar los datos introducidos
+ * por el usuario con PHP.
+ * En esta clase la mayoria de metodos son final para evitar que un 
+ * programador pueda por error sobreescribir el metodo
+ * y static por que nos evitamos tener que instanciar un objeto de la clase;
+ */
     require_once '../Modelo/Usuarios.php';
     require_once '../Modelo/DataObj.php';
     require_once 'Interf_comprobar.php';   

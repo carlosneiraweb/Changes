@@ -6,11 +6,6 @@
  * @nameAndExt elementos.js
  * @fecha 26-oct-2016
  */
-var READY_STATE_UNINITIALIZED = 0;
-var READY_STATE_LOADING = 1;
-var READY_STATE_LOADED = 2;
-var READY_STATE_INTERACTIVE = 3;
-var READY_STATE_COMPLETE = 4;
 
 var  petPost, objPost, objBuscador, petBuscador, objEncontrado, petEncontrado,
         objSlider, petSlider, objBuscador, petBuscador, objEncontrado, petEncontrado;
@@ -18,14 +13,20 @@ var  petPost, objPost, objBuscador, petBuscador, objEncontrado, petEncontrado,
 var z, tmpLi, liPinchado, ultimoLi;
 
 var fecha = new Date();
+var Conexion;
 
 var X, post,elementos, provincias, porProvincia, porPrecio, porTiempoCambio, genero, seccion, tiempoCambio,
         PP = null, PG = null, PS = null, PT = null, UI = null,idPost = null, PPS = null,
         porProvincia, porPrecio, porTiempoCambio, txtBuscar, 
         verImagenes, imgSeleccionada, lista, radioBusqueda, buscarPorProvincia, buscarPorPrecio, buscarPorTiempoCambio;
 
+            //Creamos una instancia de la clase CONEXION_AJAX
+            //Nos devuelve una conexion AJAX y propiedades 
+                    var ConElementos  = new Conexion();
 
 window.onload=function(){
+  
+    
      X = document.getElementById('cuerpo');
      post = document.getElementById('posts');
      provincias = document.getElementById('provincia');
@@ -35,31 +36,34 @@ window.onload=function(){
      genero = document.getElementById('genero');
      seccion = document.getElementById('seccion');
      tiempoCambio = document.getElementById('tiempoCambio');
-     /* Mandamos el elemnto contenedor de las imagenes
-      * cuando un usuario sube una imagen a un post*/
-     verImagenes = document.getElementById('cnt_img');
+     
      /***********************/
      lista = document.getElementById('lista');
     
+       
     //Mandamos cargar los elementos solicitados en cada pagina, tipo selects o combos
     //Le mandamos los elementos por que la carga se hace en el onload
-    //No hay un evento asociado con el que hacer on
+    //No hay un evento asociado con el que hacer on con jquery y trabajamos con 
+    //estos elementos en otros scripts. Por eso hay que recojer los elementos aqui
     elementos = [provincias, porProvincia, porTiempoCambio, genero, seccion, tiempoCambio];
-     if(PP){
+    verImgSubidasEnPostNuevo = document.getElementById('cnt_img');
+    
+    if(PP !== null){
          cargar(elementos, 'PP');
      } 
-     if(PG){
+     if(PG !== null){
          cargar(elementos, 'PG');
      } 
-     if(PS){
+     if(PS !== null){
          cargar(elementos, 'PS');
      } 
-     if(PT){
+     if(PT !== null){
          cargar(elementos, 'PT');
      }
      if(UI){
-         cargarImagenesSubirPost(verImagenes, 'UI', "opcion=UI&idPost="+idPost);
+         cargarImagenesSubirPost(verImgSubidasEnPostNuevo , 'UI', "opcion=UI&idPost="+idPost);
      }
+   
     
     /*     ELEMENTOS PARA EL BUSCADOR      */
      
@@ -220,28 +224,28 @@ function cargarPeticion(tipo, parametros){
     switch(tipo){
         
         case('PPS'):
-           petPost = inicializaPeticion();
+           petPost = ConElementos.conection();
            petPost.onreadystatechange = procesaRespuesta;
            petPost.open('POST', "../Controlador/Elementos_AJAX/json.php?", true);
            petPost.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petPost.send(parametros);
                 break;   
         case('SLD'):
-           petSlider = inicializaPeticion();
+           petSlider = ConElementos.conection();
            petSlider.onreadystatechange = procesaRespuesta;
            petSlider.open('POST', "../Controlador/Elementos_AJAX/json.php?", true);
            petSlider.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petSlider.send(parametros);
                 break;
         case('BUSCADOR'):
-           petBuscador = inicializaPeticion();
+           petBuscador = ConElementos.conection();
            petBuscador.onreadystatechange = procesaRespuesta;
            petBuscador.open('POST', "../Controlador/Elementos_AJAX/busquedas.php?", true);
            petBuscador.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petBuscador.send(parametros);
                 break; 
         case('ENCONTRADO'):
-           petEncontrado = inicializaPeticion();
+           petEncontrado = ConElementos.conection();
            petEncontrado.onreadystatechange = procesaRespuesta;
            petEncontrado.open('POST', "../Controlador/Elementos_AJAX/busquedas.php?", true);
            petEncontrado.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
@@ -253,17 +257,25 @@ function cargarPeticion(tipo, parametros){
     
     function procesaRespuesta(){
        
-       if(this.readyState === READY_STATE_COMPLETE && this.status === 200){
+       if(this.readyState === ConElementos.READY_STATE_COMPLETE && this.status === 200){
             try{
                 
                 if(tipo === 'PPS'){
                     objPost= JSON.parse(petPost.responseText);
+                     //Eliminamos el objeto conexion
+                    delete ConElementos;
                 } else if(tipo === 'SLD'){
                     objSlider = JSON.parse(petSlider.responseText);
+                    //Eliminamos el objeto conexion
+                    delete ConElementos;
                 } else if(tipo === 'BUSCADOR'){
                     objBuscador = JSON.parse(petBuscador.responseText);
+                    //Eliminamos el objeto conexion
+                    delete ConElementos;
                 } else if(tipo === 'ENCONTRADO'){
                     objEncontrado = JSON.parse(petEncontrado.responseText);
+                    //Eliminamos el objeto conexion
+                    delete ConElementos;
                 }
                 
             } catch(e){
@@ -512,16 +524,7 @@ function cargarBuscador(objBuscador){
     }
     
     
+   
+   
+   
 }
-
-//------------------------funcion inicializa peticion ----------------------------
-  function inicializaPeticion(){
-         var peticion;
-        if(window.XMLHttpRequest){
-            peticion = new XMLHttpRequest(); 
-        }else if (window.ActiveXObject){
-                peticion= new ActiveXObject('Microsoft.XMLHTTP'); 
-            }
-             return peticion;
-      }  
-    
