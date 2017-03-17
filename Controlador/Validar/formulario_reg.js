@@ -38,7 +38,7 @@ $(document).ready(function(){
         function validarPassReg1(){
             $(".error").remove();
     
-                if($("#passord").val() === "" || !passReg.test($("#password").val())){
+                if($("#password").val() === "" || !passReg.test($("#password").val())){
 			$("#password").focus().after("<span class='error'><p>El password solo puede tener letras y números, minimo 6 y máximo 12.</p></span>");
 			$('#password').addClass('borderColor');
                         return false;
@@ -160,20 +160,45 @@ $(document).ready(function(){
         }
             
     
-        $('#primero').on('mouseover',function(){
+        $('#priSiguiente').on('mouseover',function(){
             if(validarNombreUsuario() && validarNickReg() && validarPassReg1() && validarPassReg2() && validarIgualdadPass() && validarEmail()){    
            }
       });
       
-        $('#segundo').on("mouseover", function(){
+        $('#segSiguiente').on("mouseover", function(){
            if(validarNombre() && validarTelefono()){           
            }  
         });
         
-        $('#tercero').on("mouseover", function(){
+        $('#terSiguiente').on("mouseover", function(){
            if(validarCiudad() && validarCodigoPostal()){}
             
         });
+        
+        $("#registro").on('keypress', '#password',function(){
+           $('.error').remove();
+      });
+        $("#registro").on('keypress', '#passReg',function(){
+           $('.error').remove();
+      });
+        $("#registro").on('keypress', '#nick',function(){
+           $('.error').remove();
+      });
+        $("#registro").on('keypress', '#email',function(){
+           $('.error').remove();
+      });
+        $("#registro").on('keypress', '#nombre',function(){
+           $('.error').remove();
+      });
+        $("#registro").on('keypress', '#telefono',function(){
+           $('.error').remove();
+      });
+        $("#registro").on('keypress', '#ciudad',function(){
+           $('.error').remove();
+      });
+        $("#registro").on('keypress', '#codPostal',function(){
+           $('.error').remove();
+      });
         
 //fin formulario_reg        
 });

@@ -17,7 +17,7 @@ $(document).ready(function(){
    } 
    
    function redireccionarRegistrarse(){
-       location.href = 'register.php';
+       location.href = 'registrarse.php';
    }
    
    function recargarPagina(){

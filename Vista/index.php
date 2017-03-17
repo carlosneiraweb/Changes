@@ -32,17 +32,15 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
 	<meta name="description" content="Portal para intercambiar las cosas que ya no usas o utilizas por otras que necesitas o te gustan."/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link href="../img/fabicon.ico" rel="icon" type="image/x-icon"/>
-	<link rel="stylesheet" href="../css/estilos.css"/>
+        <link rel="stylesheet" href="../css/estilos.css"/>
         <script src="../Controlador/jquery-2.2.2.js"></script>
         
         <script src="../Controlador/Elementos_AJAX/CONEXION_AJAX.js"></script>
-        <script src="../Controlador/Elementos_AJAX/cargarElementos.js"></script>
-        <script src="../Controlador/Elementos_AJAX/imagenesAlSubirPost.js"></script>
         <script src="../Controlador/Elementos_AJAX/buscador.js"></script>
         <script src="../Controlador/Validar/formulario_login.js"></script>
         <script src="../Controlador/redireccionar.js"></script>
         <script src="../Controlador/menu.js"></script>
-        <script src="../Controlador/script.js"></script>-->
+        <script src="../Controlador/script.js"></script>
         <script src="../Controlador/Elementos_AJAX/elementos.js"></script>
         
     <!--Para navegadores viejos-->
@@ -221,41 +219,6 @@ function processForm(){
     echo'</nav>';
    
     /*******************  BUSCADOR ************************************/ 
-    echo'<section id="buscar_datos">';
-        echo '<h3>Selecciona una opción de busqueda</h3>';
-        
-        echo'<label for="Busco">Cosas que tú buscas</label>';
-        echo'<input type="radio" name="busqueda" id="Busco" value="busco"  checked="checked">';
-        echo'<br />';
-        echo'<label for="Ofreco">Cosas que tú ofreces y la gente podría querer.</label>';
-        echo '<input type="radio" name="busqueda" id="Ofrezco" value="buscan">';
-        echo '<br />';
-        echo '<br />';
-        
-        echo'<label for="porProvincia">Selecciona la provincia:</label>';
-		echo'<select name="selectProvincia" id="porProvincia">';			
-        echo'</select>';
-        echo'<label for="porPrecio">Selecciona precio:</label>';
-		echo'<select name="selectPrecio" id="porPrecio">';
-                    echo '<option>No importa</option>';
-                    echo '<option>Hasta 500€</option>';
-                    echo '<option>Hasta 3000€</option>';
-                    echo '<option>Más de 3000€</option>';
-        echo'</select>';
-        echo'<label for="porTiempoCambio">Selecciona el tiempo de cambio:</label>';
-		echo'<select name="selectTiempoCambio" id="porTiempoCambio">';			
-        echo'</select>'; 
-        
-        
-        echo '<input type="text" id="buscador" class="buscador">';
-        echo '<section id="mostrar_resultados">';
-            //Aqui mostraremos os resultados
-        echo '<ul id="contenido_buscado">';
-        
-        echo '</ul>';
-        echo '</section>';
-        
-    echo'</section>';
     
     
     /**********************************************************************/
@@ -319,5 +282,8 @@ function processForm(){
     echo'<div class="medidas">Ancho Supercontenedor: <span id="span2"></span> px</p>';
    
     echo'</footer>';
+    ?>
+      
+    <?php
     echo '</body>';
     echo '</html>';

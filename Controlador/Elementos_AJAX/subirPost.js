@@ -7,35 +7,53 @@
  * @fecha 04-oct-2016
  */
 
-
-
-
-var objLastImg, petLastImg, idPost, petImgEliminar, objImgEliminar, imgCargar;
+var objSeccion, petSeccion, objTiempoCambio, petTiempoCambio,
+    objLastImg, petLastImg, petImgEliminar, objImgEliminar, imgCargar,
+    idPost, PS = null, PT = null;
 
       //Creamos una instancia de la clase CONEXION_AJAX
     //Nos devuelve una conexion AJAX y propiedades 
         var ConSubPost  = new Conexion();
         
-function cargarImagenesSubirPost(verImgSubidasEnPostNuevo, tipo, parametro){
+window.onload=function(){
     
-    imgCargar = verImgSubidasEnPostNuevo;
-    pedido = parametro;
-   
+    imgCargar = document.getElementById('cnt_img');
+
+        if (PS !== null) {
+            cargarPeticionSubirPost("PS", "opcion=PS"); //Peticion Seccion 
+            PS = null;
+        }
+        if (PT !== null) {
+            cargarPeticionSubirPost("PT", "opcion=PT"); //Peticion tiempoCambio
+            PT = null;
+        }
+     cargarPeticionSubirPost("UI", "opcion=UI&idPost="+idPost);   
     
-    switch(tipo){
-            case('UI'):
-                cargarPeticionImgSubirPost("UI", parametro); //Peticion provincias para busquedas y hacer login
-                    break;  
-        }    
-};
+
+ };
+ 
 
 
-function cargarPeticionImgSubirPost(tipo, parametros){
+
+function cargarPeticionSubirPost(tipo, parametros){
 //alert('Estamos en cargarPeticionImgSubirPost y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
     //para comprobar el tipo de peticion
   
     switch(tipo){
-       
+       case('PS'):
+           petSeccion = ConSubPost.conection();
+           petSeccion.onreadystatechange = procesaRespuestaPeticionElementos;
+           petSeccion.open('POST', "../Controlador/Elementos_AJAX/cargarElementos.php?", true);
+           petSeccion.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+           petSeccion.send(parametros);
+                break;        
+        case('PT'):
+           petTiempoCambio = ConSubPost.conection();
+           petTiempoCambio.onreadystatechange = procesaRespuestaPeticionElementos;
+           petTiempoCambio.open('POST', "../Controlador/Elementos_AJAX/cargarElementos.php?", true);
+           petTiempoCambio.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+           petTiempoCambio.send(parametros);
+                break;
         case('UI'):
            petLastImg = ConSubPost.conection();
            petLastImg.onreadystatechange = procesaRespuestaPeticionElementos;
@@ -55,11 +73,18 @@ function cargarPeticionImgSubirPost(tipo, parametros){
     }
     
     function procesaRespuestaPeticionElementos(){
-       
+     
        if(this.readyState === ConSubPost.READY_STATE_COMPLETE && this.status === 200){
             try{
-                
-               if(tipo === 'UI'){
+                if(tipo === 'PS'){
+                    objSeccion = JSON.parse(petSeccion.responseText);
+                    //Eliminamos el objeto conexion
+                    delete ConSubPost;
+                } else if(tipo === 'PT'){
+                    objTiempoCambio = JSON.parse(petTiempoCambio.responseText);
+                    //Eliminamos el objeto conexion
+                    delete ConSubPost;
+                }else if(tipo === 'UI'){
                     objLastImg = JSON.parse(petLastImg.responseText);
                     //Eliminamos el objeto conexion
                     delete ConSubPost;
@@ -70,18 +95,26 @@ function cargarPeticionImgSubirPost(tipo, parametros){
                 } 
                 
             } catch(e){
-                switch(tipo){        
-                   case 'UI':
-                         imgCargar.innerHTML = "<h3>No hemos podido recuperar esa imagen</h3>";
+                switch(tipo){ 
+                   
+                    case 'UI':
+                        
+                         imgCargar.innerHTML = "<h3>Inserta una imagen nueva.</h3>";
                             break;
                    
-                    default:
+                        default:
                         //location.href= 'mostrar_error.php';
                 }
             //fin catch
             }
             
             switch (tipo){
+                case 'PS':
+                    cargarSecciones(objSeccion);
+                        break;
+                    case 'PT':
+                    cargarTiempoDeCambio(objTiempoCambio);
+                        break;
                 case 'UI':
                     cargarUltimaImagen(objLastImg);
                         break;
@@ -95,12 +128,38 @@ function cargarPeticionImgSubirPost(tipo, parametros){
         }
     //fin procesaRespuesta    
     }
-    
-    
- 
-    
+     
 //fin cargarPeticion    
 }
+
+/*Cargamos las secciones de los artículos*/   
+function cargarSecciones(objSeccion){
+    //alert(objSeccion[0].nombre_seccion);
+    for(var i = 0; i < objSeccion.length; i++){
+        var objTmpSeccion = objSeccion[i];
+            $('#seccion').append($('<option>',{
+            text : objTmpSeccion.nombre_seccion
+        }));
+      
+    }  
+//fin cargarSecciones   
+}
+
+/*Cargamos el tiempo para el cambio, tanto cuando el usuario sube un Post
+* como para el buscador
+* */   
+function cargarTiempoDeCambio(objTiempoCambio){
+    //alert(objTiempoCambio);
+    for(var i = 0; i < objTiempoCambio.length; i++){
+        var objTmpTiempoCambio = objTiempoCambio[i];
+        $('#tiempoCambio').append($('<option>',{
+            text : objTmpTiempoCambio.tiempo
+        }));
+      
+    }  
+//fin cargarSecciones   
+}
+
 
 /*  Metodo que recive el id del post y el id de la imagen
  *      para mostrar por si el usuario quiere eliminar o modificar la descripcion
@@ -109,7 +168,7 @@ function cargarPeticionImgSubirPost(tipo, parametros){
  */
 function mandarId(id){
     
-    cargarPeticionImgSubirPost("PMI", "opcion=PMI&idPost="+idPost+"&ruta="+id); //Peticion IMAGEN A ELIMINAR
+    cargarPeticionSubirPost("PMI", "opcion=PMI&idPost="+idPost+"&ruta="+id); //Peticion IMAGEN A ELIMINAR
 }
 
 
@@ -120,7 +179,6 @@ function mandarId(id){
  * @returns {undefined} */
 function cargarUltimaImagen(objLastImg){
     
-      
         var sep = '<section id="capturar" class="contenedor_imagenes" >';
         for (var i= 0 ; i < objLastImg.length; i++){
             //Evitamos cualquier posible error

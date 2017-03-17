@@ -7,18 +7,12 @@
  * @fecha 26-oct-2016
  */
 
-var  petPost, objPost, objBuscador, petBuscador, objEncontrado, petEncontrado,
-        objSlider, petSlider, objBuscador, petBuscador, objEncontrado, petEncontrado;
+var X, post, petPost, objPost, objSlider, petSlider;
 //Variables globales para los <li> de navegacion
 var z, tmpLi, liPinchado, ultimoLi;
 
 var fecha = new Date();
 var Conexion;
-
-var X, post,elementos, provincias, porProvincia, porPrecio, porTiempoCambio, genero, seccion, tiempoCambio,
-        PP = null, PG = null, PS = null, PT = null, UI = null,idPost = null, PPS = null,
-        porProvincia, porPrecio, porTiempoCambio, txtBuscar, 
-        verImagenes, imgSeleccionada, lista, radioBusqueda, buscarPorProvincia, buscarPorPrecio, buscarPorTiempoCambio;
 
             //Creamos una instancia de la clase CONEXION_AJAX
             //Nos devuelve una conexion AJAX y propiedades 
@@ -29,95 +23,13 @@ window.onload=function(){
     
      X = document.getElementById('cuerpo');
      post = document.getElementById('posts');
-     provincias = document.getElementById('provincia');
-     porProvincia = document.getElementById('porProvincia');
-     porPrecio = document.getElementById('porPrecio');
-     porTiempoCambio = document.getElementById('porTiempoCambio');
-     genero = document.getElementById('genero');
-     seccion = document.getElementById('seccion');
-     tiempoCambio = document.getElementById('tiempoCambio');
      
+     
+    //Creamos la seccion del buscador por jquery
+        insertarBuscador();
+        
      /***********************/
      lista = document.getElementById('lista');
-    
-       
-    //Mandamos cargar los elementos solicitados en cada pagina, tipo selects o combos
-    //Le mandamos los elementos por que la carga se hace en el onload
-    //No hay un evento asociado con el que hacer on con jquery y trabajamos con 
-    //estos elementos en otros scripts. Por eso hay que recojer los elementos aqui
-    elementos = [provincias, porProvincia, porTiempoCambio, genero, seccion, tiempoCambio];
-    verImgSubidasEnPostNuevo = document.getElementById('cnt_img');
-    
-    if(PP !== null){
-         cargar(elementos, 'PP');
-     } 
-     if(PG !== null){
-         cargar(elementos, 'PG');
-     } 
-     if(PS !== null){
-         cargar(elementos, 'PS');
-     } 
-     if(PT !== null){
-         cargar(elementos, 'PT');
-     }
-     if(UI){
-         cargarImagenesSubirPost(verImgSubidasEnPostNuevo , 'UI', "opcion=UI&idPost="+idPost);
-     }
-   
-    
-    /*     ELEMENTOS PARA EL BUSCADOR      */
-     
-    $('#buscador').keyup(function(e){
-         //Algunas teclas dan problemas como el ir hacia atras <- 
-         //Por eso anulamos el evento si se pulsan
-         //En este caso solo he anulado esta
-         if(e.which !== 8){
-            //Primero eliminamos las busquedas anteriores
-        $('#contenido_buscado li').remove();
-        
-        //Recuperamos el valor de los filtros de busqueda
-        
-        radioBusqueda = $('input:radio[name=busqueda]:checked').val();
-        
-        buscarPorProvincia = $('#porProvincia').val();
-        
-        indice = porPrecio.selectedIndex;//$(this).index();
-        
-             if(indice === 0){buscarPorPrecio = "No importa";};
-             if(indice === 1){buscarPorPrecio = 500;};
-             if(indice === 2){buscarPorPrecio = 3000;};
-             if(indice === 3){buscarPorPrecio = 3001;};
-           
-        buscarPorTiempoCambio = $('#porTiempoCambio').val();;
-            
-        if(buscarPorProvincia === "No importa"){  buscarPorProvincia = 0; };
-        if(buscarPorPrecio === "No importa"){ buscarPorPrecio = 0; };
-        if(buscarPorTiempoCambio === "No importa"){  buscarPorTiempoCambio = 0; };
-        //alert('provincia'+buscarPorProvincia+" por precio "+buscarPorPrecio+ " por tiempo "+buscarPorTiempoCambio);
-        
-        
-    
-        //Recuperamos los que el usuario ha escrito en el campo
-        txtBuscar = $(this).val();
-        //"&provincia="+provincia+"&precio="+precio+"&tiempoCambio="+tiempoCambio
-        cargarPeticion('BUSCADOR', "opcion=BUSCADOR&BUSCAR="+txtBuscar+"&tabla="+radioBusqueda+"&buscarPorProvincia="+buscarPorProvincia+
-                '&buscarPorPrecio='+buscarPorPrecio+'&buscarPorTiempoCambio='+buscarPorTiempoCambio);
-         }
-         
-          //Recuperamos el contenido del li que se ha pulsado
-        $('#mostrar_resultados').on('click','.d',function() {
-        var textoElegido = $(this).text();
-        
-        //Ahora hacemos un select de todos los Posts donde tengan ese texto
-        //En sus palabras de busquedas o queridas
-        cargarPeticion('ENCONTRADO', "opcion=ENCONTRADO&ENCONTRAR="+textoElegido+"&tabla="+radioBusqueda+"&inicio="+inicio);
-        });
-        
-      
-	}); 
-    
-    
-    
     
     
         /*      METODO QUE LANZA EL SLIDER CON EL 
@@ -133,12 +45,7 @@ window.onload=function(){
                 cargarPeticion("SLD", "opcion=SLD&srcImg="+src);
             });
      
-         
-        /*          FIN LANZAR      */
-        
-    
-    
-    
+
             /*      ELEMENTOS PAGINACION     */
     //Inicializamos la variable inicio que mostrara por donde empezar a mostrar los posts
     //Comprobamos sin ya se ha inicializado, sino cada vez que el script
@@ -162,7 +69,7 @@ window.onload=function(){
             liPinchado = parseInt($(this).text());
             inicio = liPinchado * PAGESIZE;
             inicioTmp = inicio;
-            alert('cuando se pincha'+inicioTmp);
+            //alert('cuando se pincha'+inicioTmp);
             //Tambien nos aseguramos de recargar la lista <li> con los numeros 
                 //adecuados a cada paso, sea del 1-10 o 110-120
             tmpLi = parseInt($('.pagina').last().html())+ 1;
@@ -237,20 +144,6 @@ function cargarPeticion(tipo, parametros){
            petSlider.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petSlider.send(parametros);
                 break;
-        case('BUSCADOR'):
-           petBuscador = ConElementos.conection();
-           petBuscador.onreadystatechange = procesaRespuesta;
-           petBuscador.open('POST', "../Controlador/Elementos_AJAX/busquedas.php?", true);
-           petBuscador.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-           petBuscador.send(parametros);
-                break; 
-        case('ENCONTRADO'):
-           petEncontrado = ConElementos.conection();
-           petEncontrado.onreadystatechange = procesaRespuesta;
-           petEncontrado.open('POST', "../Controlador/Elementos_AJAX/busquedas.php?", true);
-           petEncontrado.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-           petEncontrado.send(parametros);
-                break;  
         
     //fin switch
     }
@@ -259,7 +152,6 @@ function cargarPeticion(tipo, parametros){
        
        if(this.readyState === ConElementos.READY_STATE_COMPLETE && this.status === 200){
             try{
-                
                 if(tipo === 'PPS'){
                     objPost= JSON.parse(petPost.responseText);
                      //Eliminamos el objeto conexion
@@ -268,15 +160,8 @@ function cargarPeticion(tipo, parametros){
                     objSlider = JSON.parse(petSlider.responseText);
                     //Eliminamos el objeto conexion
                     delete ConElementos;
-                } else if(tipo === 'BUSCADOR'){
-                    objBuscador = JSON.parse(petBuscador.responseText);
-                    //Eliminamos el objeto conexion
-                    delete ConElementos;
-                } else if(tipo === 'ENCONTRADO'){
-                    objEncontrado = JSON.parse(petEncontrado.responseText);
-                    //Eliminamos el objeto conexion
-                    delete ConElementos;
-                }
+                } 
+                
                 
             } catch(e){
                 switch(tipo){        
@@ -288,20 +173,14 @@ function cargarPeticion(tipo, parametros){
             }
             
             switch (tipo){
-            
+                
                 case 'PPS':
                     cargarPost(objPost);
                         break;
                 case 'SLD':
                     cargarSlider(objSlider);
                         break;
-                case 'BUSCADOR':
-                    cargarBuscador(objBuscador);
-                        break;
-                case 'ENCONTRADO':
-                    cargarPost(objEncontrado);
-                    
-                        break;
+                
                         
             //fin switch
             }
@@ -316,8 +195,16 @@ function cargarPeticion(tipo, parametros){
 //fin cargarPeticion    
 }
 
+
+
+
+
+/**
+ * Metodo que inserta los posts
+ * @param {type} objPost
+ * @returns {undefined} */
 function cargarPost(objPost){
-    //alert(objPost);
+    
     var acumulador ="";    
     
     for(var i = 1; i < objPost.length; i++){
@@ -504,27 +391,4 @@ function cargarSlider(objSlider){
 //fin cargarSlider    
 }
 
-/**
- * Metodo que carga los resultados del buscador
- * en los <li> va mostrando los resultados segun escribe el usuario
- * @returns {ActiveXObject|XMLHttpRequest} */
-function cargarBuscador(objBuscador){
-    
-    //alert(objBuscador[0]);
-    var vacio = "<li>No se han encontrado resultados con la busqueda <strong>"+txtBuscar+"</strong></li>";
-    if(typeof objBuscador[0] === "undefined"){
-        $('#mostrar_resultados ul').append(vacio); 
-    }else{
-         
-     
-        for(var b = 0; b < objBuscador.length; b++){
-        $('#mostrar_resultados ul').append('<li class="d">'+objBuscador[b].palabra+'</li>');
-        
-        }
-    }
-    
-    
-   
-   
-   
-}
+

@@ -49,20 +49,12 @@ $articulo = new Post(array());
 	<link rel="stylesheet" href="../css/estilos.css"/>
         <script src="../Controlador/jquery-2.2.2.js" type="text/javascript"></script>
         <script src="../Controlador/Elementos_AJAX/CONEXION_AJAX.js"></script>
-        <script src="../Controlador/Elementos_AJAX/elementos.js"></script>
-        <script src="../Controlador/Elementos_AJAX/cargarElementos.js"></script>
-        <script src="../Controlador/Elementos_AJAX/imagenesAlSubirPost.js"></script>
+        <script src="../Controlador/Elementos_AJAX/subirPost.js"></script>
         <script src="../Controlador/Validar/formulario_reg.js"></script>
         <script src="../Controlador/Validar/contador.js"></script>
         <script src="../Controlador/Validar/otras_validaciones.js"></script>
         
-        <script type="text/javascript">
-                    //Indicamos que elementos vamos a cargar
-                    //De esta manera controlamos que peticiones hacemos en cada pagina
-                        var PS = true;
-                        var PT = true;
-                        var UI = true;
-        </script>
+        
         
     </head>
     <body id="cuerpo">
@@ -134,6 +126,12 @@ $articulo = new Post(array());
 
     function displayStep1($missingFields){
         global $mensaje; 
+        echo '<script type="text/javascript">';
+           //Indicamos que elementos vamos a cargar
+           //De esta manera controlamos que peticiones hacemos en cada pagina
+           echo 'var PS = true;';
+           echo 'var PT = true;';
+        echo '</script>';
         
     echo'<section id="form_post">';
                 echo'<h4>Introduzca los datos del artículo</h4>';
@@ -160,14 +158,14 @@ $articulo = new Post(array());
                 
     echo '<section class="contenedor">';
     echo'<label '.ValidoForm::validateField("comentario", $missingFields). ' for="comentario">Introduce una descripción general del artículo. </label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
-    echo'<textarea maxlength="255" name="comentario" id="comentario" placeholder= "Máximo 255 caracteres." value="';if(isset($_SESSION['post']['comentario'])){echo $_SESSION['post']['comentario'];} echo '">'; 
+    echo'<textarea maxlength="255" name="comentario" id="comentario" placeholder= "Máximo 255 caracteres." maxlength="255" value="';if(isset($_SESSION['post']['comentario'])){echo $_SESSION['post']['comentario'];} echo '">'; 
     echo'</textarea>';
     echo'<label><span class="cnt">0</span></label>';
     echo'</section>';
     
     echo '<section class="contenedor">';
     echo'<label  for="precio">Introduce un precio aproximado  artículo. </label>';
-    echo'<input type="text" maxlength="10" name="precio" id="precio" placeholder="Precio aproximado, máximo 10 caracteres, solo se aceptan dígitos." value="';if(isset($_SESSION['post']['precio'])){echo $_SESSION['post']['precio'];} echo '">';
+    echo'<input type="text" maxlength="10" name="precio" id="precio" placeholder="Precio aproximado, máximo 10 caracteres, solo se aceptan dígitos." maxlength="10" value="';if(isset($_SESSION['post']['precio'])){echo $_SESSION['post']['precio'];} echo '">';
     echo'<label><span class="cnt">0</span></label>';
     echo'</section>';
     
@@ -291,11 +289,11 @@ function displayStep2($missingFields){
     echo '<section id="btns_registrar">';
         
         
-                        echo"<input type='submit' name='segundo' id='segundo'  value='Atras'>";
+                        echo"<input type='submit' name='segundo' id='atrasSubirPost'  value='Atras'>";
                     if($_SESSION['contador'] < 5){
-                        echo"<input type='submit' name='segundo' id='segundo'  value='Enviar'>";
+                        echo"<input type='submit' name='segundo' id='enviarSubirPost'  value='Enviar'>";
                     }    
-                        echo"<input type='submit' name='segundo' id='segundo' value='Fin' >";
+                        echo"<input type='submit' name='segundo' id='segundoSubirPost' value='Fin' >";
                     echo"</div>";       
     echo'</section>';
     
