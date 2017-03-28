@@ -9,12 +9,18 @@
 
 var objSeccion, petSeccion, objTiempoCambio, petTiempoCambio,
     objLastImg, petLastImg, petImgEliminar, objImgEliminar, imgCargar,
-    idPost, PS = null, PT = null;
+    idPost, PS = null, PT = null, milisegundos = 700;
 
       //Creamos una instancia de la clase CONEXION_AJAX
     //Nos devuelve una conexion AJAX y propiedades 
         var ConSubPost  = new Conexion();
         
+ if(typeof(t) === "undefined"){ 
+        var t = 0;
+        setInterval('parpadearSubirPost()', milisegundos);
+    }
+    
+    
 window.onload=function(){
     
     imgCargar = document.getElementById('cnt_img');
@@ -28,11 +34,29 @@ window.onload=function(){
             PT = null;
         }
      cargarPeticionSubirPost("UI", "opcion=UI&idPost="+idPost);   
-    
+     
 
  };
  
+/****METODO PARA HACER PARPADEAR LOS CAMPOS OBLIGATORIOS AL REGISTRARSE*********
 
+/**
+ * @description Este metodo oculta el gif  los campos obligatorios
+ */
+
+function parpadearSubirPost() {     
+    
+    var cociente = t % 2;
+    if(cociente === 1){
+       $('span.obligatorio').addClass('oculto');
+    } else {
+       $('span.obligatorio').removeClass('oculto'); 
+    }
+    t++;
+    
+    
+//fin parpadear                    
+}
 
 
 function cargarPeticionSubirPost(tipo, parametros){
@@ -132,12 +156,15 @@ function cargarPeticionSubirPost(tipo, parametros){
 //fin cargarPeticion    
 }
 
-/*Cargamos las secciones de los artículos*/   
+/*
+* @description 
+* Cargamos las secciones de los artículos
+* */   
 function cargarSecciones(objSeccion){
     //alert(objSeccion[0].nombre_seccion);
     for(var i = 0; i < objSeccion.length; i++){
         var objTmpSeccion = objSeccion[i];
-            $('#seccion').append($('<option>',{
+            $('#seccionSubirPost').append($('<option>',{
             text : objTmpSeccion.nombre_seccion
         }));
       
@@ -152,7 +179,7 @@ function cargarTiempoDeCambio(objTiempoCambio){
     //alert(objTiempoCambio);
     for(var i = 0; i < objTiempoCambio.length; i++){
         var objTmpTiempoCambio = objTiempoCambio[i];
-        $('#tiempoCambio').append($('<option>',{
+        $('#tiempoCambioSubirPost').append($('<option>',{
             text : objTmpTiempoCambio.tiempo
         }));
       
@@ -161,7 +188,9 @@ function cargarTiempoDeCambio(objTiempoCambio){
 }
 
 
-/*  Metodo que recive el id del post y el id de la imagen
+/*  
+* @description 
+* Metodo que recive el id del post y el id de la imagen
  *      para mostrar por si el usuario quiere eliminar o modificar la descripcion
  *  Los parametros se los mandamos una vez se muestra al usuario la imagen
  *      desde el metodo cargarUltimaImgen
@@ -173,6 +202,7 @@ function mandarId(id){
 
 
 /**
+* @description 
 * Metodo que muestra la ultima imagen subida por el usuario
 
  * @param {type} objLastImg

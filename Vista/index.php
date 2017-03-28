@@ -16,8 +16,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
 //La utilizamos en el script elementos de javascript para mostrar 
 //paginados los posts y en json.php para la peticion 
  echo '<script type="text/javascript">';
-               echo "var PAGESIZE = "; echo PAGE_SIZE;
-               
+               echo "var PAGESIZE = "; echo PAGE_SIZE;          
  echo '</script>';
             
            
@@ -122,6 +121,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
       //class="oculto login_form_tamanyo"
 function displayFormLogeo($missingFields, $user, $test){
       global $valido;
+     
  echo"<section id='login_form' ";
     //Aqui se muestra o esconde el formulario login despues de las comprobaciones PHP
         //Dependiendo si el usuario ha rellenado todos los campos
@@ -136,6 +136,8 @@ function displayFormLogeo($missingFields, $user, $test){
     }
     //cerramos section
     echo '>';
+      
+       
     	 echo'<h4>Introduzca sus datos</h4>';
     echo'<form name="logeo" action="index.php" method="post" id="form_login">';
         echo'<fieldset>';

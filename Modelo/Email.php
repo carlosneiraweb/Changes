@@ -59,10 +59,10 @@ class Email {
                     return $mail->ErrorInfo;
                 }
                 
-        }  catch (Exception $e){
+        }  catch (Exception $ex){
             echo $ex->getLine().'<br>';
             echo $ex->getFile().'<br>';
-            die("Error crear EMAIL: ".$ex->getMessage());
+            die();
             
         }
 

@@ -24,7 +24,11 @@
     //se cargara machacaria su valor.
     if(typeof(inicio) === "undefined"){ inicio = 0; };
     
-    
+ /**
+  * @description
+  * Inserta el buscador en la pagina con JQUERY
+  * @returns {undefined}
+  */  
  function insertarBuscador() {
         
         $('.slider-container').after ('<section id="buscar_datos"></section>');
@@ -89,6 +93,7 @@
     }
     
 /**
+ * @description 
  * Esta funcion carga los selects del buscador
  */
     function cargarSelectsBuscador() {
@@ -99,8 +104,11 @@
     //cargarSelectsBuscador    
     }
     
-/*Cargamos las provincias, tanto para cuando un usuario se registra
-* como para el filtro del buscador*/
+/*
+ * @description 
+ * Cargamos las provincias, tanto para cuando un usuario se registra
+* como para el filtro del buscador
+* */
 function cargarProvincias(objProv){
    
     for(var i = 0; i < objProv.length; i++){
@@ -112,7 +120,9 @@ function cargarProvincias(objProv){
  //fin cargarProvincias
 }
 
-/*Cargamos el tiempo para el cambio, tanto cuando el usuario sube un Post
+/*
+ * @description 
+ * Cargamos el tiempo para el cambio, tanto cuando el usuario sube un Post
 * como para el buscador
 * */   
 function cargarTiempoDeCambio(objTiempoCambio){
@@ -129,6 +139,7 @@ function cargarTiempoDeCambio(objTiempoCambio){
 
 /*******************************METODOS DEL BUSCADOR*************************/
 /**
+ * @description 
  * Activa el buscador
  */
 function activarBuscador() {
@@ -190,6 +201,7 @@ function activarBuscador() {
 
 
 /**
+ * @description 
  * Metodo que carga los resultados del buscador
  * en los <li> va mostrando los resultados segun escribe el usuario
  * @returns {ActiveXObject|XMLHttpRequest} */

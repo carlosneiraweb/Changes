@@ -7,7 +7,6 @@ function mostrarError(){
 //No podemos usar el redireccionamiento de javascript por que 
     //Utilizamos la misma url para mostrar los pasos
 function volverAnterior(){
-    //echo 'la session url vale: '.$_SESSION["url"].'<br>';
     header('Location:'. $_SESSION["url"]);
 }
 
@@ -23,10 +22,11 @@ function volverAnterior(){
 	<link href="../img/fabicon.ico" rel="icon" type="image/x-icon">
 	<link rel="stylesheet" href="../css/estilos.css"/>
         <script src="../Controlador/jquery-2.2.2.js" type="text/javascript"></script>
+        <script src="../Controlador/Elementos_AJAX/elementos.js"></script>
         <script src="../Controlador/Elementos_AJAX/CONEXION_AJAX.js"></script>
-        <script src="../Controlador/Elementos_AJAX/cargarElementos.js"></script>
         <script src="../Controlador/Elementos_AJAX/registrarse.js"></script>
         <script src="../Controlador/Validar/formulario_reg.js"></script>
+        
         
     <!--Para navegadores viejos-->
         <!--[if lt IE 9]>
@@ -39,7 +39,7 @@ function volverAnterior(){
     
    </head>
    <body id="cuerpo">
-       
+    
         <?php
         
         require_once('../Modelo/Usuarios.php');
@@ -48,19 +48,23 @@ function volverAnterior(){
         require_once('../Sistema/Directorios.php');
         require_once('../Sistema/Constantes.php');
         require_once('../Sistema/Email/mandarEmails.php');
-        
-        
+    
+    //Añadimos el div con la clase oculto
+    // echo'<div id="ocultar" class="oculto"> </div>';  
+       
         //Variable global para mostrar los errores de validacion
         global $mensaje;
         //Variable global de usuario, Instanciaremos una vez validado todos los campos
         global $user;
         $user = new Usuarios(array());
-        
+ 
         echo'<header>';
 	echo'<figure id="logo" class="fade">';
 		echo'<img src="../img/logo.png" alt="Logo del portal"/>';
 		echo'<figcaption id="titulo">Cambia todo lo que ya no uses.</figcaption>';
 	echo'</figure>';
+        
+            
 	echo'<section id="cabecera">';
 			echo'<h1>Te lo cambio</h1>';
 			echo'<h3>Miles de personas compartiendo te están esperando.</h3>';
@@ -69,59 +73,62 @@ function volverAnterior(){
 	echo'</section>';
      
     echo'</header>';
-    
-   
-    
-    //Si no se ha recivido el step
-    //Se muestra por primera vez el formulario
-    if(!isset($_POST['step'])){
-        displayStep1(array());
-    }
-    
+ 
+     
+        // Si no se ha recivido el step
+        // Se muestra por primera vez el formulario
+            if(!isset($_POST['step'])){
+                displayStep1(array());
+            }
+            
+            
     /*Mandamos a comprobar los campos del primer formulario*/
-    if(isset($_POST['primero']) and $_POST['primero'] == "Siguiente"){
+    if(isset($_POST['primeroReg']) and $_POST['primeroReg'] == "Siguiente"){
         $requiredFields = array('nick', 'password', 'email');
         processForm($requiredFields, "step1");
-    } elseif(isset($_POST['primero']) and $_POST['primero'] == "Salir"){
+    } elseif(isset($_POST['primeroReg']) and $_POST['primeroReg'] == "Salir"){
         volverAnterior();
-    } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Siguiente"){
+    } elseif(isset($_POST['segundoReg']) and $_POST['segundoReg'] == "Siguiente"){
         $requiredFields = array('nombre');
         processForm($requiredFields, "step2");
-    } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Atras"){
+    } elseif(isset($_POST['segundoReg']) and $_POST['segundoReg'] == "Atras"){
         displayStep1(array());
-    } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Salir"){
+    } elseif(isset($_POST['segundoReg']) and $_POST['segundoReg'] == "Salir"){
         volverAnterior();
-    } elseif(isset($_POST['tercero']) and $_POST['tercero'] == "Siguiente"){
-        $requiredFields = array('codPostal');
+    }elseif(isset($_POST['terceroReg']) and $_POST['terceroReg'] == "Siguiente"){
+        $requiredFields = array('codPostal', 'ciudad');
         processForm($requiredFields, "step3");
-    } elseif(isset($_POST['tercero']) and $_POST['tercero'] == "Atras"){
+    } elseif(isset($_POST['terceroReg']) and $_POST['terceroReg'] == "Atras"){
         displayStep2(array());
-    } elseif(isset($_POST['tercero']) and $_POST['tercero'] == "Salir"){
+    } elseif(isset($_POST['terceroReg']) and $_POST['terceroReg'] == "Salir"){
         volverAnterior();
-    } elseif(isset($_POST['cuarto']) and $_POST['cuarto'] == "Atras"){
+    }elseif(isset($_POST['cuartoReg']) and $_POST['cuartoReg'] == "Atras"){
         displayStep3(array());
-    } elseif(isset($_POST['cuarto']) and $_POST['cuarto'] == "Aceptar"){
+    } elseif(isset($_POST['cuartoReg']) and $_POST['cuartoReg'] == "Siguiente"){
         $requiredFields = array();
         processForm($requiredFields, "step4");
-        /*Todo ha ido bien y
-        Confirmamos el registro,
-        nos redirige  a la pagina que estabamos*/
-    } elseif(isset($_POST['volvemos']) and $_POST['volvemos'] == "Aceptar"){
+    }elseif(isset($_POST['aceptaCondicionesReg']) and $_POST['aceptaCondicionesReg'] == "aceptaCondiciones"){
+        $requiredFields = array();
+        processForm($requiredFields, "step5");
+    }elseif(isset($_POST['registroConfirmado']) and $_POST['registroConfirmado'] == "Aceptar") {
         volverAnterior();
     }
+    
+
+    
      
 function displayStep1($missingFields){
     
-    global $user;
+  
     global $mensaje;
     
-    echo'<section id="form_registro">';
+    echo'<section id="form_registro_1" class="fuenteFormulario, generalFormularios">';
                 echo'<h4>Introduzca sus datos</h4>';
-    echo'<form name="registro" action="registrarse.php" method="POST" id="registro" >';
+    echo'<form name="registro" action="registrarse.php" method="POST" id="registro_1" >';
         echo'<fieldset>';
         	echo'<legend>Formulario de Registro Primer Paso</legend>';
         echo"<input type='hidden' name='step' value='1'>";  
-    echo'<label '.ValidoForm::validateField("nick", $missingFields).' for="nick">Introduce nombre de usuario:</label> <span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
+    echo'<label '.ValidoForm::validateField("nick", $missingFields).' for="nick">Introduce nombre de usuario:</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="text" name="nick" id="nick" autofocus placeholder="Tú nombre usuario maximo 25 caracteres" maxlength="25" value=';if(isset($_SESSION['usuario']['nick'])){echo $_SESSION['usuario']['nick'];} echo ">";       
     echo'<label '.ValidoForm::validateField("password", $missingFields). ' for="password">Introduce tú password</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="password" name="password" id="password"  maxlength="12" >';	
@@ -131,8 +138,8 @@ function displayStep1($missingFields){
     echo'<input type="text" name="email" id="email" placeholder="info@developerji.com" maxlength="45" value=';if(isset($_SESSION['usuario']['email'])){echo $_SESSION['usuario']['email'];} echo ">";
     
     echo '<section id="btns_registrar">';
-                echo"<input type='submit' name='primero' id='priSiguiente'  value='Siguiente' >";
-                echo"<input type='submit' name='primero' id='priSalir'  value='Salir' >";
+                echo"<input type='submit' name='primeroReg' id='primeroSigReg'  value='Siguiente' >";
+                echo"<input type='submit' name='primeroReg' id='primeroSalReg'  value='Salir' >";
     echo '</section>';
                     
             echo "</form>";
@@ -151,17 +158,11 @@ function displayStep1($missingFields){
 function displayStep2($missingFields){
     global $mensaje;
   
-           //Indicamos que elementos vamos a cargar
-           //De esta manera controlamos que peticiones hacemos
-           //en cada paso del formulario
-           //Evitamos peticiones innecesarias
-            echo '<script type="text/javascript">';
-                echo 'var PGRegistrarse = true;';
-            echo '</script>';
+           
        
-    echo'<section id="form_registro">';
+    echo'<section id="form_registro_2" class="fuenteFormulario, generalFormularios">';
                 echo'<h4>Introduzca sus datos</h4>';
-    echo'<form name="registro" action="registrarse.php" method="POST" id="registro">';
+    echo'<form name="registro" action="registrarse.php" method="POST" id="registro_2">';
         echo'<fieldset>';
         	echo'<legend>Formulario de Registro Segundo Paso</legend>';
     echo"<input type='hidden' name='step' value='2'>";
@@ -180,9 +181,9 @@ function displayStep2($missingFields){
                 echo'<br>';        
     
     echo '<section id="btns_registrar">';
-                        echo"<input type='submit' name='segundo' id='segSiguiente'  value='Siguiente'>";
-                        echo"<input type='submit' name='segundo' id='segAtras' value='Atras' >";
-                        echo"<input type='submit' name='segundo' id='segSalir' value='Salir' >";
+                        echo"<input type='submit' name='segundoReg' id='segundoSigReg'  value='Siguiente'>";
+                        echo"<input type='submit' name='segundoReg' id='segundoAtrasReg' value='Atras' >";
+                        echo"<input type='submit' name='segundoReg' id='segundoSalirReg' value='Salir' >";
     echo"</section>";
                     
             echo "</form>";
@@ -200,17 +201,10 @@ function displayStep2($missingFields){
 function displayStep3($missingFields){
     global $mensaje;
         
-            //Indicamos que elementos vamos a cargar
-           //De esta manera controlamos que peticiones hacemos
-           //en cada paso del formulario
-           //Evitamos peticiones innecesarias
-            echo '<script type="text/javascript">';
-                echo 'var PPRegistrarse  = true';
-            echo '</script>';
-    
-    echo'<section id="form_registro">';
+            
+    echo'<section id="form_registro_3" class="fuenteFormulario, generalFormularios">';
                 echo'<h4>Introduzca sus datos</h4>';
-    echo'<form name="registro" action="registrarse.php" method="POST" id="registro">';
+    echo'<form name="registro" action="registrarse.php" method="POST" id="registro_3">';
         echo'<fieldset>';
         	echo'<legend>Formulario de Registro ya casi estamos</legend>';
     echo"<input type='hidden' name='step' value='3'>";
@@ -236,13 +230,12 @@ function displayStep3($missingFields){
                 
     echo'<label for="pais">Pais:</label>'; 
 	echo'<input type="text" name="pais" id="pais" placeholder="España"  maxlength= "25"/>';		
-			
     
-    
+     
     echo '<section id="btns_registrar">';
-                        echo"<input type='submit' name='tercero' id='terSiguiente'  value='Siguiente'>";
-                        echo"<input type='submit' name='tercero' id='terAtras' value='Atras' >";
-                        echo"<input type='submit' name='tercero' id='terSalir' value='Salir' >";
+                        echo"<input type='submit' name='terceroReg' id='terceroSigReg'  value='Siguiente'>";
+                        echo"<input type='submit' name='terceroReg' id='terceroAtrReg' value='Atras' >";
+                        echo"<input type='submit' name='terceroReg' id='terceroSalReg' value='Salir' >";
     echo"</section>";
                     
             echo "</form>";
@@ -260,11 +253,11 @@ function displayStep3($missingFields){
 function displayStep4($missingFields){
     global $mensaje;
         
-    echo'<section id="form_registro">';
+    echo'<section id="form_registro_4" class="fuenteFormulario, generalFormularios">';
                 echo'<h4>Introduzca sus datos</h4>';
-    echo'<form name="registro" action="registrarse.php" method="POST" id="registro" enctype="multipart/form-data">';
+    echo'<form name="registro" action="registrarse.php" method="POST" id="registro_4" enctype="multipart/form-data">';
         echo'<fieldset>';
-        	echo'<legend>Personaliza tu perfil, sube una foto tuya.</legend>';
+        	echo'<legend>Personaliza tu perfil, sube una foto tuya si quieres.</legend>';
     echo"<input type='hidden' name='step' value='4'>";
     //Modificamos en php.ini y en el formulario el maximo tamaño del archivo
     echo'<input type="hidden" name="MAX_FILE_SIZE" value="50000" />';
@@ -272,32 +265,44 @@ function displayStep4($missingFields){
             
             echo'<input type="file" name="photo" id="photo" value="" />';
             
-    echo '<section id="btns_registrar">';
-                        echo"<input type='submit' name='cuarto' id='cuarto'  value='Aceptar'>";
-                        echo"<input type='submit' name='cuarto' id='cuarto' value='Atras' >";
-    echo"</section>";
-                    
+ echo"<input type='submit' name='cuartoReg' id='cuartoSigReg'  value='Siguiente'>";   
+ echo"<input type='submit' name='cuartoReg' id='cuartoAtrReg'  value='Atras'>";                   
             echo "</form>";
          
-        echo'</fieldset>';  
+        echo'</fieldset>';
+    
+    
+    
      //En caso de error 
         //se muestra en el formulario    
     if($mensaje){
             echo $mensaje;
         }       
     echo'</section>';
+    
+    
 //fin displayStep4    
 }
 
+function displayStep5(){
+    
+    echo '<script type="text/javascript">';
+               echo "agregarFormularioCondiciones();";         
+    echo '</script>';
+    
+    
+    
+//fin displayStep5    
+}
 
 function confirmarRegistro(){
     echo '<section id="confirmarRegistro">';
         echo '<h2>Has sido registrado correctamente</h2>';
         echo '<h3>Ahora podras logearte con tu usuario y contraseña</h3>';
-            echo "<section id='form_registro'>";
+            echo "<section id='form_registro_5' class='fuenteFormulario, generalFormularios'>";
                 echo'<form name="registro" action="registrarse.php" method="POST" id="registro">';
                     echo '<section id="btns_registrar">';
-                        echo"<input type='submit' name='volvemos' id='volvemos' value='Aceptar'>";
+                        echo"<input type='submit' name='registroConfirmado' id='registroConReg' value='Aceptar'>";
                     echo '</section>';
             echo "</form>";
     echo "</section>";
@@ -314,7 +319,7 @@ function confirmarRegistro(){
         global $user;
         $repElimarPhotos = false;
         $repElimarDatosUsuario = false;
-        
+       
         
         $user = new Usuarios(array(
             "nombre" => $_SESSION['usuario']['nombre'],
@@ -334,11 +339,11 @@ function confirmarRegistro(){
             "password" => $_SESSION['usuario']['password'],
             "admin" => 0
                 ));
-     
-            $test = $user->insert();
-         
+                
+            $testInsert = $user->insert();
+           
             $objMandarEmails = new mandarEmails();
-            if($test === true){
+            if($testInsert === true){
              //Si todo va bien le mandamos a la pagina para confirmar registro
                 //y le mandamos un email de bienvenida
                confirmarRegistro();
@@ -346,20 +351,20 @@ function confirmarRegistro(){
                $objMandarEmails->mandarEmailWelcome($user);
             //Si algo ha ido mal le mandamos a la pagina mostrar Error
                //Y nos mandamos un email con los datos introducidos por el usuario  y el error SQL
-            } else{
-
+            }else{
                
-                //Redirigimos a la pagina error
-                mostrarError();
-                
                 //Destruimos las carpetas que se creaban para almacenar sus datos
                 $repElimarPhotos = Directorios::eliminarDirectorioRegistro("../photos/".$_SESSION['usuario']['nick']);
                 $repElimarDatosUsuario = Directorios::eliminarDirectorioRegistro("../datos_usuario/".$_SESSION['usuario']['nick']);
-           
-                $testTxt = Directorios::escribirErrorValidacion($user, $test, $repElimarDatosUsuario, $repElimarPhotos);
+                
+                 //Redirigimos a la pagina error en caso de error
+                $_SESSION['error'] = ERROR_INGRESAR_USUARIO;
+                mostrarError();
+                
+                $testTxt = Directorios::escribirErrorValidacion($user, $testInsert, $repElimarDatosUsuario, $repElimarPhotos);
                 
                 if($testTxt) {
-                    $objMandarEmails->mandarEmailProblemasRegistro($test); 
+                    $objMandarEmails->mandarEmailProblemasRegistro($testInsert); 
                 }
                   //Destruimos el objeto user
                     unset($user);
@@ -371,6 +376,7 @@ function confirmarRegistro(){
     }
 
 function processForm($requiredFields, $st){
+    
     //Array para almacenar los campos no rellenados y obligatorios
         global $missingFields;
         $missingFields = array();   
@@ -396,12 +402,19 @@ function processForm($requiredFields, $st){
                 $_SESSION['usuario']["ciudad"] = isset($_POST['ciudad']) ? preg_replace("/[^\-\_a-zA-Z0-9.,`'´ñÑ]/", "", $_POST["ciudad"]) : "";
                 $_SESSION['usuario']["codPostal"] = isset($_POST['codPostal']) ? preg_replace("/[^\-\_0-9]/", "", $_POST["codPostal"]) : "";
                 $_SESSION['usuario']["provincia"] = isset($_POST['provincia']) ? $_POST['provincia'] : "";
-                $_SESSION['usuario']["pais"] = isset($_POST['pais']) ? preg_replace("/[^\-\_a-zA-Z0-9.,`'´ñÑ]/", "", $_POST["pais"]) : "";
+                $_SESSION['usuario']["pais"] = isset($_POST['pais']) ? preg_replace("/[^\-\_a-z-Z0-9.,`'´ñÑ]/", "", $_POST["pais"]) : "";
                 //cerramos escritura sobre variable de sesion
                 session_write_close();
                 
                     break; 
             case "step4":
+                
+                //En este paso no hacemos nada
+                //Aqui copiamos la imagn subida por el
+                //usuario o sino sube una ponemos la de default
+                    break;
+        
+             case "step5":
                 
                 //En este paso no hacemos nada
                     break;
@@ -513,15 +526,23 @@ function processForm($requiredFields, $st){
                     $test = Directorios::crearDirectorio("../photos/".$_SESSION['usuario']['nick']);
                     if($test){$test = Directorios::crearDirectorio("../datos_usuario/".$_SESSION['usuario']['nick']);}
                     if($test){ $test = Directorios::copiarFoto("../datos_usuario/desconocido.jpg", $destino);}
-                   
+                  
                 }
             //Si hay algun tipo de error al subir la foto
                 //Redirigimos a la pagina de mostrar error
                 //Para que el usuario vuelva a intentarlo
                 if(!$test){
+                    $_SESSION['error'] = ERROR_INGRESAR_USUARIO;
                     mostrarError();
                     exit();
                 }
+                    break;
+                    
+                case 'step5':
+                    //No hacemos ninguna validacion
+                   
+                
+                
             return $test;
    
         }
@@ -565,16 +586,20 @@ function processForm($requiredFields, $st){
             
         case 'step4':
             
-            if(!validarCampos($st)){
+            if(validarCampos($st)){
                 displayStep4($missingFields);
-            } else{
-                //finalmente si todo ha ido bien mandamos a
+            }else{
+                displayStep5();
+            }
+             
+            break;
+            
+        case 'step5':
+            //finalmente si todo ha ido bien mandamos a
                 // ingresar el usuario. En caso de error lo
                 //redirigimos a una página para hacerselo saber
-                // y darle la oprtunidad de intentarlo otra vez.                       
-                ingresarUsuario();           
-            }                
-   
+                // y darle la oportunidad de intentarlo otra vez.                       
+                ingresarUsuario();
     }
 //fin processForm
 }

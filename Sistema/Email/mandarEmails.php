@@ -18,6 +18,7 @@ require_once('../Sistema/Constantes.php');
 require_once('../Modelo/Email.php');
 
 
+
 /**
  * Esta clase tiene metodos concretos
  *  para mandar emails segun el caso
@@ -47,52 +48,54 @@ class mandarEmails {
      
  }
  
-  final function mandarEmailWelcome(DataObj $obj){
+final function mandarEmailWelcome(DataObj $obj){
+
     
-    //Creamos el objeto email con los datos
-    //Que necesitamos de $user para el cuerpo del email
-    //La cabecera y el footer son dos constantes
-    try{
-        $cuerpoEmail = '<section id="saludo">
-                <h4>Enhorabuena '.$obj->getValue("nombre").' por registrarte en <span class="especial">Te Lo Cambio</h4></span>
-                </section>
-                <p>Ahora podr&aacutes cambiar con nuestro usuarios.</p> <br />
-                <p>Recuerda que tu usuario es: '.$obj->getValue("nick").' </p>
-                <p>Y tu password es: '.$obj->getValue("password").'</p>';
+            //Creamos el objeto email con los datos
+            //Que necesitamos de $user para el cuerpo del email
+            //La cabecera y el footer son dos constantes
+            try{
+                $cuerpoEmail = '<section id="saludo">
+                        <h4>Enhorabuena '.$obj->getValue("nombre").' por registrarte en <span class="especial">Te Lo Cambio</h4></span>
+                        </section>
+                        <p>Ahora podr&aacutes cambiar con nuestro usuarios.</p> <br />
+                        <p>Recuerda que tu usuario es: '.$obj->getValue("nick").' </p>
+                        <p>Y tu password es: '.$obj->getValue("password").'</p>';
 
-        $emailAcabado = EMAIL_CABECERA.$cuerpoEmail.EMAIL_FOOTER;
+                $emailAcabado = EMAIL_CABECERA.$cuerpoEmail.EMAIL_FOOTER;
 
-        $email = new Email($emailAcabado);
-        //MANDAMOS EL EMAIL
-        $test = $email->mandarEmail($obj->getValue("email"));
-        //echo $test.'<br />';
-            if($test === true) {
-                //Si todo ha ido bien eliminamos los objetos user y email
-                unset($obj);
-                unset($email);
-            } else{
-                echo 'No se ha mandado email<br />';
-                //Si el email no ha podido ser mandado por algun motivo
-                //Destruimos el objeto email y creamos uno nuevo
-                //Con el error que nos ha devuelto el metodo email
-                unset($email);
-                $errorEmailMandar = '<section id="errorEmailRegistro">
-                                <h3>Ha habído un error al mandar el email de registro al usuario'.$user->getValue('nick'). '</h3>
-                                <h4>Con error' .$test.'</h4>
-                                <h4> Y fecha: '.FECHA_DIA.'</h4>
-                                </section>'; 
-                $emailAcabado = EMAIL_CABECERA.$errorEmailMandar.EMAIL_FOOTER; 
-                //Creamos un nuevo email y lo mandamos al administrador
                 $email = new Email($emailAcabado);
-                $email->mandarEmail(EMAIL_USERNAME);
-                //Acabamos destruyendo el objeto user
-                unset($user);
-                unset($email);    
-            }
-    }catch (Exception $ex){
-        echo "Error al mandar email welcome ".$ex->getMessage();
-    }                        
-                            
+                //MANDAMOS EL EMAIL
+                $test = $email->mandarEmail($obj->getValue("email"));
+                //echo $test.'<br />';
+                    if($test === true) {
+                        //Si todo ha ido bien eliminamos los objetos user y email
+                        unset($obj);
+                        unset($email);
+                    } else{
+                        //Si el email no ha podido ser mandado por algun motivo
+                        //Destruimos el objeto email y creamos uno nuevo
+                        //Con el error que nos ha devuelto el metodo email
+                        unset($email);
+                        $errorEmailMandar = '<section id="errorEmailRegistro">
+                                        <h3>Ha habído un error al mandar el email de registro al usuario'.$obj->getValue('nick'). '</h3>
+                                        <h4>Con error' .$test.'</h4>
+                                        <h4> Y fecha: '.FECHA_DIA.'</h4>
+                                        </section>'; 
+                        $emailAcabado = EMAIL_CABECERA.$errorEmailMandar.EMAIL_FOOTER; 
+                        //Creamos un nuevo email y lo mandamos al administrador
+                        $email = new Email($emailAcabado);
+                        $email->mandarEmail(EMAIL_USERNAME);
+                        //Acabamos destruyendo el objeto user
+                        unset($obj);
+                        unset($email);    
+                    }
+            }catch (Exception $ex){
+                echo "Error al mandar email welcome ".$ex->getMessage().'<br>';
+                echo "El codigo es: ".$ex->getCode().'<br>';
+                echo "La traza es: ".$ex->getTrace().'<br>';
+            }                        
+                           
    //FIN  mandarEmailWelcome 
     }
 

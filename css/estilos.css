@@ -304,6 +304,70 @@ figure#izquierda, figure#derecha{
 	filter:alpha(opacity=5);
 }
 
+/*Estilos fomulario verificar Registro*/
+
+section#verificarCondiciones{
+    
+       background-color: white;
+	padding: .3em;
+	margin: auto;
+        height: 600px;
+        width: 650px;
+	position:absolute;
+	top: 30px;
+	left: 0;
+	right: 0;
+        max-height: 600px !important;
+        max-width: 650px !important;
+       
+}
+
+section#contenedorCondiciones{
+    
+    width: 90%;
+    margin: 0.5em auto;
+    border: 1px solid black; 
+    max-height: 550px !important;
+    max-width: 600px !important;
+}
+section#textAreaCondiciones{
+    width: 500px;
+    height : 550px;
+    height: 300px;
+    margin : 0.5em auto;
+    padding: .5em;
+    border: thin solid skyblue;
+    overflow: scroll;
+}
+
+section#contenedorBotonAceptarCondiciones{
+    border: 1px solid red;
+    width: 90%;
+    margin : 0.5em auto;
+    padding: .5em;
+    position: relative;
+}
+
+form#formRegistroCondiciones>input[type="button"]{
+    width : 100px;
+     margin : 0.5em auto;
+     display: block;
+}
+
+section#capaBoton{
+    position: absolute;
+    top : 0;
+    left: 0;
+    bottom: 0;
+    right : 0;
+    background-color : white;
+    opacity: .8;
+    filter:alpha(opacity=8);
+    width : 90%;
+    height : 90%;
+    margin: 0.2em auto;
+}
+
 /*Estilo formulario login*/
 section#login_form{
 	border: 2px solid #4F628E;
@@ -336,7 +400,7 @@ section#login_form{
     width: 95%;
 }
 
-section#login_form h4, section#form_registro h4, section#form_post h4, section#mostrarImgSeleccionada h4{
+.fuenteFormulario{
 	color: #FF5917;
 	font-size: 1.3em;
 	font-family: 'chapazaregular',Helvetica, Verdana;	
@@ -490,7 +554,7 @@ li.slide-current{
     margin: .8em;
     width: 90%;
 }
-.contenedor input[type="text"], .contenedor #comentario{
+.contenedor input[type="text"], .contenedor #comentario, #comentarioSubirPost{
     vertical-align: middle;
     margin: .3em;
     width: 75%;
@@ -578,7 +642,7 @@ section#cnt_img{
 
 /*Estilos para registro*/
 
-section#form_registro, section#form_post, section#mostrarImgSeleccionada{
+.generalFormularios{
     background-color: white;
     font-size: 1.2em;
     margin: 1em auto;
@@ -737,7 +801,7 @@ section#confirmarRegistro input[type="submit"]{
 
 
 /*Estilo de border redondeado para todos los elementos de la pagina*/
-section#foto_usuario img, .login_form_tamanyo, .registro_form_tamanyo, #ocultar, figure#imagen_error, section#form_registro, section#form_post, .img_usuario_tmp img, section#mostrarImgSeleccionada, section#mostrarSlider{
+section#foto_usuario img, .login_form_tamanyo, .registro_form_tamanyo, #ocultar, figure#imagen_error, section#form_registro, section#form_post, .img_usuario_tmp img, section#mostrarImgSeleccionada, section#mostrarSlider, section#verificarCondiciones{
 	border-radius: 1em;
 	-moz-border-radius: 1em; /* Firefox 3.5 */
         -webkit-border-radius: 1em; /* Google Chrome y Safari */
@@ -750,7 +814,7 @@ section#foto_usuario img, .login_form_tamanyo, .registro_form_tamanyo, #ocultar,
 /*Muestran el fondo del formulario y el formulario*/
 .mostrar_transparencia{
 	background-color: black;
-	opacity: .4;
+	opacity: .8;
 	filter:alpha(opacity=4);
 	position: absolute;
 	top:0;

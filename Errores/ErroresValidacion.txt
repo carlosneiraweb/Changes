@@ -1,60 +1,18 @@
 
- 
             ******************************************************
-            Nueva entrada Con fecha:Día 15, de March, del año 2017, a la hora 19: 34 Ha habido un problema de registro de un usuario.
+            Nueva entrada Con fecha:Día 28, de March, del año 2017, a la hora 20: 57 Ha habido un problema de registro de un usuario.
 
-            El error es: El error es: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'nick' cannot be nullEn la linea: 219En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
-
-            La IP del visitante es: ::1
-            Los datos intruducidos por el usuario son: 
-
-            
-            nombre =  wwwww
-
-            1º Apellido: = 
-
-            2º Apellido = 
-
-            calle = 
-
-            numero del Portal = 
-
-            puerta = 
-
-            ciudad = wwwwww
-
-            codigo Postal = 44444
-
-            provincia = Alava
-
-            telefono = 963258741
-
-            pais = 
-
-            genero = hombre
-
-            email = aaaaa@gmail.com
-
-            nick = lucas
-
-            password = aaaaaaaaaaa
-
-            pais = 
-Los directorios de Datos_usuario y Photos se han elimanado.
-
-
-            ******************************************************
-            Nueva entrada Con fecha:Día 15, de March, del año 2017, a la hora 19: 38 Ha habido un problema de registro de un usuario.
-
-            El error es: El error es: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'nick' cannot be null
-En la linea: 219
+            El error es: El error al introducir la direccion del usuario  es: 
+SQLSTATE[HY093]: Invalid parameter number: parameter was not defined
+En la linea: 254
 En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin de error.
 
             La IP del visitante es: ::1
             Los datos intruducidos por el usuario son: 
 
             
-            nombre =  wwwww
+            nombre =  zzzqq
 
             1º Apellido: = 
 
@@ -66,11 +24,11 @@ En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
 
             puerta = 
 
-            ciudad = WWWW
+            ciudad = zzz
 
             codigo Postal = 44444
 
-            provincia = Alava
+            provincia = No importa
 
             telefono = 963258741
 
@@ -78,12 +36,398 @@ En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
 
             genero = hombre
 
-            email = aaaaa@gmail.com
+            email = prueba@xxx.asw
 
-            nick = lucas
+            nick = prueba
 
-            password = WWWWWWWW
+            password = qqqqqqqqqqqq
 
             pais = 
 Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 28, de March, del año 2017, a la hora 21: 8 Ha habido un problema de registro de un usuario.
+
+            El error es: El error al introducir la direccion del usuario  es: 
+SQLSTATE[HY093]: Invalid parameter number: parameter was not defined
+En la linea: 253
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin de error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  gggggggg
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ggggg
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 997456321
+
+            pais = 
+
+            genero = hombre
+
+            email = tqttttt@ddd.es
+
+            nick = ttttwq
+
+            password = qqqqqqqqqqqq
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 28, de March, del año 2017, a la hora 21: 10 Ha habido un problema de registro de un usuario.
+
+            El error es: El error al introducir la direccion del usuario  es: 
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'idDireccion' cannot be null
+En la linea: 254
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin de error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  gggggggg
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ggggg
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 997456321
+
+            pais = 
+
+            genero = hombre
+
+            email = tqttttt@ddd.es
+
+            nick = ttttwq
+
+            password = qqqqqqqqqqqq
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 28, de March, del año 2017, a la hora 21: 11 Ha habido un problema de registro de un usuario.
+
+            El error es: El error al introducir la direccion del usuario  es: 
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'idDireccion' cannot be null
+En la linea: 254
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin de error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  gggggggg
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ggggg
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 997456321
+
+            pais = 
+
+            genero = hombre
+
+            email = tqtttett@ddd.es
+
+            nick = ttttwqww
+
+            password = wwwwwwwwwwww
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 28, de March, del año 2017, a la hora 21: 14 Ha habido un problema de registro de un usuario.
+
+            El error es: El error al introducir la direccion del usuario  es: 
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'idDireccion' cannot be null
+En la linea: 254
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin de error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  gggggggg
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ggggg
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 997456321
+
+            pais = 
+
+            genero = hombre
+
+            email = tqtttett@ddd.es
+
+            nick = prueba
+
+            password = aaaaaaaaaaaa
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 28, de March, del año 2017, a la hora 21: 16 Ha habido un problema de registro de un usuario.
+
+            El error es: El error al introducir la direccion del usuario  es: 
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'idDireccion' cannot be null
+En la linea: 254
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin de error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  gggggggg
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ggggg
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 997456321
+
+            pais = 
+
+            genero = hombre
+
+            email = tqtttett@ddd.es
+
+            nick = prueba
+
+            password = aaaaaaaaaaaa
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 28, de March, del año 2017, a la hora 21: 18 Ha habido un problema de registro de un usuario.
+
+            El error es: El error al introducir la direccion del usuario  es: 
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'idDireccion' cannot be null
+En la linea: 254
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin de error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  gggggggg
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ggggg
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 997456321
+
+            pais = 
+
+            genero = hombre
+
+            email = tqtttett@ddd.es
+
+            nick = prueba
+
+            password = ssssssssssss
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 28, de March, del año 2017, a la hora 21: 19 Ha habido un problema de registro de un usuario.
+
+            El error es: El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: parameter was not defined
+
+En la linea: 211
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  gggggggg
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ggggg
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 997456321
+
+            pais = 
+
+            genero = hombre
+
+            email = tqtttett@ddd.es
+
+            nick = prueba
+
+            password = ssssssssssss
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 28, de March, del año 2017, a la hora 21: 22 Ha habido un problema de registro de un usuario.
+
+            El error es: 1El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: parameter was not defined
+
+En la linea: 211
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.El error al introducir la direccion del usuario  es: 
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'idDireccion' cannot be null
+En la linea: 254
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin de error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  gggggggg
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ggggg
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 997456321
+
+            pais = 
+
+            genero = hombre
+
+            email = tqtttett@ddd.es
+
+            nick = prueba
+
+            password = ssssssssssss
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
 

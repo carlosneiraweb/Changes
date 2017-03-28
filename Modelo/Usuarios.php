@@ -74,7 +74,7 @@ class Usuarios extends DataObj{
      /**
      * public and static
      * Metodo que devuelve un usuario por nombre
-     * @param type $username
+     * @param type $nick
      * @return \Member
      */
     public static function getByUsername($nick){
@@ -185,15 +185,98 @@ class Usuarios extends DataObj{
         }
   //fin authenticate     
    }
-   
+/**
+ * Ingresa los datos del usuario
+ * telefono, nombre, apellidos, etc
+ * @return boolean o error
+ */
+public final function insertDatosUsuario(){
+        $con = Conne::connect();
+                try{
+                   
+                    $sqlDatosUsuario = "INSERT INTO ".TBL_DATOS_USUARIO." ( idDatosUsuario, idGenero, nombre, apellido_1, apellido_2, telefono)".
+                            "VALUES".
+                            "((SELECT idUsuario FROM ".TBL_USUARIO." where nick = :nick),
+                            (SELECT idGenero FROM ".TBL_GENERO." WHERE genero = :genero),
+                             :nombre, :apellido_1, :apellido_2, :telefono);";
+                   
+                        $stDatosUsuario = $con->prepare($sqlDatosUsuario);
+                        $stDatosUsuario->bindValue(":nick", $this->data["nick"], PDO::PARAM_STR);
+                        $stDatosUsuario->bindValue(":genero", $this->data["genero"], PDO::PARAM_STR);
+                        $stDatosUsuario->bindValue(":nombre", $this->data["nombre"], PDO::PARAM_STR);
+                        $stDatosUsuario->bindValue(":apellido_10", $this->data["apellido_1"], PDO::PARAM_STR);
+                        $stDatosUsuario->bindValue(":apellido_2", $this->data["apellido_2"], PDO::PARAM_STR);
+                        $stDatosUsuario->bindValue(":telefono", $this->data["telefono"], PDO::PARAM_STR);
+                        
+                        $testDatosUsuario = $stDatosUsuario->execute();
+                        Conne::disconnect($con);
+                        return $testDatosUsuario;
+                        
+                } catch (Exception $ex) {
+                        //Si ha ocurrido un error eliminamos al usuario de la tabla
+                        $this->deleteFrom('usuario');
+                        Conne::disconnect($con);
+                        return PHP_EOL."El error al ingresar datos usuario es: ".$ex->getMessage().PHP_EOL.PHP_EOL.
+                        "En la linea: ".$ex->getLine().PHP_EOL.
+                        "En el archivo: ".$ex->getFile().PHP_EOL.
+                        "fin error.";        
+                }
+    
+    
+//fin    insertDatosUsuario 
+}
+
+/**
+ * Este metodo ingresa la direccion
+ * del usuario, poblacion, calle, etc
+ * return boolean o el error
+ */
+public function insertarDireccionUsuario(){
+    $con = Conne::connect();
+            try{
+                               //NO HAY CAMPOS OBLIGATORIOS AL HACER EL INSERT
+                        $sqlDireccion = "INSERT INTO ".TBL_DIRECCION." (idDireccion, calle, numeroPortal, ptr, codigoPostal, ciudad, provincias_idprovincias, pais)".
+                                        " VALUES ".
+                                    "((SELECT idUsuario FROM ".TBL_USUARIO. " where nick = :nick),".
+                                    ":calle, :numeroPortal, :ptr, :codigoPostal, :ciudad, ".
+                                    "(SELECT idProvincias FROM ".TBL_PROVINCIAS. " WHERE nombre= :provincia), :pais);";
+                             
+                        $stDireccion = $con->prepare($sqlDireccion);
+                        $stDireccion->bindValue(":nick", $this->data["nick"], PDO::PARAM_STR);
+                        $stDireccion->bindValue(":calle", $this->data["calle"], PDO::PARAM_STR);
+                        $stDireccion->bindValue(":numeroPortal", $this->data["numeroPortal"], PDO::PARAM_STR);
+                        $stDireccion->bindValue(":ptr", $this->data["ptr"], PDO::PARAM_STR);
+                        $stDireccion->bindValue(":codigoPostal", $this->data["codigoPostal"], PDO::PARAM_STR);
+                        $stDireccion->bindValue(":ciudad", $this->data["ciudad"], PDO::PARAM_STR);
+                        $stDireccion->bindValue(":provincia", $this->data["provincia"], PDO::PARAM_STR);
+                        $stDireccion->bindValue(":pais", $this->data["pais"], PDO::PARAM_STR);
+                        
+                        $testDireccion = $stDireccion->execute(); 
+                        Conne::disconnect($con);
+                        return $testDireccion;
+                        
+                    } catch (Exception $ex) {
+                        //Si ha ocurrido un error eliminamos al usuario de la tabla
+                        //y sus datos
+                        $this->deleteFrom('datos_usuario');
+                        $this->deleteFrom('usuario');
+                        Conne::disconnect($con);
+                        return PHP_EOL."El error al introducir la direccion del usuario  es: ".PHP_EOL.$ex->getMessage().PHP_EOL.
+                        "En la linea: ".$ex->getLine().PHP_EOL.
+                        "En el archivo: ".$ex->getFile().PHP_EOL.
+                        "fin de error.";
+                       
+                                    
+                    }
+//direccionUsuario    
+}
 /**
  * Metodo que inserta en la bbdd un usuario
  * @global type $testInsert
  * @return type el resultado de la insercion en la bbdd
  */    
-public function insert(){
+public final function insert(){
     $con = Conne::connect();
-    $testInsert;
         try{
         
         $sql = "INSERT INTO ".TBL_USUARIO. "(
@@ -216,91 +299,20 @@ public function insert(){
             $st->bindValue(":password",  System::generoHash($this->data["password"]) , PDO::PARAM_STR);
             $st->bindValue(":email", $this->data["email"], PDO::PARAM_STR);
             $st->bindValue(":fecha", $date, PDO::PARAM_STR);
+            //Concatenamos los posibles errores 
+            //al insertar al usuario
             $testInsert = $st->execute();
-            
-            //Si el primer paso ha sido correcto 
-            //Pasamos al segundo paso
-            
-            if ($testInsert) {
-                        //NO HAY CAMPOS OBLIGATORIOS AL HACER EL INSERT
-                try{
-                   
-                    $sqlDatosUsuario = "INSERT INTO ".TBL_DATOS_USUARIO." ( idDatosUsuario, idGenero, nombre, apellido_1, apellido_2, telefono)".
-                            "VALUES".
-                            "((SELECT idUsuario FROM ".TBL_USUARIO." where nick = :nick),
-                            (SELECT idGenero FROM ".TBL_GENERO." WHERE genero = :genero),
-                             :nombre, :apellido_1, :apellido_2, :telefono);";
-                   
-                        $stDatosUsuario = $con->prepare($sqlDatosUsuario);
-                        $stDatosUsuario->bindValue(":nick", $this->data["nick"], PDO::PARAM_STR);
-                        $stDatosUsuario->bindValue(":genero", $this->data["genero"], PDO::PARAM_STR);
-                        $stDatosUsuario->bindValue(":nombre", $this->data["nombre"], PDO::PARAM_STR);
-                        $stDatosUsuario->bindValue(":apellido_1", $this->data["apellido_1"], PDO::PARAM_STR);
-                        $stDatosUsuario->bindValue(":apellido_2", $this->data["apellido_2"], PDO::PARAM_STR);
-                        $stDatosUsuario->bindValue(":telefono", $this->data["telefono"], PDO::PARAM_STR);
-                        
-                        $stDatosUsuario->execute();
-                        
-                        
-                } catch (Exception $ex) {
-                        //Si ha ocurrido un error eliminamos al usuario de la tabla
-                        $this->deleteFrom('usuario');
-                        echo 'El error se produce al insertar Datos de usuario en la archivo: '.$ex->getFile().'<br>';
-                        echo 'El error se produce al insertar Datos de usuario en la línea: '.$ex->getLine().'<br>';
-                        Conne::disconnect($con);
-                        
-                }
-                    try{
-                               //NO HAY CAMPOS OBLIGATORIOS AL HACER EL INSERT
-                        $sqlDireccion = "INSERT INTO ".TBL_DIRECCION." (idDireccion, calle, numeroPortal, ptr, codigoPostal, ciudad, provincias_idprovincias, pais)".
-                                        " VALUES ".
-                                    "((SELECT idUsuario FROM ".TBL_USUARIO. " where nick = :nick),".
-                                    ":calle, :numeroPortal, :ptr, :codigoPostal, :ciudad, ".
-                                    "(SELECT idProvincias FROM ".TBL_PROVINCIAS. " WHERE nombre= :provincia), :pais);";
-                             
-                        $stDireccion = $con->prepare($sqlDireccion);
-                        $stDireccion->bindValue(":nick", $this->data["nick"], PDO::PARAM_STR);
-                        $stDireccion->bindValue(":calle", $this->data["calle"], PDO::PARAM_STR);
-                        $stDireccion->bindValue(":numeroPortal", $this->data["numeroPortal"], PDO::PARAM_STR);
-                        $stDireccion->bindValue(":ptr", $this->data["ptr"], PDO::PARAM_STR);
-                        $stDireccion->bindValue(":codigoPostal", $this->data["codigoPostal"], PDO::PARAM_STR);
-                        $stDireccion->bindValue(":ciudad", $this->data["ciudad"], PDO::PARAM_STR);
-                        $stDireccion->bindValue(":provincia", $this->data["provincia"], PDO::PARAM_STR);
-                        $stDireccion->bindValue(":pais", $this->data["pais"], PDO::PARAM_STR);
-                        
-                        $stDireccion->execute();
-                            
-                                    
-                    } catch (Exception $ex) {
-                        //Si ha ocurrido un error eliminamos al usuario de la tabla
-                        //y sus datos
-                        $this->deleteFrom('datos_usuario');
-                        $this->deleteFrom('usuario');
-                        echo 'El error se produce en la archivo: '.$ex->getFile().'<br>';
-                        echo 'El error se produce en la línea: '.$ex->getLine().'<br>';
-                        Conne::disconnect($con);
-                       
-                                    
-                    }
-                
-                //Si todo ha ido bien devolvemos $testInsert 
-                Conne::disconnect($con);
-                return $testInsert;
-                
-            }
-            
+            $testInsert .= $this->insertDatosUsuario();
+            $testInsert .= $this->insertarDireccionUsuario();    
+            Conne::disconnect($con);
+            return $testInsert;   
         } catch (Exception $ex) {
             Conne::disconnect($con);
-            echo $ex->getLine().'<br>';
-            echo $ex->getFile().'<br>';
-            echo $ex->getMessage().'<br />';
-            return "El error es: ".$ex->getMessage().PHP_EOL.
+            return PHP_EOL."El error al introducir los datos login es: ".PHP_EOL.$ex->getMessage().PHP_EOL.
                    "En la linea: ".$ex->getLine().PHP_EOL.
-                   "En el archivo: ".$ex->getFile();
-        } finally {
-            //die("Query failed: ".$ex->getMessage());
-        }
-   
+                   "En el archivo: ".$ex->getFile().PHP_EOL.
+                   "fin error.";
+        } 
     //fin insert    
 } 
    
@@ -407,7 +419,7 @@ public function insert(){
             echo $ex->getLine().'<br>';
             echo $ex->getFile().'<br>';
            Conne::disconnect($conHash);
-           die("Query failed: ".$ex->getMessage());
+          
         }
         
     //fin recuperarHash    

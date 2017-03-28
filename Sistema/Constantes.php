@@ -39,6 +39,7 @@ define("EMAIL_INCORRECTO", '<h5>El email no es valido</h5>'.
                           '<h5>Por favor compruebalo.</h5>');
 define("TELEFONO_INCORRECTO", '<h5>El teléfono introducido es incorrecto.</h5>');
 define("CODIGO_POSTAL", "<h5>El código postal no es correcto.</h5>");
+define("ACUERDO_CONDICIONES", '<h5>Debes de estar de acuerdo con nuestras condiciones</h5>');
 define("ERROR_FORMATO_FOTO", '<h5>Únicamente aceptamos imagenes .jpg</h5>');
 define("ERROR_TAMAÑO_FOTO", '<h5>El tamaño de la foto supera el máximo permitido.</h5>');
 define("ERROR_FOTO_NO_ELIGIDA", '<h5>Parece que no has seleccionado una imagen.</h5>');
@@ -46,6 +47,7 @@ define("ERROR_ELIMINAR_FOTO", '<h5>Hemos tenido un problema al eliminar la foto<
 define("ERROR_INSERTAR_FOTO", '<h5>Hemos tenido un problema al insertar tu foto.</h5>');
 define("ERROR_FOTO_GENERAL", "<h5>Lo sentimos hemos tenido un problema al subir la foto.</h5>");
 define("ERROR_INSERTAR_ARTICULO", "<h5>No hemos podido insertar tu articulo.</h5>");
+define("ERROR_INGRESAR_USUARIO", "<h5>Hemos tenido un problema al ingresarte.</h5>");
 //Constante con la fecha actual 
 $fecha_actual = getdate();
 define("FECHA_DIA", "Día $fecha_actual[mday], de $fecha_actual[month], del año $fecha_actual[year], a la hora $fecha_actual[hours]: $fecha_actual[minutes]" );

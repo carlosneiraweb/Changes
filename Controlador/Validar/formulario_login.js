@@ -7,7 +7,11 @@ $(document).ready(function(){
         
     $("#ingresar").on('click', mostrarCapaOpaca); 
       
-            //validamos formulario login                                               
+           /**
+            * @description Validamos que el nick de 
+            * login no este vacio
+            * @returns {Boolean}
+            */                                               
             function validarNick(){
                 
                 $(".error").remove();
@@ -23,6 +27,11 @@ $(document).ready(function(){
         //fin validarNick
             }
             
+            /**
+             * @description Validamos password
+             * del login
+             * @returns {Boolean}
+             */
             function validarPassword(){
             //
                 $(".error").remove();
@@ -43,31 +52,26 @@ $(document).ready(function(){
             if(validarNick() && validarPassword()){
                
            }
-//                $('#form_login').submit(function(){ 
-//                    $("#login_form").removeClass('mostrar_formulario login_form_tamanyo').addClass('oculto');	
-//                    $("#ocultar").removeClass('mostrar_tranparencia').addClass('oculto');      
-//                    
-//                     
-//                });
-//             
-//                return false; 
-//            } else{
-//                $('#form_login').submit(function(){                     
-//                     return false;                   
-//               });
-//            }
+
         });
    
    
-        //Estos dos métodos nos sirven para mostrar
-	//o ocultar la capa semitransparente de fondo
+        /**
+         * @description Elimina la clase oculto 
+         * y añade la clase mostrar_transparencia  del formulario de login
+         * @returns {undefined}
+         */
 	function mostrarCapaOpaca(){
 	$("#ocultar").removeClass('oculto').addClass('mostrar_transparencia');
         mostrarLogin();
 								
 	}
 	
-        //Metodos que nos permiten mostrar los formularios
+        /**
+         * @description Elimina la clase oculto y añade
+         * la clase mostrar_formulario
+         * @returns {undefined}
+         */
         function mostrarLogin(){
 	$("#login_form").removeClass('oculto').addClass('mostrar_formulario');
         //fin mostra rLogin

@@ -52,7 +52,7 @@ $articulo = new Post(array());
         <script src="../Controlador/Elementos_AJAX/subirPost.js"></script>
         <script src="../Controlador/Validar/formulario_reg.js"></script>
         <script src="../Controlador/Validar/contador.js"></script>
-        <script src="../Controlador/Validar/otras_validaciones.js"></script>
+        <script src="../Controlador/Validar/formulario_subir_post.js"></script>
         
         
         
@@ -87,22 +87,22 @@ $articulo = new Post(array());
     }
     
     /*Mandamos a comprobar los campos del primer formulario*/
-    if(isset($_POST['primero']) and $_POST['primero'] == "Siguiente"){        
-        $requiredFields = array('seccion', 'comentario');
+    if(isset($_POST['primeroSubirPost']) and $_POST['primeroSubirPost'] == "Siguiente"){        
+        $requiredFields = array('tituloSubirPost', 'comentarioSubirPost');
         processForm($requiredFields, "step1");
-    } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Enviar" ){    
+    } elseif(isset($_POST['segundoSubirPost']) and $_POST['segundoSubirPost'] == "Enviar" ){    
         //El usario  quiere subir una foto al post
         $requiredFields = array();
         processForm($requiredFields, "step2");
         
-    } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Atras"){
+    } elseif(isset($_POST['segundoSubirPost']) and $_POST['segundoSubirPost'] == "Atras"){
         //Esto significa que el usuario ha dado un paso atras en el formulario
         //Lo que hacemos es actualizar los datos, no volver a registrarlo
         //Para ello instanciamos una variable de session para que lo tenga en cuenta
         //Al ingresar en la bbdd
         $_SESSION['atras'] = 'atras'; 
         displayStep1(array());
-    } elseif(isset($_POST['segundo']) and $_POST['segundo'] == "Fin"){
+    } elseif(isset($_POST['segundoSubirPost']) and $_POST['segundoSubirPost'] == "Fin"){
         //El usuario ha terminado de ingresar los datos del post
         //Le redirigimos a cualqier url que estubiera
         //Destruimos la sesion atras, la sesion contador y si existiera la 
@@ -133,22 +133,22 @@ $articulo = new Post(array());
            echo 'var PT = true;';
         echo '</script>';
         
-    echo'<section id="form_post">';
+    echo'<section id="form_post_1" class="fuenteFormulario, generalFormularios">';
                 echo'<h4>Introduzca los datos del artículo</h4>';
-    echo'<form name="post" action="subir_posts.php" method="POST" id="post" >';
+    echo'<form name="post" action="subir_posts.php" method="post" id="post_1" >';
         echo'<fieldset>';
         	echo'<legend>Rellena los campos</legend>';
         echo"<input type='hidden' name='step' value='1'>"; 
         
     echo '<section class="contenedor">';    
-    echo'<label '.ValidoForm::validateField("titulo", $missingFields).' for="titulo">Introduce un titulo para el anuncio. </label> <span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
-    echo'<input type="text" maxlength="60" name="titulo" id="titulo" autofocus placeholder="Máximo 60 caracteres."  value="';if(isset($_SESSION['post']['titulo'])){echo $_SESSION['post']['titulo'];} echo '">'; 
+    echo'<label '.ValidoForm::validateField("tituloSubirPost", $missingFields).' for="tituloSubirPost">Introduce un título para el anuncio. </label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
+    echo'<input type="text" maxlength="60" name="tituloSubirPost" id="tituloSubirPost" autofocus placeholder="Máximo 60 caracteres."  value="';if(isset($_SESSION['post']['tituloSubirPost'])){echo $_SESSION['post']['tituloSubirPost'];} echo '">'; 
     echo'<label><span class="cnt">0</span></label>';
     echo'</section>';
 
-    echo'<label for="seccion">Seccion:</label> <span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
+    echo'<label for="seccion">Seccion:</label>';
  
-	echo'<select name="seccion" id="seccion">';
+	echo'<select name="seccionSubirPost" id="seccionSubirPost">';
            
                echo'</select>'; 
 
@@ -157,22 +157,22 @@ $articulo = new Post(array());
    
                 
     echo '<section class="contenedor">';
-    echo'<label '.ValidoForm::validateField("comentario", $missingFields). ' for="comentario">Introduce una descripción general del artículo. </label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
-    echo'<textarea maxlength="255" name="comentario" id="comentario" placeholder= "Máximo 255 caracteres." maxlength="255" value="';if(isset($_SESSION['post']['comentario'])){echo $_SESSION['post']['comentario'];} echo '">'; 
+    echo'<label '.ValidoForm::validateField("comentarioSubirPost", $missingFields). ' for="comentario">Introduce una descripción general del artículo. </label>';
+    echo'<textarea maxlength="255" name="comentarioSubirPost" id="comentarioSubirPost" placeholder= "Máximo 255 caracteres." maxlength="255" value="';if(isset($_SESSION['post']['comentarioSubirPost'])){echo $_SESSION['post']['comentarioSubirPost'];} echo '">'; 
     echo'</textarea>';
     echo'<label><span class="cnt">0</span></label>';
     echo'</section>';
     
     echo '<section class="contenedor">';
-    echo'<label  for="precio">Introduce un precio aproximado  artículo. </label>';
-    echo'<input type="text" maxlength="10" name="precio" id="precio" placeholder="Precio aproximado, máximo 10 caracteres, solo se aceptan dígitos." maxlength="10" value="';if(isset($_SESSION['post']['precio'])){echo $_SESSION['post']['precio'];} echo '">';
+    echo'<label  for="precioSubirPost">Introduce un precio aproximado  artículo. </label>';
+    echo'<input type="text" maxlength="10" name="precioSubirPost" id="precioSubirPost" placeholder="Precio aproximado, máximo 10 caracteres, solo se aceptan dígitos." maxlength="10" value="';if(isset($_SESSION['post']['precioSubirPost'])){echo $_SESSION['post']['precioSubirPost'];} echo '">';
     echo'<label><span class="cnt">0</span></label>';
     echo'</section>';
     
     
-    echo'<label for="tiempoCambio">Elige por cuanto tiempo deseas hacer el cambio.</label> <span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
+    echo'<label for="tiempoCambio">Elige por cuanto tiempo deseas hacer el cambio.</label>';
  
-	echo'<select name="tiempoCambio" id="tiempoCambio">';
+	echo'<select name="tiempoCambioSubirPost" id="tiempoCambioSubirPost">';
            
                echo'</select>'; 
 
@@ -213,7 +213,7 @@ $articulo = new Post(array());
     echo '</section>';
            
     echo '<section id="btns_registrar">';    
-        echo"<input type='submit' name='primero' id='primero'  value='Siguiente' >";
+        echo"<input type='submit' name='primeroSubirPost' id='primeroSubirPost'  value='Siguiente' >";
     echo '<section>';
     
         //Mostramos cualquier errror al validar el formulario            
@@ -241,7 +241,7 @@ function displayStep2($missingFields){
             echo '</script>';
          
             }
-    echo '<section id="mostrarImgSeleccionada">';
+    echo '<section id="mostrarImgSeleccionada" class="generalFormularios, generalFormularios">';
     
             //Aqui mostramos la imagen ampliada
             //Pos si el usuario quiere modificarla
@@ -250,7 +250,7 @@ function displayStep2($missingFields){
     echo '</section>';
     
     
-    echo'<section id="form_post">';
+    echo'<section id="form_post_2" class="fuenteFormulario, generalFormularios">';
                 echo'<h4>Puedes subir hasta 5 imagenes</h4>';
                 
         //Seccion donde mostraemos las imagenes que
@@ -289,11 +289,11 @@ function displayStep2($missingFields){
     echo '<section id="btns_registrar">';
         
         
-                        echo"<input type='submit' name='segundo' id='atrasSubirPost'  value='Atras'>";
+                        echo"<input type='submit' name='segundoSubirPost' id='atrasSubirPost'  value='Atras'>";
                     if($_SESSION['contador'] < 5){
-                        echo"<input type='submit' name='segundo' id='enviarSubirPost'  value='Enviar'>";
+                        echo"<input type='submit' name='segundoSubirPost' id='enviarSubirPost'  value='Enviar'>";
                     }    
-                        echo"<input type='submit' name='segundo' id='segundoSubirPost' value='Fin' >";
+                        echo"<input type='submit' name='segundoSubirPost' id='segundoSubirPost' value='Fin' >";
                     echo"</div>";       
     echo'</section>';
     
@@ -321,11 +321,11 @@ function ingresarPost(){
     
         $articulo = new Post(array(
             "idUsuario" => $_SESSION['user']->getValue('nick'),
-            "secciones_idsecciones" => $_SESSION['post']['seccion'],
-            "tiempo_cambio_idTiempoCambio" => $_SESSION['post']['tiempoCambio'],
-            "titulo" => $_SESSION['post']['titulo'],
-            "comentario" => $_SESSION['post']['comentario'],
-            "precio" => $_SESSION['post']['precio'],
+            "secciones_idsecciones" => $_SESSION['post']['seccionSubirPost'],
+            "tiempo_cambio_idTiempoCambio" => $_SESSION['post']['tiempoCambioSubirPost'],
+            "titulo" => $_SESSION['post']['tituloSubirPost'],
+            "comentario" => $_SESSION['post']['comentarioSubirPost'],
+            "precio" => $_SESSION['post']['precioSubirPost'],
             "Pa_queridas" => array(
                 $_SESSION['post']['Pa_queridas'][0],
                 $_SESSION['post']['Pa_queridas'][1],
@@ -340,7 +340,7 @@ function ingresarPost(){
             ),
             "fechaPost" => ""        
         ));
-        
+       
         //Aqui comprobamos que el usuario ya ha ingresado el post
         // y ha ido un paso atras y ha modificado algun dato
         
@@ -419,7 +419,7 @@ function actualizarImagen(){
 function eliminarImagen(){
     
     $articulo = new Post(array(
-        //Este ruta sale del script  elementos.js
+        //Este ruta sale del script  subirPost.js
         //Ya que el formulario esta generado totalmente con JQUERY
         //Metodo cargarImgEliminar
         "idImagen" => $_POST['ruta'] 
@@ -448,11 +448,11 @@ function processForm($requiredFields, $st){
 
         switch ($st){
             case 'step1':
-                $_SESSION['post']['seccion'] = isset($_POST['seccion']) ? $_POST['seccion'] : "";
-                $_SESSION['post']['tiempoCambio'] = isset($_POST['tiempoCambio']) ? $_POST['tiempoCambio'] : "";
-                $_SESSION['post']['titulo'] = isset($_POST["titulo"]) ? preg_replace("/[^\-\_a-zA-Z0-9.,`'´ ñÑáéíóúäëïöü]/", "", $_POST["titulo"]) : "";       
-                $_SESSION['post']['comentario'] = isset($_POST['comentario']) ? preg_replace("/[^\-\_a-zA-Z0-9.,ºª`'´ Ññáéíóúäëïöü \n\r\rn\s]/", "", nl2br($_POST["comentario"])) : "";
-                $_SESSION['post']['precio'] = isset($_POST['precio']) ? preg_replace("/[^\-\_a-zAZ0-9., €$]/", "", $_POST["precio"]) : "";
+                $_SESSION['post']['seccionSubirPost'] = isset($_POST['seccionSubirPost']) ? $_POST['seccionSubirPost'] : "";
+                $_SESSION['post']['tiempoCambioSubirPost'] = isset($_POST['tiempoCambioSubirPost']) ? $_POST['tiempoCambioSubirPost'] : "";
+                $_SESSION['post']['tituloSubirPost'] = isset($_POST["tituloSubirPost"]) ? preg_replace("/[^\-\_a-zA-Z0-9.,`'´ ñÑáéíóúäëïöü]/", "", $_POST["tituloSubirPost"]) : "";       
+                $_SESSION['post']['comentarioSubirPost'] = isset($_POST['comentarioSubirPost']) ? preg_replace("/[^\-\_a-zA-Z0-9.,ºª`'´ Ññáéíóúäëïöü \n\r\rn\s]/", "", nl2br($_POST["comentarioSubirPost"])) : "";
+                $_SESSION['post']['precioSubirPost'] = isset($_POST['precioSubirPost']) ? preg_replace("/[^\-\_a-zAZ0-9., €$]/", "", $_POST["precioSubirPost"]) : "";
                 $_SESSION['post']['Pa_queridas'][0] = isset($_POST["querida_1"]) ? preg_replace("/[^\-\_a-zA-Z0-9ºª., '``'´ñÑáéíóúäëïöü]/", "", $_POST["querida_1"]) : "";
                 $_SESSION['post']['Pa_queridas'][1] = isset($_POST["querida_2"]) ? preg_replace("/[^\-\_a-zA-Z0-9ºª., `'´Ññáéíóúäëïöü]/", "", $_POST["querida_2"]) : "";
                 $_SESSION['post']['Pa_queridas'][2] = isset($_POST["querida_3"]) ? preg_replace("/[^\-\_a-zA-Z0-9ºª., `'´ñÑáéíóúäëïöü]/", "", $_POST["querida_3"]) : "";

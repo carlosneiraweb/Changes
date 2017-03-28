@@ -149,7 +149,7 @@ function cargarPeticion(tipo, parametros){
     }
     
     function procesaRespuesta(){
-       
+      
        if(this.readyState === ConElementos.READY_STATE_COMPLETE && this.status === 200){
             try{
                 if(tipo === 'PPS'){
@@ -200,6 +200,7 @@ function cargarPeticion(tipo, parametros){
 
 
 /**
+* @description description
  * Metodo que inserta los posts
  * @param {type} objPost
  * @returns {undefined} */
@@ -256,7 +257,12 @@ function cargarPost(objPost){
 //fin cargarPost    
 }
 
-//Este metodo muestra los <li> del menu de navegacion
+/**
+* @description 
+/Este metodo muestra los <li> del menu de navegacion
+ * @param {type} objSlider
+ * @returns {ActiveXObject|XMLHttpRequest} 
+ * **/
 function mostrarLis(){
 
         var listaLi = '<ul class="listaLis"><li class="atras">Atras</li>';
@@ -275,6 +281,7 @@ function mostrarLis(){
 
 
 /**
+* @description 
     Metodo que muestra todo el slider 
     despues el usuario halla hecho click 
     sobre una imagen

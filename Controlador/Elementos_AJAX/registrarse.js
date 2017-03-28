@@ -1,4 +1,3 @@
-
 /**
  * @author Carlos Neira Sanchez
  * @mail arj.123@hotmail.es
@@ -6,19 +5,29 @@
  * @nameAndExt busquedas.php
  * @fecha 04-oct-2016
  */
-    var  petGeReg, objGeReg, petProReg, objProReg, PGR, PPR;
+
+    
+    var  petGeReg, objGeReg, petProReg, objProReg, PGR, PPR, timer, milisegundos = 1000, condicionesRegistro,
+            clear;
 
                 //Creamos una instancia de la clase CONEXION_AJAX
                 //Nos devuelve una conexion AJAX y propiedades 
                     var ConRegistrarse  = new Conexion();
                     
+                    
+function agregarFormularioCondiciones(){};                    
+function elimanarFormularioAceptarCondiciones(){}; 
+
+
+if(typeof(x) === "undefined"){ 
+        var x = 0;
+        setInterval('parpadearReg()', milisegundos);
+    }                
+
 window.onload=function(){
     cargarPeticionRegistrarse('PGR', 'opcion=PG');
-    cargarPeticionRegistrarse('PPR', 'opcion=PP');
-};                
-                    
-                    
-                    
+    cargarPeticionRegistrarse('PPR', 'opcion=PP'); 
+                  
 function cargarPeticionRegistrarse(tipo, parametros){
 //alert('Estamos en cargarPeticion y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
     //para comprobar el tipo de peticion
@@ -117,4 +126,116 @@ function cargarProvinciasRegistrarse(objProvinciasRegistrarse){
     }
     
     //fin cargarGeneroRegistrarse
+}
+
+
+/**
+* @description 
+* Este metodo elimina el formulario
+*  aceptar las condiciones
+ */
+
+function elimanarFormularioAceptarCondiciones() {
+    
+            //alert('elimino aceptar condiciones');
+    $('#botonAceptarCondiciones').click(function() {
+        $( "#verificarCondiciones" ).remove();
+        $('#ocultar').addClass('oculto');
+    });
+}
+    
+    /**
+     * @description la barra de scroll
+     * y desactivamos una capa oculta que impedia el uso del 
+     * boton de  siguiente
+     */
+    $('#cuerpo').on('mouseover','#contenedorCondiciones',function(){
+         ///
+        $('#textAreaCondiciones').scroll(function(){  
+           
+          $('#capaBoton').addClass('oculto');
+          $('#botonAceptarCondiciones').attr('disable', true); 
+           });
+    });  
+    
+
+ //fin onload   
+}; 
+
+
+/**
+ * @description Este metodo oculta el gif  los campos obligatorios
+ */
+
+function parpadearReg() {     
+     
+    var cociente = x % 2;
+    if(cociente === 1){
+       $('span.obligatorio').addClass('oculto');
+    } else {
+       $('span.obligatorio').removeClass('oculto'); 
     }
+    x++;
+    //parpadear();
+    
+//fin parpadear                    
+}
+
+/**
+* @description 
+* Metodo que carga la seccion
+* donde  muestra las condiciones de uso del
+* portal
+ */
+function agregarFormularioCondiciones() {
+        
+    $('header').after('<section id="verificarCondiciones" class="mostrar_formulario"></section>');
+    $('#verificarCondiciones').append($('<h3>',{
+            text : 'Lee detenidamente las condiciones'
+    })).append($('<section >',{
+            id : 'contenedorCondiciones'
+    }).append($('<section>',{
+            id : 'textAreaCondiciones'
+    })));  
+    //Agregamos las condiciones del registro
+    $('#textAreaCondiciones').html('No debes usar nuestros Servicios de forma inadecuada. <br />'+
+'No debes  acceder desde un método distinto a la interfaz y a las instrucciones proporcionadas. <br />'+
+'Para publicar, opinar o usar cualquier otro servicio debes de estar registrado.'+'Nuestro servicio consiste en la inserción de anuncios en el portal por parte de usuarios registrados.'+ 
+'No nos hacemos responsables del contenido publicado por nuestros usuarios.Este contenido es responsabilidad exclusiva de las personas físicas que lo publican. <br />'+
+'El usuario es el único responsable del uso que se haga de su cuenta. Ten la contraseña en alta confidencialidad.Si detectas un uso de tú cuenta diferente del tuyo, ponte en contacto'+ 
+' de inmediato con un administrador mandando un correo a esta dirección: administracion@xxxx.com. <br />'+
+'No compartimos información personal con empresas, organizaciones ni particulares que no tengan relación con nosotros. <br />'+
+'Tienes que ser mayor de edad para usar este portal.  <br />'+
+'No nos hacemos responsables de ninguna perdida, estafa, robo etc al usar este portal entre los usuarios del mismo.'+
+'En ningún caso se responderá por otro tipo de daños, ya sean efectivos, indirectos, o de cualquier otro tipo, ni por el lucro que hubiera podido sufrir el anunciante.  <br />'+
+'NO ESTAMOS obligados a revisar previamente el contenido de ningún Anuncio, y cualquier revisión o aprobación efectuada por nosotros.'+
+'Nos reservamos el derecho de anular o eliminar cualquier anuncio que incumpla nuestras normas morales, legales o de uso del portal.'+
+'No se publicarán Anuncios con números de teléfono de contacto de pago extra tipo 80x.  <br />');
+
+    $('#contenedorCondiciones').after($('<section>',{
+            id : 'contenedorBotonAceptarCondiciones'
+    }).append($('<form>',{
+            name : 'formAceptaCondiciones',
+            action : 'registrarse.php',
+            method : 'POST',
+            id : 'formRegistroCondiciones'
+    })));
+    $('#formRegistroCondiciones').append($('<input>',{
+            type : 'hidden',
+            value : '5',
+            name : 'step'
+    })).append($('<input>',{
+            type : 'submit',
+            id  : 'botonAceptarCondiciones',
+            disable : 'false',
+            value : 'aceptaCondiciones',
+            name : 'aceptaCondicionesReg'
+    }));
+    $('#contenedorBotonAceptarCondiciones').append($('<section>',{
+            id: 'capaBoton'
+    }));
+     
+    //fin agregarFormularioCondiciones
+    }
+
+
