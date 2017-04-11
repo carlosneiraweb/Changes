@@ -12,12 +12,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
  * @nameAndExt busquedas.php
  * @fecha 04-oct-2016
  */
-//Pasamos a JavaScript el tamaño de paginado de las paginas.
-//La utilizamos en el script elementos de javascript para mostrar 
-//paginados los posts y en json.php para la peticion 
- echo '<script type="text/javascript">';
-               echo "var PAGESIZE = "; echo PAGE_SIZE;          
- echo '</script>';
+
             
            
 ?>
@@ -33,7 +28,6 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
 	<link href="../img/fabicon.ico" rel="icon" type="image/x-icon"/>
         <link rel="stylesheet" href="../css/estilos.css"/>
         <script src="../Controlador/jquery-2.2.2.js"></script>
-        
         <script src="../Controlador/Elementos_AJAX/CONEXION_AJAX.js"></script>
         <script src="../Controlador/Elementos_AJAX/buscador.js"></script>
         <script src="../Controlador/Validar/formulario_login.js"></script>
@@ -41,6 +35,8 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
         <script src="../Controlador/menu.js"></script>
         <script src="../Controlador/script.js"></script>
         <script src="../Controlador/Elementos_AJAX/elementos.js"></script>
+        <script src="../Controlador/Elementos_AJAX/cargarPostsElegido.js"></script>
+        <script src="../Controlador/Elementos_AJAX/subirComentario.js"></script>
         
     <!--Para navegadores viejos-->
         <!--[if lt IE 9]>
@@ -56,11 +52,18 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
            var PT = true;
            var PPS = true;
        </script>
-   </head>
-   <body id="cuerpo">
+    </head>
+    <body id="cuerpo">
         <?php
     
-  
+        //Pasamos a JavaScript el tamaño de paginado de las paginas.
+        //La utilizamos en el script elementos de javascript para mostrar 
+        //paginados los posts y en json.php para la peticion 
+        echo '<script type="text/javascript">';
+               echo "var PAGESIZE = "; echo PAGE_SIZE;          
+        echo '</script>';
+ 
+ 
     global $valido;
     $valido = new ValidoForm();
     
@@ -107,6 +110,13 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
                         echo'<input type="button" id="salirSesion" name="salirSesion" value="Salir Sesion"/>';
                         echo'<input type="button" id="menu" name="menu" value="menu"/>';
                      
+                        //Pasamos una variable a javascript
+                        //para que si el usuario esta logeado
+                        //aparezca un boton para poder hacer comentarios
+                        //de los posts
+                       echo '<script type="text/javascript">';
+                           echo 'var logeoParaComentar = '; echo '"logeado";';
+                       echo '</script>'; 
                     }
                
                 echo '</section>';   
@@ -118,7 +128,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
     
  echo'<div id="ocultar" class="oculto"> </div>'; 
  
-      //class="oculto login_form_tamanyo"
+     
 function displayFormLogeo($missingFields, $user, $test){
       global $valido;
      
@@ -170,7 +180,7 @@ function processForm(){
   
     $user = new Usuarios(
             array(
-                "nick" => isset($_POST["nick"]) ? preg_replace("/[^\-\_a-zAZ0-9. ,'``'´áéíóúäëïöü]/", "", $_POST["nick"]) : "",
+                "nick" => isset($_POST["nick"]) ? preg_replace("/[^\-\_a-zAZ0-9ñÑ.,'``'´áéíóúäëïöü]/", "", $_POST["nick"]) : "",
                 "password" => isset($_POST["password"]) ? preg_replace("/[^\-\_a-zAZ0-9]/", "", $_POST["password"]) : "",          
   
             )

@@ -2,7 +2,7 @@
  * @author Carlos Neira Sanchez
  * @mail arj.123@hotmail.es
  * @telefono ""
- * @nameAndExt busquedas.php
+ * @nameAndExt registrarse.js
  * @fecha 04-oct-2016
  */
 
@@ -13,11 +13,6 @@
                 //Creamos una instancia de la clase CONEXION_AJAX
                 //Nos devuelve una conexion AJAX y propiedades 
                     var ConRegistrarse  = new Conexion();
-                    
-                    
-function agregarFormularioCondiciones(){};                    
-function elimanarFormularioAceptarCondiciones(){}; 
-
 
 if(typeof(x) === "undefined"){ 
         var x = 0;
@@ -27,7 +22,7 @@ if(typeof(x) === "undefined"){
 window.onload=function(){
     cargarPeticionRegistrarse('PGR', 'opcion=PG');
     cargarPeticionRegistrarse('PPR', 'opcion=PP'); 
-                  
+                 
 function cargarPeticionRegistrarse(tipo, parametros){
 //alert('Estamos en cargarPeticion y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
     //para comprobar el tipo de peticion
@@ -145,16 +140,17 @@ function elimanarFormularioAceptarCondiciones() {
 }
     
     /**
-     * @description la barra de scroll
-     * y desactivamos una capa oculta que impedia el uso del 
+     * @description
+     * Al mover barra de scroll
+     * desactivamos una capa oculta que impedia el uso del 
      * boton de  siguiente
      */
     $('#cuerpo').on('mouseover','#contenedorCondiciones',function(){
          ///
-        $('#textAreaCondiciones').scroll(function(){  
-           
-          $('#capaBoton').addClass('oculto');
-          $('#botonAceptarCondiciones').attr('disable', true); 
+        $('#textAreaCondiciones').scroll(function(){   
+          $('.capaBoton').addClass('oculto');
+          //Activamos el boton
+          $('#btnAceptarCondiciones').prop('disabled', ""); 
            });
     });  
     
@@ -162,36 +158,19 @@ function elimanarFormularioAceptarCondiciones() {
  //fin onload   
 }; 
 
-
-/**
- * @description Este metodo oculta el gif  los campos obligatorios
- */
-
-function parpadearReg() {     
-     
-    var cociente = x % 2;
-    if(cociente === 1){
-       $('span.obligatorio').addClass('oculto');
-    } else {
-       $('span.obligatorio').removeClass('oculto'); 
-    }
-    x++;
-    //parpadear();
-    
-//fin parpadear                    
-}
-
 /**
 * @description 
 * Metodo que carga la seccion
 * donde  muestra las condiciones de uso del
 * portal
- */
-function agregarFormularioCondiciones() {
-        
+* */
+function agregarFormularioCondiciones(){
+    
+   
     $('header').after('<section id="verificarCondiciones" class="mostrar_formulario"></section>');
-    $('#verificarCondiciones').append($('<h3>',{
-            text : 'Lee detenidamente las condiciones'
+ 
+    $("#verificarCondiciones").append($('<h3>',{
+        text : 'Lee detenidamente las condiciones'
     })).append($('<section >',{
             id : 'contenedorCondiciones'
     }).append($('<section>',{
@@ -220,22 +199,48 @@ function agregarFormularioCondiciones() {
             method : 'POST',
             id : 'formRegistroCondiciones'
     })));
+    
+    
     $('#formRegistroCondiciones').append($('<input>',{
             type : 'hidden',
             value : '5',
             name : 'step'
     })).append($('<input>',{
             type : 'submit',
-            id  : 'botonAceptarCondiciones',
-            disable : 'false',
+            id  : 'btnAceptarCondiciones',
             value : 'aceptaCondiciones',
-            name : 'aceptaCondicionesReg'
+            name : 'aceptaCondicionesReg',
+            disabled : 'disabled'
     }));
+//    
     $('#contenedorBotonAceptarCondiciones').append($('<section>',{
-            id: 'capaBoton'
+            class : 'capaBoton'
     }));
      
+     
     //fin agregarFormularioCondiciones
+}
+
+
+
+
+/**
+ * @description Este metodo oculta el gif  los campos obligatorios
+ */
+
+function parpadearReg() {     
+     
+    var cociente = x % 2;
+    if(cociente === 1){
+       $('span.obligatorio').addClass('oculto');
+    } else {
+       $('span.obligatorio').removeClass('oculto'); 
     }
+    x++;
+    //parpadear();
+    
+//fin parpadear                    
+}
+
 
 

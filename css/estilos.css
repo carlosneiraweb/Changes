@@ -348,13 +348,13 @@ section#contenedorBotonAceptarCondiciones{
     position: relative;
 }
 
-form#formRegistroCondiciones>input[type="button"]{
-    width : 100px;
+form#formRegistroCondiciones>input[type="submit"]{
+    width : 150px;
      margin : 0.5em auto;
      display: block;
 }
 
-section#capaBoton{
+.capaBoton{
     position: absolute;
     top : 0;
     left: 0;
@@ -437,7 +437,6 @@ form input[type="submit"]{
 	margin: .8em auto;
 	min-width: 90px;
 	padding: .5em;
-        cursor: pointer;
 	width: 100px;
 	
 }
@@ -726,27 +725,47 @@ section#confirmarRegistro input[type="submit"]{
     width: 80%;
 }
 
-.cont_usuario .usuario{
+.cont_usuario .usuario {
     position: absolute;
     bottom: .1em;
     left: .5em;
 }
 
+.cont_usuario .lugar{
+    /**
+    Agregado al crear el posts con jquery
+    */
+}
+
 .cont_usuario .resaltar{
     color:  #0C0792; /* -- #;#FF5917*/
-    font-size: .1.1em;
+    font-size: 1.1em;
     padding-left: .5em;
     
 }
+
+
 .cont_usuario .tiempo_cambio{
     position:absolute;
     bottom: .1em;
     right: .5em;
 }
 
-.tiempo_cambio p, .fecha_post p{display: inline;}
+.piePost{
+    width: 90%;
+    margin: .3em auto;
+    border: 1px solid blue;
+}
+.tiempo_cambio p, .piePost p{display: inline;}
 
-
+.contBotonComentario{
+    position: relative;
+    padding: .3em;
+    margin : .3em;
+}
+.botonSubirComentario{
+    border: 1px solid red;
+}
 
 .cont_post figure{
     display:inline-block;
@@ -784,13 +803,13 @@ section#confirmarRegistro input[type="submit"]{
     padding: .5em;
 }
 
-.fecha_post{
+.piePost{
     position: absolute;
     bottom: .1em;
     right: .5em;
 }
 
-.fecha_post .date{
+.piePost .date{
     color:  #0C0792; /* -- #;#FF5917*/
     font-size: 1.1em;
     padding-left: .5em;
@@ -815,7 +834,6 @@ section#foto_usuario img, .login_form_tamanyo, .registro_form_tamanyo, #ocultar,
 .mostrar_transparencia{
 	background-color: black;
 	opacity: .8;
-	filter:alpha(opacity=4);
 	position: absolute;
 	top:0;
 	left: 0;
@@ -1051,6 +1069,18 @@ section#salir{
     margin: .5em auto;
     width: 125px;
 }
+
+
+
+/******************boton comentar**************/
+
+.btnComentar{
+    background-color : white;
+    opacity: .4;
+    filter:alpha(opacity=4);
+    z-index: 10;
+}
+
 
 
 /*********************FIN ESTILOS SLIDER ******************************/

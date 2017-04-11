@@ -1,19 +1,19 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @author Carlos Neira Sanchez
+ * @mail arj.123@hotmail.es
+ * @telefono ""
+ * @nameAndExt busquedas.php
+ * @fecha 04-oct-2016
  */
 
 /**
- * Description of DataObj
- *
- * @author Carlos Neira Sanchez
- * Esta clase es la padre de la mayoria del resto de clase
- * Dispone de un unico metodo que nos devuelve
- * CUALQUIER PROPIEDAD de un objeto que extienda
+ *    De esta clase derivan todos los objetos
+ *    Su constructor crea un array con
+ *    las propiedades del objeto.
+ *    
  */
+
 abstract class DataObj {
     
     protected  $data = array();

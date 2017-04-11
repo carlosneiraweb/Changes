@@ -12,22 +12,28 @@ var X, post, petPost, objPost, objSlider, petSlider;
 var z, tmpLi, liPinchado, ultimoLi;
 
 var fecha = new Date();
+
 var Conexion;
 
             //Creamos una instancia de la clase CONEXION_AJAX
             //Nos devuelve una conexion AJAX y propiedades 
                     var ConElementos  = new Conexion();
+                    
+                    
 
+        
 window.onload=function(){
-  
     
-     X = document.getElementById('cuerpo');
-     post = document.getElementById('posts');
-     
-     
+    X = document.getElementById('cuerpo');
+  
+if(typeof(logeoParaComentar) === "undefined"){ 
+             logeoParaComentar = null;
+        };
+   
+        
     //Creamos la seccion del buscador por jquery
         insertarBuscador();
-        
+       
      /***********************/
      lista = document.getElementById('lista');
     
@@ -203,25 +209,89 @@ function cargarPeticion(tipo, parametros){
 * @description description
  * Metodo que inserta los posts
  * @param {type} objPost
- * @returns {undefined} */
+ * @returns {post} */
 function cargarPost(objPost){
-    
-    var acumulador ="";    
-    
+  
+
     for(var i = 1; i < objPost.length; i++){
-      
-       muestro_post = '<section class="cont_post">'+
-       '<h2>'+objPost[i].titulo+'</h2>'+
-       '<section class="cont_usuario"><span class="usuario"><p>El usuario: <span class="resaltar">'+objPost[i].nick+'</span> de '+objPost[i].provincia+'.</p></span><span class="tiempo_cambio"><p>Tiempo del cambio <span class="resaltar">'+objPost[i].tiempoCambio+'</span></p></span></section>'+
-       '<figure  class="lanzar"><img src="../photos/'+objPost[i].ruta+'.jpg" alt="Fotos de intercambio de cosas"/></figure><section id='+objPost[i].ruta+' class="comentario"><textarea class="texto_comentario">'+objPost[i].comentario+'</textarea></section>'+
-       '<span class="fecha_post"><p>Fecha del Anuncio<span class="date">'+objPost[i].fecha+'</span></p></span>'+
-       '</section>';
+     
+        $("#posts").append($('<section>',{
+                class : "cont_post",
+                id : objPost[i].idPost
+            }).append($('<h2>',{
+                text : objPost[i].titulo
+            })).append($('<section>',{
+                class  : 'cont_usuario'
+            }).append($('<span>',{
+                class : 'usuario',
+                text : "El usuario: "
+            }).append($('<span>',{
+                class : 'resaltar',
+                text : objPost[i].nick
+            })).append($('<span>',{
+                class : 'lugar',
+                text : "  de  "+objPost[i].provincia
+            }))).append($('<span>',{
+                class : 'tiempo_cambio',
+                text : "Tiempo del cambio "
+            }).append($('<span>',{
+                class : 'resaltar',
+                text : objPost[i].tiempoCambio
+            })))).append($('<figure>',{
+                class : 'lanzar'
+            }).append($('<img>',{
+                src : "../photos/"+objPost[i].ruta+".jpg",
+                alt : "Foto del articulo a cambiar"
+            }))).append($('<section>',{
+                class : 'comentario'
+            }).append($('<textarea>',{
+                class : 'texto_comentario',
+                text : objPost[i].comentario
+            }))).append($('<span>',{
+                class : 'piePost'
+            }).append($('<span>',{
+                class : 'contBotonComentario'
+            }).append($('<input>',{
+                id : 'btnComentar',
+                type : 'button',
+                disabled : 'disabled',
+                value: 'Comentar'
+            })).append($('<section>',{
+                class : 'capaBoton'
+            }))).append($('<span>',{
+                text : 'Fecha del Post'
+            }).append($('<span>',{
+                class : 'date',
+                text : objPost[i].fecha
+            })))));
+            
+            //Verificamos que el usuario se ha logeado
+            //Para habilitar el boton para poder comentar
+                if(logeoParaComentar === 'logeado') {
+                    $('.capaBoton').addClass('oculto');
+                    //Activamos el boton
+                    $('#btnComentar').prop('disabled', "");        
+                }
+
+                  
+                
+                
        
-        acumulador += muestro_post;
+            
+          
+                
+                
+                
+                
+                
+//                .on('click',function() {
+//                    alert('joo');
+//                });
+//     
+     
     }
     
-    post.innerHTML = "";
-    post.innerHTML = acumulador;
+    
      
     resultados.innerHTML = '<h3>Se muestran desde '+(inicio + 1)+' al '+(inicio+ PAGESIZE)+' De un total de '+objPost[0].totalRows[0]+' posts encontrados </h3>';
    
@@ -274,128 +344,15 @@ function mostrarLis(){
 //fin mostrar posts
 }     
     
-    
+ /**
+ * @description
+ * Este metodo carga el formulario para 
+ * insertar un comentario de  un post
+ */
+function insertarComentario(){
 
-
-
-
-
-/**
-* @description 
-    Metodo que muestra todo el slider 
-    despues el usuario halla hecho click 
-    sobre una imagen
- * @returns {ActiveXObject|XMLHttpRequest} 
- * 
- * */
-
-function cargarSlider(objSlider){
-        
-        //Agregamos las imagenes al Slider 
-        
-        $("#ocultar").removeClass('oculto').addClass('mostrar_transparencia');
-        $("#mostrarSlider").removeClass('oculto');
-        ///Creamos elementos
    
-        $(".slider-container-IMG").append($('<figure>',{
-            id : 'sliderIMG',
-            class : 'slider-wrapper-IMG'
-        }).append($('<img>',{
-            src : "../photos/"+objSlider[0][0].ruta+".jpg"
-        })).append($('<div>',{
-                class : 'caption',
-                text : objSlider[0][0].texto
-            }))
-                
-        ).append($('<ul>', {
-            class : 'slider-controls',
-            id : 'slider-controls'
-        }).append($('<li>',{
-                    
-        }).on('click',function(){
-            $('#sliderIMG img').remove();
-            $('#sliderIMG div').remove();
-            $('#sliderIMG').append($('<img>',{
-            src : "../photos/"+objSlider[0][0].ruta+".jpg"
-            })).append($('<div>',{
-                class : 'caption',
-                text : objSlider[0][0].texto
-            }));
-           
-        })
-        ).append($('<li>',{
-                    
-            }).on('click',function(){
-                $('#sliderIMG img').remove();
-                $('#sliderIMG div').remove();
-                $('#sliderIMG').append($('<img>',{
-                src : "../photos/"+objSlider[0][1].ruta+".jpg"
-            })).append($('<div>',{
-                class : 'caption',
-                text : objSlider[0][1].texto
-            }));
-         })    
-            
-       ).append($('<li>',{
-                    
-            }).on('click',function(){
-                $('#sliderIMG img').remove();
-                $('#sliderIMG div').remove();
-                $('#sliderIMG').append($('<img>',{
-                src : "../photos/"+objSlider[0][2].ruta+".jpg"
-            })).append($('<div>',{
-                class : 'caption',
-                text : objSlider[0][2].texto
-            }));
-        })        
-            
-            
-        ).append($('<li>',{
-                    
-            }).on('click',function(){
-                $('#sliderIMG img').remove();
-                $('#sliderIMG div').remove();
-                $('#sliderIMG').append($('<img>',{
-                src : "../photos/"+objSlider[0][3].ruta+".jpg"
-            })).append($('<div>',{
-                class : 'caption',
-                text : objSlider[0][3].texto
-            }));
-        })     
-                
-        ).append($('<li>',{
-                    
-            }).on('click',function(){
-                $('#sliderIMG img').remove();
-                $('#sliderIMG div').remove();
-                $('#sliderIMG').append($('<img>',{
-                src : "../photos/"+objSlider[0][4].ruta+".jpg"
-            })).append($('<div>',{
-                class : 'caption',
-                text : objSlider[0][4].texto
-            }));
-        })     
-               
-        )).append($('<section>',{
-            id : 'buscadas'
-        }).append($('<h3>',{
-            text : 'Cosas que podrían interesar'
-        })).append( $('<section>', {
-            id : 'lista'
-            }).append($('<ol>', {
-                
-            }))
-       
-        ));
-       
-           var tmp = "";
-          
-           for (var i =0; i < objSlider[1].length; i++){
-           tmp += '<li>'+objSlider[1][i].pbsQueridas+'</li>'; 
-                }
-           $('#lista').append(tmp);
-            
-//fin cargarSlider    
+    
+    
+//fin insertarComentario    
 }
-
-

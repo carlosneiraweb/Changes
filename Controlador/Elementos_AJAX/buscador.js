@@ -2,7 +2,7 @@
  * @author Carlos Neira Sanchez
  * @mail arj.123@hotmail.es
  * @telefono ""
- * @nameAndExt elementos.js
+ * @nameAndExt buscador.js
  * @fecha 26-oct-2016
  */
 
@@ -100,6 +100,9 @@
         
         cargarPeticionBuscador("PP", "opcion=PP");
         cargarPeticionBuscador("PT", "opcion=PT");
+        
+        //Se llama al metodo activaBuscador
+        //por que en este script no hay un window.onload
         activarBuscador();
     //cargarSelectsBuscador    
     }

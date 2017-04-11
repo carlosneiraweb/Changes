@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Description of Post
- * Clase encargada de los posts,
- * crear, eliminar, etc
- *
  * @author Carlos Neira Sanchez
+ * @mail arj.123@hotmail.es
+ * @telefono ""
+ * @nameAndExt busquedas.php
+ * @fecha 04-oct-2016
  */
 require_once('../Sistema/Conne.php');
 require_once('DataObj.php');

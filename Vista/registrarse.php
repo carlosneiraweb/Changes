@@ -48,7 +48,7 @@ function volverAnterior(){
         require_once('../Sistema/Directorios.php');
         require_once('../Sistema/Constantes.php');
         require_once('../Sistema/Email/mandarEmails.php');
-    
+        
     //Añadimos el div con la clase oculto
     // echo'<div id="ocultar" class="oculto"> </div>';  
        
@@ -132,7 +132,7 @@ function displayStep1($missingFields){
     echo'<input type="text" name="nick" id="nick" autofocus placeholder="Tú nombre usuario maximo 25 caracteres" maxlength="25" value=';if(isset($_SESSION['usuario']['nick'])){echo $_SESSION['usuario']['nick'];} echo ">";       
     echo'<label '.ValidoForm::validateField("password", $missingFields). ' for="password">Introduce tú password</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="password" name="password" id="password"  maxlength="12" >';	
-    echo'<label '.ValidoForm::validateField("passReg2", $missingFields). ' for="passReg2">Repite el password</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio" ></span>';
+    echo'<label '.ValidoForm::validateField("passReg2", $missingFields). ' for="passReg2">Repite el password</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="password" name="passReg2" id="passReg2" maxlength="12"  >';       
     echo'<label '.ValidoForm::validateField("email", $missingFields).' for="email">Email:</label> <span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="text" name="email" id="email" placeholder="info@developerji.com" maxlength="45" value=';if(isset($_SESSION['usuario']['email'])){echo $_SESSION['usuario']['email'];} echo ">";
@@ -343,7 +343,11 @@ function confirmarRegistro(){
             $testInsert = $user->insert();
            
             $objMandarEmails = new mandarEmails();
-            if($testInsert === true){
+            //comparamos con 111 print que 
+            // es la respuesta esperada
+            //Como medida de seguridad 'no siempre un true es buena idea'
+            // y por que se hacen 3 inserts.
+            if($testInsert === '111'){
              //Si todo va bien le mandamos a la pagina para confirmar registro
                 //y le mandamos un email de bienvenida
                confirmarRegistro();

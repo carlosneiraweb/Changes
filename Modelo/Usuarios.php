@@ -1,24 +1,16 @@
 <?php
 
-
-/**
- * Description of Usuarios
- * Esta clase extiende DataObj
-  * Crea usuarios y dispone de varios metodos para 
-  * insertar, actualizar o borrar un obj de Usuarios
- * @author Carlos Neira Sanchez
- */
-
-
 require_once('../Sistema/Conne.php');
 require_once('DataObj.php');
 require_once('../Sistema/Email/mandarEmails.php');
 require_once '../Sistema/System.php';
 
-
- /**
-  *
-  */  
+/**
+ * Description of Usuarios
+ * Esta clase extiende DataObj
+ * Crea usuarios y dispone de varios metodos para 
+ * insertar, actualizar o borrar un obj de Usuarios
+ */ 
 class Usuarios extends DataObj{
     
     protected $data = array(
@@ -95,7 +87,6 @@ class Usuarios extends DataObj{
             echo '<br>';
             echo $ex->getLine();
             Conne::disconnet($con);
-            die("Query failed: ".$ex->getMessage());
         }
    //fin getByUsername
     }
@@ -122,7 +113,6 @@ class Usuarios extends DataObj{
             Conne::disconnect($con);
             echo $ex->getLine().'<br>';
             echo $ex->getFile().'<br>';
-            die("Query failed: ".$ex->getMessage());
         }
         
     //fin getByEmailAddress    
@@ -177,7 +167,6 @@ class Usuarios extends DataObj{
                    echo $ex->getLine().'<br>';
                     echo $ex->getFile().'<br>';
                    Conne::disconnect($con);
-                   die("Query failed: ".$ex->getMessage());
                 }
         //En caso que la comparación con la contraseña introducida no sea correcta        
         }else{
@@ -204,7 +193,7 @@ public final function insertDatosUsuario(){
                         $stDatosUsuario->bindValue(":nick", $this->data["nick"], PDO::PARAM_STR);
                         $stDatosUsuario->bindValue(":genero", $this->data["genero"], PDO::PARAM_STR);
                         $stDatosUsuario->bindValue(":nombre", $this->data["nombre"], PDO::PARAM_STR);
-                        $stDatosUsuario->bindValue(":apellido_10", $this->data["apellido_1"], PDO::PARAM_STR);
+                        $stDatosUsuario->bindValue(":apellido_1", $this->data["apellido_1"], PDO::PARAM_STR);
                         $stDatosUsuario->bindValue(":apellido_2", $this->data["apellido_2"], PDO::PARAM_STR);
                         $stDatosUsuario->bindValue(":telefono", $this->data["telefono"], PDO::PARAM_STR);
                         

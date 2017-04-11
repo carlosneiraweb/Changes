@@ -4,7 +4,7 @@ $(document).ready(function(){
 	//Recojemos valores
         var nick = $("#nick");
         var pass = $("#password");
-        
+         
     $("#ingresar").on('click', mostrarCapaOpaca); 
       
            /**

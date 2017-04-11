@@ -1,15 +1,16 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @author Carlos Neira Sanchez
+ * @mail arj.123@hotmail.es
+ * @telefono ""
+ * @nameAndExt busquedas.php
+ * @fecha 04-oct-2016
  */
 
 /**
- * Description of Email
- *
- * @author carlos
+ *  Clase que define el objeto email.
+ *  Crea un objeto de email
  */
 require_once('../Sistema/Constantes.php');
 require_once("../Sistema/Email/class.phpmailer.php");
