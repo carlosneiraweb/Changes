@@ -29,14 +29,17 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
         <link rel="stylesheet" href="../css/estilos.css"/>
         <script src="../Controlador/jquery-2.2.2.js"></script>
         <script src="../Controlador/Elementos_AJAX/CONEXION_AJAX.js"></script>
-        <script src="../Controlador/Elementos_AJAX/buscador.js"></script>
+        <script src="./buscador.js"></script>
         <script src="../Controlador/Validar/formulario_login.js"></script>
         <script src="../Controlador/redireccionar.js"></script>
         <script src="../Controlador/menu.js"></script>
         <script src="../Controlador/script.js"></script>
-        <script src="../Controlador/Elementos_AJAX/elementos.js"></script>
-        <script src="../Controlador/Elementos_AJAX/cargarPostsElegido.js"></script>
-        <script src="../Controlador/Elementos_AJAX/subirComentario.js"></script>
+        <script src="./mostrarPosts.js"></script>
+        <script src="../Controlador/Elementos_AJAX/paginacion.js"></script>
+        <script src="./cargarPostsElegido.js"></script>
+        <script src="../Controlador/Elementos_AJAX/principal.js"></script>
+        
+        <script src="./subirComentario.js"></script>
         
     <!--Para navegadores viejos-->
         <!--[if lt IE 9]>
@@ -45,13 +48,11 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
         </script>
         <![endif]-->
         
-       <script type="text/javascript">
+    <script type="text/javascript">
            //Indicamos que elementos vamos a cargar
            //De esta manera controlamos que peticiones hacemos en cada pagina
-           var PP = true;
-           var PT = true;
            var PPS = true;
-       </script>
+       </script>  
     </head>
     <body id="cuerpo">
         <?php
@@ -230,10 +231,14 @@ function processForm(){
 	echo'</figure>';
     echo'</nav>';
    
-    /*******************  BUSCADOR ************************************/ 
+    /**
+     * En esta seccion agregamos el buscador por jquery
+     */
+    echo '<section id="buscar_datos">';
+    echo '</section>';
+   
     
     
-    /**********************************************************************/
     echo'<section id="contenedor">';
     //para la publicidad
     echo'<aside id="publi">';
@@ -245,46 +250,29 @@ function processForm(){
             echo'</div>';
 	echo'</aside>';
      
-       //Mostramos el conjunto total de resultados
-        echo '<section id="resultados">';
-     
-        
-        
+       
+        /**
+         * Elemento html que se agregaran los posts
+         */
+        echo'<section id="posts">';
         echo'</section>';
-        
-        
-    //para los posts
-    echo'<section id="posts">';
-    
-    echo'</section>';
    
     
-    //Botones de navegacion
-    echo '<section id="btn_navegacion">';
-    
-    echo '</section>';
-    
-    
-      echo '<section id="mostrarSlider" class="oculto">';
-      
-      echo '<section class="slider-container-IMG" >';
-      
+        /**
+         * Elemento html que se agregara los
+         * li para la navegacion
+         */
+        echo '<section id="btn_navegacion">';
         echo '</section>';
-        
-        
-        
-        
-        echo '<section id="buscadas">';
-           
-                echo'<section id="lista"></section>';
-            echo'</section>';
-        echo'<section id="salir">';
-            echo'<input type="button" id="salirSlider" value="Salir">';   
-        echo'</section>';
-       
-        echo'</section>';      
-     
-    echo "</section>";
+    
+        /*
+         * Elemento html al que se le 
+         * añadira elementos para mostrar 
+         * el posts seleccionado al hacer click
+         * en la imagen en la pagina principal
+         */ 
+        echo '<section id="mostrarPostSeleccionado" class="oculto">';
+        echo "</section>";
     
         
         

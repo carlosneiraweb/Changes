@@ -33,7 +33,7 @@ if(isset($_POST['srcImg'])){
     } 
     
 if(isset($_POST['inicio'])){
-        $inicio = (int)$_POST['inicio'];
+        $inicio = ((int)$_POST['inicio']);
     } else if (isset($_GET['inicio'])){
          $inicio = (int)$_GET['inicio'];   
     } 
@@ -42,7 +42,10 @@ if(isset($_POST['inicio'])){
    
   
     if($opc == "PPS"){
-                $sql = "SELECT SQL_CALC_FOUND_ROWS idPost FROM post  ORDER BY idPost DESC LIMIT :startRow, :numRows";
+                $result = true;
+                
+            
+                $sql = "SELECT SQL_CALC_FOUND_ROWS idPost,titulo FROM post  ORDER BY idPost DESC LIMIT :startRow, :numRows";
                 //$sql = "SELECT idPost FROM post ORDER BY fechaPost  DESC";
                 $stmBus = $conPost->prepare($sql);
                 $stmBus->bindValue(":startRow", $inicio, PDO::PARAM_INT);
@@ -50,6 +53,8 @@ if(isset($_POST['inicio'])){
                 $stmBus->execute();
                 $v = $stmBus->fetchAll();
                 $stmBus->closeCursor();
+
+                
                 
                 //Calculamos el total final como si  la clausula limit no estuviera
                 $stm2Bus = $conPost->query("SELECT found_rows()  AS totalRows");
@@ -57,12 +62,12 @@ if(isset($_POST['inicio'])){
                 $stm2Bus->closeCursor();
                 
                 $rs = array();
-                 array_push($rs, $row);
+                array_push($rs, $row);
                 
                 foreach($v as $id){
-                
+          
          
-                $sqlPost = "select p.idPost, u.nick, prov.nombre AS provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, p.titulo, img.ruta, p.titulo, p.comentario, tc.tiempo as tiempoCambio
+                $sqlPost = "select p.idPost, u.nick, prov.nombre AS provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, p.titulo, img.ruta, p.comentario, tc.tiempo as tiempoCambio
 from post p
 inner join usuario u on u.idUsuario= p.idusuario
 inner join direccion dire on dire.idDireccion = u.idUsuario

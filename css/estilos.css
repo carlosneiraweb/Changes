@@ -820,7 +820,7 @@ section#confirmarRegistro input[type="submit"]{
 
 
 /*Estilo de border redondeado para todos los elementos de la pagina*/
-section#foto_usuario img, .login_form_tamanyo, .registro_form_tamanyo, #ocultar, figure#imagen_error, section#form_registro, section#form_post, .img_usuario_tmp img, section#mostrarImgSeleccionada, section#mostrarSlider, section#verificarCondiciones{
+section#foto_usuario img, .login_form_tamanyo, .registro_form_tamanyo, #ocultar, figure#imagen_error, section#form_registro, section#form_post, .img_usuario_tmp img, section#mostrarImgSeleccionada, section#mostrarPostSeleccionado, section#verificarCondiciones{
 	border-radius: 1em;
 	-moz-border-radius: 1em; /* Firefox 3.5 */
         -webkit-border-radius: 1em; /* Google Chrome y Safari */
@@ -930,9 +930,10 @@ ul{
 }
 
 /**
-    Contenedor del slider
+    Contenedor del section donde se muestra
+    el post seleccionado al pinchar una
 */
-section#mostrarSlider{
+section#mostrarPostSeleccionado{
     background: white;
     height: 765px;
     margin: auto;
@@ -944,13 +945,13 @@ section#mostrarSlider{
     right:0;
     bottom: 0
 }
-.slider-container-IMG{
+.contPostSeleccionado{
     padding: 1em;
     margin:0 auto;
     width: 350px;
 }
 
-.slider-container-IMG h3{
+.contPostSeleccionado h3{
     color: #0C0792;
     font-size: 1.5em;
     text-align: center;
@@ -964,9 +965,9 @@ section#mostrarSlider{
     width: 95%;
     border: 5px solid #415066;
     overflow: hidden;
-}
 
-.slider-wrapper-IMG>li{
+}
+ .slider-wrapper-IMG>li{
     height: 260px;
     max-height: 260px;
     width: 95%;

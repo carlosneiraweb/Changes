@@ -213,7 +213,7 @@ public function insertArticulo(){
             $st4 = "Insert into ".TBL_IMAGENES." (post_idPost, ruta) values (:idPost, :ruta)";
             $st4 = $con->prepare($st4);
             $st4->bindValue(":idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
-            $st4->bindValue(":ruta", "/demo", PDO::PARAM_STR);
+            $st4->bindValue(":ruta", "demo", PDO::PARAM_STR);
             $st4->execute();
            
             Conne::disconnect($con);

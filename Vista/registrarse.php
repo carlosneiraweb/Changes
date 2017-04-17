@@ -22,9 +22,9 @@ function volverAnterior(){
 	<link href="../img/fabicon.ico" rel="icon" type="image/x-icon">
 	<link rel="stylesheet" href="../css/estilos.css"/>
         <script src="../Controlador/jquery-2.2.2.js" type="text/javascript"></script>
-        <script src="../Controlador/Elementos_AJAX/elementos.js"></script>
+        <script src="../Controlador/Elementos_AJAX/principal.js"></script>
         <script src="../Controlador/Elementos_AJAX/CONEXION_AJAX.js"></script>
-        <script src="../Controlador/Elementos_AJAX/registrarse.js"></script>
+        <script src="./registrarse.js"></script>
         <script src="../Controlador/Validar/formulario_reg.js"></script>
         
         
@@ -34,8 +34,6 @@ function volverAnterior(){
         src="http://html5shiv.googlecode.com/svn/trunk/html5.js">
         </script>
         <![endif]-->
-    
-        
     
    </head>
    <body id="cuerpo">
@@ -289,9 +287,7 @@ function displayStep5(){
     echo '<script type="text/javascript">';
                echo "agregarFormularioCondiciones();";         
     echo '</script>';
-    
-    
-    
+       
 //fin displayStep5    
 }
 

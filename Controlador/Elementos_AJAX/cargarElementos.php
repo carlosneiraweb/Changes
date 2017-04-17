@@ -25,11 +25,12 @@
     $conCargarElementos = Conne::connect();
   
   // -------- párametro opción para determinar la select a realizar -------
-if (isset($_POST['opcion'])) 
+if (isset($_POST['opcion'])){ 
       $opc=$_POST['opcion'];
-else
-     if (isset($_GET['opcion'])) 
+}else { if (isset($_GET['opcion'])) 
         $opc=$_GET['opcion'];
+}
+     
 
 
  switch ($opc) {
@@ -45,12 +46,7 @@ else
         case "PT":
             $sqlCargarElementos = "Select * from ".TBL_TIEMPO_CAMBIO." ;";
                 break;
-        case "UI":
-            $sqlCargarElementos = "Select ruta  as ruta  from ".TBL_IMAGENES." WHERE post_idPost = '".$idPost."'";
-                break;
-        case "PMI":
-            $sqlCargarElementos = "SELECT ruta as ruta, texto as texto from ".TBL_IMAGENES." WHERE post_idPost = '".$idPost."' and ruta = '".$ruta."'";
-                break;
+      
     }   
         $stCargarElementoss  = $conCargarElementos->query($sqlCargarElementos);
         $resultCargarElementos = $stCargarElementoss->fetchAll();

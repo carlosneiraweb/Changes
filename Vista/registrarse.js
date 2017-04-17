@@ -7,8 +7,8 @@
  */
 
     
-    var  petGeReg, objGeReg, petProReg, objProReg, PGR, PPR, timer, milisegundos = 1000, condicionesRegistro,
-            clear;
+    var  petGeReg, objGeReg, petProReg, objProReg, PGR, PPR,  milisegundos = 1000;
+            
 
                 //Creamos una instancia de la clase CONEXION_AJAX
                 //Nos devuelve una conexion AJAX y propiedades 
@@ -124,34 +124,21 @@ function cargarProvinciasRegistrarse(objProvinciasRegistrarse){
 }
 
 
-/**
-* @description 
-* Este metodo elimina el formulario
-*  aceptar las condiciones
- */
-
-function elimanarFormularioAceptarCondiciones() {
-    
-            //alert('elimino aceptar condiciones');
-    $('#botonAceptarCondiciones').click(function() {
-        $( "#verificarCondiciones" ).remove();
-        $('#ocultar').addClass('oculto');
-    });
-}
-    
+ 
     /**
      * @description
      * Al mover barra de scroll
      * desactivamos una capa oculta que impedia el uso del 
      * boton de  siguiente
      */
+  
     $('#cuerpo').on('mouseover','#contenedorCondiciones',function(){
-         ///
+       
         $('#textAreaCondiciones').scroll(function(){   
-          $('.capaBoton').addClass('oculto');
-          //Activamos el boton
-          $('#btnAceptarCondiciones').prop('disabled', ""); 
-           });
+            $('.capaBoton').addClass('oculto');
+                //Activamos el boton
+            $('#btnAceptarCondiciones').prop('disabled', ""); 
+        });
     });  
     
 
@@ -170,7 +157,7 @@ function agregarFormularioCondiciones(){
     $('header').after('<section id="verificarCondiciones" class="mostrar_formulario"></section>');
  
     $("#verificarCondiciones").append($('<h3>',{
-        text : 'Lee detenidamente las condiciones'
+            text : 'Lee detenidamente las condiciones'
     })).append($('<section >',{
             id : 'contenedorCondiciones'
     }).append($('<section>',{

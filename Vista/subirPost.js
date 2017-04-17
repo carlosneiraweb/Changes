@@ -212,7 +212,7 @@ function cargarUltimaImagen(objLastImg){
         var sep = '<section id="capturar" class="contenedor_imagenes" >';
         for (var i= 0 ; i < objLastImg.length; i++){
             //Evitamos cualquier posible error
-                if(objLastImg[i].ruta === "/demo"){
+                if(objLastImg[i].ruta === "demo"){
                    //No mostramos la imagen /demo. Esta imagen aqui es opaca al usuario
                    //Solo se muestra en la pagina principal si el usuario no
                    //Ha subido ninguna foto al Post.
@@ -256,6 +256,9 @@ function cargarImgEliminar(objImgEliminar){
     //Mostramos la capa opca de fondo
     $("#ocultar").removeClass('oculto').addClass('mostrar_transparencia');
     $("#form_post").addClass('noOcupar');
+    //Eliminamos el formulario donde vamos subiendo
+    //las imagenes post 
+    $("#form_post_2").remove();
     //Creamos los elementos para mostrar la imagen y el texto
     
     

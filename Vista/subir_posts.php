@@ -49,7 +49,7 @@ $articulo = new Post(array());
 	<link rel="stylesheet" href="../css/estilos.css"/>
         <script src="../Controlador/jquery-2.2.2.js" type="text/javascript"></script>
         <script src="../Controlador/Elementos_AJAX/CONEXION_AJAX.js"></script>
-        <script src="../Controlador/Elementos_AJAX/subirPost.js"></script>
+        <script src="./subirPost.js"></script>
         <script src="../Controlador/Validar/formulario_reg.js"></script>
         <script src="../Controlador/Validar/contador.js"></script>
         <script src="../Controlador/Validar/formulario_subir_post.js"></script>
@@ -79,6 +79,15 @@ $articulo = new Post(array());
 	echo'</section>';
      
     echo'</header>';
+    
+    
+            //Aqui mostramos la imagen ampliada
+            //Pos si el usuario quiere modificarla
+            //Se muestra desde JSON
+    echo '<section id="mostrarImgSeleccionada" class="generalFormularios, generalFormularios">';
+    echo '</section>';
+    
+    
     
     //Si no se ha recivido el step
     //se muestra el formulario por primera vez
@@ -241,15 +250,7 @@ function displayStep2($missingFields){
             echo '</script>';
          
             }
-    echo '<section id="mostrarImgSeleccionada" class="generalFormularios, generalFormularios">';
-    
-            //Aqui mostramos la imagen ampliada
-            //Pos si el usuario quiere modificarla
-            //Se muestra desde JSON
-    
-    echo '</section>';
-    
-    
+ 
     echo'<section id="form_post_2" class="fuenteFormulario, generalFormularios">';
                 echo'<h4>Puedes subir hasta 5 imagenes</h4>';
                 
