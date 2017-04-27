@@ -8,29 +8,48 @@
  */
 
 //Variables globales para los <li> de navegacion
-var numLi, totalPost;
+var numLi, totalPost, final;
 
 /**
 * @description description
- * Metodo que inserta los posts
+ * Recive un objeto JSON con los posts a mostrar, ademas es el
+ * encargado de mostrar una serie de <li> con los numeros en el que estamos
+ * en la paginacion.
+ * Estos <li> al ser pulsados recuperaremos su valor html 
+ * en cada una de las secciones, y ese valor sera pasado como 
+ * la variable inicio para mostrar el rango adecuado de post
+ * en la peticion JSON.
+ * VARIABLES IMPOSTARNTES
+ *  Ambas variables son modificadas en paginacion.js segun
+ *  el usuario va pulsando cada uno de los <li> a delante y atras
+ * tmpLi => Es la variable de comparacion en el bucle for que muestra los <li>
+ * numeroEnLi => Es el numero que aparece en cada <li>
  * @param {type} objPost
   */
 function cargarPost(objPost){
-    
+   
     //Eliminamos los posts ya mostrados y el h3 donde se muestra el total de posts
-    //Limpiamos la pantalla salvo en los primeros
-    //posts a mostrar
+  
     if (inicio !== 1) {
         $(".cont_post").remove();
     }    
     
+    //Aqui calculamos el numero final de posts mostrados
+    //que aparecera en el h3 
+    if((inicio + PAGESIZE) >= parseInt(objPost[0].totalRows[0])){
+        final = parseInt(objPost[0].totalRows[0]);
+    }else{
+        final = (inicio + PAGESIZE);
+    }
+    
+    
     //Cargamos el total de resultados y los mostrados en cada pagina
     //Se agrega antes del contenedor posts
-   $('#contenedor>h3').remove();  
-   $('#publi').after('<h3>Se muestran desde '+(inicio)+' al '+(inicio + PAGESIZE)+'º De un total de '+(parseInt(objPost[0].totalRows[0]) + 1)+' posts encontrados </h3>'); 
-     
+   $('#contenedor>h3').remove(); 
+   $('#publi').after('<h3>Se muestran desde '+(inicio)+' al '+(final)+'º De un total de '+(parseInt(objPost[0].totalRows[0]))+' posts encontrados </h3>'); 
     for(var i = 1; i < objPost.length; i++){
-     
+         
+       
         $("#posts").append($('<section>',{
                 class : "cont_post",
                 id : objPost[i].idPost
@@ -88,22 +107,41 @@ function cargarPost(objPost){
                     //Activamos el boton
                     $('#btnComentar').prop('disabled', "");        
                 }
+     
 //fin for 
     }
     
-   
-    
-   
-    //Calculamos el total de <li> que se van a mostrar para navegar por el conjunto de resultados
+            //Calculamos el total de <li> que se van a mostrar 
+    //para navegar por el conjunto de resultados
+    //Este resultado lo sacamos de la consulta sql
     totalPost = parseInt(objPost[0].totalRows[0]); //total posts
+    cargarLis();
+//fin cargarPost    
+}
     
-                /**IMPORTANTE**/
-    //Solo instanciamos las variables que muestran el NUMERO DE <LI> cuando
-        //se carga la pagina por primera vez
-    if(inicio === 0){
-        numLi = totalPost / PAGESIZE; //Numeros de <li>
+   
+/**
+ * @description 
+ * Este metodo carga los <li> con su correspondiente numero
+ * para la paginacion ejemplo 1-10, 10-20
+ * Luego al pinchar en cada uno de los <li> o adelante y atras
+ * recuperaremos en paginacion.js el valor que contenga
+ * y lo usaremos para ir modificando su valor
+ * 
+ */    
+function cargarLis(){
+   
+    //Inicializamos la variable del for que muestra el numero que hay 
+    //en cada <li>
+    //Mas tarde cuando el usuario pulse los botones siguiente o atras 
+    //se ira modificando
+    if(typeof(numeroEnLi) === "undefined"){ numeroEnLi = 0; }; 
+   
+    
+    if(typeof(numLi) === "undefined"){      
+        numLi = totalPost / PAGESIZE; //Numeros de <li> 
         //Si al dividir sale decimal le sumamos un <li>
-            if (numLi % 1 !== 0){
+            if ((numLi % 2 ) !== 0){
                 numLi++;
             }
             
@@ -111,29 +149,37 @@ function cargarPost(objPost){
             numLi = parseInt(numLi);
         //Queremos limitar el numero de <li> a 10 por pagina
             //En caso de que numLi sea mayor a 10 * PAGESIZE
-            if (numLi > PAGESIZE * 10){
-                tmpLi = 10;
+            if (numLi > PAGESIZE * 10 ){
+                tmpLi = numeroEnLi + 10;
             }else{
                 tmpLi = numLi;
             }
-    //Inicializamos la variable del for que muestra los posts a 0
-        //Mas tarde cuando el usuario pulse los botones siguiente o atras 
-        //se ira modificando
-        numeroEnLi = 0;
     }
     
+    //En caso de paginacion o mostrar un post seleccionado en el slider
+    //Recuperamos la url anterior para mostrar el punto anterior 
     
-    //Mostramos los primeros <li>, empezamos en 0 y el limite de PAGESIZE
-    //Las variables nu
+    if(vistaIndependiente){jsonVolver = ["PPS",'', "opcion=PPS&inicio="+inicio, tmpLi, numeroEnLi, numLi, vistaIndependiente];}
+    
+                    //Mostramos los <li>
     var listaLi = '<ul class="listaLis"><li class="atras">Atras</li>';
+    
         for (numeroEnLi ; numeroEnLi < tmpLi; numeroEnLi++){
             listaLi += '<li class="pagina">'+numeroEnLi+'</li>';
         }
             listaLi +='<li class="siguiente">Siguiente</li></ul>';
-            //btn_navegacion.innerHTML = listaLi;
-                $('#btn_navegacion').html(listaLi);
             
-//fin cargarPost    
-}
-
-
+            //Si hemos buscado en el buscador algo y hemos estamos
+            //navegando por los posts de la busqueda queremos volver 
+            //a donde estabamos antes de la busqueda
+            //Este boton nos permite hacer eso.
+        if (vistaIndependiente === false) {
+            listaLi += '<span id="cont_volver">';
+            listaLi += '<input type="button" id="btn_volver" value="Salir"></span>';
+        }
+        
+                $('#btn_navegacion').html(listaLi);
+        
+       
+//fin cargarLis
+} 

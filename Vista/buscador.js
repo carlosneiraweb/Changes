@@ -19,7 +19,8 @@
  /**
   * @description
   * Inserta el buscador en la pagina con JQUERY
-  * @returns {undefined}
+  * Este script es el encargado de mandar los parametros de las consultas 
+  * que el usuario hace.
   */  
  function insertarBuscador() {
         
@@ -68,8 +69,9 @@
             text : 'Selecciona el tiempo de cambio:'
         })).append($('<select>',{
             name : 'selectTiempoCambio',
-            id : 'porTiempoCambio'
-        })).append($('<input>',{
+            id : 'porTiempoCambio',
+            class : 'porTiempoCambio'
+        })).append($('</br>')).append($('<input>',{
             type : 'text',
             id : 'buscador',
             class : 'buscador'
@@ -87,9 +89,10 @@
          
         //Al pulsar una letra mandamos una busqueda
         // a busquedas.php donde nos devolvra el resultado
-        $('#buscar_datos').on('keyup', '.buscador', function(e){
+        //
+    $('#buscar_datos').on('keyup', '.buscador', function(e){
           
-    
+         
          //Algunas teclas dan problemas como el ir hacia atras <- 
          //Por eso anulamos el evento si se pulsan
          //En este caso solo he anulado esta
@@ -115,30 +118,41 @@
         if(buscarPorProvincia === "No importa"){  buscarPorProvincia = 0; };
         if(buscarPorPrecio === "No importa"){ buscarPorPrecio = 0; };
         if(buscarPorTiempoCambio === "No importa"){  buscarPorTiempoCambio = 0; };
-        //alert('provincia'+buscarPorProvincia+" por precio "+buscarPorPrecio+ " por tiempo "+buscarPorTiempoCambio);
-        
         
     
         //Recuperamos los que el usuario ha escrito en el campo para buscar
         txtBuscar = $(this).val();
+        inputTmp = $(this);
+        
         //alert('BUSCADOR'+"opcion=BUSCADOR&BUSCAR="+txtBuscar+"&tabla="+radioBusqueda+"&buscarPorProvincia="+buscarPorProvincia+
         //        '&buscarPorPrecio='+buscarPorPrecio+'&buscarPorTiempoCambio='+buscarPorTiempoCambio);
-        cargarPeticionBuscador('BUSCADOR', "opcion=BUSCADOR&BUSCAR="+txtBuscar+"&tabla="+radioBusqueda+"&buscarPorProvincia="+buscarPorProvincia+
-                '&buscarPorPrecio='+buscarPorPrecio+'&buscarPorTiempoCambio='+buscarPorTiempoCambio);
-         }
+            cargarPeticionBuscador('BUSCADOR', "opcion=BUSCADOR&BUSCAR="+txtBuscar+"&tabla="+radioBusqueda+"&buscarPorProvincia="+buscarPorProvincia+
+                    '&buscarPorPrecio='+buscarPorPrecio+'&buscarPorTiempoCambio='+buscarPorTiempoCambio);
+             }
         
-            //Si se encuentra un resultado y el usuario pincha sobre el    
-            //Recuperamos el contenido del li que se ha pulsado
-                $('#contenidoBuscado').on('click','li',function() {
-                var textoElegido = $(this).text();
-
-                //Ahora hacemos un select de todos los Posts donde tengan ese texto
-                //En sus palabras de busquedas o queridas
-                cargarPeticionBuscador('ENCONTRADO', "opcion=ENCONTRADO&ENCONTRAR="+textoElegido+"&tabla="+radioBusqueda+"&inicio="+inicio);
-                });
-
-                });
-        
+                    //Si se encuentra un resultado y el usuario pincha sobre el    
+                    //Recuperamos el contenido del li que se ha pulsado
+                        $('#contenidoBuscado').on('click','.li',mostrarEncontrado);
+                            
+                            function mostrarEncontrado(){
+                                //Eliminamos el evento, sino se repite mas de una vez
+                                $('#contenidoBuscado').off('click','.li',mostrarEncontrado);
+                                 //Eliminamos los li de las busquedas
+                            $('#contenidoBuscado li').remove();
+                                textoElegido = $(this).text();
+                                inputTmp.val("");
+                                inicio = 0;
+                            //Ahora hacemos un select de todos los Posts donde tengan ese texto
+                            //En sus palabras de busquedas o queridas
+                            cargarPeticionBuscador('ENCONTRADO', "opcion=ENCONTRADO&ENCONTRAR="+textoElegido+"&tabla="+radioBusqueda+"&inicio="+inicio);
+                                //mostrarEncontrado()
+                            }
+                           
+                                
+                       
+            
+    });
+            
  //fin insertar Buscardor
     }
     
@@ -151,9 +165,16 @@ function cargarProvincias(objProv){
    
     for(var i = 0; i < objProv.length; i++){
         var objTmpP = objProv[i];
-     $('#porProvincia').append($('<option>',{
-         text : objTmpP.nombre 
-     }));
+            if (objTmpP.nombre === "Desconocido") {
+                $('#porProvincia').append($('<option>',{    
+                    text : "No importa"
+                }));
+            }else{
+                $('#porProvincia').append($('<option>',{    
+                    text : objTmpP.nombre 
+                }));
+            }
+                
  }
  //fin cargarProvincias
 }
@@ -164,7 +185,7 @@ function cargarProvincias(objProv){
 * como para el buscador
 * */   
 function cargarTiempoDeCambio(objTiempoCambio){
-    //alert(objTiempoCambio);
+   
     for(var i = 0; i < objTiempoCambio.length; i++){
         var objTmpTiempoCambio = objTiempoCambio[i];
         $('#porTiempoCambio').append($('<option>',{
@@ -197,7 +218,7 @@ function cargarBuscador(objBuscador){
 }
 
 function cargarPeticionBuscador(tipo, parametros){
-alert('Estamos en cargarPeticion y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
+//alert('Estamos en cargarPeticionBuscador y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
     //para comprobar el tipo de peticion
     switch(tipo){
         case('PP'):
@@ -258,7 +279,8 @@ alert('Estamos en cargarPeticion y tipo vale: ' +tipo+ ' parametros vale: ' +par
                 switch(tipo){        
 
                     default:
-                       // location.href= 'mostrar_error.php';
+                        
+                        location.href= 'mostrar_error.php';
                 }
             //fin catch
             }
@@ -274,8 +296,13 @@ alert('Estamos en cargarPeticion y tipo vale: ' +tipo+ ' parametros vale: ' +par
                     cargarBuscador(objBuscador);
                         break;
                 case 'ENCONTRADO':
+                    //Tenemos que resetear todas las variables
+                    //de paginacion cada vez que cambiamos de seccion
+                    var totalPostEnconrados = (parseInt(objEncontrado[0].totalRows[0]) - 1);
+                    resetearValoresDePaginacion(totalPostEnconrados);
+                    jsonVolver[6] = "ENCONTRADO";
+                    vistaIndependiente = false;
                     cargarPost(objEncontrado);
-                    
                         break;
                         
             //fin switch

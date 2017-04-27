@@ -6,10 +6,10 @@
   
 
   // -------  cabeceras indicando que se envian datos JSON.
-  header('Content-Type: application/json');
+  header('Content-type: application/json; charset=utf-8');
   header('Cache-Control: no-cache, must-revalidate');
   header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-
+  
   // -------   Crear la conexión al servidor y ejecutar la consulta.
     try{
     
@@ -42,7 +42,7 @@ if(isset($_POST['inicio'])){
    
   
     if($opc == "PPS"){
-                $result = true;
+               
                 
             
                 $sql = "SELECT SQL_CALC_FOUND_ROWS idPost,titulo FROM post  ORDER BY idPost DESC LIMIT :startRow, :numRows";
@@ -69,7 +69,7 @@ if(isset($_POST['inicio'])){
          
                 $sqlPost = "select p.idPost, u.nick, prov.nombre AS provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, p.titulo, img.ruta, p.comentario, tc.tiempo as tiempoCambio
 from post p
-inner join usuario u on u.idUsuario= p.idusuario
+inner join usuario u on u.idUsuario= p.idUsuario
 inner join direccion dire on dire.idDireccion = u.idUsuario
 inner join provincias prov on prov.idProvincias = dire.provincias_idprovincias
 inner join imagenes img on img.post_idPost = :idPost 

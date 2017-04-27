@@ -15,10 +15,10 @@
   
 
   // -------  cabeceras indicando que se envian datos JSON.
-  header('Content-Type: application/json');
+  header('Content-type: application/json; charset=utf-8');
   header('Cache-Control: no-cache, must-revalidate');
   header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-
+  
   // -------   Crear la conexión al servidor y ejecutar la consulta.
     try{
     

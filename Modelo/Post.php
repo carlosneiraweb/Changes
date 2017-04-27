@@ -277,7 +277,7 @@ public function insertArticulo(){
             //echo 'Sql eliminarImagen: '.$sql.'<br>';
                 $st = $con->prepare($sql);
                 $st->bindValue(":post_idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);       
-                $st->bindValue(":url", "/demo", PDO::PARAM_STR);
+                $st->bindValue(":url", "demo", PDO::PARAM_STR);
        
                     $test = $st->execute();
         }

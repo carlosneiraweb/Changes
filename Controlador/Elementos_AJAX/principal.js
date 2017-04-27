@@ -19,12 +19,30 @@ var Conexion;
                     var ConElementos  = new Conexion();
                     
                   
-//Inicializamos la variable inicio que mostrara por donde empezar a mostrar los posts
+//Inicializamos la variable inicio que mostrara por el numero por donde empezar a mostrar los posts
+//La variable mostrar define que secciones mostrar 
     //Comprobamos sin ya se ha inicializado, sino cada vez que el script
-    //se cargara machacaria su valor.
-    if(typeof(inicio) === "undefined"){ inicio = 0; };
-                
-window.onload=function(){
+    //se instanciase recargaria su valor.
+    if(typeof(inicio) === "undefined"){ inicio = 0; };  
+    //Aqui guardaremos la ultima peticion JSON en un array
+    //Para volver a ese punto cuando lo necesitemos
+    //Osea queramos mostrar el slider del post seleccionado,
+    //o estemos en la paginacion de una seccion y salgamos de ella
+    //y queremos volver donde estabamos. 
+    //De inicio ponemos que empieze en la seccion de inicio
+    //y a la variable de inicio le damos un 0
+    //Mostrara los ultimos posts publicados de cada seccion
+   
+    //Es el 6º parametro del array jsonVolver
+    //Es una bandera que usamos para guardar la ultima peticion JSON
+    //Para cuando el usuarioo quiera salir de paginacion o de mostrar un post seleccionado
+    if(typeof(vistaIndependiente ) === "undefined"){ vistaIndependiente  = true; } 
+    if(typeof(jsonVolver) === "undefined"){ jsonVolver = ["PPS",'', "opcion=PPS&inicio="+inicio, '','','',vistaIndependiente]; };
+    
+    
+    
+window.onload=function(){          
+
  
  //Creamos la seccion del buscador por jquery
         insertarBuscador();
@@ -59,35 +77,32 @@ window.onload=function(){
             });
    
     
-    $('#cuerpo').on('click','.pagina', function(e){
+    $('#cuerpo').on('click','li.pagina', function(e){
        //Llamamos al metodo que nos 
        //permite desplazarnos por los <li> 
        // hacia delante o atras
-       //alert('mandamos inicio a navegarPorPost '+inicio);
        liPinchado = parseInt($(this).text());
        navegarPorPosts(liPinchado);
-      // alert('Recivimos inicio de navegar por posts '+inicio);
     });
     
-    //Metodo que nos muestra el siguiente conjunto de <li> que hay, si los hubiera
-        //Al pulsar el <li> con la clase siguiente
-    $('#cuerpo').on('click', '.siguiente', function(e){
-        mostrarSiguienteRango();
-    });
+    //Activamos los botones de Siguiente y Atras de paginacion
+    $('#btn_navegacion').on('click', 'ul.listaLis>li.siguiente', mostrarSiguienteRango);
+    $('#btn_navegacion').on('click', 'ul.listaLis>li.atras', mostrarAnteriorRango);
     
-    //Metodo que nos muestra el anterior conjunto de <li> 
-            //Al pulsar el <li> con la clase Atras
-    $('#cuerpo').on('click', '.atras', function(e){  
-        mostrarAnteriorRango(); 
-        
-    });  
+    
+    //Metodo que nos devuelve a la seccion y posicion inicial
+    //con la ultima peticion JSON hecha al cambiar de seccion,
+    //en la paginacion, etc
+    $('#btn_navegacion').on('click', '#btn_volver', volverAnteriorJSON);
+    
+    
     
 //fin onload    
 };      
 
 
 function cargarPeticion(tipo, parametros){
-alert('Estamos en cargarPeticion y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
+//alert('Estamos en cargarPeticion y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
     //para comprobar el tipo de peticion
     switch(tipo){
         
@@ -136,6 +151,8 @@ alert('Estamos en cargarPeticion y tipo vale: ' +tipo+ ' parametros vale: ' +par
             switch (tipo){
                 
                 case 'PPS':
+                    //Tenemos que resetear todas las variables
+                    //de paginacion cada vez que cambiamos de seccion
                     cargarPost(objPost);
                         break;
                 case 'SLD':
@@ -156,7 +173,16 @@ alert('Estamos en cargarPeticion y tipo vale: ' +tipo+ ' parametros vale: ' +par
 //fin cargarPeticion    
 }
 
-
+function volverAnteriorJSON(){
+    
+    vistaIndependiente = true;
+    numLi = parseInt(jsonVolver[5])
+    numeroEnLi = parseInt(jsonVolver[4]);
+    tmpLi = parseInt(jsonVolver[3]);
+    
+    cargarPeticion(jsonVolver[0], jsonVolver[2]);
+    
+}
 
 
 

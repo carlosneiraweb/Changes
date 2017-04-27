@@ -15,10 +15,10 @@ require_once("../../Sistema/Conne.php");
   
 
   // -------  cabeceras indicando que se envian datos JSON.
-  header('Content-Type: application/json');
+  
   header('Cache-Control: no-cache, must-revalidate');
   header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-
+  header('Content-type: application/json; charset=utf-8');
   // -------   Crear la conexión al servidor y ejecutar la consulta.
     try{
     
@@ -45,8 +45,9 @@ if (isset($_POST['ENCONTRADO'])) {
 }  else {
      if (isset($_GET['ENCONTRADO'])) 
         $encontrado=$_GET['ENCONTRADO'];
-}     
- 
+}
+
+
 if (isset($_POST['ENCONTRAR'])) {
         $encontrar=$_POST['ENCONTRAR'];
 }  else {
@@ -107,19 +108,9 @@ if(isset($_POST['buscarPorTiempoCambio'])){
    
  //echo"por precio: ".$buscarPorPrecio. ' por provincia '.$buscarPorProvincia.' por tiempo '.$buscarPorTiempoCambio;
 
-
-
-
-
-
-    
-    
-    
-    
-    if($opc == "ENCONTRADO"){
+ if($opc == "ENCONTRADO"){
         //Ponemos distinct por que al escribir el usuario las palabras deseadas
         // Puede repetirlas quiero bici, bicicleta, bicis, etc etc
-
         $sql = "SELECT distinct SQL_CALC_FOUND_ROWS idPost FROM ".$tabla." where palabra like '$encontrar%'  ORDER BY idPost DESC LIMIT :startRow, :numRows";        
                
                 $stmBus = $conBusquedas->prepare($sql);
@@ -142,7 +133,7 @@ if(isset($_POST['buscarPorTiempoCambio'])){
    
         $sqlPost = "select u.nick, prov.nombre AS provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, p.titulo, img.ruta, p.titulo, p.comentario, tc.tiempo as tiempoCambio
 from post p
-inner join usuario u on u.idUsuario= p.idusuario
+inner join usuario u on u.idUsuario= p.idUsuario
 inner join direccion dire on dire.idDireccion = u.idUsuario
 inner join provincias prov on prov.idProvincias = dire.provincias_idprovincias
 inner join imagenes img on img.post_idPost = :idPost 
@@ -163,16 +154,18 @@ where p.idPost = :idPost limit 1";
                 echo json_encode($rs);
                 
                 Conne::disconnect($conBusquedas);
-        
+                
+                
 } else {
 
         switch ($opc) {
     
             case "BUSCADOR":
-                if($buscarPorPrecio === 0 && $buscarPorProvincia === 0 && $buscarPorTiempoCambio === 0 ){
+                
+                if($buscarPorPrecio == 0 && $buscarPorProvincia == 0 && $buscarPorTiempoCambio == 0 ){
                    
-                    $sqlBuscador="Select palabra from ".$tabla." where palabra like  :buscar order by idPost DESC limit 5;";    
-                    
+                    $sqlBuscador="Select distinct idPost, palabra from ".$tabla." where palabra like  :buscar order by idPost DESC limit 5;";    
+                   
                     
                 }else{
                     
@@ -183,11 +176,11 @@ where p.idPost = :idPost limit 1";
                     }else {
                         $pvp = " and p.precio < ".$buscarPorPrecio;
                     }
-                    if($buscarPorProvincia === '0'){
+                    if($buscarPorProvincia == 0){
                         unset($buscarPorProvincia);
                     }
                     
-                    if($buscarPorTiempoCambio === '0'){
+                    if($buscarPorTiempoCambio == 0){
                        
                         unset($buscarPorTiempoCambio);
                     }
@@ -202,7 +195,7 @@ inner join provincias prov on prov.idProvincias = dire.provincias_idprovincias "
         
     } 
    
-                //echo $sqlBuscador; 
+               
                 $stm4Bus = $conBusquedas->prepare($sqlBuscador);
                 $stm4Bus->bindValue(":buscar", "{$buscar}%", PDO::PARAM_STR);
             

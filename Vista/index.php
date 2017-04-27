@@ -21,7 +21,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
 
 <html>
     <head>
-       <meta charset="UTF-8">
+       <meta charset="utf-8">
        <title>Tú portal de intercambio</title>
 	<meta name="description" content="Portal para intercambiar las cosas que ya no usas o utilizas por otras que necesitas o te gustan."/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -29,16 +29,18 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
         <link rel="stylesheet" href="../css/estilos.css"/>
         <script src="../Controlador/jquery-2.2.2.js"></script>
         <script src="../Controlador/Elementos_AJAX/CONEXION_AJAX.js"></script>
-        <script src="./buscador.js"></script>
         <script src="../Controlador/Validar/formulario_login.js"></script>
         <script src="../Controlador/redireccionar.js"></script>
         <script src="../Controlador/menu.js"></script>
         <script src="../Controlador/script.js"></script>
-        <script src="./mostrarPosts.js"></script>
-        <script src="../Controlador/Elementos_AJAX/paginacion.js"></script>
         <script src="./cargarPostsElegido.js"></script>
+        <script src="./mostrarPosts.js"></script>
+        <script src="./buscador.js"></script>
+        <script src="../Controlador/Elementos_AJAX/paginacion.js"></script>
         <script src="../Controlador/Elementos_AJAX/principal.js"></script>
         
+        
+         
         <script src="./subirComentario.js"></script>
         
     <!--Para navegadores viejos-->
@@ -121,7 +123,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
                     }
                
                 echo '</section>';   
-                echo '</section>';
+                
                 
 	echo'</section>';
      
@@ -155,9 +157,9 @@ function displayFormLogeo($missingFields, $user, $test){
   
             echo'<legend>Formulario de ingreso</legend>';
 echo'<label '.$valido->validateField("nick", $missingFields). ' for="nick" >Introduce nombre de usuario:</label><span class="obligatorio"><img src="../img/obligado.png" ></span>';
-echo'<input  type="text" name="nick" id="nick" autofocus placeholder="Escribe tú nick" value="'.$user->getValueEncoded("nick").'" ><br></br>';            
+echo'<input  type="text" name="nick" id="nick" autofocus placeholder="Escribe tú nick" value="'.$user->getValueEncoded("nick").'" ><br/><br/>';            
 echo'<label '.$valido->validateField("password", $missingFields).' for="password">Introduce tú password</label><span class="obligatorio"><img src="../img/obligado.png" ></span>';
-echo'<input type="password" name="password" id="password" placeholder="Escribe tú password" value="'.$user->getValueEncoded("password").'" ><br></br>';
+echo'<input type="password" name="password" id="password" placeholder="Escribe tú password" value="'.$user->getValueEncoded("password").'" ><br/><br/>';
 
 //Mostramos un error en el login
 if(!$test){
@@ -277,10 +279,10 @@ function processForm(){
         
         
      echo' <footer>';
-    
+    /*
     echo' <div class="medidas"><p>Ventana: <span id="span1"></span></div>';
     echo'<div class="medidas">Ancho Supercontenedor: <span id="span2"></span> px</p>';
-   
+   */
     echo'</footer>';
     ?>
       

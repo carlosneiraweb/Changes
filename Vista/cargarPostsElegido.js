@@ -121,14 +121,12 @@ function cargarPostSeleccionado(objPost){
             id : 'salirSlider',
             value : 'salir'
         })).on('click',function(){
-            //Esta funcion nos redirige al punto exacto donde estabamos al abandonar 
-            //el slider. Ademas volvemos a setear los <li> de la paginacion
-                tmpLi = parseInt($('.pagina').last().html())+ 1;
-                numeroEnLi = parseInt($('.pagina').first().html());
+                   jsonVolver[6] = "POST-SELECCIONADO";
+                   vistaIndependiente = false;
                    $("#contPostSeleccionado").remove();
                    $("#mostrarPostSeleccionado").addClass('oculto');
                    $("#ocultar").addClass('oculto');
-                //cargarPeticion("PPS", "opcion=PPS&inicio="+inicio);
+                   cargarContenidoPorSeccion();
             })));
 
         var tmp = "";
