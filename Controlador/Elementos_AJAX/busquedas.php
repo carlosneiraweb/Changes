@@ -29,8 +29,9 @@ require_once("../../Sistema/Conne.php");
 if (isset($_POST['opcion'])){ 
       $opc=$_POST['opcion'];
 }else{
-     if (isset($_GET['opcion'])) 
-        $opc=$_GET['opcion'];
+     if (isset($_GET['opcion'])){
+         $opc=$_GET['opcion'];
+     }        
 }
 
 if (isset($_POST['BUSCAR'])) {
@@ -109,6 +110,8 @@ if(isset($_POST['buscarPorTiempoCambio'])){
  //echo"por precio: ".$buscarPorPrecio. ' por provincia '.$buscarPorProvincia.' por tiempo '.$buscarPorTiempoCambio;
 
  if($opc == "ENCONTRADO"){
+     
+    
         //Ponemos distinct por que al escribir el usuario las palabras deseadas
         // Puede repetirlas quiero bici, bicicleta, bicis, etc etc
         $sql = "SELECT distinct SQL_CALC_FOUND_ROWS idPost FROM ".$tabla." where palabra like '$encontrar%'  ORDER BY idPost DESC LIMIT :startRow, :numRows";        
@@ -155,7 +158,7 @@ where p.idPost = :idPost limit 1";
                 
                 Conne::disconnect($conBusquedas);
                 
-                
+           
 } else {
 
         switch ($opc) {

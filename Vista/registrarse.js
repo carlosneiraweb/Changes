@@ -7,22 +7,25 @@
  */
 
     
-    var  petGeReg, objGeReg, petProReg, objProReg, PGR, PPR,  milisegundos = 1000;
+    var  petGeReg, objGeReg, petProReg, objProReg, PGR, PPR,  milisegundos = 1000, ConexionAJAX;
             
 
                 //Creamos una instancia de la clase CONEXION_AJAX
                 //Nos devuelve una conexion AJAX y propiedades 
                     var ConRegistrarse  = new Conexion();
-
+   
+  
+                    
 if(typeof(x) === "undefined"){ 
         var x = 0;
         setInterval('parpadearReg()', milisegundos);
     }                
 
 window.onload=function(){
-    cargarPeticionRegistrarse('PGR', 'opcion=PG');
-    cargarPeticionRegistrarse('PPR', 'opcion=PP'); 
-                 
+    
+   cargarPeticionRegistrarse('PGR', 'opcion=PG');
+   cargarPeticionRegistrarse('PPR', 'opcion=PP'); 
+  
 function cargarPeticionRegistrarse(tipo, parametros){
 //alert('Estamos en cargarPeticion y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
     //para comprobar el tipo de peticion
@@ -42,7 +45,7 @@ function cargarPeticionRegistrarse(tipo, parametros){
            petProReg.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petProReg.send(parametros);
                 break;   
-        
+         
     //fin switch
     }
     
@@ -53,11 +56,11 @@ function cargarPeticionRegistrarse(tipo, parametros){
                 if(tipo === 'PGR'){
                     objGeReg = JSON.parse(petGeReg.responseText);
                      //Eliminamos el objeto conexion
-                    delete ConRegistrarse;
+                    //delete ConRegistrarse;
                 } else if(tipo === 'PPR'){
                     objProReg = JSON.parse(petProReg.responseText);
                      //Eliminamos el objeto conexion
-                    delete ConRegistrarse;
+                   // delete ConRegistrarse;
                 } 
                 
             } catch(e){
@@ -86,14 +89,14 @@ function cargarPeticionRegistrarse(tipo, parametros){
     }   
 //fin cargarPeticion    
 }
-                    
+              
                  
 /**
 * Este metodo carga los combos de
 * genero en el registro
  * @returns {undefined} */
 function cargarGeneroRegistrarse(objGeneroRegistrarse){
-    
+    alert(objGeneroRegistrarse);
     for(var i = 0; i < objGeneroRegistrarse.length; i++){
         var objTmpGeneroRegistrarse = objGeneroRegistrarse[i];
             $('#genero').append($('<option>',{

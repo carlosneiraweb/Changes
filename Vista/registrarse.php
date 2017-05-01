@@ -22,8 +22,8 @@ function volverAnterior(){
 	<link href="../img/fabicon.ico" rel="icon" type="image/x-icon">
 	<link rel="stylesheet" href="../css/estilos.css"/>
         <script src="../Controlador/jquery-2.2.2.js" type="text/javascript"></script>
-        <script src="../Controlador/Elementos_AJAX/principal.js"></script>
         <script src="../Controlador/Elementos_AJAX/CONEXION_AJAX.js"></script>
+        <script src="../Controlador/Elementos_AJAX/principal.js"></script>
         <script src="./registrarse.js"></script>
         <script src="../Controlador/Validar/formulario_reg.js"></script>
         

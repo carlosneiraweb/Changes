@@ -8,7 +8,6 @@
  * @fecha 26-oct-2016
  */
 
-
  require_once("../../Sistema/Conne.php");
     require_once("../../Sistema/Constantes.php");
     
@@ -22,6 +21,7 @@
   // -------   Crear la conexión al servidor y ejecutar la consulta.
     try{
     
+
     $conCargarElementos = Conne::connect();
   
   // -------- párametro opción para determinar la select a realizar -------

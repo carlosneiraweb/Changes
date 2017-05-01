@@ -36,6 +36,7 @@ function cargarPost(objPost){
     
     //Aqui calculamos el numero final de posts mostrados
     //que aparecera en el h3 
+    
     if((inicio + PAGESIZE) >= parseInt(objPost[0].totalRows[0])){
         final = parseInt(objPost[0].totalRows[0]);
     }else{

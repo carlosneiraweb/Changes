@@ -7,7 +7,8 @@
  * @fecha 26-oct-2016
  */
 
-var petPost, objPost, objPostSeleccionado, petPostSeleccionado, PAGESIZE;
+var petPost, objPost, objPostSeleccionado, petPostSeleccionado,
+    petVolver, objVolver, PAGESIZE;
 
 
 var fecha = new Date();
@@ -102,7 +103,7 @@ window.onload=function(){
 
 
 function cargarPeticion(tipo, parametros){
-//alert('Estamos en cargarPeticion y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
+    alert('Estamos enllll cargarPeticion y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
     //para comprobar el tipo de peticion
     switch(tipo){
         
@@ -120,7 +121,15 @@ function cargarPeticion(tipo, parametros){
            petPostSeleccionado.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petPostSeleccionado.send(parametros);
                 break;
-        
+//        case(null):
+//            petVolver = ConElementos.conection();
+//            petVolver.onreadystatechange = procesaRespuesta();
+//            petVolver.open('POST', "../Controlador/Elementos_AJAX/json.php?", true);
+//            petVolver.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+//            petVolver.send(parametros);
+//                break;
+        default:
+            alert('Error');
     //fin switch
     }
     
@@ -136,7 +145,9 @@ function cargarPeticion(tipo, parametros){
                     objPostSeleccionado = JSON.parse(petPostSeleccionado.responseText);
                     //Eliminamos el objeto conexion
                     delete ConElementos;
-                } 
+                } else if(tipo === null){
+                    objVolver = null;
+                }
                 
                 
             } catch(e){

@@ -45,7 +45,7 @@ if(isset($_POST['inicio'])){
                
                 
             
-                $sql = "SELECT SQL_CALC_FOUND_ROWS idPost,titulo FROM post  ORDER BY idPost DESC LIMIT :startRow, :numRows";
+                $sql = "SELECT SQL_CALC_FOUND_ROWS idPost FROM post  ORDER BY idPost DESC LIMIT :startRow, :numRows";
                 //$sql = "SELECT idPost FROM post ORDER BY fechaPost  DESC";
                 $stmBus = $conPost->prepare($sql);
                 $stmBus->bindValue(":startRow", $inicio, PDO::PARAM_INT);
@@ -54,6 +54,7 @@ if(isset($_POST['inicio'])){
                 $v = $stmBus->fetchAll();
                 $stmBus->closeCursor();
 
+                
                 
                 
                 //Calculamos el total final como si  la clausula limit no estuviera
@@ -65,7 +66,7 @@ if(isset($_POST['inicio'])){
                 array_push($rs, $row);
                 
                 foreach($v as $id){
-          
+                 
          
                 $sqlPost = "select p.idPost, u.nick, prov.nombre AS provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, p.titulo, img.ruta, p.comentario, tc.tiempo as tiempoCambio
 from post p

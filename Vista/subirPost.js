@@ -60,7 +60,7 @@ function parpadearSubirPost() {
 
 
 function cargarPeticionSubirPost(tipo, parametros){
-//alert('Estamos en cargarPeticionImgSubirPost y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
+alert('Estamos en cargarPeticionImgSubirPost y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
     //para comprobar el tipo de peticion
   
     switch(tipo){

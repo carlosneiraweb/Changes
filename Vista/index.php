@@ -28,11 +28,11 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
 	<link href="../img/fabicon.ico" rel="icon" type="image/x-icon"/>
         <link rel="stylesheet" href="../css/estilos.css"/>
         <script src="../Controlador/jquery-2.2.2.js"></script>
-        <script src="../Controlador/Elementos_AJAX/CONEXION_AJAX.js"></script>
         <script src="../Controlador/Validar/formulario_login.js"></script>
         <script src="../Controlador/redireccionar.js"></script>
         <script src="../Controlador/menu.js"></script>
         <script src="../Controlador/script.js"></script>
+        <script src="../Controlador/Elementos_AJAX/CONEXION_AJAX.js"></script>
         <script src="./cargarPostsElegido.js"></script>
         <script src="./mostrarPosts.js"></script>
         <script src="./buscador.js"></script>

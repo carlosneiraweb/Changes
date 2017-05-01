@@ -26,8 +26,7 @@ function navegarPorPosts(li){
             
             tmpLi = parseInt($('.pagina').last().html())+ 1;
             numeroEnLi = parseInt($('.pagina').first().html());
-            
-            
+           
             inicio = li * PAGESIZE;
             cargarContenidoPorSeccion();
             
@@ -81,15 +80,16 @@ function  mostrarSiguienteRango(e){
                         //Sino del 30 al xxx Dependiendo de la variable PAGESIZE
                         }else{  
                            
-                            tmpLi = (totalPost / PAGESIZE) ; //Numeros de <li>
+                            tmpLi =  (totalPost / PAGESIZE); //Numeros de <li>
+                            
                             //Si al dividir sale decimal le sumamos un <li>
-                                if (tmpLi % 2 !== 0){
+                                if ((tmpLi * PAGESIZE) % 2 !== 0){
                                     tmpLi++;
+                                        
                                     }
-                           
                         //Parseamos a Integer y ya tenemos el total de <li> a mostrar
                             tmpLi = parseInt(tmpLi);
-                           
+                          
                             inicio =  (parseInt($('.pagina').last().html()) + 1) * PAGESIZE;
                     }
                    
@@ -181,6 +181,20 @@ function cargarContenidoPorSeccion(){
                     cargarPeticionBuscador('ENCONTRADO', "opcion=ENCONTRADO&ENCONTRAR="+textoElegido+"&tabla="+radioBusqueda+"&inicio="+inicio);
                         break;
                 case 'POST-SELECCIONADO':
+                    //mandamos el array con los datos de la anterior
+                    //peticion. Cuando un usuario a pinchado en la 
+                    //foto de un post y ha visto los detalles de este
+                    //al pulsar el boton de salir quiere volver
+                    //al punto esacto donde estaba. En la seccion y subseccion
+                    //y en el punto esacto de paginacion.
+                    //Del array recuperaremos el nombre de la seccion, subseccion y la variable 
+                   
+                    //actualizamos los <li> de la paginacion
+                    tmpLi= jsonVolver[3];
+                    numeroEnLi = jsonVolver[4];
+                    jsonVolver[6]= null;
+                    vistaIndependiente = true;
+                    cargarPeticion(null, 'opcion='+jsonVolver[0]+'&subseccion='+jsonVolver[1]+'&inicio='+inicio);
                      
             }
     
@@ -220,6 +234,8 @@ function resetearValoresDePaginacion(posts){
                 tmpLi = numLi;
             }        
     
-      
+    //Ponemos a bandera false por que no
+    //queremos que se vuelvan a reseter las variables de los <li>
+    banderaCambioSeccion = false;  
 //fin   resetearValoresDePaginacion  
 }
