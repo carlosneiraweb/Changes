@@ -9,7 +9,10 @@ define("EMAIL_SMTPAUTH", 1);
 define("EMAIL_SMTPSECURE", "ssl");
 define("EMAIL_HOST", "smtp.strato.com");
 define("EMAIL_PORT_EMAIL", 465);
-define("TXT_ERROR_VALIDACION", "../Errores/ErroresValidacion.txt");
+define("DOCUMENT_ROOT", $_SERVER['DOCUMENT_ROOT']);
+echo DOCUMENT_ROOT;
+
+
 
 
 ///////////////////
@@ -25,6 +28,8 @@ define("TBL_SECCIONES", "secciones");
 define("TBL_USUARIO", "usuario");
 define("TBL_IMAGENES", "imagenes");
 define("TBL_TIEMPO_CAMBIO", "tiempo_cambio");
+define("TBL_BUSQUEDAS_PALABRAS_OFRECIDAS_PRIVADAS", "busquedas_pbs_ofrecidas_privadas");
+define("TBL_BUSQUEDAS_PALABRAS_QUERIDAS_PRIVADAS", "busquedas_pbs_queridas_privadas");
 define("PAGE_SIZE", 2);
 define("LIMIT_RETURN_SEARCH", 25);
 define("ERROR", "Revisa tu formulario.");
@@ -49,6 +54,7 @@ define("ERROR_INSERTAR_FOTO", '<h5>Hemos tenido un problema al insertar tu foto.
 define("ERROR_FOTO_GENERAL", "<h5>Lo sentimos hemos tenido un problema al subir la foto.</h5>");
 define("ERROR_INSERTAR_ARTICULO", "<h5>No hemos podido insertar tu articulo.</h5>");
 define("ERROR_INGRESAR_USUARIO", "<h5>Hemos tenido un problema al ingresarte.</h5>");
+define("TXT_ERROR_VALIDACION", "../Errores/ErroresValidacion.txt");
 //Constante con la fecha actual 
 $fecha_actual = getdate();
 define("FECHA_DIA", "Día $fecha_actual[mday], de $fecha_actual[month], del año $fecha_actual[year], a la hora $fecha_actual[hours]: $fecha_actual[minutes]" );
@@ -124,10 +130,3 @@ define("EMAIL_FROM", "administracion@ichangeityou.com");
 define("EMAIL_FROM_NAME", "Administración de Te lo cambio.");
 define("EMAIL_SUBJECT_REGISTER", "Email de TE LO CAMBIO");
 
-//constantes para el cuerpo de cada email
-$xc = '<section id="saludo">
-            <h4>Enhorabuena carlos por registrarte en <span class="especial">Te Lo Cambio</h4></span>
-            </section>
-            <p>Ahora podr&aacutes cambiar con nuestro usuarios.</p> <br />
-            <p>Recuerda que tu usuario es: ******** </p>
-            <p>Y tu contraseña es: ********** </p>';
