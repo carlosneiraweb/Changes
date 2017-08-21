@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 ?>
 <!DOCTYPE html>
 <!--
@@ -28,6 +29,9 @@ session_start();
           <h2>Upss <span class="separarLetras">!!!</span> </h2>
       <h3>Hemos tenido un problema.</h3>
       <?php 
+      
+        
+        
        //Mostramos el error que se ha producido 
        //y reseteamos la variable
         if(isset($_SESSION['error']) and $_SESSION['error'] != null){

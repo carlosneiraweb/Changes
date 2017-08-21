@@ -9,6 +9,7 @@
 
  var   objPro, petPro, objTiempoCambio, petTiempoCambio,
          objBuscador, petBuscador, objEncontrado, petEncontrado,
+         objPalabraBuscada, petPalabraBuscada,
          porProvincia, porPrecio, porTiempoCambio, txtBuscar,
          buscarPorProvincia, buscarPorPrecio, buscarPorTiempoCambio;
  
@@ -43,7 +44,7 @@
             type : 'radio',
             name : 'busqueda',
             id   : 'ofrezco',
-            value : 'buscan'
+            value : 'ofrezco'
         })).append($('</br>')).append($('<label>',{
             for : 'porProvincia',
             text : 'Selecciona la provincia:'
@@ -142,14 +143,14 @@
                                 textoElegido = $(this).text();
                                 inputTmp.val("");
                                 inicio = 0;
-                                //Esta variable la usaremos luego 
-                                //para que solo se reinicien las variables de paginacion
-                                //la primera vez que se cambia de seccion
-                                banderaCambioSeccion = true;
-                            //Ahora hacemos un select de todos los Posts donde tengan ese texto
-                            //En sus palabras de busquedas o queridas
-                            cargarPeticionBuscador('ENCONTRADO', "opcion=ENCONTRADO&ENCONTRAR="+textoElegido+"&tabla="+radioBusqueda+"&inicio="+inicio);
-                                //mostrarEncontrado()
+                                    //Esta variable la usaremos luego 
+                                    //para que solo se reinicien las variables de paginacion
+                                    //la primera vez que se cambia de seccion
+                                    banderaCambioSeccion = true;
+                                        //Ahora hacemos un select de todos los Posts donde tengan ese texto
+                                        //En sus palabras de busquedas o queridas
+                                        cargarPeticionBuscador('ENCONTRADO', "opcion=ENCONTRADO&ENCONTRAR="+textoElegido+"&tabla="+radioBusqueda+"&inicio="+inicio);
+                            //fin mostrarEncontrado               
                             }
                            
                                 
@@ -210,9 +211,32 @@ function cargarBuscador(objBuscador){
     
     //alert(objBuscador[0].palabra);
     var vacio = "<li>No se han encontrado resultados con la busqueda <strong>"+txtBuscar+"</strong></li>";
+                
     //alert(vacio);
     if(typeof objBuscador[0] === "undefined"){
-        $('#contenidoBuscado').append('<li class="li">'+vacio+'</li>'); 
+        $('#contenidoBuscado').append(vacio);
+       
+                //Solo si el usuario se ha registrado
+            if(typeof(logeoParaComentar) !== null){
+                $('#contenidoBuscado').append($('<li>',{
+                    id : "insertarMisBusquedas",
+                    text : "Pincha aqui para recibir un email,"            
+                }).on('click', function(){
+                    cargarPeticionBuscador('PEMP', "opcion=PEMP&usuario="+user+"&tabla="+radioBusqueda);           
+                })).append($('<li>',{
+                    text : "Si alguien publica un anuncio,"         
+                })).append($('<li>',{
+                    text : "con esas palabras."
+                }));
+            }else{
+               $('#contenidoBuscado').append($('<li>',{
+                    text : "Si te logeas podras recibir avisos en tú email."            
+                })).append($('<li>',{
+                    text : "Cuando alguien publique un post,"            
+                })).append($('<li>',{
+                    text : "con esas palabras."            
+                }));
+            }
     }else{
         for(var b = 0; b < objBuscador.length; b++){
             $('#contenidoBuscado').append('<li class="li">'+objBuscador[b].palabra+'</li>');
@@ -221,38 +245,47 @@ function cargarBuscador(objBuscador){
 //fin cargarBuscador      
 }
 
+
 function cargarPeticionBuscador(tipo, parametros){
-alert('Estamos ////en cargarPeticionBuscador y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
+alert('Estamos en cargarPeticionBuscador y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
     //para comprobar el tipo de peticion
     switch(tipo){
         case('PP'):
-           petPro = ConBuscador.conection();
-           petPro.onreadystatechange = procesaRespuesta;
-           petPro.open('POST', "../Controlador/Elementos_AJAX/cargarElementos.php?", true);
-           petPro.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-           petPro.send(parametros);
+            petPro = ConBuscador.conection();
+            petPro.onreadystatechange = procesaRespuesta;
+            petPro.open('POST', "../Controlador/Elementos_AJAX/cargarElementos.php?", true);
+            petPro.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+            petPro.send(parametros);
                 break;
         case('PT'):
-           petTiempoCambio = ConBuscador.conection();
-           petTiempoCambio.onreadystatechange = procesaRespuesta;
-           petTiempoCambio.open('POST', "../Controlador/Elementos_AJAX/cargarElementos.php?", true);
-           petTiempoCambio.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-           petTiempoCambio.send(parametros);
+            petTiempoCambio = ConBuscador.conection();
+            petTiempoCambio.onreadystatechange = procesaRespuesta;
+            petTiempoCambio.open('POST', "../Controlador/Elementos_AJAX/cargarElementos.php?", true);
+            petTiempoCambio.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+            petTiempoCambio.send(parametros);
                 break;
         case('BUSCADOR'):
-           petBuscador = ConBuscador.conection();
-           petBuscador.onreadystatechange = procesaRespuesta;
-           petBuscador.open('POST', "../Controlador/Elementos_AJAX/busquedas.php?", true);
-           petBuscador.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-           petBuscador.send(parametros);
+            petBuscador = ConBuscador.conection();
+            petBuscador.onreadystatechange = procesaRespuesta;
+            petBuscador.open('POST', "../Controlador/Elementos_AJAX/busquedas.php?", true);
+            petBuscador.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+            petBuscador.send(parametros);
                 break; 
         case('ENCONTRADO'):
-           petEncontrado = ConBuscador.conection();
-           petEncontrado.onreadystatechange = procesaRespuesta;
-           petEncontrado.open('POST', "../Controlador/Elementos_AJAX/busquedas.php?", true);
-           petEncontrado.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-           petEncontrado.send(parametros);
-                break;  
+            petEncontrado = ConBuscador.conection();
+            petEncontrado.onreadystatechange = procesaRespuesta;
+            petEncontrado.open('POST', "../Controlador/Elementos_AJAX/busquedas.php?", true);
+            petEncontrado.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+            petEncontrado.send(parametros);
+                break;
+        case('PIPB'):
+            petPalabraBuscada = ConBuscador.conection();
+            petPalabraBuscada.onreadystatechange = procesaRespuesta;
+            petPalabraBuscada.open('POST', "../Controlador/Elementos_AJAX/busquedas.php?", true);
+            petPalabraBuscada.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+            petPalabraBuscada.send(parametros);
+                break;
+            
         
     //fin switch
     }
@@ -284,7 +317,7 @@ alert('Estamos ////en cargarPeticionBuscador y tipo vale: ' +tipo+ ' parametros 
 
                     default:
                         
-                        location.href= 'mostrar_error.php';
+                       // location.href= 'mostrar_error.php';
                 }
             //fin catch
             }

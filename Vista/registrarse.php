@@ -47,13 +47,14 @@ function volverAnterior(){
         require_once('../Sistema/Constantes.php');
         require_once('../Sistema/Email/mandarEmails.php');
         
+        
     //Añadimos el div con la clase oculto
     // echo'<div id="ocultar" class="oculto"> </div>';  
        
         //Variable global para mostrar los errores de validacion
-        global $mensaje;
+       $mensaje;
         //Variable global de usuario, Instanciaremos una vez validado todos los campos
-        global $user;
+       
         $user = new Usuarios(array());
  
         echo'<header>';
@@ -383,7 +384,7 @@ function processForm($requiredFields, $st){
         //Segun el paso vamos rellenando la variable de session  de usuario
     
         switch ($st){
-            case "step1":
+            case "step1":                                                           
                 $_SESSION['usuario']["nick"] = isset($_POST["nick"]) ? preg_replace("/[^\-\_a-zA-Z0-9ñÑ]/", "", $_POST["nick"]) : "";
                 $_SESSION['usuario']["password"] = isset($_POST["password"]) ? preg_replace("/[^\-\_a-zA-Z0-9ñÑ]/", "", $_POST["password"]) : "";  
                 $_SESSION['usuario']["email"] = isset($_POST["email"]) ? preg_replace("/[^\@\.\-\_a-zA-Z0-9ñÑ]/", "", $_POST["email"]) : "";

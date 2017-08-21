@@ -28,7 +28,7 @@
           
     }
    
-        /*
+    /*
      * Metodo que valida que el campo 
      * recivido no se encuentrar en el array 
      * de elementos no rellenados.
@@ -49,9 +49,11 @@
        * Validamos los datos introducidos para logearse.
        * Recibe objeto de la clase usuario
        * Devuelve true o false.
+       * No lo usamos pues queremos aplicar la clase errosPHP
+       * al campo concreto.
        * Utilizamos la indicación para decirle al método que va 
        * a recivir un objeto de DataObj
-       * @param type $obj
+       * @param type DataObj
        */  
     final function validarEntrada(DataObj $obj){
           
@@ -103,7 +105,7 @@
       
       /**
        * Metodo valida un teléfono
-       * Debe empezar por 9,8,6,7, y tener 9 caracteres
+       * Debe empezar por 9,6,7, y tener 9 caracteres
        * Ademas los caracteres tienen que ser números
        */
       

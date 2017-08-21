@@ -153,7 +153,7 @@ function cargarLis(){
             if (numLi > PAGESIZE * 10 ){
                 tmpLi = numeroEnLi + 10;
             }else{
-                tmpLi = numLi;
+                tmpLi = numLi - 1;
             }
     }
     

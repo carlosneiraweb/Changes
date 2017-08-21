@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * 
  * Description of System
  * Esta clase se encarga de todos los metodos
  * relacionados con el Systema
@@ -61,6 +62,42 @@ do {
     
     
     
+   
+function calculoMemoria(){
+  $a = exec("vmstat -n 1 2");
+     
+    $nofin = true;
+    $len = strlen($a);
+    $c = 0;
+    $cad = "";
+     
+    while($nofin)
+    {
+     
+        if ($a[$len-1] == " " && $a[$len] != " ")       
+            $c++;           
+        
+        if ($c == 4)
+        {
+            
+            $cad = $a[$len].$a[$len+1].$a[$len+2];
+            $nofin = false;
+        
+        }
+     
+        $len--;
+        
+    }
+     
+     
+    echo $cad; //BINGO
+//fin calculoMemoria       
+}     
+     
+    
+        
+     
+     
     
     
     

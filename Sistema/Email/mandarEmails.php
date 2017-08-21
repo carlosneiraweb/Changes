@@ -1,10 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  * Description of mandarEmails
@@ -50,7 +45,7 @@ class mandarEmails {
  
 final function mandarEmailWelcome(DataObj $obj){
 
-    
+        
             //Creamos el objeto email con los datos
             //Que necesitamos de $user para el cuerpo del email
             //La cabecera y el footer son dos constantes

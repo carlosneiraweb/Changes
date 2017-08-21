@@ -96,7 +96,7 @@ function cargarPeticionRegistrarse(tipo, parametros){
 * genero en el registro
  * @returns {undefined} */
 function cargarGeneroRegistrarse(objGeneroRegistrarse){
-    alert(objGeneroRegistrarse);
+   // alert(objGeneroRegistrarse);
     for(var i = 0; i < objGeneroRegistrarse.length; i++){
         var objTmpGeneroRegistrarse = objGeneroRegistrarse[i];
             $('#genero').append($('<option>',{

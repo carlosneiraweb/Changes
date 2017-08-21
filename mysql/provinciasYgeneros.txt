@@ -77,157 +77,15 @@ insert into tiempo_cambio (tiempo) values ('Otros');
 
 
 
-POST USUARIOS CON ID 7-12-13, las imagenes se añaden luego a los directorios
+POST USUARIOS CON ID 1-2-3, las imagenes se añaden luego a los directorios
 
 insert into post (idUsuario, secciones_idsecciones, tiempo_cambio_idTiempoCambio, titulo, comentario, precio, fechaPost) values
-(13, 6, 7, 'PPPDFGU vwyw', 'YWERNGVWEWVWWMVWERYGLWGWV', 'hehgwherguwehgw',10, curdate()); 
-
-
-insert into post (idUsuario, secciones_idsecciones, tiempo_cambio_idTiempoCambio, titulo, comentario, precio, fechaPost) values
-(7, 3, 5, 'megycmth u0tvh3mv¡hu¡jt0','uh uewuuh thbr h¡y¡¡yh ',5000, curdate());
-
-
-insert into post (idUsuario, secciones_idsecciones, tiempo_cambio_idTiempoCambio, titulo, comentario, precio, fechaPost) values
-(12, 2, 2, 'ureg qyrgqyq', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',10, curdate());
-
-
-insert into post (idUsuario, secciones_idsecciones, tiempo_cambio_idTiempoCambio, titulo, comentario, precio, fechaPost) values
-(13, 1, 3, 'vfung r7y7 ynht2 nb', 'rynr1 n5y2y ngy2y g5qn yqg yr q',999910, curdate());
-
-
-insert into post (idUsuario, secciones_idsecciones, tiempo_cambio_idTiempoCambio, titulo, comentario, precio, fechaPost) values
-(7, 4, 4, 'yrgyl 2yg2ntv23nv5y2¡', 'qryg yqr pgqy`r`qy rtq`tvynl2n',60, curdate());
+(3, 6, 7, 'PPPDFGU vwyw', 'YWERNGVWEWVWWMVWERYGLWGWV', 'hehgwherguwehgw',10, curdate()); 
 
 
 
-insert into post (idUsuario, secciones_idsecciones, tiempo_cambio_idTiempoCambio, titulo, comentario, precio, fechaPost) values
-(7, 2, 2, 'eywqytyytymc4c yc', 'eqtyt¡qmct¡m¡qmctm¡m¡14`',10000, curdate()); 
-
-
-insert into post (idUsuario, secciones_idsecciones, tiempo_cambio_idTiempoCambio, titulo, comentario, precio, fechaPost) values
-(13, 6, 6, 'uryt2tn2n2yncy2','ynnyl''l2yty2¡5yt¡2mc5m¡m¡2h ',500, curdate());
-
-
-insert into post (idUsuario, secciones_idsecciones, tiempo_cambio_idTiempoCambio, titulo, comentario, precio, fechaPost) values
-(12, 1, 6, 'tyy2nt2ctnn2c5ty2m¡cy', 'bbbbbbbbbbbbbbbbbbbbbbb',109, curdate());
-
-
-insert into post (idUsuario, secciones_idsecciones, tiempo_cambio_idTiempoCambio, titulo, comentario, precio, fechaPost) values
-(13, 4, 6, 'i2ytn2tn25nhyny¡cm2', 'y4y3n34lhv3ihv`0wmvthm',9900, curdate());
-
-
-insert into post (idUsuario, secciones_idsecciones, tiempo_cambio_idTiempoCambio, titulo, comentario, precio, fechaPost) values
-(12, 3, 3, 'nywhc3tyyyh7c43mym`4v', 'roewy00¡v20¡y25¡cnyv y25¡4y24¡5¡24 752ym¡5cy2¡5',60, curdate());
 
 
 ////imagenes hasta 60 empiezan en el id 9
 insert into imagenes (post_idPost, ruta, texto) values (9, 'demo', 'sssssssss');
 
-insert into imagenes (post_idPost, ruta, texto) values (10, 'david/1/2', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (11, 'carlos/2/1', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (12, 'demo', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (13, 'carlos/2/1', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (14, 'demo', 'sssssssss');
-insert into imagenes (post_idPost, ruta, texto) values (15, 'demo', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (16, 'david/1/2', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (17, 'carlos/2/1', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (18, 'demo', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (19, 'carlos/2/1', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (20, 'demo', 'sssssssss');
-
-
-insert into imagenes (post_idPost, ruta, texto) values (21, 'demo', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (22, 'david/1/2', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (23, 'carlos/2/1', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (24, 'david/1/3', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (19, 'carlos/2/1', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (25, 'david/1/5', 'sssssssss');
-
-
-insert into imagenes (post_idPost, ruta, texto) values (26, 'david/1/4', 'sdddddd');
-
-insert into imagenes (post_idPost, ruta, texto) values (27, 'demo', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (28, 'carlos/2/1', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (29, 'david/1/3', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (30, 'carlos/2/1', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (31, 'demo', 'sssssssss');
-
-
-insert into imagenes (post_idPost, ruta, texto) values (32, 'david/1/3', 'sdddddd');
-
-insert into imagenes (post_idPost, ruta, texto) values (33, 'carlos/2/1', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (34, 'carlos/2/1', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (35, 'david/1/3', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (36, 'carlos/2/1', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (37, 'demo', 'sssssssss');
-
-
-insert into imagenes (post_idPost, ruta, texto) values (38, 'demo', 'sdddddd');
-
-insert into imagenes (post_idPost, ruta, texto) values (39, 'demo', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (41, 'demo', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (42, 'carlos/2/1', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (43, 'demo', 'sssssssss');
-
-
-
-insert into imagenes (post_idPost, ruta, texto) values (44, 'david/1/5', 'sdddddd');
-
-insert into imagenes (post_idPost, ruta, texto) values (45, 'demo', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (46, 'david/1/1', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (47, 'demo', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (48, 'carlos/2/1', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (49, 'demo', 'sssssssss');
-
-
-insert into imagenes (post_idPost, ruta, texto) values (50, 'carlos/2/1', 'sdddddd');
-
-insert into imagenes (post_idPost, ruta, texto) values (51, 'demo', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (52, 'demo', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (53, 'demo', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (54, 'carlos/2/1', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (55, 'demo', 'sssssssss');
-
-
-insert into imagenes (post_idPost, ruta, texto) values (56, 'carlos/2/1', 'sdddddd');
-
-insert into imagenes (post_idPost, ruta, texto) values (57, 'david/1/2', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (58, 'demo', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (59, 'demo', 'sssssssss');
-
-insert into imagenes (post_idPost, ruta, texto) values (60, 'carlos/2/1', 'sssssssss');

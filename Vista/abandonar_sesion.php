@@ -18,9 +18,8 @@ session_start();
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link href="../img/fabicon.ico" rel="icon" type="image/x-icon">
 	<link rel="stylesheet" href="../css/estilos.css"/>
-        <script language="javascript">
+        <script type="text/javascript">
             function volverInicio(){
-               
                 setTimeout('location.href="<?php echo $_SESSION['url'] ?>"', 3000);  
             }
         
@@ -28,7 +27,7 @@ session_start();
     </head>
     <body class="mi_body">
         <?php
-     
+                            echo 'Variable session en abandonar '.$_SESSION['url'];
         echo '<section id="salir_sesion">';
         echo '<h2>Te lo cambio</h2>';
             echo'<figure id="logo_salir_sesion">';
@@ -45,13 +44,13 @@ session_start();
     
     
     try{
-    $_SESSION = array();
-    session_destroy();
-        
     
-        echo '<script language="javascript">';
-        echo 'volverInicio();';
+        echo '<script type="text/javascript">';
+         echo 'volverInicio();';
         echo '</script>';
+                //Destruimos todas variables de sesion
+            $_SESSION = array();
+            session_destroy();
     }catch(Exception $e){
         header('Location: mostrar_error.php');
     }    

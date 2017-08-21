@@ -1,10 +1,15 @@
 <?php 
+
 require_once('../Modelo/Usuarios.php');
 require_once('../Modelo/DataObj.php');
 require_once '../Controlador/Validar/ValidoForm.php';
+require_once("../Sistema/Constantes.php"); 
 
-session_start(); 
+session_start();
+
+echo 'En index html => '.DOCUMENT_ROOT.'<BR />';
 $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
+
 /**
  * @author Carlos Neira Sanchez
  * @mail arj.123@hotmail.es
@@ -63,13 +68,14 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
         //La utilizamos en el script elementos de javascript para mostrar 
         //paginados los posts y en json.php para la peticion 
         echo '<script type="text/javascript">';
-               echo "var PAGESIZE = "; echo PAGE_SIZE;          
+               echo "var PAGESIZE = "; echo PAGE_SIZE.';';          
         echo '</script>';
  
  
-    global $valido;
-    $valido = new ValidoForm();
-    
+    //Variable user para instanciar 
+    //objetos usuario
+    $user;
+  
     if(isset($_POST["logeo"]) and $_POST["logeo"] == "aceptar"){
         processForm();
     } else{
@@ -154,11 +160,11 @@ function displayFormLogeo($missingFields, $user, $test){
     	 echo'<h4>Introduzca sus datos</h4>';
     echo'<form name="logeo" action="index.php" method="post" id="form_login">';
         echo'<fieldset>';
-  
+        
             echo'<legend>Formulario de ingreso</legend>';
-echo'<label '.$valido->validateField("nick", $missingFields). ' for="nick" >Introduce nombre de usuario:</label><span class="obligatorio"><img src="../img/obligado.png" ></span>';
+echo'<label '. ValidoForm::validateField("nick", $missingFields). ' for="nick" >Introduce nombre de usuario:</label><span class="obligatorio"><img src="../img/obligado.png" ></span>';
 echo'<input  type="text" name="nick" id="nick" autofocus placeholder="Escribe tú nick" value="'.$user->getValueEncoded("nick").'" ><br/><br/>';            
-echo'<label '.$valido->validateField("password", $missingFields).' for="password">Introduce tú password</label><span class="obligatorio"><img src="../img/obligado.png" ></span>';
+echo'<label '. ValidoForm::validateField("password", $missingFields).' for="password">Introduce tú password</label><span class="obligatorio"><img src="../img/obligado.png" ></span>';
 echo'<input type="password" name="password" id="password" placeholder="Escribe tú password" value="'.$user->getValueEncoded("password").'" ><br/><br/>';
 
 //Mostramos un error en el login
@@ -166,7 +172,7 @@ if(!$test){
     echo ERROR_VALIDACION_LOGIN;
 }
 echo'<input type="submit" id="btn_login" name="logeo" value="aceptar" />';          
-    echo"</div>";
+    
         echo'</fieldset>';
                 echo'</form>';
         echo'</section>';
@@ -175,7 +181,8 @@ echo'<input type="submit" id="btn_login" name="logeo" value="aceptar" />';
     //fin formLogeo   
     }
 function processForm(){
-    global $valido;
+    
+    global $user;
     //Secrea un array con los campos requeridos
             $requiredFields = array("nick", "password");
             //Array para almacenar los campos no rellenados y obligatorios
@@ -183,8 +190,8 @@ function processForm(){
   
     $user = new Usuarios(
             array(
-                "nick" => isset($_POST["nick"]) ? preg_replace("/[^\-\_a-zAZ0-9ñÑ.,'``'´áéíóúäëïöü]/", "", $_POST["nick"]) : "",
-                "password" => isset($_POST["password"]) ? preg_replace("/[^\-\_a-zAZ0-9]/", "", $_POST["password"]) : "",          
+                "nick" => isset($_POST["nick"]) ? preg_replace("/[^\-\_a-zA-Z0-9ñÑ]/", "", $_POST["nick"]) : "",
+                "password" => isset($_POST["password"]) ? preg_replace("/[^\-\_a-zA-Z0-9ñÑ]/", "", $_POST["password"]) : "",          
   
             )
             );
@@ -204,8 +211,11 @@ function processForm(){
             displayFormLogeo($missingFields, $user, $test);
        
     } else {       
-       $_SESSION["user"] = $loggedInMember;       
-       session_write_close();      
+        $_SESSION["user"] = $loggedInMember;
+        unset($loggedInMember);
+        session_write_close();   
+       
+         
     }
 //fin processForm
 }
@@ -235,8 +245,19 @@ function processForm(){
    
     /**
      * En esta seccion agregamos el buscador por jquery
+     * Declaramos la variable javascript user,
+     * que es el nick del usuario. Como es dato publico
+     * no representa ningun riesgo de seguridad.
+     * Esta variable la usaremos  en buscador.js
+     * para almacenar busquedas concretas
      */
     echo '<section id="buscar_datos">';
+        if($_SESSION["user"] !== null){
+            $nick = $_SESSION['user']->getValue('nick');
+                echo '<script type="text/javascript">';
+                       echo 'var user = '; echo "'$nick'".';';
+                echo '</script>';
+        }
     echo '</section>';
    
     

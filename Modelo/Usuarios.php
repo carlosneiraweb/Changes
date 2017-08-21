@@ -1,9 +1,9 @@
 <?php
 
-require_once('../Sistema/Conne.php');
+//require_once('../Sistema/Conne.php');
 require_once('DataObj.php');
-require_once('../Sistema/Email/mandarEmails.php');
-require_once '../Sistema/System.php';
+//require_once('../Sistema/Email/mandarEmails.php');
+//require_once '../Sistema/System.php';
 
 /**
  * Description of Usuarios
@@ -35,11 +35,11 @@ class Usuarios extends DataObj{
     
     
      /**
-     * Metodo public and static
-     * it recives id from user
-     * @param type $id
-     * @return \Member
-     */
+      * Metodo static que recibe un id 
+      * nos devuelve un usuario
+      * @param type $id
+      * @return Un Usuarios
+      */
     public static function getMember($id){
         
         $con =  Conne::connect();
@@ -52,7 +52,7 @@ class Usuarios extends DataObj{
             $st->closeCursor();
             Conne::disconnect($con);
             
-            if($row) return new Member($row);
+            if($row){return new Usuarios($row);}
         } catch (Exception $ex) {
             echo $ex->getLine().'<br>';
             echo $ex->getFile().'<br>';
@@ -67,7 +67,8 @@ class Usuarios extends DataObj{
      * public and static
      * Metodo que devuelve un usuario por nombre
      * @param type $nick
-     * @return \Member
+     * @return 
+      * Objeto Usarios
      */
     public static function getByUsername($nick){
         
@@ -79,7 +80,7 @@ class Usuarios extends DataObj{
             $st ->bindValue(":nick", $nick, PDO::PARAM_STR);
             $st ->execute();
             $row = $st->fetch();
-            if($row) return new Usuarios($row);
+            if($row){return new Usuarios($row);}
             $st->closeCursor();
             Conne::disconnect($con);
         } catch (Exception $ex) {
@@ -108,7 +109,7 @@ class Usuarios extends DataObj{
             $row = $st->fetch();
             $st->closeCursor();
             Conne::disconnect($con);
-            if($row) return new Usuarios($row);    
+            if($row){return new Usuarios($row);}    
         } catch(Exception $ex) {
             Conne::disconnect($con);
             echo $ex->getLine().'<br>';
@@ -159,7 +160,7 @@ class Usuarios extends DataObj{
                      $st->closeCursor();
                      Conne::disconnect($con);
                             //Si todo va bien devolvemos la instancia de un usuario
-                        if($row){ return new Usuarios($row);}
+                        if($row){return new Usuarios($row);}
                      
                 } catch (Exception $ex) {
                    echo $ex->getCode();
@@ -216,6 +217,7 @@ public final function insertDatosUsuario(){
 }
 
 /**
+ * 
  * Este metodo ingresa la direccion
  * del usuario, poblacion, calle, etc
  * return boolean o el error
@@ -307,10 +309,11 @@ public final function insert(){
    
   
     /**
-     * Metodo que nos devuelve el id de un usuario
+     * Metodo static que revive
+     * el nick de un usuario y nos devuelve el id
      */
 
-    public function devuelveId(){
+    public static function devuelveId(){
         $con = Conne::connect();
         try{
             
@@ -322,7 +325,7 @@ public final function insert(){
                 $st->execute();
                 $row = $st->fetch();
                 $st->closeCursor();
-                if($row) return $row;
+                if($row){return $row;}
                 Conne::disconnect($con);
                 
         } catch (Exception $ex) {
