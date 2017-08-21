@@ -8,8 +8,8 @@
  * @fecha 26-oct-2016
  */
 
- require_once("../../Sistema/Conne.php");
-    require_once("../../Sistema/Constantes.php");
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes.php');
     
   
 

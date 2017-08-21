@@ -1,9 +1,9 @@
 <?php 
-require_once ('../Modelo/Post.php');
-require_once ('../Modelo/Usuarios.php');
-require_once ('../Modelo/DataObj.php');
-require_once('../Controlador/Validar/ValidoForm.php');
-require_once('../Sistema/Directorios.php');
+require_once ($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Post.php');
+require_once ($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
+require_once ($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ValidoForm.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Directorios.php');
 session_start();
 
 //Iniciamos la variable de session contador a 0
@@ -32,9 +32,8 @@ $articulo = new Post(array());
 <!DOCTYPE html>
 <!--
  author Carlos Neira Sanchez
- mail arj.123@hotmail.es
  telefono ""
- nameAndExt subir_archivos_servidor.php
+ nameAndExt subir_posts.php
  fecha 17-abr-2016
 -->
 

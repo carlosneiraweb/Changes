@@ -3,7 +3,7 @@ $(document).ready(function(){
         //
 	var emailReg = /^([a-zA-ZñÑ0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;
 	var passReg = /^[0-9a-zA-ZñÑ]{6,12}$/;
-        var telefReg = /^[0-9-()+]{3,20}/;
+        var telefReg = /^[0-9]{9,11}/;
         var codPostal = /^([1-9]{2}|[0-9][1-9]|[1-9][0-9])[0-9]{3}$/;
         
         /**

@@ -27,7 +27,7 @@ session_start();
     </head>
     <body class="mi_body">
         <?php
-                            echo 'Variable session en abandonar '.$_SESSION['url'];
+                           
         echo '<section id="salir_sesion">';
         echo '<h2>Te lo cambio</h2>';
             echo'<figure id="logo_salir_sesion">';

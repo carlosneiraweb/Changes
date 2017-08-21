@@ -1,9 +1,12 @@
 <?php
-// -------  cabeceras indicando que se envian datos JSON.
+
  
   header('Cache-Control: no-cache, must-revalidate');
   header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
   header('Content-type: application/json; charset=utf-8');
+ // -------  cabeceras indicando que se envian datos JSON.
+  
+  
   
 /**
  * @author Carlos Neira Sanchez
@@ -12,11 +15,11 @@
  * @nameAndExt busquedas.php
  * @fecha 04-oct-2016
  */
+//require($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes.php');
+require_once($_SERVER['DOCUMENT_ROOT']."/Changes/Sistema/Conne.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/Changes/Sistema/Constantes.php"); 
+require_once($_SERVER['DOCUMENT_ROOT']."/Changes/Modelo/Usuarios.php");
 
-require_once("../../Sistema/Conne.php");
-require_once("../../Sistema/Constantes.php"); 
-require_once('../../Modelo/Usuarios.php');
-echo 'En  BUSQUEDAS => '.DOCUMENT_ROOT.'<BR />';
     //echo Usuarios::devuelveId($usuario);   
 //    $user = new Usuarios();
 //    echo $user->devuelveId('carlos');

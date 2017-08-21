@@ -1,14 +1,17 @@
 <?php 
 
-require_once('../Modelo/Usuarios.php');
-require_once('../Modelo/DataObj.php');
-require_once '../Controlador/Validar/ValidoForm.php';
-require_once("../Sistema/Constantes.php"); 
+
+
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ValidoForm.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes.php'); 
+
 
 session_start();
 
-echo 'En index html => '.DOCUMENT_ROOT.'<BR />';
 $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
+//echo  $_SESSION['url'].'<br />';
 
 /**
  * @author Carlos Neira Sanchez

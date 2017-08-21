@@ -247,7 +247,7 @@ function cargarBuscador(objBuscador){
 
 
 function cargarPeticionBuscador(tipo, parametros){
-alert('Estamos en cargarPeticionBuscador y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
+//alert('Estamos en cargarPeticionBuscador y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
     //para comprobar el tipo de peticion
     switch(tipo){
         case('PP'):

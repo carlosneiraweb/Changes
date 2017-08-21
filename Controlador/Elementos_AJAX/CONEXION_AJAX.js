@@ -2,7 +2,7 @@
  author Carlos Neira Sanchez
  mail arj.123@hotmail.es
  telefono ""
- nameAndExt subir_archivos_servidor.php
+ nameAndExt CONEXION_AJAX.js
  fecha 17-abr-2016
 */
 

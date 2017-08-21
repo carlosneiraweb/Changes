@@ -12,9 +12,9 @@
  *  Clase que define el objeto email.
  *  Crea un objeto de email
  */
-require_once('../Sistema/Constantes.php');
-require_once("../Sistema/Email/class.phpmailer.php");
-require_once("../Sistema/Email/class.smtp.php");
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/class.phpmailer.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/class.smtp.php');
 
 class Email {
    

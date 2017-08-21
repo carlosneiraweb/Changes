@@ -7,9 +7,9 @@
  * programador pueda por error sobreescribir el metodo
  * y static por que nos evitamos tener que instanciar un objeto de la clase;
  */
-    require_once '../Modelo/Usuarios.php';
-    require_once '../Modelo/DataObj.php';
-    require_once 'Interf_comprobar.php';   
+    require_once ($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
+    require_once ($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
+    require_once ($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/Interf_comprobar.php');   
        
     class ValidoForm implements Interf_comprobar{
         

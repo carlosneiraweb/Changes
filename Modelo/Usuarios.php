@@ -1,9 +1,9 @@
 <?php
 
-//require_once('../Sistema/Conne.php');
-require_once('DataObj.php');
-//require_once('../Sistema/Email/mandarEmails.php');
-//require_once '../Sistema/System.php';
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/mandarEmails.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/System.php');
 
 /**
  * Description of Usuarios

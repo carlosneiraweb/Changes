@@ -40,12 +40,12 @@ function volverAnterior(){
     
         <?php
         
-        require_once('../Modelo/Usuarios.php');
-        require_once('../Modelo/DataObj.php');
-        require_once('../Controlador/Validar/ValidoForm.php');
-        require_once('../Sistema/Directorios.php');
-        require_once('../Sistema/Constantes.php');
-        require_once('../Sistema/Email/mandarEmails.php');
+        require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
+        require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
+        require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ValidoForm.php');
+        require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Directorios.php');
+        require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes.php');
+        require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/mandarEmails.php');
         
         
     //Añadimos el div con la clase oculto

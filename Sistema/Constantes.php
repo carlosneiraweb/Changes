@@ -9,9 +9,6 @@ define("EMAIL_SMTPAUTH", 1);
 define("EMAIL_SMTPSECURE", "ssl");
 define("EMAIL_HOST", "smtp.strato.com");
 define("EMAIL_PORT_EMAIL", 465);
-define("DOCUMENT_ROOT", $_SERVER['DOCUMENT_ROOT']);
-echo DOCUMENT_ROOT;
-echo 'ss';
 
 
 
