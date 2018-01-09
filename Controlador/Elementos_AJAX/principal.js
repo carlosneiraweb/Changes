@@ -36,7 +36,7 @@ var Conexion;
    
     //Es el 6º parametro del array jsonVolver
     //Es una bandera que usamos para guardar la ultima peticion JSON
-    //Para cuando el usuarioo quiera salir de paginacion o de mostrar un post seleccionado
+    //Para cuando el usuario quiera salir de paginacion o de mostrar un post seleccionado
     if(typeof(vistaIndependiente ) === "undefined"){ vistaIndependiente  = true; } 
     if(typeof(jsonVolver) === "undefined"){ jsonVolver = ["PPS",'', "opcion=PPS&inicio="+inicio, '','','',vistaIndependiente]; };
     

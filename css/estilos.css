@@ -156,6 +156,22 @@ section#salir_sesion{
     padding: .3em;
 }
 
+/*Estilo para formulario agregar busquedas personalizadas*/
+section#busquedaPalabrasPersonales{
+    background-color: white;
+    height: 500px;
+    width: 340px;
+    margin:auto;
+    position:absolute;
+	top: 20px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+    padding: .3em;
+    z-index: 50;
+}
+
+
 
 figure#logo_salir_sesion{
     margin: auto;
@@ -417,7 +433,7 @@ fieldset {
 	font-size: .8em;
 	padding: 1em;	
 }
-form input[type="text"], input[type="email"], input[type="tel"], input[type="password"], section#buscar_datos input[type="text"]{
+form input[type="text"], input[type="email"], input[type="tel"], input[type="password"], section#buscar_datos input[type="text"], section#busquedaPalabrasPersonales input[type='text']{
 	border-bottom: 1px solid black;
 	border-top: 1px solid black;
 	margin: .3em auto;

@@ -172,7 +172,7 @@ function displayStep2($missingFields){
     echo'<label for="apellido_2">Segundo Apellido:</label>';
     echo'<input type="text" name="apellido_2" id="apellido_2" placeholder="Escribe tú segundo apellido" maxlength= "25" value= ';if(isset($_SESSION['usuario']['apellido_2'])){echo $_SESSION['usuario']['apellido_2'];} echo ">";        
     echo'<label '.ValidoForm::validateField("telefono", $missingFields). ' for="telefono">Teléfono:</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
-    echo'<input type="text" name="telefono" id="telefono" placeholder="Teléfono contacto" maxlength= "9" value=';if(isset($_SESSION['usuario']['telefono'])){echo $_SESSION['usuario']['telefono'];} echo ">";
+    echo'<input type="text" name="telefono" id="telefono" placeholder="Teléfono contacto" maxlength= "12" value=';if(isset($_SESSION['usuario']['telefono'])){echo $_SESSION['usuario']['telefono'];} echo ">";
         echo'<label for="genero">Selecciona tu sexo:</label>';
 		echo'<select name="genero" id="genero">';			
 		echo'</select>';
@@ -473,7 +473,7 @@ function processForm($requiredFields, $st){
                 return $test;     
                     
             case 'step2':
-          
+                echo 'validar telefoo dice: '.ValidoForm::validaTelefono($_SESSION['usuario']['telefono']);
                     if(!ValidoForm::validaTelefono($_SESSION['usuario']['telefono'])){
                         $mensaje =  TELEFONO_INCORRECTO;
                         $test = false;

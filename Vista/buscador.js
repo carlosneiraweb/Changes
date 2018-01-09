@@ -13,6 +13,8 @@
          porProvincia, porPrecio, porTiempoCambio, txtBuscar,
          buscarPorProvincia, buscarPorPrecio, buscarPorTiempoCambio;
  
+
+
      //Creamos una instancia de la clase CONEXION_AJAX
             //Nos devuelve una conexion AJAX y propiedades 
                     var ConBuscador  = new Conexion();
@@ -202,6 +204,35 @@ function cargarTiempoDeCambio(objTiempoCambio){
 }
 
 /**
+ * Metodo que muestra el formulario 
+ * para guardar busquedas que no se han encontrado.
+ * Cuando un usuario mas adelante las registre se 
+ * recivira un email.
+ */
+function mostrarFormularioGuardarBusquedas(){
+       $('#ocultar').removeClass('oculto');
+       $('#ocultar').addClass('mostrar_transparencia');
+       
+       $('#busquedasPersonales').append($('<section>',{
+            id : 'busquedaPalabrasPersonales'
+        }).append($('<h3>', {
+            text : 'Inserta las palabras de busqueda'
+        })).append($('<input>',{
+            type : 'text'
+        })).append($('<input>',{
+            type : 'button',
+            id : 'buttonBusquedasPersonales',
+            value : 'Aceptar'
+        })).on('click', function(){
+                alert('saludos');
+        }));
+    
+    //fin mostrarFormularioGuardarBusquedas
+}
+
+
+
+/**
  * @description 
  * Metodo que carga los resultados del buscador
  * en los <li>. Va mostrando los resultados segun escribe el usuario
@@ -215,14 +246,16 @@ function cargarBuscador(objBuscador){
     //alert(vacio);
     if(typeof objBuscador[0] === "undefined"){
         $('#contenidoBuscado').append(vacio);
-       
+            alert(logeoParaComentar);
                 //Solo si el usuario se ha registrado
-            if(typeof(logeoParaComentar) !== null){
+            if(logeoParaComentar !== null){
                 $('#contenidoBuscado').append($('<li>',{
                     id : "insertarMisBusquedas",
                     text : "Pincha aqui para recibir un email,"            
                 }).on('click', function(){
-                    cargarPeticionBuscador('PEMP', "opcion=PEMP&usuario="+user+"&tabla="+radioBusqueda);           
+                        mostrarFormularioGuardarBusquedas();
+                        
+                    //cargarPeticionBuscador('PEMP', "opcion=PEMP&usuario="+user+"&tabla="+radioBusqueda);           
                 })).append($('<li>',{
                     text : "Si alguien publica un anuncio,"         
                 })).append($('<li>',{

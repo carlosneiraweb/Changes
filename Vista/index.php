@@ -17,7 +17,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
  * @author Carlos Neira Sanchez
  * @mail arj.123@hotmail.es
  * @telefono ""
- * @nameAndExt busquedas.php
+ * @nameAndExt index.php
  * @fecha 04-oct-2016
  */
 
@@ -73,7 +73,8 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
         echo '<script type="text/javascript">';
                echo "var PAGESIZE = "; echo PAGE_SIZE.';';          
         echo '</script>';
- 
+    
+         
  
     //Variable user para instanciar 
     //objetos usuario
@@ -121,14 +122,22 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
                     if(isset($_SESSION["user"]) and $_SESSION != ""){
                         echo'<input type="button" id="salirSesion" name="salirSesion" value="Salir Sesion"/>';
                         echo'<input type="button" id="menu" name="menu" value="menu"/>';
-                     
+                        $nick = $_SESSION['user']->getValue('nick');
+                       // echo $nick;
                         //Pasamos una variable a javascript
                         //para que si el usuario esta logeado
                         //aparezca un boton para poder hacer comentarios
-                        //de los posts
-                       echo '<script type="text/javascript">';
-                           echo 'var logeoParaComentar = '; echo '"logeado";';
-                       echo '</script>'; 
+                        //de los posts, o poder guardar busquedas personalizadas.
+                        //Declaramos la variable javascript user,
+                        //que es el nick del usuario. Como es dato publico
+                        //no representa ningun riesgo de seguridad.
+                        //Esta variable la usaremos  en buscador.js
+                        //para almacenar busquedas concretas
+                            echo '<script type="text/javascript">';
+                                echo 'var logeoParaComentar = '; echo '"logeado";';
+                                echo 'var user = '; echo "'$nick';";
+                                   
+                            echo '</script>'; 
                     }
                
                 echo '</section>';   
@@ -215,6 +224,7 @@ function processForm(){
        
     } else {       
         $_SESSION["user"] = $loggedInMember;
+       
         unset($loggedInMember);
         session_write_close();   
        
@@ -248,24 +258,24 @@ function processForm(){
    
     /**
      * En esta seccion agregamos el buscador por jquery
-     * Declaramos la variable javascript user,
-     * que es el nick del usuario. Como es dato publico
-     * no representa ningun riesgo de seguridad.
-     * Esta variable la usaremos  en buscador.js
-     * para almacenar busquedas concretas
      */
     echo '<section id="buscar_datos">';
-        if($_SESSION["user"] !== null){
-            $nick = $_SESSION['user']->getValue('nick');
-                echo '<script type="text/javascript">';
-                       echo 'var user = '; echo "'$nick'".';';
-                echo '</script>';
-        }
+       
     echo '</section>';
    
     
     
     echo'<section id="contenedor">';
+    
+    /**
+    * Elemento html que se agregaran 
+    * el formulario para aregar busquedas psonales
+    */
+        echo'<section id="busquedasPersonales">';
+        echo'</section>';
+        
+        
+        
     //para la publicidad
     echo'<aside id="publi">';
 		echo'<p>Aqui va la publicidad</p>';
@@ -309,7 +319,7 @@ function processForm(){
    */
     echo'</footer>';
     ?>
-      
+       
     <?php
     echo '</body>';
     echo '</html>';
