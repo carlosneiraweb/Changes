@@ -35,10 +35,11 @@ class Usuarios extends DataObj{
     
     
      /**
-      * Metodo static que recibe un id 
+
+      *       * Metodo static que recibe un id 
       * nos devuelve un usuario
       * @param type $id
-      * @return Un Usuarios
+      * @return Un Usuario
       */
     public static function getMember($id){
         
@@ -65,9 +66,9 @@ class Usuarios extends DataObj{
     
      /**
      * public and static
-     * Metodo que devuelve un usuario por nombre
+     * Metodo que devuelve un usuario por nombre de usuario
      * @param type $nick
-     * @return 
+     * @return un array con los datos del usuario
       * Objeto Usarios
      */
     public static function getByUsername($nick){
@@ -178,7 +179,7 @@ class Usuarios extends DataObj{
 /**
  * Ingresa los datos del usuario
  * telefono, nombre, apellidos, etc
- * @return boolean o error
+ * @return boolean true o false
  */
 public final function insertDatosUsuario(){
         $con = Conne::connect();
@@ -268,6 +269,7 @@ public function insertarDireccionUsuario(){
  */    
 public final function insert(){
     $con = Conne::connect();
+    //echo 'en insertar '.var_dump($this->data);
         try{
         
         $sql = "INSERT INTO ".TBL_USUARIO. "(
@@ -309,11 +311,11 @@ public final function insert(){
    
   
     /**
-     * Metodo static que revive
+     * Metodo publico que revive
      * el nick de un usuario y nos devuelve el id
      */
 
-    public static function devuelveId(){
+    public  function devuelveId(){
         $con = Conne::connect();
         try{
             

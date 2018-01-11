@@ -53,10 +53,9 @@ function volverAnterior(){
        
         //Variable global para mostrar los errores de validacion
        $mensaje;
-        //Variable global de usuario, Instanciaremos una vez validado todos los campos
-       
+        //Variable global de usuario
         $user = new Usuarios(array());
- 
+        
         echo'<header>';
 	echo'<figure id="logo" class="fade">';
 		echo'<img src="../img/logo.png" alt="Logo del portal"/>';
@@ -76,27 +75,33 @@ function volverAnterior(){
      
         // Si no se ha recivido el step
         // Se muestra por primera vez el formulario
+        $paso = null;
             if(!isset($_POST['step'])){
                 displayStep1(array());
             }
             
-            
+    //Variable donde cargaremos el paso
+            //de cada una de las partes del formulario
+           
     /*Mandamos a comprobar los campos del primer formulario*/
     if(isset($_POST['primeroReg']) and $_POST['primeroReg'] == "Siguiente"){
         $requiredFields = array('nick', 'password', 'email');
-        processForm($requiredFields, "step1");
+        if(isset($_POST['step']) and $_POST['step'] === "step1"){ $paso = 'step1';}
+        processForm($requiredFields, $paso);
     } elseif(isset($_POST['primeroReg']) and $_POST['primeroReg'] == "Salir"){
         volverAnterior();
     } elseif(isset($_POST['segundoReg']) and $_POST['segundoReg'] == "Siguiente"){
         $requiredFields = array('nombre');
-        processForm($requiredFields, "step2");
+        if(isset($_POST['step']) and $_POST['step'] === "step2"){ $paso = 'step2';}
+        processForm($requiredFields, $paso);
     } elseif(isset($_POST['segundoReg']) and $_POST['segundoReg'] == "Atras"){
         displayStep1(array());
     } elseif(isset($_POST['segundoReg']) and $_POST['segundoReg'] == "Salir"){
         volverAnterior();
     }elseif(isset($_POST['terceroReg']) and $_POST['terceroReg'] == "Siguiente"){
         $requiredFields = array('codPostal', 'ciudad');
-        processForm($requiredFields, "step3");
+        if(isset($_POST['step']) and $_POST['step'] === "step3"){ $paso = 'step3';}
+        processForm($requiredFields, $paso);
     } elseif(isset($_POST['terceroReg']) and $_POST['terceroReg'] == "Atras"){
         displayStep2(array());
     } elseif(isset($_POST['terceroReg']) and $_POST['terceroReg'] == "Salir"){
@@ -105,10 +110,11 @@ function volverAnterior(){
         displayStep3(array());
     } elseif(isset($_POST['cuartoReg']) and $_POST['cuartoReg'] == "Siguiente"){
         $requiredFields = array();
-        processForm($requiredFields, "step4");
+        if(isset($_POST['step']) and $_POST['step'] === "step4"){ $paso = 'step4';}
+        processForm($requiredFields, $paso);
     }elseif(isset($_POST['aceptaCondicionesReg']) and $_POST['aceptaCondicionesReg'] == "aceptaCondiciones"){
         $requiredFields = array();
-        processForm($requiredFields, "step5");
+        processForm($requiredFields, 'step5');
     }elseif(isset($_POST['registroConfirmado']) and $_POST['registroConfirmado'] == "Aceptar") {
         volverAnterior();
     }
@@ -126,7 +132,7 @@ function displayStep1($missingFields){
     echo'<form name="registro" action="registrarse.php" method="POST" id="registro_1" >';
         echo'<fieldset>';
         	echo'<legend>Formulario de Registro Primer Paso</legend>';
-        echo"<input type='hidden' name='step' value='1'>";  
+        echo"<input type='hidden' name='step' value='step1'>";  
     echo'<label '.ValidoForm::validateField("nick", $missingFields).' for="nick">Introduce nombre de usuario:</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="text" name="nick" id="nick" autofocus placeholder="Tú nombre usuario maximo 25 caracteres" maxlength="25" value=';if(isset($_SESSION['usuario']['nick'])){echo $_SESSION['usuario']['nick'];} echo ">";       
     echo'<label '.ValidoForm::validateField("password", $missingFields). ' for="password">Introduce tú password</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
@@ -164,7 +170,7 @@ function displayStep2($missingFields){
     echo'<form name="registro" action="registrarse.php" method="POST" id="registro_2">';
         echo'<fieldset>';
         	echo'<legend>Formulario de Registro Segundo Paso</legend>';
-    echo"<input type='hidden' name='step' value='2'>";
+    echo"<input type='hidden' name='step' value='step2'>";
     echo'<label '.ValidoForm::validateField("nombre", $missingFields). ' for="nombre">Nombre:</label> <span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="text" name="nombre" id="nombre" autofocus  placeholder="Escribe tú nombre" maxlength= "25" value=';if(isset($_SESSION['usuario']['nombre'])){echo $_SESSION['usuario']['nombre'];} echo ">";
     echo'<label for="apellido_1">Primer Apellido:</label>';
@@ -172,7 +178,7 @@ function displayStep2($missingFields){
     echo'<label for="apellido_2">Segundo Apellido:</label>';
     echo'<input type="text" name="apellido_2" id="apellido_2" placeholder="Escribe tú segundo apellido" maxlength= "25" value= ';if(isset($_SESSION['usuario']['apellido_2'])){echo $_SESSION['usuario']['apellido_2'];} echo ">";        
     echo'<label '.ValidoForm::validateField("telefono", $missingFields). ' for="telefono">Teléfono:</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
-    echo'<input type="text" name="telefono" id="telefono" placeholder="Teléfono contacto" maxlength= "12" value=';if(isset($_SESSION['usuario']['telefono'])){echo $_SESSION['usuario']['telefono'];} echo ">";
+    echo'<input type="text" name="telefono" id="telefono" placeholder="Teléfono contacto" maxlength value=';if(isset($_SESSION['usuario']['telefono'])){echo $_SESSION['usuario']['telefono'];} echo ">";
         echo'<label for="genero">Selecciona tu sexo:</label>';
 		echo'<select name="genero" id="genero">';			
 		echo'</select>';
@@ -206,7 +212,7 @@ function displayStep3($missingFields){
     echo'<form name="registro" action="registrarse.php" method="POST" id="registro_3">';
         echo'<fieldset>';
         	echo'<legend>Formulario de Registro ya casi estamos</legend>';
-    echo"<input type='hidden' name='step' value='3'>";
+    echo"<input type='hidden' name='step' value='step3'>";
     echo'<label for="calle">Nombre de la calle o vía:</label>';
     echo'<input type="text" name="calle" id="calle" placeholder="Escribe el nombre de la calle"  value= ';if(isset($_SESSION['usuario']['calle'])){echo $_SESSION['usuario']['calle'];} echo ">";     
     echo'<label for="numeroPortal">Número del portal:</label>';
@@ -257,7 +263,7 @@ function displayStep4($missingFields){
     echo'<form name="registro" action="registrarse.php" method="POST" id="registro_4" enctype="multipart/form-data">';
         echo'<fieldset>';
         	echo'<legend>Personaliza tu perfil, sube una foto tuya si quieres.</legend>';
-    echo"<input type='hidden' name='step' value='4'>";
+    echo"<input type='hidden' name='step' value='step4'>";
     //Modificamos en php.ini y en el formulario el maximo tamaño del archivo
     echo'<input type="hidden" name="MAX_FILE_SIZE" value="50000" />';
     echo'<label for="photo">Solo fotos .jpg</label>';
@@ -316,6 +322,7 @@ function confirmarRegistro(){
         global $user;
         $repElimarPhotos = false;
         $repElimarDatosUsuario = false;
+        $repEliminarVideos = false;
        
         
         $user = new Usuarios(array(
@@ -338,12 +345,12 @@ function confirmarRegistro(){
                 ));
                 
             $testInsert = $user->insert();
-           
+            
             $objMandarEmails = new mandarEmails();
             //comparamos con 111 print que 
             // es la respuesta esperada
             //Como medida de seguridad 'no siempre un true es buena idea'
-            // y por que se hacen 3 inserts.
+            
             if($testInsert === '111'){
              //Si todo va bien le mandamos a la pagina para confirmar registro
                 //y le mandamos un email de bienvenida
@@ -357,12 +364,12 @@ function confirmarRegistro(){
                 //Destruimos las carpetas que se creaban para almacenar sus datos
                 $repElimarPhotos = Directorios::eliminarDirectorioRegistro("../photos/".$_SESSION['usuario']['nick']);
                 $repElimarDatosUsuario = Directorios::eliminarDirectorioRegistro("../datos_usuario/".$_SESSION['usuario']['nick']);
-                
+                $repEliminarVideos = Directorios::eliminarDirectorioRegistro("../Videos/".$_SESSION['usuario']['nick']);
                  //Redirigimos a la pagina error en caso de error
                 $_SESSION['error'] = ERROR_INGRESAR_USUARIO;
                 mostrarError();
                 
-                $testTxt = Directorios::escribirErrorValidacion($user, $testInsert, $repElimarDatosUsuario, $repElimarPhotos);
+                $testTxt = Directorios::escribirErrorValidacion($user, $testInsert, $repElimarDatosUsuario, $repElimarPhotos, $repEliminarVideos);
                 
                 if($testTxt) {
                     $objMandarEmails->mandarEmailProblemasRegistro($testInsert); 
@@ -473,9 +480,10 @@ function processForm($requiredFields, $st){
                 return $test;     
                     
             case 'step2':
-                echo 'validar telefoo dice: '.ValidoForm::validaTelefono($_SESSION['usuario']['telefono']);
+                
                     if(!ValidoForm::validaTelefono($_SESSION['usuario']['telefono'])){
                         $mensaje =  TELEFONO_INCORRECTO;
+                        echo 'validar telefono '.$mensaje;
                         $test = false;
                          break;
                     }
@@ -512,6 +520,7 @@ function processForm($requiredFields, $st){
                             $test = Directorios::crearDirectorio("../photos/".$_SESSION['usuario']['nick']);
                             //Creamos el directorio con la foto de perfil
                             if($test){ $test = Directorios::crearDirectorio("../datos_usuario/".$_SESSION['usuario']['nick']);}
+                            if($test){ $test = Directorios::crearDirectorio("../Videos/".$_SESSION['usuario']['nick']);}
                             //Se mueve la foto de perfil subida
                             if($test){ $test = Directorios::moverImagen($foto, $destino);}
                             //La renombramos con su nombre
@@ -527,7 +536,7 @@ function processForm($requiredFields, $st){
                     $test = Directorios::crearDirectorio("../photos/".$_SESSION['usuario']['nick']);
                     if($test){$test = Directorios::crearDirectorio("../datos_usuario/".$_SESSION['usuario']['nick']);}
                     if($test){ $test = Directorios::copiarFoto("../datos_usuario/desconocido.jpg", $destino);}
-                  
+                    if($test){ $test = Directorios::crearDirectorio("../Videos/".$_SESSION['usuario']['nick']);}
                 }
             //Si hay algun tipo de error al subir la foto
                 //Redirigimos a la pagina de mostrar error

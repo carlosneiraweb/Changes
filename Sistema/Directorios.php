@@ -395,7 +395,7 @@ final static function eliminarDirectorioRegistro($src){
  * Ademas de los los datos de los fallos, tanto
  * de la bbdd y de los archivos creados
  */
-final static function escribirErrorValidacion(DataObj $obj, $mensaje,$repEliminarDatosUsuario, $repEliminarPhotos){
+final static function escribirErrorValidacion(DataObj $obj, $mensaje,$repEliminarDatosUsuario, $repEliminarPhotos, $repEliminarVideos){
     $test;
     
  
@@ -432,6 +432,10 @@ final static function escribirErrorValidacion(DataObj $obj, $mensaje,$repElimina
                     }
                     if($repEliminarPhotos){
                         $cuerpoMensaje .= "Ha sido eliminada la carpeta Photos de este usuario.".PHP_EOL;         
+                    }
+                    if($repEliminarVideos){
+                        $cuerpoMensaje .= "Ha sido eliminada la carpeta En Videos de este usuario.".PHP_EOL;         
+                    
                     }else{
                         $cuerpoMensaje .= "No ha sido eliminada la carpeta Photos de este usuario.".PHP_EOL;      
                     }

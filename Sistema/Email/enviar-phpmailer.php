@@ -17,8 +17,8 @@
 //	//incluyo la clase phpmailer
 //    
 //}	
-      	include_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Constantes.php');
-        include_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Email.php');
+      	include_once("../Constantes.php");
+        include_once("Email.php");
 	include_once("class.phpmailer.php");
 	include_once("class.smtp.php");
 	

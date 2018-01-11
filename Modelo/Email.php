@@ -12,6 +12,7 @@
  *  Clase que define el objeto email.
  *  Crea un objeto de email
  */
+
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/class.phpmailer.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/class.smtp.php');
@@ -29,7 +30,7 @@ class Email {
     }
     
     public function mandarEmail($destino){
-        
+     
 //$cabeceras = "MIME-Version: 1.0\r\n";
 //$cabeceras .= "Content-type: text/html; charset=iso-8859-1\r\n";
 //$cabeceras .= "From: $de \r\n";
@@ -39,13 +40,13 @@ class Email {
             $mail->IsSMTP(); //protocolo SMTP
             $mail->SMTPAuth = true;//autenticaci�n en el SMTP
             $mail->SMTPSecure =  EMAIL_SMTPSECURE;//SSL security socket layer
-            $mail->Host = EMAIL_HOST;//servidor de SMTP de gmail
+            $mail->Host = EMAIL_HOST;//servidor de SMTP 
             $mail->Port = EMAIL_PORT_EMAIL;//puerto seguro del servidor SMTP de gmail
             $mail->From = EMAIL_FROM;//Remitente del correo
             $mail->FromName = "Te lo cambio.";
             $mail->AddAddress($destino);// Destinatario
-            $mail->Username = EMAIL_USERNAME;//"administracion@ichangeityou.com";//;Aqui pon tu correo de gmail// //
-            $mail->Password = EMAIL_PASSWORD;//Aqui pon tu contrase�a de gmail
+            $mail->Username = EMAIL_USERNAME;//"administracion@ichangeityou.com";
+            $mail->Password = EMAIL_PASSWORD;
             $mail->IsHTML(true);
             //$mail->AltBody = "Usted esta viendo este mensaje simple debido a que su servidor de correo no admite formato HTML.";
             $mail->Subject = "Correo de TE LO CAMBIO"; //Asunto del correo

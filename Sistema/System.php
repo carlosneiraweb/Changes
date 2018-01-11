@@ -62,7 +62,9 @@ do {
     
     
     
-   
+/**
+ * No implementado
+ */   
 function calculoMemoria(){
   $a = exec("vmstat -n 1 2");
      

@@ -3,7 +3,7 @@ $(document).ready(function(){
         //
 	var emailReg = /^([a-zA-ZñÑ0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;
 	var passReg = /^[0-9a-zA-ZñÑ]{6,12}$/;
-        var telefReg = /^[0-9]{9,11}/;
+        var telefReg = /^[9|6]{1}([\d]{2}[-]*){3}[\d]{2}$/;  
         var codPostal = /^([1-9]{2}|[0-9][1-9]|[1-9][0-9])[0-9]{3}$/;
         
         /**
@@ -185,12 +185,12 @@ $(document).ready(function(){
      * @returns {Boolean}
      */    
     function validarTelefono(){
-       
+        
         $(".error").remove();
         var numero = $("#telefono").val();
-        numero = numero.substr(0,1);
-
-        if($("#telefono").val() === "" || !telefReg.test($("#telefono").val()) || numero === '8'){
+        var numeroTmp = numero.substr(0,1);
+        
+        if($("#telefono").val() === "" || !telefReg.test(numero)  || numeroTmp === '8'){
            
             $("#telefono").focus().after("<span class='error'><p>Introduce un telefono correcto. No se permiten números de pago del tipo 8xxxx</p></span>");
 			$('#telefono').addClass('borderColor');
