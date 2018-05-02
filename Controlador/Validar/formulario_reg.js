@@ -209,15 +209,14 @@ $(document).ready(function(){
                     if(validarPassReg2()){
                         if(validarIgualdadPass()){
                              if(validarEmail()){
-                                  
+                                   
                              }
                         }
                     }
                 }
             }    
         
-           
-      });
+        });
       
         $('#cuerpo').on("mouseover","#segundoSigReg", function(){
             if(validarNombreUsuario()){  

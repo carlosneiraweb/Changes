@@ -3,7 +3,7 @@
 define("DB_DNS", "mysql:dbname=portal");
 define("DB_USERNAME", "root");
 define("DB_PASSWORD", "");
-define("EMAIL_PASSWORD", "dkssa.26???"); 
+define("EMAIL_PASSWORD", "987654321Abc"); 
 define("EMAIL_USERNAME", "administracion@ichangeityou.com");
 define("EMAIL_SMTPAUTH", 1);
 define("EMAIL_SMTPSECURE", "ssl");

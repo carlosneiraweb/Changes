@@ -1,4 +1,10 @@
-
+/**
+ * @author Carlos Neira Sanchez
+ * @mail arj.123@hotmail.es
+ * @telefono ""
+ * @nameAndExt paginacion.php
+ * @fecha 04-oct-2016
+ */
 var  liPinchado, ultimoLi;
 
 /**

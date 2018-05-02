@@ -4,11 +4,11 @@
  * @author Carlos Neira Sanchez
  * @mail arj.123@hotmail.es
  * @telefono ""
- * @nameAndExt busquedas.php
+ * @nameAndExt Post.php
  * @fecha 04-oct-2016
  */
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/DataObj.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
 
 /**
  * Esta clase extiende de DataObject
@@ -28,7 +28,6 @@ class Post extends DataObj{
         "precio" => "",
         "Pa_queridas" => array(),
         "Pa_ofrecidas" => array(),
-        "idImagen" => "",
         "figcaption" => "",
         "fechaPost" => ""
        
@@ -60,9 +59,9 @@ class Post extends DataObj{
         $date = date('Y-m-d');
         
             $stm = $con->prepare($sql);
-            $stm->bindValue(":nick", $this->data["idUsuario"], PDO::PARAM_INT);
-            $stm->bindValue(":secciones_idsecciones", $this->data["secciones_idsecciones"], PDO::PARAM_INT);
-            $stm->bindValue(":tiempo_cambio_idTiempoCambio", $this->data["tiempo_cambio_idTiempoCambio"], PDO::PARAM_INT);
+            $stm->bindValue(":nick", $this->data["idUsuario"], PDO::PARAM_STR);
+            $stm->bindValue(":secciones_idsecciones", $this->data["secciones_idsecciones"], PDO::PARAM_STR);
+            $stm->bindValue(":tiempo_cambio_idTiempoCambio", $this->data["tiempo_cambio_idTiempoCambio"], PDO::PARAM_STR);
             $stm->bindValue(":titulo", $this->data["titulo"], PDO::PARAM_STR);
             $stm->bindValue(":comentario", $this->data["comentario"], PDO::PARAM_STR);
             $stm->bindValue(":precio", $this->data["precio"], PDO::PARAM_STR);
@@ -124,10 +123,10 @@ class Post extends DataObj{
  */
 public function insertArticulo(){
        
-        $test;
+         $test;
         try{
         $con = Conne::connect();
-        $con->beginTransaction();
+       
          
             $sql = " INSERT INTO ".TBL_POST. "(
                    
@@ -153,14 +152,13 @@ public function insertArticulo(){
             
             $date = date('Y-m-d');
             $st = $con->prepare($sql);
-            $st->bindValue(":nick", $this->data["idUsuario"], PDO::PARAM_INT);
-            $st->bindValue(":secciones_idsecciones", $this->data["secciones_idsecciones"], PDO::PARAM_INT);
-            $st->bindValue(":tiempo_cambio_idTiempoCambio", $this->data["tiempo_cambio_idTiempoCambio"], PDO::PARAM_INT);
+            $st->bindValue(":nick", $this->data["idUsuario"], PDO::PARAM_STR);
+            $st->bindValue(":secciones_idsecciones", $this->data["secciones_idsecciones"], PDO::PARAM_STR);
+            $st->bindValue(":tiempo_cambio_idTiempoCambio", $this->data["tiempo_cambio_idTiempoCambio"], PDO::PARAM_STR);
             $st->bindValue(":titulo", $this->data["titulo"], PDO::PARAM_STR);
             $st->bindValue(":comentario", $this->data["comentario"], PDO::PARAM_STR);
             $st->bindValue(":precio", $this->data["precio"], PDO::PARAM_STR);
             $st->bindValue(":fechaPost", $date, PDO::PARAM_STR);
-
             $test = $st->execute();
             //Como estamos haciendo un commit es seguro de recuperar el ultimo id
             $sql2 = "SELECT last_insert_id() FROM ".TBL_POST;
@@ -172,8 +170,6 @@ public function insertArticulo(){
             $_SESSION['lastId'] =  $st2->fetch();
             
             
-            //Ejecutamos el commit
-            $con->commit();
             //cerramos el cursor
             $st2->closeCursor();
             
@@ -219,11 +215,15 @@ public function insertArticulo(){
             Conne::disconnect($con);
             return $test;
         }catch(Exception $ex){
-            $con->rollBack();
+          
             Conne::disconnect($con);
             echo 'El error se produce en la línea: '.$ex->getLine().'<br>';
             die("Query failed: ".$ex->getMessage());
         } 
+        
+
+        
+         
         
 
 //fin inserArticulo    
@@ -238,7 +238,7 @@ public function insertArticulo(){
     
       
     $_SESSION['idImgadenIngresar'] = $this->getValue('idImagen');
-   //echo 'en insertar idImagen: '.$_SESSION['idImgadenIngresar'].'<br>';
+   echo 'en insertar idImagen: '.$_SESSION['idImgadenIngresar'].'<br>';
     try{
         $con = Conne::connect();
         

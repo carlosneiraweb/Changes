@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * @author Carlos Neira Sanchez
+ * @mail arj.123@hotmail.es
+ * @telefono ""
+ * @nameAndExt json.php
+ * @fecha 04-oct-2016
+ */
     require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
     require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes.php');
     

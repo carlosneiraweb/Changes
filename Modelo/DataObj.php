@@ -40,7 +40,9 @@ abstract class DataObj {
    
     /**
      * metodo public
-     * Acepta un valor de campo y devuelve su valor
+     * Acepta un valor de campo y devuelve su valor.
+     * Este metodo puede ser usado qn cualquier 
+     * clase que extienda DataObj
      * @param type $field
      * @return type
      */

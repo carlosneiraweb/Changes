@@ -4,7 +4,7 @@
  * @author Carlos Neira Sanchez
  * @mail arj.123@hotmail.es
  * @telefono ""
- * @nameAndExt busquedas.php
+ * @nameAndExt Email.php
  * @fecha 04-oct-2016
  */
 

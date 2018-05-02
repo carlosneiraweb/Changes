@@ -46,9 +46,6 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
         <script src="./buscador.js"></script>
         <script src="../Controlador/Elementos_AJAX/paginacion.js"></script>
         <script src="../Controlador/Elementos_AJAX/principal.js"></script>
-        
-        
-         
         <script src="./subirComentario.js"></script>
         
     <!--Para navegadores viejos-->

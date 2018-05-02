@@ -73,20 +73,34 @@ insert into tiempo_cambio (tiempo) values ('Por un fin de semana');
 insert into tiempo_cambio (tiempo) values ('Por una semana');
 insert into tiempo_cambio (tiempo) values ('Por una temporada');
 insert into tiempo_cambio (tiempo) values ('Para siempre');
-insert into tiempo_cambio (tiempo) values ('Otros');
+insert into tiempo_cambio (tiempo) values ('Otros');	
 
 
+insert into subsecciones (secciones_idSecciones, nombreSubseccion)
+	values 
+		(1, 'masajes');
+  
+insert into subsecciones (secciones_idSecciones, nombreSubseccion)
+	values 
+		(1, 'clases de Ingles');
 
-
-POST USUARIOS CON ID 1-2-3, las imagenes se añaden luego a los directorios
-
-insert into post (idUsuario, secciones_idsecciones, tiempo_cambio_idTiempoCambio, titulo, comentario, precio, fechaPost) values
-(3, 6, 7, 'PPPDFGU vwyw', 'YWERNGVWEWVWWMVWERYGLWGWV', 'hehgwherguwehgw',10, curdate()); 
-
-
-
-
-
-////imagenes hasta 60 empiezan en el id 9
-insert into imagenes (post_idPost, ruta, texto) values (9, 'demo', 'sssssssss');
-
+insert into subsecciones (secciones_idSecciones, nombreSubseccion)
+	values 
+		(1, 'Ñiñera');
+        
+        
+insert into subsecciones (secciones_idSecciones, nombreSubseccion)
+	values 
+		(2, 'Excursiones');
+        
+insert into subsecciones (secciones_idSecciones, nombreSubseccion)
+	values 
+		(2, 'Actuaciones');
+	
+insert into subsecciones (secciones_idSecciones, nombreSubseccion)
+	values 
+		(3, 'Pintar Casas');
+        
+insert into subsecciones (secciones_idSecciones, nombreSubseccion)
+	values 
+		(3, 'Arreglar jardines');

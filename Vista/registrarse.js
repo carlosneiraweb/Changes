@@ -7,7 +7,7 @@
  */
 
     
-    var  petGeReg, objGeReg, petProReg, objProReg, PGR, PPR,  milisegundos = 1000, ConexionAJAX;
+    var  petGeReg, objGeReg, petProReg, objProReg, PGR, PPR,  milisegundos = 1000;
             
 
                 //Creamos una instancia de la clase CONEXION_AJAX
@@ -56,11 +56,11 @@ function cargarPeticionRegistrarse(tipo, parametros){
                 if(tipo === 'PGR'){
                     objGeReg = JSON.parse(petGeReg.responseText);
                      //Eliminamos el objeto conexion
-                    //delete ConRegistrarse;
+                    delete ConRegistrarse;
                 } else if(tipo === 'PPR'){
                     objProReg = JSON.parse(petProReg.responseText);
                      //Eliminamos el objeto conexion
-                   // delete ConRegistrarse;
+                    delete ConRegistrarse;
                 } 
                 
             } catch(e){
@@ -173,7 +173,7 @@ function agregarFormularioCondiciones(){
 'No nos hacemos responsables del contenido publicado por nuestros usuarios.Este contenido es responsabilidad exclusiva de las personas físicas que lo publican. <br />'+
 'El usuario es el único responsable del uso que se haga de su cuenta. Ten la contraseña en alta confidencialidad.Si detectas un uso de tú cuenta diferente del tuyo, ponte en contacto'+ 
 ' de inmediato con un administrador mandando un correo a esta dirección: administracion@xxxx.com. <br />'+
-'No compartimos información personal con empresas, organizaciones ni particulares que no tengan relación con nosotros. <br />'+
+'Podemos usar o  compartir información personal con empresas, organizaciones o particulares que no tengan relación con nosotros. <br />'+
 'Tienes que ser mayor de edad para usar este portal.  <br />'+
 'No nos hacemos responsables de ninguna perdida, estafa, robo etc al usar este portal entre los usuarios del mismo.'+
 'En ningún caso se responderá por otro tipo de daños, ya sean efectivos, indirectos, o de cualquier otro tipo, ni por el lucro que hubiera podido sufrir el anunciante.  <br />'+

@@ -1,8 +1,10 @@
 <?php
 /**
- * Description of ComentarioPost
- * Esta clase es un objeto Comentario
- * @author carlos
+ * @author Carlos Neira Sanchez
+ * @mail arj.123@hotmail.es
+ * @telefono ""
+ * @nameAndExt ComentarioPost.php
+ * @fecha 04-oct-2016
  */
 
 
