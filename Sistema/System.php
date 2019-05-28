@@ -5,7 +5,15 @@
  * Description of System
  * Esta clase se encarga de todos los metodos
  * relacionados con el Systema
- * @author carlos
+ * 
+ */
+
+/**
+ * @author Carlos Neira Sanchez
+ * @mail arj.123@hotmail.es
+ * @telefono ""
+ * @nameAndExt formulario_login.js
+ * @fecha 04-oct-2016
  */
 class System {
     

@@ -3,14 +3,20 @@
 define("DB_DNS", "mysql:dbname=portal");
 define("DB_USERNAME", "root");
 define("DB_PASSWORD", "");
-define("EMAIL_PASSWORD", "987654321Abc"); 
+define("EMAIL_PASSWORD", "987654321Abc.dkssa.26"); 
 define("EMAIL_USERNAME", "administracion@ichangeityou.com");
 define("EMAIL_SMTPAUTH", 1);
-define("EMAIL_SMTPSECURE", "ssl");
+define("EMAIL_SMTPSECURE", "SSL");
 define("EMAIL_HOST", "smtp.strato.com");//""
 define("EMAIL_PORT_EMAIL", 465);
 
-
+/**
+ * @author Carlos Neira Sanchez
+ * @mail arj.123@hotmail.es
+ * @telefono ""
+ * @nameAndExt Constantes.php
+ * @fecha 04-oct-2016
+ */
 
 
 ///////////////////
@@ -32,17 +38,17 @@ define("PAGE_SIZE", 2);
 define("LIMIT_RETURN_SEARCH", 25);
 define("ERROR", "Revisa tu formulario.");
 define("ERROR_VALIDACION_LOGIN", '<h5>El usuario o la contraseña <br> <strong>no son validos</strong>.</h5>');
-define("NOMBRE_USUARIO_EXISTE", '<h5>El nombre de usuario ya existe</h5>');
-define("PASSWORD_INCORRECTO", '<h5>El password introducido no cumple las normas</h5>'.
+define("ERROR_NOMBRE_USUARIO_EXISTE", '<h5>El nombre de usuario ya existe</h5>');
+define("ERROR_PASSWORD_INCORRECTO", '<h5>El password introducido no cumple las normas</h5>'.
                                 "<h5>Recuerda que solo acepta letras y números</h5>".
                                 "<h5>Un minimo de 6 y máximo 12 caracteres.</h5>");
-define("IGUALDAD_PASSWORD", '<h5>Los passwords no son iguales</h5>'.
+define("ERROR_IGUALDAD_PASSWORD", '<h5>Los passwords no son iguales</h5>'.
                                 '<h5>Por favor revisalos</h5>');
-define("EMAIL_EXISTE", '<h5>El email utilizado ya existe</h5>');
-define("EMAIL_INCORRECTO", '<h5>El email no es valido</h5>'.
+define("ERROR_EMAIL_EXISTE", '<h5>El email utilizado ya existe</h5>');
+define("ERROR_EMAIL_INCORRECTO", '<h5>El email no es valido</h5>'.
                           '<h5>Por favor compruebalo.</h5>');
-define("TELEFONO_INCORRECTO", '<h5>El teléfono introducido es incorrecto.</h5>');
-define("CODIGO_POSTAL", "<h5>El código postal no es correcto.</h5>");
+define("ERROR_TELEFONO_INCORRECTO", '<h5>El teléfono introducido es incorrecto.</h5>');
+define("ERROR_CODIGO_POSTAL", "<h5>El código postal no es correcto.</h5>");
 define("ACUERDO_CONDICIONES", '<h5>Debes de estar de acuerdo con nuestras condiciones</h5>');
 define("ERROR_FORMATO_FOTO", '<h5>Únicamente aceptamos imagenes .jpg</h5>');
 define("ERROR_TAMAÑO_FOTO", '<h5>El tamaño de la foto supera el máximo permitido.</h5>');

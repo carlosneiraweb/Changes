@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * @author Carlos Neira Sanchez
+ * @mail arj.123@hotmail.es
+ * @telefono ""
+ * @nameAndExt Usuarios.php
+ * @fecha 04-oct-2016
+ */
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/mandarEmails.php');
@@ -399,7 +405,7 @@ public final function insert(){
             
             $stHash->closeCursor();
             Conne::disconnect($conHash);
-            //Comprobamos que el password pasado corresponde al hash de la bbdd
+            
             if ($rowHash[0]) {
                 return $rowHash[0];
             }else{

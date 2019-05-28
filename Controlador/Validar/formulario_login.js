@@ -1,3 +1,12 @@
+/**
+ * @author Carlos Neira Sanchez
+ * @mail arj.123@hotmail.es
+ * @telefono ""
+ * @nameAndExt formulario_login.js
+ * @fecha 04-oct-2016
+ */
+
+
 $(document).ready(function(){
        
 	var passReg = /^[0-9a-zA-Z]{6,12}$/;
@@ -69,7 +78,7 @@ $(document).ready(function(){
 	
         /**
          * @description Elimina la clase oculto y añade
-         * la clase mostrar_formulario
+         * la clase mostrar_formulario 
          * @returns {undefined}
          */
         function mostrarLogin(){

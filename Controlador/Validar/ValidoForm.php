@@ -1,4 +1,13 @@
 <?php
+/**
+ * @author Carlos Neira Sanchez
+ * @mail arj.123@hotmail.es
+ * @telefono ""
+ * @nameAndExt validoForm.php
+ * @fecha 04-oct-2016
+ */
+
+
 
 /**
  * Clase encargada de validar los datos introducidos

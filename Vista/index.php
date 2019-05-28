@@ -39,7 +39,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
         <script src="../Controlador/Validar/formulario_login.js"></script>
         <script src="../Controlador/redireccionar.js"></script>
         <script src="../Controlador/menu.js"></script>
-        <script src="../Controlador/script.js"></script>
+        <!--<script src="../Controlador/script.js"></script>-->
         <script src="../Controlador/Elementos_AJAX/CONEXION_AJAX.js"></script>
         <script src="./cargarPostsElegido.js"></script>
         <script src="./mostrarPosts.js"></script>
@@ -221,7 +221,7 @@ function processForm(){
        
     } else {       
         $_SESSION["user"] = $loggedInMember;
-       
+        //var_dump($_SESSION["user"]);
         unset($loggedInMember);
         session_write_close();   
        

@@ -3,7 +3,13 @@ session_start();
 function mostrarError(){
     header('Location: mostrar_error.php');
 }
-
+/**
+ * @author Carlos Neira Sanchez
+ * @mail arj.123@hotmail.es
+ * @telefono ""
+ * @nameAndExt registrarse.php
+ * @fecha 04-oct-2016
+ */
 //No podemos usar el redireccionamiento de javascript por que 
     //Utilizamos la misma url para mostrar los pasos
 function volverAnterior(){
@@ -356,7 +362,7 @@ function confirmarRegistro(){
                 //y le mandamos un email de bienvenida
                confirmarRegistro();
                //este metodo destruye el objeto $user
-               $objMandarEmails->mandarEmailWelcome($user);
+              $objMandarEmails->mandarEmailWelcome($user);
             //Si algo ha ido mal le mandamos a la pagina mostrar Error
                //Y nos mandamos un email con los datos introducidos por el usuario  y el error SQL
             }else{
@@ -372,7 +378,7 @@ function confirmarRegistro(){
                 $testTxt = Directorios::escribirErrorValidacion($user, $testInsert, $repElimarDatosUsuario, $repElimarPhotos, $repEliminarVideos);
                 
                 if($testTxt) {
-                    $objMandarEmails->mandarEmailProblemasRegistro($testInsert); 
+                   // $objMandarEmails->mandarEmailProblemasRegistro($testInsert); 
                 }
                   //Destruimos el objeto user
                     unset($user);
@@ -456,23 +462,23 @@ function processForm($requiredFields, $st){
                 //En caso de que exista el nombre de usuario o email
                 //Los passwords se repitan o el email sea incorrecto
                     if($user->getByUserName($_SESSION['usuario']['nick'])){
-                        $mensaje = NOMBRE_USUARIO_EXISTE;
+                        $mensaje = ERROR_NOMBRE_USUARIO_EXISTE;
                         $test = false;
                         break;
                     }elseif(!ValidoForm::validarPassword($_SESSION['usuario']['password'])){
-                        $mensaje =  PASSWORD_INCORRECTO;
+                        $mensaje =  ERROR_PASSWORD_INCORRECTO;
                         $test = false;
                         break;
                     }elseif(!ValidoForm::validarIgualdadPasswords($_SESSION['usuario']['password'], $_POST['passReg2'])){
-                        $mensaje =  IGUALDAD_PASSWORD;
+                        $mensaje =  ERROR_IGUALDAD_PASSWORD;
                         $test = false;
                         break;
                     }elseif(!ValidoForm::validarEmail($_SESSION['usuario']['email'])){
-                        $mensaje = EMAIL_INCORRECTO;
+                        $mensaje = ERROR_EMAIL_INCORRECTO;
                         $test = false;
                         break;
                     }elseif($user->getByEmailAddress($_SESSION['usuario']['email'])){
-                        $mensaje = EMAIL_EXISTE;
+                        $mensaje = ERROR_EMAIL_EXISTE;
                         $test = false;
                         break;
                     } 
@@ -482,7 +488,7 @@ function processForm($requiredFields, $st){
             case 'step2':
                 
                     if(!ValidoForm::validaTelefono($_SESSION['usuario']['telefono'])){
-                        $mensaje =  TELEFONO_INCORRECTO;
+                        $mensaje =  ERROR_TELEFONO_INCORRECTO;
                         echo 'validar telefono '.$mensaje;
                         $test = false;
                          break;
@@ -495,7 +501,7 @@ function processForm($requiredFields, $st){
                     
                     if(!ValidoForm::validarCodPostal($_SESSION['usuario']['codPostal'])){
                         
-                        $mensaje = CODIGO_POSTAL;
+                        $mensaje = ERROR_CODIGO_POSTAL;
                         $test = false;
                          break;
                     }

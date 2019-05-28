@@ -25,7 +25,7 @@ insert into provincias (nombre) values('Huelva');
 insert into provincias (nombre) values('Huesca');
 insert into provincias (nombre) values('Illes Balears');
 insert into provincias (nombre) values('Jaen');
-insert into provincias (nombre) values('A Coruña');
+insert into provincias (nombre) values('A Coruï¿½a');
 insert into provincias (nombre) values('La Rioja');
 insert into provincias (nombre) values('Leon');
 insert into provincias (nombre) values('Lleida');
@@ -68,7 +68,7 @@ insert into secciones (nombre_seccion) values ('Cultura');
 
 
 insert into tiempo_cambio (tiempo) values ('No importa');
-insert into tiempo_cambio (tiempo) values ('Por un par de días');
+insert into tiempo_cambio (tiempo) values ('Por un par de dï¿½as');
 insert into tiempo_cambio (tiempo) values ('Por un fin de semana');
 insert into tiempo_cambio (tiempo) values ('Por una semana');
 insert into tiempo_cambio (tiempo) values ('Por una temporada');
@@ -78,7 +78,7 @@ insert into tiempo_cambio (tiempo) values ('Otros');
 
 
 
-POST USUARIOS CON ID 1-2-3, las imagenes se añaden luego a los directorios
+POST USUARIOS CON ID 1-2-3, las imagenes se aï¿½aden luego a los directorios
 
 insert into post (idUsuario, secciones_idsecciones, tiempo_cambio_idTiempoCambio, titulo, comentario, precio, fechaPost) values
 (3, 6, 7, 'PPPDFGU vwyw', 'YWERNGVWEWVWWMVWERYGLWGWV', 'hehgwherguwehgw',10, curdate()); 
@@ -90,3 +90,5 @@ insert into post (idUsuario, secciones_idsecciones, tiempo_cambio_idTiempoCambio
 ////imagenes hasta 60 empiezan en el id 9
 insert into imagenes (post_idPost, ruta, texto) values (9, 'demo', 'sssssssss');
 
+
+///hola
