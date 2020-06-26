@@ -76,7 +76,7 @@ if(isset($_POST['inicio'])){
          
                 $sqlPost = "select p.idPost, u.nick, prov.nombre AS provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, p.titulo, img.ruta, p.comentario, tc.tiempo as tiempoCambio
 from post p
-inner join usuario u on u.idUsuario= p.idUsuario
+inner join usuario u on u.idUsuario= p.idUsuarioPost
 inner join direccion dire on dire.idDireccion = u.idUsuario
 inner join provincias prov on prov.idProvincias = dire.provincias_idprovincias
 inner join imagenes img on img.post_idPost = :idPost 
@@ -119,12 +119,12 @@ where p.idPost = :idPost limit 1";
              $stm5->closeCursor();
              
             //Recuperamos las palabras queridas o buscadas del usuario
-             $sql ="select palabra as pbsQueridas from pbs_queridas where idPost = ".$idImgSLD[0].";";
+             $sql ="select palabrasBuscadas as pbsQueridas from busquedas_pbs_buscadas where idPost_queridas = ".$idImgSLD[0].";";
              $stm6 = $conPost->query($sql);
              $tmpPbsBuscadas = $stm6->fetchAll();
              $stm6->closeCursor();
              array_push($rutaTextoPbsBuscadas, $tmpRutaTexto, $tmpPbsBuscadas);
-             
+             //var_dump($tmpPbsBuscadas);
              echo json_encode($rutaTextoPbsBuscadas);
         
     }

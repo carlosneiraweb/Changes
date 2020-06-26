@@ -6,25 +6,7 @@ $(document).ready(function(){
         var telefReg = /^[9|6]{1}([\d]{2}[-]*){3}[\d]{2}$/;  
         var codPostal = /^([1-9]{2}|[0-9][1-9]|[1-9][0-9])[0-9]{3}$/;
         
-        /**
-         * @description Validamos que el nombre de  
-         * usuario no este vacio
-         * @returns {Boolean}
-         */
-        function validarNombreUsuario(){
-            //$(".error").remove();
-                if($("#nombre").val() === ""){
-			$("#nombre").focus().after("<span class='error'><p>Introduce un nombre de usuario.</p></span>");
-			$('#nombre').addClass('borderColor');
-                        return false;
-                    }else{
-                        return true;
-                    }
-            
-        //fin validarNombreUsuario    
-        }
-        
-      /**
+              /**
        * @description Validamos el nick  usuario no este vacio
        * @returns {Boolean}
        */                                            
@@ -33,8 +15,8 @@ $(document).ready(function(){
 		//Comprobamos que los campos no estan vacios
                 var nick = $("#nick").val();
                     if( nick === ""){
-                        $("#nick").focus().after("<span class='error'><p>Introduce un nick de usuario.</p></span>");
-			$('#nick').addClass('borderColor');
+                        $("#nick").focus();
+			$("label[for='nick']").css('color', 'red');
                         return false;
                     } else{ 
                         return true;
@@ -42,17 +24,18 @@ $(document).ready(function(){
                 
         //fin validarNick
         }
-        
+    
+      
         /**
          * @description Validamos el primer password
          * @returns {Boolean}
          */
         function validarPassReg1(){
-           // $(".error").remove();
+           
                 var contenido = $("#password").val();
                    if (!contenido.match(passReg)) {
-                       $("#password").focus().after("<span class='error'><p>El password solo puede tener letras y números, minimo 6 y máximo 12.</p></span>");
-                       $('#password').addClass('borderColor');
+                       $("#password").focus();
+                       $("label[for='password']").css('color', 'red');
                         return false;
                     }else{
                         return true;
@@ -69,11 +52,11 @@ $(document).ready(function(){
          * @returns {Boolean}
          */
         function validarPassReg2(){
-            //$(".error").remove();
+           
                 var contenido = $("#passReg2").val();
                    if (!contenido.match(passReg)) {
-                       $("#passReg2").focus().after("<span class='error'><p>El password solo puede tener letras y números, minimo 6 y máximo 12.</p></span>");
-			$('#passReg2').addClass('borderColor');
+                       $("#passReg2").focus();
+                       $("label[for='passReg2']").css('color', 'red');
                         return false;
                     }else{
                         return true;
@@ -93,8 +76,8 @@ $(document).ready(function(){
                 var pass1 = $('#password').val();
                 var pass2 = $('#passReg2').val();
                 if (pass1 !== pass2){
-			$("#password").focus().after("<span class='error'><p>Lo sentimos pero los password no coinciden.</p></span>");
-			$('#password').addClass('borderColor');
+			$("#password").focus();
+			$("label[for='password']").css('color', 'red');
                     return false;
                 } else{
                     return true;
@@ -102,6 +85,26 @@ $(document).ready(function(){
          
         //fin validarIgualdadPass    
         }
+        
+         /**
+         * @description Validamos que el nombre de  
+         * usuario no este vacio
+         * @returns {Boolean}
+         */
+        function validarNombreUsuario(){
+           
+                if($("#nombre").val() === ""){
+			$("#nombre").focus();
+			$("label[for='nombre']").css('color', 'red');
+                        return false;
+                    }else{
+                        return true;
+                    }
+            
+        //fin validarNombreUsuario    
+        }
+        
+        
         
         /**
          * @description Validamos el email
@@ -111,8 +114,8 @@ $(document).ready(function(){
             //$(".error").remove();
             //emailReg.test($("#email").val()
                 if($("#email").val() === "" || !emailReg.test($('#email').val().trim()) ){
-			$("#email").focus().after("<span class='error'><p>Introduce un email correcto.</p></span>");
-			$('#email').addClass('borderColor');
+			$("#email").focus();
+                        $("label[for='email']").css('color', 'red');
                         return false;
                     }else{
                         return true;
@@ -131,8 +134,8 @@ $(document).ready(function(){
             $(".error").remove();        
             
                 if ($("#nombre").val() === ""){
-                    $("#nombre").focus().after("<span class='error'><p>Tienes que introducir un nombre</p></span>");
-			$('#nombre').addClass('borderColor');
+                        $("#nombre").focus();
+			$("label[for='nombre']").css('color', 'red');
                         return false;
                     }else{
                         return true;
@@ -149,8 +152,8 @@ $(document).ready(function(){
             // 
 
                 if ($("#ciudad").val() === "" ){
-                    $("#ciudad").focus().after("<span class='error'><p>Tienes que introducir una ciudad o pueblo.</p></span>");
-			$('#ciudad').addClass('borderColor');
+                        $("#ciudad").focus();
+                        $("label[for='ciudad']").css('color', 'red');
                         return false;
                     }else{
                         return true;
@@ -169,8 +172,8 @@ $(document).ready(function(){
             // 
 
                 if ($("#codPostal").val() === "" || !codPostal.test($("#codPostal").val())){
-                    $("#codPostal").focus().after("<span class='error'><p>Tienes que introducir un código postal correcto.</p></span>");
-			$('#codPostal').addClass('borderColor');
+                    $("#codPostal").focus();
+                    $("label[for='codPostal']").css('color', 'red');
                         return false;
                     }else{
                         return true;
@@ -192,8 +195,8 @@ $(document).ready(function(){
         
         if($("#telefono").val() === "" || !telefReg.test(numero)  || numeroTmp === '8'){
            
-            $("#telefono").focus().after("<span class='error'><p>Introduce un telefono correcto. No se permiten números de pago del tipo 8xxxx</p></span>");
-			$('#telefono').addClass('borderColor');
+                $("#telefono").focus();
+                $("label[for='telefono']").css('color', 'red');
                         return false;
                     }else{
                         return true;
@@ -202,20 +205,21 @@ $(document).ready(function(){
         //fin validarTelefono    
         }
             
-    
-        $("#cuerpo").on('mouseover', '#primeroSigReg',function(){
-            if (validarNickReg()) {
+         
+        $("#primeroSigReg").on('mouseover',function(){
+            if(validarNickReg()){
                 if (validarPassReg1()) {
                     if(validarPassReg2()){
-                        if(validarIgualdadPass()){
-                             if(validarEmail()){
-                                   
+                        if(validarNombreUsuario()){
+                            if(validarIgualdadPass()){
+                                if(validarEmail()){
+                                }  
                              }
                         }
                     }
                 }
-            }    
-        
+            }
+            
         });
       
         $('#cuerpo').on("mouseover","#segundoSigReg", function(){
@@ -233,30 +237,25 @@ $(document).ready(function(){
             
         });
         
-        $("#registro_1").on('keypress', '#passReg2',function(){
-           $('.error').remove();
-      });
-        $("#registro_1").on('keypress', '#password',function(){
-           $('.error').remove();
-      });
-        $("#registro_1").on('keypress', '#nick',function(){
-           $('.error').remove();
-      });
-        $("#registro_1").on('keypress', '#email',function(){
-           $('.error').remove();
-      });
-        $("#registro_2").on('keypress', '#nombre',function(){
-           $('.error').remove();
-      });
-        $("#registro_2").on('keypress', '#telefono',function(){
-           $('.error').remove();
-      });
-        $("#registro_3").on('keypress', '#ciudad',function(){
-           $('.error').remove();
-      });
-        $("#registro_3").on('keypress', '#codPostal',function(){
-           $('.error').remove();
-      });
+        
+               /**
+             * Metodo que cambia color de la label
+             * al no dar por buena la validacion
+             * 
+             */
+         
+            $('#form_registro_1, input').keydown(function() { 
+            $(this).prev().prev().css('color', 'black');
+            });
+       
+            /**
+             * Metodo que cambia al
+             * color original la label
+             */
+       
+            $('#form_registro_1, input').blur(function() { 
+            $(this).prev().prev().css('color', '#0C0792');
+            });
         
 //fin formulario_reg        
 });

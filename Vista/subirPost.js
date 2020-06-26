@@ -9,20 +9,16 @@
 
 var objSeccion, petSeccion, objTiempoCambio, petTiempoCambio,
     objLastImg, petLastImg, petImgEliminar, objImgEliminar, imgCargar,
-    idPost, PS = null, PT = null, milisegundos = 700;
+    idPost, PS = null, PT = null;
 
-      //Creamos una instancia de la clase CONEXION_AJAX
-    //Nos devuelve una conexion AJAX y propiedades 
-        var ConSubPost  = new Conexion();
-        
- if(typeof(t) === "undefined"){ 
-        var t = 0;
-        setInterval('parpadearSubirPost()', milisegundos);
-    }
+      
     
+                //Creamos una instancia de la clase CONEXION_AJAX
+                //Nos devuelve una conexion AJAX y propiedades 
+                    var ConSubPost = new Conexion();
     
 window.onload=function(){
-    
+    //Section donde se cargaran las imagenes que el usuario valla subiendo
     imgCargar = document.getElementById('cnt_img');
 
         if (PS !== null) {
@@ -33,30 +29,15 @@ window.onload=function(){
             cargarPeticionSubirPost("PT", "opcion=PT"); //Peticion tiempoCambio
             PT = null;
         }
-     cargarPeticionSubirPost("UI", "opcion=UI&idPost="+idPost);   
+     //Esta variable se instancia en subir_posts.php
+     //Cada vez que subimos una foto nueva en el post
+     //Estan se van mostrando en el formulario
+     //Para ir recuperandolas de la bbdd necesitamos el idPost
+     cargarPeticionSubirPost("ImagenNueva", "opcion=ImagenNueva&idPost="+idPost);   
      
 
  };
- 
-/****METODO PARA HACER PARPADEAR LOS CAMPOS OBLIGATORIOS AL REGISTRARSE*********
 
-/**
- * @description Este metodo oculta el gif  los campos obligatorios
- */
-
-function parpadearSubirPost() {     
-    
-    var cociente = t % 2;
-    if(cociente === 1){
-       $('span.obligatorio').addClass('oculto');
-    } else {
-       $('span.obligatorio').removeClass('oculto'); 
-    }
-    t++;
-    
-    
-//fin parpadear                    
-}
 
 
 function cargarPeticionSubirPost(tipo, parametros){
@@ -78,14 +59,14 @@ function cargarPeticionSubirPost(tipo, parametros){
            petTiempoCambio.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petTiempoCambio.send(parametros);
                 break;
-        case('UI'):
+        case('ImagenNueva'):
            petLastImg = ConSubPost.conection();
            petLastImg.onreadystatechange = procesaRespuestaPeticionElementos;
            petLastImg.open('POST', "../Controlador/Elementos_AJAX/imagenesAlSubirPost.php?", true);
            petLastImg.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petLastImg.send(parametros);
                 break;
-        case('PMI'):
+        case('ImagenEliminarNueva'):
            petImgEliminar = ConSubPost.conection();
            petImgEliminar.onreadystatechange = procesaRespuestaPeticionElementos;
            petImgEliminar.open('POST', "../Controlador/Elementos_AJAX/imagenesAlSubirPost.php?", true);
@@ -108,11 +89,11 @@ function cargarPeticionSubirPost(tipo, parametros){
                     objTiempoCambio = JSON.parse(petTiempoCambio.responseText);
                     //Eliminamos el objeto conexion
                     delete ConSubPost;
-                }else if(tipo === 'UI'){
+                }else if(tipo === 'ImagenNueva'){
                     objLastImg = JSON.parse(petLastImg.responseText);
                     //Eliminamos el objeto conexion
                     delete ConSubPost;
-                }else if(tipo === 'PMI'){
+                }else if(tipo === 'ImagenEliminarNueva'){
                     objImgEliminar = JSON.parse(petImgEliminar.responseText);
                     //Eliminamos el objeto conexion
                     delete ConSubPost;
@@ -121,7 +102,7 @@ function cargarPeticionSubirPost(tipo, parametros){
             } catch(e){
                 switch(tipo){ 
                    
-                    case 'UI':
+                    case 'ImagenNueva':
                         
                          imgCargar.innerHTML = "<h3>Inserta una imagen nueva.</h3>";
                             break;
@@ -139,10 +120,10 @@ function cargarPeticionSubirPost(tipo, parametros){
                     case 'PT':
                     cargarTiempoDeCambio(objTiempoCambio);
                         break;
-                case 'UI':
+                case 'ImagenNueva':
                     cargarUltimaImagen(objLastImg);
                         break;
-                 case 'PMI':
+                 case 'ImagenEliminarNueva':
                     cargarImgEliminar(objImgEliminar);
                         break;
                
@@ -196,28 +177,31 @@ function cargarTiempoDeCambio(objTiempoCambio){
  *      desde el metodo cargarUltimaImgen
  */
 function mandarId(id){
-    
-    cargarPeticionSubirPost("PMI", "opcion=PMI&idPost="+idPost+"&ruta="+id); //Peticion IMAGEN A ELIMINAR
+     //Peticion IMAGEN A ELIMINAR
+    cargarPeticionSubirPost("ImagenEliminarNueva", "opcion=ImagenEliminarNueva&idPost="+idPost+"&ruta="+id);
 }
 
 
 /**
 * @description 
 * Metodo que muestra la ultima imagen subida por el usuario
-
+* al hacer un nuevo Posts. Esta imagen se van insertando en el formulario
+* al querer poner un post nuevo
  * @param {type} objLastImg
  * @returns {undefined} */
 function cargarUltimaImagen(objLastImg){
-    
+       //alert(objLastImg[0].ruta);
         var sep = '<section id="capturar" class="contenedor_imagenes" >';
         for (var i= 0 ; i < objLastImg.length; i++){
             //Evitamos cualquier posible error
-                if(objLastImg[i].ruta === "demo"){
+                if(objLastImg[i].ruta === "demo"){ 
                    //No mostramos la imagen /demo. Esta imagen aqui es opaca al usuario
                    //Solo se muestra en la pagina principal si el usuario no
                    //Ha subido ninguna foto al Post.
                     continue;
                 }else{
+                    //Al pinchar sobre este figure se nos abrira un nuevo 
+                    //formulario por si debemos modificar o borrar
                     sep += "<figure class='img_usuario_tmp'>";
                     sep += '<img src="../photos/'+objLastImg[i].ruta+'.jpg" id="'+objLastImg[i].ruta+'" alt="imagen subida por el usuario" title="Pinchame para ver la información.">';
                     sep += '</figure>';
@@ -231,9 +215,14 @@ function cargarUltimaImagen(objLastImg){
         /* Si el usuario hace click sobre una imagen le mostramos la imagen y descripcion
          * Por si desea eliminar o actualizar
          */
-        //$(".img_usuario_tmp").click(function(){
+       
          $('#cuerpo').on('click','.img_usuario_tmp', function(e){
             var id = $(this).children('img').attr('id');
+            //Atributo id campo de bbdd => carlos/54/1,  
+            //De esta forma si el usuario elimina la imagen 
+            //Nosotros podemos elimarla de la bbdd
+
+
             mandarId(id);
             
     });
@@ -247,12 +236,12 @@ function cargarUltimaImagen(objLastImg){
 /**
 * Metodo que muestra la imagen seleccionada por el usuario
 * Para poder modificar la descripcion o eliminar la imagen
-* del post
+* del post mientras se esta subiendo
  * @param {type} objImgEliminar
  * @returns {undefined} 
  * */
 function cargarImgEliminar(objImgEliminar){
-        //alert('objEliminar'+objImgEliminar[0]);
+        //alert('objEliminar'+objImgEliminar[0].ruta);
     //Mostramos la capa opca de fondo
     $("#ocultar").removeClass('oculto').addClass('mostrar_transparencia');
     $("#form_post").addClass('noOcupar');

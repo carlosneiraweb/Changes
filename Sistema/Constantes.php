@@ -3,12 +3,12 @@
 define("DB_DNS", "mysql:dbname=portal");
 define("DB_USERNAME", "root");
 define("DB_PASSWORD", "");
-define("EMAIL_PASSWORD", "987654321Abc.dkssa.26"); 
-define("EMAIL_USERNAME", "administracion@ichangeityou.com");
+define("EMAIL_PASSWORD", "dkssa.26???987654321"); 
+define("EMAIL_USERNAME", "carlosneirasanchez@gmail.com");
 define("EMAIL_SMTPAUTH", 1);
-define("EMAIL_SMTPSECURE", "SSL");
-define("EMAIL_HOST", "smtp.strato.com");//""
-define("EMAIL_PORT_EMAIL", 465);
+define("EMAIL_SMTPSECURE", "tls");
+define("EMAIL_HOST", "smtp.gmail.com");//""
+define("EMAIL_PORT_EMAIL", 587);
 
 /**
  * @author Carlos Neira Sanchez
@@ -24,17 +24,15 @@ define("EMAIL_PORT_EMAIL", 465);
 define("TBL_DATOS_USUARIO", "datos_usuario");
 define("TBL_DIRECCION", "direccion");
 define("TBL_GENERO", "genero");
-define("TBL_PBS_OFRECIDAS", "pbs_ofrecidas");
-define("TBL_PBS_QUERIDAS", "pbs_queridas");
+define("TBL_PBS_OFRECIDAS", "busquedas_pbs_ofrecidas");
+define("TBL_PBS_QUERIDAS", "busquedas_pbs_buscadas");
 define("TBL_POST", "post");
 define("TBL_PROVINCIAS", "provincias");
 define("TBL_SECCIONES", "secciones");
 define("TBL_USUARIO", "usuario");
 define("TBL_IMAGENES", "imagenes");
 define("TBL_TIEMPO_CAMBIO", "tiempo_cambio");
-define("TBL_BUSQUEDAS_PALABRAS_OFRECIDAS_PRIVADAS", "busquedas_pbs_ofrecidas_privadas");
-define("TBL_BUSQUEDAS_PALABRAS_QUERIDAS_PRIVADAS", "busquedas_pbs_queridas_privadas");
-define("PAGE_SIZE", 2);
+define("PAGE_SIZE", 3);
 define("LIMIT_RETURN_SEARCH", 25);
 define("ERROR", "Revisa tu formulario.");
 define("ERROR_VALIDACION_LOGIN", '<h5>El usuario o la contraseña <br> <strong>no son validos</strong>.</h5>');

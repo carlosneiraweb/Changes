@@ -8,13 +8,14 @@ $(document).ready(function(){
  * titulo no esta vacio
  */
 function validarTituloPost() {
-  
+     
     if($("#tituloSubirPost").val() === ""){
-			$("#tituloSubirPost").focus().after("<span class='error'><p>Introduce un título para tú anuncio.</p></span>");
-			$('#tituloSubirPost').addClass('borderColor');
-                        return false;
+        
+			$("#tituloSubirPost").focus();
+                        $("label[for='tituloSubirPost']").css('color', 'red');
+                            return false;
                     }else{
-                        return true;
+                            return true;
                     }    
 //fin validarComentarios    
 }
@@ -27,17 +28,34 @@ function validarTituloPost() {
 function validarComentarioPost() {
   
     if($("#comentarioSubirPost").val() === ""){
-			$("#comentarioSubirPost").focus().after("<span class='error'><p>Introduce un comentario para tu anuncio.</p></span>");
-			$('#comentarioSubirPost').addClass('borderColor');
-                        return false;
+			$("#comentarioSubirPost").focus();
+			$("label[for='comentarioSubirPost']").css('color', 'red');
+                            return false;
                     }else{
-                        return true;
+                            return true;
                     }
     
     
     
 //fin validarComentarios    
 }
+ 
+/**
+ * Metodo valida precio no sea
+ * un campo vacio
+ */
+
+function validoPrecioPost(){
+     if($("#precioSubirPost").val() === ""){
+			$("#precioSubirPost").focus();
+			$("label[for='precioSubirPost']").css('color', 'red');
+                            return false;
+                    }else{
+                            return true;
+                    }      
+}
+ 
+ 
  
     /**
      * @description 
@@ -47,31 +65,32 @@ function validarComentarioPost() {
      */
    
    $("#precioSubirPost").keydown(function(event) {
-       $(".error").remove();
+        
    if(event.shiftKey)
    {
         
-        $("#precioSubirPost").focus().after("<span class='error'><p>Solo puedes introducir numeros</p></span>");
-        $('#precioSubirPost').addClass('borderColor');
+        $("#precioSubirPost").focus();
+        $("label[for='precioSubirPost']").css('color', 'red');
+           
         event.preventDefault();
    }
  
-   if (event.keyCode == 46 || event.keyCode == 8)    {
+   if (event.keyCode === 46 || event.keyCode === 8)    {
    }
    else {
         if (event.keyCode < 95) {
           if (event.keyCode < 48 || event.keyCode > 57) {
                 
-                $("#precioSubirPost").focus().after("<span class='error'><p>Solo puedes introducir numeros</p></span>");
-                $('#precioSubirPost').addClass('borderColor');
+                $("#precioSubirPost");
+                $("label[for='precioSubirPost']").css('color', 'red');
                 event.preventDefault();
           }
         } 
         else {
               if (event.keyCode < 96 || event.keyCode > 105) {
                  
-                  $("#precioSubirPost").focus().after("<span class='error'><p>Solo puedes introducir numeros</p></span>");
-                  $('#precioSubirPost').addClass('borderColor');
+                  $("#precioSubirPost").focus();
+                  $("label[for='precioSubirPost']").css('color', 'red');
                   event.preventDefault();
               }
         }
@@ -84,18 +103,51 @@ function validarComentarioPost() {
 $("#form_post_1").on('mouseover', '#primeroSubirPost',function(){
             if (validarTituloPost()) {
                 if (validarComentarioPost()) {
+                    if(validoPrecioPost()){
+                        
+                    }
                 }
             }    
         
            
       });
+      
+      
+            /**
+             * Metodo que cambia color de la label
+             * al no dar por buena la validacion
+             * 
+             */
+            
+         
+            $('#tituloSubirPost').keydown(function() { 
+            $(this).prev().prev().css('color', 'black');
+            });
 
-$("#form_post").on('keypress', '#comentarioSubirPost',function(){
-           $('.error').remove();
-      });
-$("#form_post").on('keypress', '#tituloSubirPost',function(){
-           $('.error').remove();
-      });
+            
+       
+            $('#tituloSubirPost').blur(function() { 
+            $(this).prev().prev().css('color', '#0C0792');
+            });
+         
+           
+            $('#comentarioSubirPost').keydown(function() { 
+            $(this).prev().prev().css('color', 'black');
+            });
 
-
+            
+       
+            $('#comentarioSubirPost').blur(function() { 
+            $(this).prev().prev().css('color', '#0C0792');
+            });
+           
+            
+            $("#precioSubirPost").keydown(function() {      
+                $(this).css('color', 'black');  
+            });
+         
+           
+           
+            
+     
 });

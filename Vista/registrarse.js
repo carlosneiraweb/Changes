@@ -7,7 +7,7 @@
  */
 
     
-    var  petGeReg, objGeReg, petProReg, objProReg, PGR, PPR,  milisegundos = 1000;
+    var  petGeReg, objGeReg, petProReg, objProReg, PGR, PPR;
             
 
                 //Creamos una instancia de la clase CONEXION_AJAX
@@ -15,11 +15,6 @@
                     var ConRegistrarse  = new Conexion();
    
   
-                    
-if(typeof(x) === "undefined"){ 
-        var x = 0;
-        setInterval('parpadearReg()', milisegundos);
-    }                
 
 window.onload=function(){
     
@@ -209,27 +204,6 @@ function agregarFormularioCondiciones(){
      
      
     //fin agregarFormularioCondiciones
-}
-
-
-
-
-/**
- * @description Este metodo oculta el gif  los campos obligatorios
- */
-
-function parpadearReg() {     
-     
-    var cociente = x % 2;
-    if(cociente === 1){
-       $('span.obligatorio').addClass('oculto');
-    } else {
-       $('span.obligatorio').removeClass('oculto'); 
-    }
-    x++;
-    //parpadear();
-    
-//fin parpadear                    
 }
 
 

@@ -52,10 +52,10 @@ if(isset($_POST['ruta'])){
     
     
  switch ($opcImgSubirPost) {
-        case "UI":
+        case "ImagenNueva":
             $sqlImgSubirPost = "Select ruta  as ruta  from ".TBL_IMAGENES." WHERE post_idPost = '".$idPost."'";
             break;
-        case "PMI":
+        case "ImagenEliminarNueva":
             $sqlImgSubirPost = "SELECT ruta as ruta, texto as texto from ".TBL_IMAGENES." WHERE post_idPost = '".$idPost."' and ruta = '".$ruta."'";
             break;
     }   

@@ -16,42 +16,54 @@ class Directorios {
          */
         
         final static function validarFoto($foto){
-           
-            $test = true;
-            if(isset($_FILES[$foto]) and $_FILES[$foto]['error'] == UPLOAD_ERR_OK){
-               
+            $test = $_FILES[$foto]['error'];
+            if($test !== 4){
+                //Solo permitimos formatos jpg
                 if($_FILES[$foto]['type'] != 'image/jpeg'){
-                    $_SESSION['error'] = ERROR_FORMATO_FOTO;
-                    $test = false;
+                    $test = 10;
                     
-                }
-               
-            }else{
-                
-                switch ($_FILES[$foto]['error']){
+                    }
+            }
+                 
+                switch ($test){
+ 
+                    case 0:
+                        $_SESSION['error'] = null;
+                        //Todo ha ido bien
+                            break;
                     case 1:
-                        $_SESSION['error'] = ERROR_TAMAÑO_FOTO;
-                        $test = false;
-                        
+                        //Se ha sobrepasado el tamaño
+                        //indicado en php.ini
+                        $_SESSION['error'] =ERROR_TAMAÑO_FOTO;
                             break;
-                    case UPLOAD_ERR_FORM_SIZE:
-                        $_SESSION['error'] = ERROR_TAMAÑO_FOTO;
-                        $test = false;
-                        
+                    case 2:
+                        //Se ha sobrepasado el tamaño
+                        //indicado en el formulario
+                        $_SESSION['error'] =ERROR_TAMAÑO_FOTO;
                             break;
-                    case UPLOAD_ERR_NO_FILE:
+                    case 3:
+                        //El archivo ha subido parcialmente
+                        $_SESSION['error'] = ERROR_INSERTAR_FOTO;
+                            break;
+                       
+                    case 4:
+                       //No se ha subido ningun archivo
                         $_SESSION['error'] = ERROR_FOTO_NO_ELIGIDA;
-                        $test = false;
-                        
                             break;
-                    default:
-                        $_SESSION['error'] = ERROR_FOTO_GENERAL;
-                        $test = false;
                         
+                   
+                    case 10:
+                         $_SESSION['error'] = ERROR_FORMATO_FOTO;
+                            break;    
+                    
+                    
+                    default:
+                       //Otros errores 
+                        $_SESSION['error'] = ERROR_FOTO_GENERAL;     
                 }
-               
-            }    
+                
             
+               
             return $test;
            
         //fin validar foto    
@@ -129,7 +141,9 @@ class Directorios {
             if(!($handle = opendir($dir))) die("Cannot open $dir.");
              
                 while($file = readdir($handle)){
-                    clearstatcache();
+                    //Limpia la cache al poder
+                    //ser usado el directorio por el mismo script
+                    clearstatcache(); 
                                     
                     if($file != "." && $file != ".." ){
                          $count++;
@@ -192,7 +206,7 @@ class Directorios {
         * OJO ESTE METODO ES IMPORTANTE COMPRENDERLO
         * 
         *       Este metodo se utiliza para:
-        * 1º Si este metodo recibe como segundo parametro un 0
+        * 1º Si este metodo recibe como segundo parametro un 0.
         *   Si ocurre esto es que el usuario al subir imagenes para un Post a
         *   eliminado una imagen o varias. Entonces lo que sucede es que accedemos
         *   a un array con el nombre de la imagen borrada dentro de la variable 
@@ -223,7 +237,8 @@ class Directorios {
                     
                 //Nos quedamos con el numero de la imagen, tipo admin/2/4 => 4 
                 //este numero es el que interesa, y que es el nombre de la imagen + .jpg
-                //explode nos devuelve un array
+                //explode nos devuelve un array de strings
+                //como limitados el caracter pasado
                 $tmp = explode('/', $ultimaImagenBorrada );
                 
                 //OJO este parametro esta en la segunda posicion
@@ -253,17 +268,19 @@ class Directorios {
                 try{
                     
                 if($nombreViejo){
-                   //datos_usuario/admin/indice.jpg
+                 // echo 'nombre viejo '.$nombreViejo.'<br>';
                    $original = basename($nombreViejo); //quedando en => indice.jpg
-                        // echo 'Nombre viejo despues de pasar por basename '.$original.'<br>';
+                    //  echo 'Nombre viejo despues de pasar por basename '.$original.'<br>';
+                   //strstr con parametro true devuelve 
+                      //un string al encontrar la primera aparicion del string
                    $tmp = strstr($nombreViejo, $original, true);//OJO
+                   
                    //En este paso nos quedamos con la parte del directorio
-                    //datos_usuario/admin/
-                        //echo 'Nombre temporal '.$tmp.'<br>';
+                    // echo 'Nombre temporal '.$tmp.'<br>';
                    $newNombre = $tmp.$nombreRenombrado.'.jpg';
+                   //echo 'nuevo nombre '.$newNombre;
                     //Le asignamos el nuevo nombre a la parte del directorio substraida antes
-                        //datos_usuario/aaaaa/aaaaa.jpg
-                        //echo 'Nombre nuevo es: '.$nuevoNombre.'<br>';
+                        
                    rename($nombreViejo, $newNombre);
                    
                }
@@ -344,10 +361,11 @@ class Directorios {
 
 /**
  * Metodo que elimina los directorios creados 
- * cuando hay un error al registrarse.
- * Si la bbdd no hace el isert correcto ente metodo 
+ * cuando hay un error al registrarse o cualquier otro motivo.
+ * Si la bbdd no hace el insert correcto ente metodo 
  * elimina las carpetas creadas en datos_usuario y photos
  * Recive una ruta con el directorio a eliminar.
+ *  glob() busca todos los nombres de ruta que coinciden con pattern
  * Devuelve true o false
  */
 
@@ -460,38 +478,7 @@ final static function escribirErrorValidacion(DataObj $obj, $mensaje,$repElimina
 //escribirErrorValidacion   
 }
 
-/*
-* Metodo para optener la direción real 
- * del visistante
- */
-final static function ipVisitante (){
-    
-    if (isset($_SERVER["HTTP_CLIENT_IP"]))
-    {
-        return $_SERVER["HTTP_CLIENT_IP"];
-    }
-    elseif (isset($_SERVER["HTTP_X_FORWARDED_FOR"]))
-    {
-        return $_SERVER["HTTP_X_FORWARDED_FOR"];
-    }
-    elseif (isset($_SERVER["HTTP_X_FORWARDED"]))
-    {
-        return $_SERVER["HTTP_X_FORWARDED"];
-    }
-    elseif (isset($_SERVER["HTTP_FORWARDED_FOR"]))
-    {
-        return $_SERVER["HTTP_FORWARDED_FOR"];
-    }
-    elseif (isset($_SERVER["HTTP_FORWARDED"]))
-    {
-        return $_SERVER["HTTP_FORWARDED"];
-    }
-    else
-    {
-        return $_SERVER["REMOTE_ADDR"];
-    }
-    
-    //Fin optener ip real
-}
+
+
 //fin sistema    
 }

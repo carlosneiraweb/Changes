@@ -24,7 +24,8 @@ var Conexion;
 //La variable mostrar define que secciones mostrar 
     //Comprobamos sin ya se ha inicializado, sino cada vez que el script
     //se instanciase recargaria su valor.
-    if(typeof(inicio) === "undefined"){ inicio = 0; };  
+    if(typeof(inicio) === "undefined"){ inicio = 0; }; 
+    //alert(inicio);
     //Aqui guardaremos la ultima peticion JSON en un array
     //Para volver a ese punto cuando lo necesitemos
     //Osea queramos mostrar el slider del post seleccionado,
@@ -74,6 +75,7 @@ window.onload=function(){
         
         $('#cuerpo').on('click','.lanzar', function(e){
                 var src = $(this).children().attr('src');
+                //alert(src);
                 cargarPeticion("SLD", "opcion=SLD&srcImg="+src, inicio);
             });
    
@@ -139,6 +141,7 @@ function cargarPeticion(tipo, parametros){
             try{
                 if(tipo === 'PPS'){
                     objPost= JSON.parse(petPost.responseText);
+                  
                      //Eliminamos el objeto conexion
                     delete ConElementos;
                 } else if(tipo === 'SLD'){

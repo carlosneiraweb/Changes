@@ -904,7 +904,7 @@ section#foto_usuario img, .login_form_tamanyo, .registro_form_tamanyo, #ocultar,
 }
 .errorPHP{
     color: red !important;
-    font-size: 1.1em !important;
+    /*font-size: 1.1em !important;*/
     
 }
 
@@ -1098,7 +1098,10 @@ section#salir{
     z-index: 10;
 }
 
-
+.colorRojo{
+      border: 2px solid red;
+      border-bottom-color: red;
+}
 
 /*********************FIN ESTILOS SLIDER ******************************/
 

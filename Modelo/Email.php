@@ -12,10 +12,17 @@
  *  Clase que define el objeto email.
  *  Crea un objeto de email
  */
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+//require 'Exception.php';
+//require 'PHPMailer.php';
+//require 'SMTP.php';
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/class.phpmailer.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/class.smtp.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/PHPMailer.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/SMTP.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/Exception.php');
 
 class Email {
    
@@ -47,6 +54,15 @@ class Email {
             $mail->AddAddress($destino);// Destinatario
             $mail->Username = EMAIL_USERNAME;//"administracion@ichangeityou.com";
             $mail->Password = EMAIL_PASSWORD;
+            //Solucion temporal para XAMPP
+            //En Linux no es necesario
+            //En php.ini tambien se puede modificar
+            $mail->SMTPOptions = array(
+            'ssl' => array(
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+            'allow_self_signed' => true
+                                    ));
             $mail->IsHTML(true);
             //$mail->AltBody = "Usted esta viendo este mensaje simple debido a que su servidor de correo no admite formato HTML.";
             $mail->Subject = "Correo de TE LO CAMBIO"; //Asunto del correo

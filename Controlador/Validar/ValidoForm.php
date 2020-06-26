@@ -27,7 +27,7 @@
      * nos aseguramos que todo los caracteres 
      * son convertidos a caracteres html.
      * Antes quitamos los posibles espacios en blanco
-     * 
+     * Evita ataques Java al no ejecutarse como codigo
      */
     final private function htmlCaracteres($string){
         $cadena = trim($string);

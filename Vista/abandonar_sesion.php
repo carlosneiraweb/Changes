@@ -52,7 +52,7 @@ session_start();
             $_SESSION = array();
             session_destroy();
     }catch(Exception $e){
-        header('Location: mostrar_error.php');
+       echo 'abandonar sesion => '.$e->getCode();
     }    
         
         ?>

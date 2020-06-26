@@ -29,9 +29,9 @@ var numLi, totalPost, final;
 function cargarPost(objPost){
    
     //Eliminamos los posts ya mostrados y el h3 donde se muestra el total de posts
-  
+    //alert(inicio);
     if (inicio !== 1) {
-        $(".cont_post").remove();
+       // $(".cont_post").remove();
     }    
     
     //Aqui calculamos el numero final de posts mostrados

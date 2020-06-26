@@ -36,9 +36,18 @@ session_start();
        //y reseteamos la variable
         if(isset($_SESSION['error']) and $_SESSION['error'] != null){
         echo "<h3>".$_SESSION['error']."</h3>";
-        $_SESSION['error'] = null;
+        $_SESSION['error'] = 'error';
         }
-      ?>
+       
+        $ex = $_SESSION['paginaError'];
+        echo '<script type="text/javascript">';
+           //indicamos la url a javascript
+           //para redirecionarnos a la pagina correcta
+                echo 'urlVolverError = '; echo "'$ex'".';';  
+                
+        echo '</script>';
+    
+        ?>
       <h4>Puedes volver a intentarlo</h4>
       
       <input type="button" id="volver_intentar" value="Aceptar"/>

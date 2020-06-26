@@ -228,6 +228,9 @@ public final function insertDatosUsuario(){
  * Este metodo ingresa la direccion
  * del usuario, poblacion, calle, etc
  * return boolean o el error
+ * 
+ * OJO DETALLE
+ * Fijemonos como este metodo usa la clase abstracta
  */
 public function insertarDireccionUsuario(){
     $con = Conne::connect();

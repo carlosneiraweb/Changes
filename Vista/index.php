@@ -7,11 +7,19 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ValidoForm.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes.php'); 
 
-
 session_start();
+
+
 
 $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
 //echo  $_SESSION['url'].'<br />';
+
+//Esta variable la usamos para mostrar
+//al usuario errores tipo subir imagen 
+//al servidor o errores del servidor
+if(!isset($_SESSION['error'])){
+    $_SESSION['error'] = null;
+}
 
 /**
  * @author Carlos Neira Sanchez
@@ -37,15 +45,17 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
         <link rel="stylesheet" href="../css/estilos.css"/>
         <script src="../Controlador/jquery-2.2.2.js"></script>
         <script src="../Controlador/Validar/formulario_login.js"></script>
+        <script src="../Controlador/Validar/iconoObligatorio.js"></script>
         <script src="../Controlador/redireccionar.js"></script>
         <script src="../Controlador/menu.js"></script>
         <!--<script src="../Controlador/script.js"></script>-->
         <script src="../Controlador/Elementos_AJAX/CONEXION_AJAX.js"></script>
+        <script src="../Controlador/Elementos_AJAX/principal.js"></script>
         <script src="./cargarPostsElegido.js"></script>
         <script src="./mostrarPosts.js"></script>
         <script src="./buscador.js"></script>
         <script src="../Controlador/Elementos_AJAX/paginacion.js"></script>
-        <script src="../Controlador/Elementos_AJAX/principal.js"></script>
+        
         <script src="./subirComentario.js"></script>
         
     <!--Para navegadores viejos-->
@@ -71,13 +81,14 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
                echo "var PAGESIZE = "; echo PAGE_SIZE.';';          
         echo '</script>';
     
-         
+       
  
     //Variable user para instanciar 
     //objetos usuario
     $user;
   
     if(isset($_POST["logeo"]) and $_POST["logeo"] == "aceptar"){
+       
         processForm();
     } else{
         //Si no se ha pulsado el boton de enviar se muestra por primera vez el formulario 'vacio'
@@ -87,6 +98,8 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
         //Un bolean para saber si la validacion ha sido correcto
         displayFormLogeo(array(), new Usuarios(array()), true); 
         }
+        
+        
     //en caso de error en la validacion PHP se muestra la capa de fondo
     function mostrarOculto(){
        echo'<div id="ocultarPHP" class="mostrar_transparencia"></div>';
@@ -101,7 +114,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
 			
                         //Mostramos la foto del usuario una vez se ha logueado
                             //Sin consultar la BBDD
-                        if(isset($_SESSION["user"]) and $_SESSION != ""){
+                        if(isset($_SESSION["user"]) and $_SESSION["user"] != ""){
                             echo '<section id="foto_usuario">';
                                 echo '<figure id="img_usuario">';
                                     echo '<img src='."../datos_usuario/".$_SESSION['user']->getValue('nick')."/".$_SESSION['user']->getValue('nick').".jpg".' alt="imagen del usuario" title="este eres tú"/>';
@@ -116,7 +129,7 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
 		
             echo '<section id="btns_sesion">';
           
-                    if(isset($_SESSION["user"]) and $_SESSION != ""){
+                    if(isset($_SESSION["user"]) and $_SESSION["user"] != ""){
                         echo'<input type="button" id="salirSesion" name="salirSesion" value="Salir Sesion"/>';
                         echo'<input type="button" id="menu" name="menu" value="menu"/>';
                         $nick = $_SESSION['user']->getValue('nick');
@@ -149,15 +162,17 @@ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);
      
 function displayFormLogeo($missingFields, $user, $test){
       global $valido;
-     
+      
  echo"<section id='login_form' ";
     //Aqui se muestra o esconde el formulario login despues de las comprobaciones PHP
         //Dependiendo si el usuario ha rellenado todos los campos
     if($missingFields){
         echo 'class="mostrar_formulario"';
+        echo '$("#ocultar").addClass("mostrar_transparencia")';
         //Que PHP no detecte ningun error, usuario no existe, error en el password
     } elseif (!$test) {
         echo 'class="mostrar_formulario"'; 
+        echo '$("#ocultar").addClass("mostrar_transparencia")';
         //En caso de que en los casos contrarios no se den, se esconde el formulario
     }else{
        echo 'class="oculto"'; 
@@ -180,7 +195,8 @@ echo'<input type="password" name="password" id="password" placeholder="Escribe t
 if(!$test){
     echo ERROR_VALIDACION_LOGIN;
 }
-echo'<input type="submit" id="btn_login" name="logeo" value="aceptar" />';          
+echo'<input type="submit" id="btn_login" name="logeo" value="aceptar" />'; 
+echo'<input type="submit" id="btn_salir" name="salir" value="salir" />'; 
     
         echo'</fieldset>';
                 echo'</form>';
@@ -189,6 +205,10 @@ echo'<input type="submit" id="btn_login" name="logeo" value="aceptar" />';
       
     //fin formLogeo   
     }
+    
+    
+    
+    
 function processForm(){
     
     global $user;
@@ -229,6 +249,20 @@ function processForm(){
     }
 //fin processForm
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     echo'<nav class="slider-container">';
 	echo'<figure id="derecha">';
@@ -277,7 +311,7 @@ function processForm(){
     echo'<aside id="publi">';
 		echo'<p>Aqui va la publicidad</p>';
                 echo'<div>';
-        if(isset($_SESSION["user"]) and $_SESSION != ""){    
+        if(isset($_SESSION["user"]) and $_SESSION['user'] != ""){    
             echo'<input type="button" id="publicar" name="publicar" value="Publicar"/>';
         }
             echo'</div>';

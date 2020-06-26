@@ -17,7 +17,7 @@
  */
 
 function cargarPostSeleccionado(objPost){
-       
+       // alert(objPost[0][0].ruta);
         //Agregamos las imagenes al Slider 
         
         $("#ocultar").removeClass('oculto').addClass('mostrar_transparencia');

@@ -1,8 +1,17 @@
 <?php 
 session_start(); 
+
+//En caso de error nos redirige
+//A la pagina donde nos informa del error
+//y nos da la opcion de volver a intentarlo
 function mostrarError(){
     header('Location: mostrar_error.php');
 }
+//Variable que utiliza la pagina
+//Mostrar error para devolvernos a 
+//la pagina donde se a producido
+$_SESSION["paginaError"] = basename($_SERVER['PHP_SELF']);
+
 /**
  * @author Carlos Neira Sanchez
  * @mail arj.123@hotmail.es
@@ -10,6 +19,9 @@ function mostrarError(){
  * @nameAndExt registrarse.php
  * @fecha 04-oct-2016
  */
+
+
+
 //No podemos usar el redireccionamiento de javascript por que 
     //Utilizamos la misma url para mostrar los pasos
 function volverAnterior(){
@@ -32,6 +44,7 @@ function volverAnterior(){
         <script src="../Controlador/Elementos_AJAX/principal.js"></script>
         <script src="./registrarse.js"></script>
         <script src="../Controlador/Validar/formulario_reg.js"></script>
+        <script src="../Controlador/Validar/iconoObligatorio.js"></script>
         
         
     <!--Para navegadores viejos-->
@@ -97,7 +110,7 @@ function volverAnterior(){
     } elseif(isset($_POST['primeroReg']) and $_POST['primeroReg'] == "Salir"){
         volverAnterior();
     } elseif(isset($_POST['segundoReg']) and $_POST['segundoReg'] == "Siguiente"){
-        $requiredFields = array('nombre');
+        $requiredFields = array('nombre','telefono');
         if(isset($_POST['step']) and $_POST['step'] === "step2"){ $paso = 'step2';}
         processForm($requiredFields, $paso);
     } elseif(isset($_POST['segundoReg']) and $_POST['segundoReg'] == "Atras"){
@@ -142,7 +155,7 @@ function displayStep1($missingFields){
     echo'<label '.ValidoForm::validateField("nick", $missingFields).' for="nick">Introduce nombre de usuario:</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="text" name="nick" id="nick" autofocus placeholder="Tú nombre usuario maximo 25 caracteres" maxlength="25" value=';if(isset($_SESSION['usuario']['nick'])){echo $_SESSION['usuario']['nick'];} echo ">";       
     echo'<label '.ValidoForm::validateField("password", $missingFields). ' for="password">Introduce tú password</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
-    echo'<input type="password" name="password" id="password"  maxlength="12" >';	
+    echo'<input type="password" name="password" id="password"  maxlength="12" placeholder="Debe  minimo 6 y máximo 12" >';	
     echo'<label '.ValidoForm::validateField("passReg2", $missingFields). ' for="passReg2">Repite el password</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="password" name="passReg2" id="passReg2" maxlength="12"  >';       
     echo'<label '.ValidoForm::validateField("email", $missingFields).' for="email">Email:</label> <span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
@@ -378,7 +391,7 @@ function confirmarRegistro(){
                 $testTxt = Directorios::escribirErrorValidacion($user, $testInsert, $repElimarDatosUsuario, $repElimarPhotos, $repEliminarVideos);
                 
                 if($testTxt) {
-                   // $objMandarEmails->mandarEmailProblemasRegistro($testInsert); 
+                     $objMandarEmails->mandarEmailProblemasRegistro($testInsert); 
                 }
                   //Destruimos el objeto user
                     unset($user);
@@ -424,7 +437,7 @@ function processForm($requiredFields, $st){
             case "step4":
                 
                 //En este paso no hacemos nada
-                //Aqui copiamos la imagn subida por el
+                //Aqui copiamos la imagen subida por el
                 //usuario o sino sube una ponemos la de default
                     break;
         
@@ -453,6 +466,7 @@ function processForm($requiredFields, $st){
      * @return boolean
      */
     function validarCampos($st){
+    
         global $mensaje;
         global $user;
         $test = true;
@@ -484,12 +498,11 @@ function processForm($requiredFields, $st){
                     } 
                  
                 return $test;     
-                    
-            case 'step2':
+
+                case 'step2':
                 
                     if(!ValidoForm::validaTelefono($_SESSION['usuario']['telefono'])){
                         $mensaje =  ERROR_TELEFONO_INCORRECTO;
-                        echo 'validar telefono '.$mensaje;
                         $test = false;
                          break;
                     }
@@ -530,7 +543,7 @@ function processForm($requiredFields, $st){
                             //Se mueve la foto de perfil subida
                             if($test){ $test = Directorios::moverImagen($foto, $destino);}
                             //La renombramos con su nombre
-                            if($test){ $test = Directorios::renombrarFoto($destino, $_SESSION['usuario']['nick'], false);}  
+                            if($test){ $test = Directorios::renombrarFoto($destino, $_SESSION['usuario']['nick'], false);}  //
                             if(!$test){$_SESSION['error'] = ERROR_FOTO_GENERAL;}
                             
                         }else{

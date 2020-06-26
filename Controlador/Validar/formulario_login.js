@@ -14,8 +14,12 @@ $(document).ready(function(){
         var nick = $("#nick");
         var pass = $("#password");
          
-    $("#ingresar").on('click', mostrarCapaOpaca); 
-      
+    $("#ingresar").on('click', mostrarCapaOpaca);
+    $('#btn_salir').click(function(){
+    $(this).addClass("oculto");
+    });
+  
+   
            /**
             * @description Validamos que el nick de 
             * login no este vacio
@@ -23,12 +27,11 @@ $(document).ready(function(){
             */                                               
             function validarNick(){
                 
-                $(".error").remove();
-            
 		//Comprobamos que los campos no estan vacios
                     if(nick.val() === ""){
-                        $("#nick").focus().after("<span class='error'><p>Introduce un nick</p></span>");
-			$('#nick').addClass('borderColor'); 
+                        $("#nick").focus();
+                        $("label[for='nick']").css('color', 'red');//addClass("errorPHP");
+			
                         return false;
                     } else{ 
                         return true;
@@ -42,20 +45,42 @@ $(document).ready(function(){
              * @returns {Boolean}
              */
             function validarPassword(){
-            //
-                $(".error").remove();
+           
 		    if(pass.val() === "" || !passReg.test(pass.val())){
-                    
-                        $("#password").focus().after("<span class='error'><p>El password solo puede tener letras y números, minimo 6 y máximo 12</p></span>");
-			$('#password').addClass('borderColor');
-                        return false;
+                        $("label[for='password']").css('color', 'red');//.addClass("errorPHP");
+                        $("#password").focus();
+                                
+                    return false;
                     } else{
                         return true;
                     }
         //fin validar password
-            } 
-    
-    
+            }
+            
+            
+            /**
+             * Metodo que cambia color de la label
+             * al no dar por buena la validacion
+             * 
+             */
+         
+            $('#login_form, input').keydown(function() { 
+            $(this).prev().prev().css('color', 'black');
+            });
+       
+            /**
+             * Metodo que cambia al
+             * color original la label
+             */
+       
+            $('#login_form, input').blur(function() { 
+            $(this).prev().prev().css('color', '#0C0792');
+            });
+            
+            
+            
+            
+            
        $('#btn_login').on('mouseover',function(){
           
             if(validarNick() && validarPassword()){
@@ -83,9 +108,12 @@ $(document).ready(function(){
          */
         function mostrarLogin(){
 	$("#login_form").removeClass('oculto').addClass('mostrar_formulario');
-        //fin mostra rLogin
+        //fin mostrar Login
     }
 
 //fin cuerpo  
 
 });
+
+
+
