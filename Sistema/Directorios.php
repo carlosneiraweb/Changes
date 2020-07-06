@@ -16,6 +16,7 @@ class Directorios {
          */
         
         final static function validarFoto($foto){
+           
             $test = $_FILES[$foto]['error'];
             if($test !== 4){
                 //Solo permitimos formatos jpg
@@ -62,8 +63,6 @@ class Directorios {
                         $_SESSION['error'] = ERROR_FOTO_GENERAL;     
                 }
                 
-            
-               
             return $test;
            
         //fin validar foto    
@@ -75,7 +74,8 @@ class Directorios {
          * definitivo.
          */
         final static  function moverImagen($nombreFoto, $nuevoDirectorio){
-            $test = null;
+           
+            $test;
             //echo 'moverImagen nombre Imagen foto: '.$nombreFoto.'<br>';
             //echo 'moverImagen nuevoDirectorio al que mover: '.$nuevoDirectorio.'<br>';
          try{
@@ -84,7 +84,7 @@ class Directorios {
          } catch (Exception $ex) {
              $_SESSION['error'] = ERROR_FOTO_GENERAL;
              echo $ex->getCode();
-              return $test;  
+              
          }
            
         //fin mover imagen    
@@ -201,6 +201,8 @@ class Directorios {
           
         //fin copiarFoto    
         }
+        
+      
             
        /**
         * OJO ESTE METODO ES IMPORTANTE COMPRENDERLO
@@ -227,7 +229,7 @@ class Directorios {
         * @param type $nombreNuevo
         * @return string
         */
-        final static function renombrarFoto($nombreViejo, $nombreNuevo){
+        public static function renombrarFoto($nombreViejo, $nombreNuevo){
             
             if($nombreNuevo === 0){
                 try{
@@ -249,6 +251,8 @@ class Directorios {
                     //Si hemos ingresado el primer elemento, destruimos la variable de
                     //Sesion para que el programa vuelva a funcionar 
                     //como si el usuario no hubiera borrado ninguna imagen
+                //echo 'imgTmp en Directorios '.$_SESSION['imgTMP']['imagenesBorradas'][0].'<br>';
+                
                 if(count($_SESSION['imgTMP']['imagenesBorradas']) == 0){    
                     unset($_SESSION['imgTMP']);
                 }
@@ -264,13 +268,15 @@ class Directorios {
             }else if($nombreNuevo === 1){
                 //echo 'el usuario no ha borrado ninguna imagen<br>';
                 //Renombramos las imagenes por el numero de imagenes en su subdirectorio
+                
                 $nombreRenombrado= Directorios::contarArchivos($_SESSION['nuevoSubdirectorio']);
+                                
                 try{
                     
                 if($nombreViejo){
                  // echo 'nombre viejo '.$nombreViejo.'<br>';
                    $original = basename($nombreViejo); //quedando en => indice.jpg
-                    //  echo 'Nombre viejo despues de pasar por basename '.$original.'<br>';
+                   
                    //strstr con parametro true devuelve 
                       //un string al encontrar la primera aparicion del string
                    $tmp = strstr($nombreViejo, $original, true);//OJO
@@ -284,12 +290,15 @@ class Directorios {
                    rename($nombreViejo, $newNombre);
                    
                }
-             
-             return $newNombre;
+            
+            
+                return $newNombre;
             } catch (Exception $ex) {
                 $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
                 $ex->getMessage();
             }
+                
+           
 
             }else{
                 //Si el metodo recive un nombre nuevo se le asigna ese nombre. Esto ocurre
@@ -413,7 +422,7 @@ final static function eliminarDirectorioRegistro($src){
  * Ademas de los los datos de los fallos, tanto
  * de la bbdd y de los archivos creados
  */
-final static function escribirErrorValidacion(DataObj $obj, $mensaje,$repEliminarDatosUsuario, $repEliminarPhotos, $repEliminarVideos){
+final public function escribirErrorValidacion(DataObj $obj, $mensaje,$repEliminarDatosUsuario, $repEliminarPhotos, $repEliminarVideos){
     $test;
     
  
@@ -477,6 +486,45 @@ final static function escribirErrorValidacion(DataObj $obj, $mensaje,$repElimina
     
 //escribirErrorValidacion   
 }
+
+
+/**
+ * Metodo que escribe el error al intentar 
+ * eliminar un post 
+ * @param type array()
+ * @return type boolean
+ */
+
+ public function errorEliminarPost($datos) {
+    
+        $mensaje = "Nueva entrada Con fecha:". FECHA_DIA.PHP_EOL; 
+        $mensaje .= "Parece ser que el usuario ".$datos[0]. " No ha acabado de publicar".PHP_EOL;
+        $mensaje.= "Un Post y el sistema ha tenido algun problema al querrer eliminar ".PHP_EOL;
+        $mensaje .= "los datos introducidos.".PHP_EOL;
+        
+        
+        if($datos[1] != null){$mensaje.= " El id del Post a eliminar era ".$datos[1].PHP_EOL;}
+        if($datos[2] != null){$mensaje.= " El Directorio a eliminar era ".$datos[2].PHP_EOL;}
+        if($datos[3] != null){$mensaje.= " Ha habido un problema al eliminar imagenes id de las imagenes ".$datos[3].PHP_EOL;}
+        if($datos[4] != null){$mensaje .= "Palabras queridas ".$datos[4].PHP_EOL;}
+        if($datos[5] != null){$mensaje .= "Palabras ofrecidas ".$datos[5].PHP_EOL;}
+        $mensaje .= PHP_EOL;
+        $mensaje .= "***********************************************".PHP_EOL;
+        $mensaje .= PHP_EOL;
+    
+ 
+    
+    
+    
+    if(!($archivo = fopen(TXT_ERROR_ELIMINAR_POST, 'a'))) die("No se puede abrir el archivo");
+           $test =  fwrite($archivo, $mensaje. PHP_EOL);
+           $test =  fclose($archivo); 
+           return $test;
+    
+//fin errorEliminarPost    
+}
+
+
 
 
 

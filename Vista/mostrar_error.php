@@ -35,11 +35,13 @@ session_start();
        //Mostramos el error que se ha producido 
        //y reseteamos la variable
         if(isset($_SESSION['error']) and $_SESSION['error'] != null){
-        echo "<h3>".$_SESSION['error']."</h3>";
-        $_SESSION['error'] = 'error';
+            echo "<h3>".$_SESSION['error']."</h3>";
+            
+                $_SESSION['error'] = 'error';
+                $ex = $_SESSION['paginaError'];
+              
         }
-       
-        $ex = $_SESSION['paginaError'];
+        
         echo '<script type="text/javascript">';
            //indicamos la url a javascript
            //para redirecionarnos a la pagina correcta

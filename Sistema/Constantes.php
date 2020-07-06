@@ -57,6 +57,7 @@ define("ERROR_FOTO_GENERAL", "<h5>Lo sentimos hemos tenido un problema al subir 
 define("ERROR_INSERTAR_ARTICULO", "<h5>No hemos podido insertar tu articulo.</h5>");
 define("ERROR_INGRESAR_USUARIO", "<h5>Hemos tenido un problema al ingresarte.</h5>");
 define("TXT_ERROR_VALIDACION", "../Errores/ErroresValidacion.txt");
+define("TXT_ERROR_ELIMINAR_POST", "../Errores/ErroresEliminarPost.txt");
 //Constante con la fecha actual 
 $fecha_actual = getdate();
 define("FECHA_DIA", "Día $fecha_actual[mday], de $fecha_actual[month], del año $fecha_actual[year], a la hora $fecha_actual[hours]: $fecha_actual[minutes]" );

@@ -1,25 +1,11 @@
 <?php 
-
-
-
+require_once ($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Post.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ValidoForm.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes.php'); 
 
 session_start();
-
-
-
-$_SESSION["url"] = basename($_SERVER['PHP_SELF']);
-//echo  $_SESSION['url'].'<br />';
-
-//Esta variable la usamos para mostrar
-//al usuario errores tipo subir imagen 
-//al servidor o errores del servidor
-if(!isset($_SESSION['error'])){
-    $_SESSION['error'] = null;
-}
 
 /**
  * @author Carlos Neira Sanchez
@@ -29,8 +15,8 @@ if(!isset($_SESSION['error'])){
  * @fecha 04-oct-2016
  */
 
-            
-           
+ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);           
+
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +41,6 @@ if(!isset($_SESSION['error'])){
         <script src="./mostrarPosts.js"></script>
         <script src="./buscador.js"></script>
         <script src="../Controlador/Elementos_AJAX/paginacion.js"></script>
-        
         <script src="./subirComentario.js"></script>
         
     <!--Para navegadores viejos-->

@@ -1,13 +1,12 @@
 <?php 
 
-
-require_once ($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Post.php');
-require_once ($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
-require_once ($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
+//error_reporting(0);
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Post.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ValidoForm.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Directorios.php');
-
-
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ControlErroresSistemaEnArchivos.php');
 
 session_start();
 
@@ -23,81 +22,27 @@ if(!isset($_SESSION['contador'])){
 function volverAnterior(){
     header('Location:'. $_SESSION["url"]);
 }
+
 /**
  * Metodo que nos redirige a la pagina de mostrar error
- */
+ */ 
 function mostrarError(){
-    header('Location: mostrar_error.php');
-}
+        header('Location: mostrar_error.php');
+}    
 
 //Variable que utiliza la pagina
 //Mostrar error para devolvernos a 
 //la pagina donde se a producido
 $_SESSION["paginaError"] = basename($_SERVER['PHP_SELF']);
-
-
-/**
- * Este metodo manda a EliminarPost de la clase Post,
- * cuando un usuario quiere subir un post 
- * y a mitad de proceso se sale y no
- * acaba publicandolo
- */
- function eliminarPostAlPublicar(){
-   $test = true;
-   //SubDirectorio que se creo para ir subiendo los post
-     //../photos/carlos/10
    
-   $tmp=  $_SESSION['nuevoSubdirectorio'];//de fotos
-   //$tmpSubdirectorio = preg_split("~[\\\/]~", $tmp);
-   //El id del post a eliminar
-   $idPost = $_SESSION['lastId'][0];
-   //El id de las imagenes
-   $idImagenes = $_SESSION['lastId'][0];
-           
-   if($idPost !== null){
-   $test = Post::eliminarImagenesPost($idImagenes);
-   }
-   if($test){
-    $test= Directorios::eliminarDirectorioRegistro($tmp);
-   }
-        if($test){
-                $test = Post::eliminarPostId($idPost);
-        }
-    echo "eliminar post = ".$test.'<br>';    
-   return $test;
-}
-
-/**
- * Metodo que elimina variables de sesion
- * cuando un usuario ha acabado de subir 
- * un post
- */
-function eliminarVariablesSesionPostAcabado(){
-    
-    if(isset($_SESSION['imgTMP'])){
-            unset($_SESSION['imgTMP']);
-        }
-            
-    if(isset($_SESSION['atras'])){
-            unset($_SESSION['atras']);
-        }
-        
-    if(isset($_SESSION['contador'])){
-            unset($_SESSION['contador']);
-        }       
-           
-             
-    //fin eliminarVariablesSesionPostAcabado()         
-    }
-    
-    
-
-
-
-
 
 global $articulo;
 $articulo = new Post(array());
+global $errores;
+$errores = new ControlErroresSistemaEnArchivos(null,null);
+
+
+
 ?>
 <!DOCTYPE html>
 <!--
@@ -170,24 +115,22 @@ $articulo = new Post(array());
         //Pos si el usuario vuelve a este paso y decide
         //no publicar el post
           processForm($requiredFields, "step1");
-    } elseif(isset($_POST['primeroSubirPostAtras']) and $_POST['primeroSubirPostAtras'] == "Salir"){
+    } elseif(isset($_POST['primeroSubirPostSalir']) and $_POST['primeroSubirPostSalir'] == "Salir"){
         //Llamamos a este metodo cuando el usuario ha pasado al segundo paso
         //luego vuelve al paso anterior y decide no subir el post
         //Llamamos a este metodo para eliminar los datos con los que hemos trabajado
         if(isset($_SESSION['atras']) and $_SESSION['atras'] === "atras"){
-           $test=  eliminarPostAlPublicar();
-            
-                if(!$test){
-                    $_SESSION["paginaError"] = "index.php";
-                    eliminarVariablesSesionPostAcabado();
-                    $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-                    mostrarError();
-                }
+            ControlErroresSistemaEnArchivos::eliminarPostAlPublicar();
+            ControlErroresSistemaEnArchivos::eliminarVariablesSesionPostAcabado();
+                
+        }else{
+            //Si no se ha llegado al segundo paso
+            //redirigimos a index.php y eliminamos las variables
+            //con las que hemos trabajado
+            ControlErroresSistemaEnArchivos::eliminarVariablesSesionPostAcabado();
         } 
-        //Si se han eliminado bien lo redirigimos
-        //al index.php y eliminamos las variables
-        //con las que hemos trabajado
-        eliminarVariablesSesionPostAcabado();
+        
+        
         header('Location:'. "index.php");
     } elseif(isset($_POST['segundoSubirPost']) and $_POST['segundoSubirPost'] == "Enviar" ){    
         //El usario  quiere subir una foto al post
@@ -206,16 +149,16 @@ $articulo = new Post(array());
         //Le redirigimos a cualqier url que estubiera
         //Destruimos la sesion atras, la sesion contador y si existiera la 
             //la variable de imagenes borradas
-            eliminarVariablesSesionPostAcabado(); 
-            //Esta nvariable de sesion no se destruye junto a las 
+            ControlErroresSistemaEnArchivos::eliminarVariablesSesionPostAcabado(); 
+            //Esta variable de sesion no se destruye junto a las 
             //otras por que es necesaria para hacer un update
             //del post mientras se esta publicando.
             //Solo se puede destruir cuando se finaliza el proceso de publicar.
             if(isset($_SESSION['lastId'])){
                 unset($_SESSION['lastId']);
             }
-            volverAnterior();
-        
+                volverAnterior();
+           
         
         //Parte del formulario agregado con JQUERY 
         //Se utiliza para cuando un usuario quiere
@@ -319,7 +262,7 @@ $articulo = new Post(array());
            
     echo '<section id="btns_registrar">';    
         echo"<input type='submit' name='primeroSubirPost' id='primeroSubirPost'  value='Siguiente' >";
-        echo"<input type='submit' name='primeroSubirPostAtras' id='primeroSubirPostAtras'  value='Salir' >";
+        echo"<input type='submit' name='primeroSubirPostSalir' id='primeroSubirPostSalir'  value='Salir' >";
     echo '<section>';
     
         //Mostramos cualquier errror al validar el formulario            
@@ -336,13 +279,16 @@ $articulo = new Post(array());
 
 function displayStep2($missingFields){
     global $mensaje; 
-
+  
      //Aqui recuperamos el id del post en el que estamos
         //Se lo pasamos a javascript para que nos muestre 
         //todas las fotos que vamos subiendo via JSON
         //Se instacia en el metodo insertarPost de la clase Post.php
         //Hay que tener en cuenta que primero se inserta en la bbdd
-        //luego si el usuario quiere puede subir fotos.
+        //todos los datos introducidos en el primer formulario.
+        //En el primer paso se hace el insert del Post y 
+        //ya tenemmos su id, si
+        //luego el usuario quiere puede subir fotos.
         //Ahi es cuando se utiliza.
             if(isset($_SESSION['lastId']) ){
                 $idPost = $_SESSION['lastId'][0];
@@ -420,7 +366,9 @@ function displayStep2($missingFields){
  * @global Post $articulo
  */
 function ingresarPost(){
+    //Declaramos variable articulo
     global $articulo;
+    $testInsertar = true;
     
     
         $articulo = new Post(array(
@@ -442,30 +390,37 @@ function ingresarPost(){
                 $_SESSION['post']['Pa_ofrecidas'][2],
                 $_SESSION['post']['Pa_ofrecidas'][3]
             ),
+            
             "fechaPost" => ""        
         ));
        
         //Aqui comprobamos que el usuario ya ha ingresado el post
-        // o ha ido un paso atras y ha modificado algun dato
-        //Si el usuario en la segunda parte del formulario
+        // o ha ido un paso atras y ha modificado algun dato.
+        //Si el usuario esta en la segunda parte del formulario y
         // retroce entonces se modifica los datos introducidos
-        if(isset($_SESSION['atras']) || $_SESSION['error'] === 'error'){ 
-            $result = $articulo->actualizarPost();  
-            
+        //La ultima comprobacion es por si el usuario a intentado subir un Post
+        //y el Sistema no ha cometido ningun error. En ese caso si el usuario
+        //vuelve intentarlo se ingresa un post de nuevo.
+       
+        if((isset($_SESSION['atras']) || isset($_SESSION['error'])) and (!isset($_SESSION['errorArchivos']))){ 
+            //echo "<br>actualizo atras => ".$_SESSION['atras']." error ".$_SESSION['error']." y sesion archivos ".$_SESSION['errorArchivos'];
+            $test = $articulo->actualizarPost();
+            if(isset($_SESSION['errorArchivos'])){
+                    unset($_SESSION['errorArchivos']);
+                }
         }else{
-            $result = $articulo->insertPost();
+            //echo '<br>inserto<br>';
+            $test = $articulo->insertPost();
+            if(isset($_SESSION['errorArchivos'])){
+                    unset($_SESSION['errorArchivos']);
+                }
         }
-        //En caso de error nos redirige a la pagina de error 
-        //para que el usuario pueda intentarlo otra vez
-            if(!$result){
-                $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-                mostrarError();
-                exit();
-            } else{
-                //Destruimos el objeto para no ocupar memoria
-                unset($articulo);
-            }
-
+        if(!$test){
+            $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
+            mostrarError();
+                    }
+        unset($articulo);
+       
 //fin ingresarPost    
 }
 
@@ -481,6 +436,10 @@ function ingresarPost(){
  * $_SESSION['idImagen'] = ../photos/carlos/60/2.jpg
  * Se instancia en processForm al validar la foto y cambiarle 
  * el nombre en la clase Directorios.
+ * En este metodo solo se comprueba que el sistema a
+ * podido ingresar la imagen en la bbdd
+ * De moverla al directorio adecuado se encarga
+ * la funcion validar campos.
 */
 
 function ingresarImagenes(){
@@ -490,17 +449,19 @@ function ingresarImagenes(){
        "idImagen" => $_SESSION['idImagen']
     ));
    
+    //echo ' en ingresar idImagen '.$_SESSION['idImagen'].'<br>';  
     $result = $articulo->insertarFotos();
-           // echo "resultado: ".$result;
-     //En caso de error nos redirige a la pagina de error 
-     //para que el usuario pueda intentarlo otra vez
-        if(!$result){
-            $_SESSION['error'] = ERROR_FOTO_GENERAL;
-            mostrarError();
-            exit();      
-        } 
     
+    if(!$result){
+        //En caso de error nos redirige a la pagina de error 
+        //para que el usuario pueda intentarlo otra vez
+        $_SESSION['error'] = ERROR_FOTO_GENERAL;
+        mostrarError();
+        
+    }
     return $result;
+  
+    
 //fin ingresarImagenes    
 }
 
@@ -529,10 +490,7 @@ function actualizarImagen(){
         //para que el usuario pueda intentarlo otra vez
         $_SESSION['error'] = ERROR_FOTO_GENERAL;
         mostrarError();
-        exit();
-    } else{
-        unset($articulo);
-        
+       
     }
     
 //fin actualizarImagen    
@@ -559,23 +517,20 @@ function eliminarImagen(){
     if(!$result){
         $_SESSION['error'] = ERROR_FOTO_GENERAL;
         mostrarError();
-        exit();
-    } else{
-        //Si todo ha ido bien eliminamos el objeto 
-        unset($articulo);
-    }
+        
+    } 
 //    
 //fin eliminar imagen   
 }
 
 
-
-
-
 function processForm($requiredFields, $st){
     //Array para almacenar los campos no rellenados y obligatorios
         global $missingFields;
-        $missingFields = array();   
+        $missingFields = array(); 
+       
+        
+        
 
         switch ($st){
             case 'step1':
@@ -606,129 +561,8 @@ function processForm($requiredFields, $st){
         }
     }
 
-     /**
-     * Metodo que valida los datos introducidos por el usuario.
-     * Valida los campos con los metodos static de ValidaForm
-     * Valida los datos de la bbdd con un objeto de la clase Post
-     * @global type $mensaje
-     * @global Post $articulo
-     * @param type $st
-     * @return boolean
-     */
-   
-function validarCampos($st){
-    global $mensaje;
-    $testValidarCampos = true;
-        
-    switch ($st){
-            
-        case("step1"):
-            
-                //Creamos un subdirectorio para almacenar las imagenes 
-                //IMPORTANTE CONOCER EL CONTENIDO DE 'nuevoSubdirectorio' 
-                //Es la usada para mover, copiar, eliminar he ingresar en la bbdd
-                //Su contenido es del tipo ../photos/nombreUsuario/totalSubdirectorios
-                
-                //Agregamos una foto demo por si el usuario no quiere subir
-                //ninguna imagen
-                //Esto solo se hace la primera vez y se evita crearlo otra vez si el usuario 
-                // vuelve atras en el formulario comprobando que $_SESSION['atras'] no existe
-                if(($_SESSION['contador'] == 0) and (!isset($_SESSION['atras'])) ){
-                   
-                    $_SESSION['nuevoSubdirectorio'] = Directorios::crearSubdirectorio("../photos/".$_SESSION['user']->getValue('nick'));
-                    $testValidarCampos = Directorios::copiarFoto("../photos/demo.jpg",$_SESSION['nuevoSubdirectorio']."/demo.jpg");
-                 
-                }
-                return $testValidarCampos;    
-                   
-            break;
-                 
-    case('step2'):
-        
-        $testSubirArchivo = Directorios::validarFoto('photoArticulo');
-        
-        //Comprobamos que nos devuelve la constante 0 que significa que se 
-        //ha subido correctamente o que no nos devuelve la constante 4
-        //que signfica que no se ha elegido un archivo
-        if($testSubirArchivo === 0){
-            
-                //Si la foto es correcta entonces eliminamos la imagen default 
-                    //que subimos
-            
-                if(is_file($_SESSION['nuevoSubdirectorio'].'/demo.jpg')){
-                    $testValidarCampos = unlink($_SESSION['nuevoSubdirectorio'].'/demo.jpg');  
-                }
-                  
-                    $destino = $_SESSION['nuevoSubdirectorio'].'/'.basename($_FILES['photoArticulo']['name']);                   
-                    $foto = $_FILES['photoArticulo']['tmp_name'];
-            
-                        $testValidarCampos = Directorios::moverImagen($foto, $destino);
-                
-            //Comprobamos que subiendo imagenes el usuario no ha eliminado ninguna
-                //Si lo ha hecho le asignamos en el directorio photos/subdirectorio 
-                //Ese nombre
-                if(isset($_SESSION['imgTMP']) and $_SESSION['imgTMP'] != null){
-                    
-                    if($testValidarCampos){ $_SESSION['idImagen'] = Directorios::renombrarFoto($destino, 0);}  
-                    
-            //Aqui vamos subiendo las fotos al post mientras el usuario no 
-                //halla eliminado ninguna mientras subia las fotos
-                }elseif (!isset($_SESSION['imgTMP'])){
-            
-                    if($testValidarCampos){ $_SESSION['idImagen'] = Directorios::renombrarFoto($destino, 1);}
-                
-                }
-               
-                //Si hay algun tipo de error copiar las imagenes, crear archivos, etc
-                //Redirigimos a la pagina de mostrar error
-                 //Para que el usuario vuelva a intentarlo
-                
-                    if(!$testValidarCampos){
-                        unset($testSubirArchivo);
-                        eliminarVariablesSesionPostAcabado();
-                        $_SESSION['error'] = ERROR_FOTO_GENERAL;
-                        mostrarError();  
-                        exit();
-                    }
-                
-                    
-        } else{
-            //Si hay algun error al validar la imagen 
-                //redirigimos a la pagina mostrarError
-                //y le indicamos el motivo del error
-                // Esto ultimo se hace en el switch del
-                //metodo que valida la subida en el directorio Directorios
-                if($testSubirArchivo === 4){
-                        
-                        if(!isset($_SESSION['atras'])){
-                            $_SESSION['atras'] = 'atras';
-                        }
-                        mostrarError();
-                        exit(0);
-                        
-                }else {
-                        if(!isset($_SESSION['atras'])){
-                            $_SESSION['atras'] = 'atras';
-                        }
-                        mostrarError();
-                        exit(0);
-                        
-                }
-        }
-                   
-    //switch        
-    } 
-    return $testValidarCampos;
-    //fin validar campos
-    }
     
        
-      
-           
-          
-
-    
-    
     //Mandamos a validar al metodo anterior los campos segun 
     //cada paso del formulario
     switch ($st){
@@ -738,10 +572,10 @@ function validarCampos($st){
             //Si ha habido algun error volvemos a mostrar el paso del formulario
             //  correcto y un mensaje con los campos correspondientes
             
-            if($missingFields || !validarCampos($st)){
+            ControlErroresSistemaEnArchivos::validarCampos($st);
+            if($missingFields){
                 displayStep1($missingFields);
             } else{
-                   
                     ingresarPost();
                     displayStep2(array());
                 
@@ -749,17 +583,16 @@ function validarCampos($st){
                 break;
         
         case 'step2':
-            
-            
-        
-            if($missingFields ||  !validarCampos($st)){
+          
+            ControlErroresSistemaEnArchivos::validarCampos($st);
+            if($missingFields){
                 displayStep2($missingFields);
-            } else {
+            }else {
                 ingresarImagenes();
                 displayStep2(array());
                 
             }
-            
+        
     //fin switch    
     }
     
