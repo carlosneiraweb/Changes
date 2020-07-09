@@ -60,7 +60,7 @@ if(isset($_POST['inicio'])){
                 $v = $stmBus->fetchAll();
                 $stmBus->closeCursor();
 
-                
+          
                 
                 
                 //Calculamos el total final como si  la clausula limit no estuviera
@@ -78,7 +78,7 @@ if(isset($_POST['inicio'])){
 from post p
 inner join usuario u on u.idUsuario= p.idUsuarioPost
 inner join direccion dire on dire.idDireccion = u.idUsuario
-inner join provincias prov on prov.idProvincias = dire.provincias_idprovincias
+inner join provincias prov on prov.nombre = dire.provincia
 inner join imagenes img on img.post_idPost = :idPost 
 inner join tiempo_cambio tc on tc.idTiempoCambio = p.tiempo_cambio_idTiempoCambio
 where p.idPost = :idPost limit 1";
@@ -95,7 +95,6 @@ where p.idPost = :idPost limit 1";
                 
                  echo json_encode($rs);
         
-                
                 
     }else if($opc == "SLD"){
             //Nos quedamos con la parte necesaria para sacar de la tabla imagenes el id del post

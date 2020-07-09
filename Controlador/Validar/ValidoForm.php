@@ -120,7 +120,7 @@
       
     final static  function validaTelefono($tel){
           
-          $expresion = '/^[9|6][0-9]{8}$/';
+          $expresion = '/^[9|6|7][0-9]{8}$/';
          if($result = preg_match($expresion, $tel) and ctype_digit($tel)){
             return true;
          }else{

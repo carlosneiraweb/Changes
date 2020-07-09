@@ -134,8 +134,9 @@ function cargarProvinciasRegistrarse(objProvinciasRegistrarse){
        
         $('#textAreaCondiciones').scroll(function(){   
             $('.capaBoton').addClass('oculto');
-                //Activamos el boton
+                //Activamos el botones
             $('#btnAceptarCondiciones').prop('disabled', ""); 
+            $('#btnNoAceptarCondiciones').prop('disabled', ""); 
         });
     });  
     
@@ -195,6 +196,12 @@ function agregarFormularioCondiciones(){
             id  : 'btnAceptarCondiciones',
             value : 'aceptaCondiciones',
             name : 'aceptaCondicionesReg',
+            disabled : 'disabled'
+    })).append($('<input>',{
+            type : 'submit',
+            id  : 'btnNoAceptarCondiciones',
+            value : 'noAceptaCondiciones',
+            name : 'noAceptaCondicionesReg',
             disabled : 'disabled'
     }));
 //    

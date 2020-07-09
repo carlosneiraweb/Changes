@@ -2,11 +2,12 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepciones.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Directorios.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ValidoForm.php');  
 
-
-global $exception;
-$exception = New MisExcepciones(null, null,null);   
-
+global $special;
+$especial = new MisExcepciones(null, null);
 
 /**
  * Controla los errores del sistema
@@ -20,17 +21,17 @@ class ControlErroresSistemaEnArchivos extends MisExcepciones{
   /**
      * Metodo que valida los datos introducidos por el usuario.
      * Valida los campos con los metodos static de ValidaForm
-     * Valida los datos de la bbdd con un objeto de la clase Post
+     * 
      * @global type $mensaje
      * @global Post $articulo
      * @param type $st
      * @return boolean
      */
    
- public static function validarCampos($st){
+ public static function validarCamposSubirPost($st){
+
+ global $especial;
  
-        global $exception;
-        
     switch ($st){
          
         case("step1"):
@@ -54,8 +55,8 @@ class ControlErroresSistemaEnArchivos extends MisExcepciones{
                   
                 }
 
-            } catch (Exception $exc) {
-                 $exception->redirigirPorErrorTrabajosEnArchivos();
+            } catch (MisExcepciones $exc) {
+                 $exc->redirigirPorErrorTrabajosEnArchivosSubirPost();
             }
 
                 break;
@@ -81,12 +82,12 @@ class ControlErroresSistemaEnArchivos extends MisExcepciones{
                         $foto = $_FILES['photoArticulo']['tmp_name'];
                         
                             if($destino == "" || $foto == ""){
-                                echo "destino vacio <br>";
+                               
                                 throw new MisExcepciones(null, null);
                             }
                
-            } catch (Exception $ex) {
-                $exception->redirigirPorErrorTrabajosEnArchivos();
+            } catch (MisExcepciones $exc) {
+                $exc->redirigirPorErrorTrabajosEnArchivosSubirPost();
             }
                 
                 
@@ -98,8 +99,8 @@ class ControlErroresSistemaEnArchivos extends MisExcepciones{
                    
                     throw new MisExcepciones(null, null);
                 }
-            } catch (Exception $exc) {
-                $exception->redirigirPorErrorTrabajosEnArchivos();
+            } catch (MisExcepciones $exc) {
+                $exc->redirigirPorErrorTrabajosEnArchivosSubirPost();
             }
 
 
@@ -126,8 +127,8 @@ class ControlErroresSistemaEnArchivos extends MisExcepciones{
                                     }
                             }   
            
-            } catch (Exception $exc) {
-                $exception->redirigirPorErrorTrabajosEnArchivos();
+            } catch (MisExcepciones $exc) {
+                $exc->redirigirPorErrorTrabajosEnArchivosSubirPost();
             }
 
                 
@@ -143,16 +144,220 @@ class ControlErroresSistemaEnArchivos extends MisExcepciones{
         
                 
         }else{
-            $exception->redirigirPorErrorTrabajosEnArchivos();
+            $especial->redirigirPorErrorTrabajosEnArchivosSubirPost();
         }
 
     //switch        
     } 
     
         
-//fin de validarCampos   
+//fin de validarCamposSubirPost   
  }
     
+
+ 
+  /**
+     * Metodo que valida los datos introducidos por el usuario al registrarse.
+     * Valida los campos con los metodos static de ValidaForm
+     * Valida los datos de la bbdd con un objeto de la clase Usuarios
+     * @global type $mensaje
+     * @global Usuarios $user
+     * @param type $st
+     * @return boolean
+     */
+    public static function validarCamposRegistro($st, $user){
+    
+        global $mensaje;
+        $test = true;
+        switch ($st){
+            case "step1":
+            
+                //En caso de que exista el nombre de usuario o email
+                //Los passwords se repitan o el email sea incorrecto
+                    if($user->getByUserName($_SESSION['usuario']['nick'])){
+                        $mensaje = ERROR_NOMBRE_USUARIO_EXISTE;
+                        $test = false;
+                        break;
+                    }elseif(!ValidoForm::validarPassword($_SESSION['usuario']['password'])){
+                        $mensaje =  ERROR_PASSWORD_INCORRECTO;
+                        $test = false;
+                        break;
+                    }elseif(!ValidoForm::validarIgualdadPasswords($_SESSION['usuario']['password'], $_POST['passReg2'])){
+                        $mensaje =  ERROR_IGUALDAD_PASSWORD;
+                        $test = false;
+                        break;
+                    }elseif(!ValidoForm::validarEmail($_SESSION['usuario']['email'])){
+                        $mensaje = ERROR_EMAIL_INCORRECTO;
+                        $test = false;
+                        break;
+                    }elseif($user->getByEmailAddress($_SESSION['usuario']['email'])){
+                        $mensaje = ERROR_EMAIL_EXISTE;
+                        $test = false;
+                        break;
+                    } 
+                 
+                return $test;     
+
+                case 'step2':
+                
+                    if(!ValidoForm::validaTelefono($_SESSION['usuario']['telefono'])){
+                        $mensaje =  ERROR_TELEFONO_INCORRECTO;
+                        $test = false;
+                         break;
+                    }
+               
+             
+                return $test;
+                   
+            case 'step3':
+                    
+                    if(!ValidoForm::validarCodPostal($_SESSION['usuario']['codPostal'])){
+                        
+                        $mensaje = ERROR_CODIGO_POSTAL;
+                        $test = false;
+                         break;
+                    }
+                        
+                return $test;
+                
+            case 'step4':
+            $test = 1;  
+               
+            //Si el usuario sube una foto para su perfil la validamos
+                if(isset($_FILES['photo']) and $_FILES['photo']!= null){
+                   
+                    $testValidoFoto =  Directorios::validarFoto('photo');  
+                    
+                        if( $testValidoFoto === 0){  
+                         
+                            try{
+                                //Importante
+                                //Recuperamos el nombre del archivo y ruta a la que mover la imagen
+                                $destino = '../datos_usuario/'.$_SESSION['usuario']['nick'].'/'.basename($_FILES['photo']['name']);
+                                $foto = $_FILES['photo']['tmp_name'];
+                              
+                                        if($destino == "" || $foto == ""){
+                                            throw new MisExcepciones(null, null);
+                                        }
+                            } catch(MisExcepciones $ex) {
+                                $ex->redirigirPorErrorTrabajosEnArchivosAlRegistrarse(); 
+                                
+                            }
+                         
+                            try{
+                                
+                                //El primero donde almacenamos la foto de su perfil, en el futuro guardaremos mas cosas
+                                //Si ha ido bien creamos el directorio donde al usuario se le almacenaran las imagenes
+                                //de los posts
+                                $testPhotos = Directorios::crearDirectorio("../photos/".$_SESSION['usuario']['nick']);
+                                //Creamos el directorio con la foto de perfil
+                                $testUsuario = Directorios::crearDirectorio("../datos_usuario/".$_SESSION['usuario']['nick']);
+                                $testVideos = Directorios::crearDirectorio("../Videos/".$_SESSION['usuario']['nick']);
+                                
+                                    if((!$testPhotos) || (!$testUsuario) || (!$testVideos)){
+                                        throw new MisExcepciones(null, null);
+                                    }
+                                    
+                            } catch (MisExcepciones $ex) {
+                                    $ex->redirigirPorErrorTrabajosEnArchivosAlRegistrarse();
+                            }catch(Exception $e){
+                                echo $e->getCode();
+                            }
+                            
+                            try{
+                                 //Se mueve la foto de perfil subida
+                                $testMover = Directorios::moverImagen($foto, $destino);
+                                    if(!$testMover){
+                                        throw new MisExcepciones(null, null);
+                                    }
+                                    
+                            } catch (MisExcepciones $ex) {
+                                     $ex->redirigirPorErrorTrabajosEnArchivosAlRegistrarse();
+                            }
+                            
+                            try{
+                                 //La renombramos con su nombre
+                                $testRenombrar = Directorios::renombrarFoto($destino, $_SESSION['usuario']['nick'], false);
+                                    if(!$testRenombrar){
+                                        throw new MisExcepciones(null, null);
+                                    }
+                                
+                            } catch (MisExcepciones $ex) {
+                                $ex->redirigirPorErrorTrabajosEnArchivosAlRegistrarse();
+                            }
+         
+                  //Si no sube una foto le ponemos la default
+        
+                } else if ($testValidoFoto == 4) {
+                    
+                    try{
+                          //Si no sube ninguna foto se le asigna la de default
+                        $destino = "../datos_usuario/".$_SESSION['usuario']['nick'].'/'.$_SESSION['usuario']['nick'].'.jpg';
+                        $testPhotos = Directorios::crearDirectorio("../photos/".$_SESSION['usuario']['nick']);    
+                            if(($destino == "") || (!$testPhotos)){
+                                //echo ' 4 1 <br>';
+                                throw new MisExcepciones(null, null);
+                            }
+                        
+                    } catch (MisExcepciones $ex) {
+                            $ex->redirigirPorErrorTrabajosEnArchivosAlRegistrarse();
+                    }
+                    
+                    try{
+                        
+                        $testDir = Directorios::crearDirectorio("../datos_usuario/".$_SESSION['usuario']['nick']);
+                        $testCopy = Directorios::copiarFoto("../datos_usuario/desconocido.jpg", $destino);
+                    
+                            if((!$testDir) || (!$testCopy)){
+                                //echo '4 2 <br>';
+                                throw new MisExcepciones(null, null);
+                            }
+                    } catch (MisExcepciones $ex) {
+                            $ex->redirigirPorErrorTrabajosEnArchivosAlRegistrarse();
+                    }
+
+                    try{
+                        
+                        $testCrearDir = Directorios::crearDirectorio("../Videos/".$_SESSION['usuario']['nick']);
+                            if(!$testCrearDir){
+                                //echo ' 4 3 <br>';
+                               throw new MisExcepciones(null, null);
+                            }   
+                    } catch (MisExcepciones $ex) {
+                            $ex->redirigirPorErrorTrabajosEnArchivosAlRegistrarse();
+                        
+                    }
+  
+                } else if ($testValidoFoto === 10) {  
+                   
+                    //Si hay algun error al validar la imagen 
+                    //redirigimos a la pagina mostrarError
+                        //y le indicamos el motivo del error
+                    // Esto ultimo se hace en el switch del
+                    //metodo que valida la subida en el directorio Directorios
+                    $_SESSION['paginaError'] = 'registrarse.php';
+                        mostrarError();      
+                        exit();   
+                }else{
+                    $test = 0;
+                }
+                
+                }
+
+                return $test;
+                    break;
+                    
+                case 'step5':
+                    //No hacemos ninguna validacion
+                   
+                
+                
+           
+   
+        }
+  //fin validarCamposRegistro      
+      }
+   
 
   
 //fin ControlErroresSistemaEnArchivos

@@ -105,8 +105,11 @@ session_start();
                                     echo '<img src='."../datos_usuario/".$_SESSION['user']->getValue('nick')."/".$_SESSION['user']->getValue('nick').".jpg".' alt="imagen del usuario" title="este eres tú"/>';
                             echo '</section>';
                         }
-                echo'<input type="button" id="ingresar" name="ingresar" value="Ingresar"/>';
-                echo'<input type="button" id="registrar" name="registrar" value="Registrarse"/>';
+                
+                    if((!isset($_SESSION["user"]))){
+                        echo'<input type="button" id="ingresar" name="ingresar" value="Ingresar"/>';
+                        echo'<input type="button" id="registrar" name="registrar" value="Registrarse"/>';
+                    }
             echo'</section>';
             
 			echo'<h1>Te lo cambio</h1>';

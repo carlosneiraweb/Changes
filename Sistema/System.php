@@ -12,7 +12,7 @@
  * @author Carlos Neira Sanchez
  * @mail arj.123@hotmail.es
  * @telefono ""
- * @nameAndExt formulario_login.js
+ * @nameAndExt System.php
  * @fecha 04-oct-2016
  */
 class System {

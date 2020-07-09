@@ -120,14 +120,14 @@ $errores = new ControlErroresSistemaEnArchivos(null,null);
         //luego vuelve al paso anterior y decide no subir el post
         //Llamamos a este metodo para eliminar los datos con los que hemos trabajado
         if(isset($_SESSION['atras']) and $_SESSION['atras'] === "atras"){
-            ControlErroresSistemaEnArchivos::eliminarPostAlPublicar();
-            ControlErroresSistemaEnArchivos::eliminarVariablesSesionPostAcabado();
+            $errores->eliminarPostAlPublicar();
+            $errores->eliminarVariablesSesionPostAcabado();
                 
         }else{
             //Si no se ha llegado al segundo paso
             //redirigimos a index.php y eliminamos las variables
             //con las que hemos trabajado
-            ControlErroresSistemaEnArchivos::eliminarVariablesSesionPostAcabado();
+            $errores->eliminarVariablesSesionPostAcabado();
         } 
         
         
@@ -149,7 +149,7 @@ $errores = new ControlErroresSistemaEnArchivos(null,null);
         //Le redirigimos a cualqier url que estubiera
         //Destruimos la sesion atras, la sesion contador y si existiera la 
             //la variable de imagenes borradas
-            ControlErroresSistemaEnArchivos::eliminarVariablesSesionPostAcabado(); 
+            $errores->eliminarVariablesSesionPostAcabado(); 
             //Esta variable de sesion no se destruye junto a las 
             //otras por que es necesaria para hacer un update
             //del post mientras se esta publicando.
@@ -403,13 +403,13 @@ function ingresarPost(){
         //vuelve intentarlo se ingresa un post de nuevo.
        
         if((isset($_SESSION['atras']) || isset($_SESSION['error'])) and (!isset($_SESSION['errorArchivos']))){ 
-            //echo "<br>actualizo atras => ".$_SESSION['atras']." error ".$_SESSION['error']." y sesion archivos ".$_SESSION['errorArchivos'];
+          
             $test = $articulo->actualizarPost();
             if(isset($_SESSION['errorArchivos'])){
                     unset($_SESSION['errorArchivos']);
                 }
         }else{
-            //echo '<br>inserto<br>';
+            
             $test = $articulo->insertPost();
             if(isset($_SESSION['errorArchivos'])){
                     unset($_SESSION['errorArchivos']);
@@ -417,7 +417,7 @@ function ingresarPost(){
         }
         if(!$test){
             $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-            mostrarError();
+            //mostrarError();
                     }
         unset($articulo);
        
@@ -527,6 +527,7 @@ function eliminarImagen(){
 function processForm($requiredFields, $st){
     //Array para almacenar los campos no rellenados y obligatorios
         global $missingFields;
+        global $errores;
         $missingFields = array(); 
        
         
@@ -572,7 +573,7 @@ function processForm($requiredFields, $st){
             //Si ha habido algun error volvemos a mostrar el paso del formulario
             //  correcto y un mensaje con los campos correspondientes
             
-            ControlErroresSistemaEnArchivos::validarCampos($st);
+            $errores->validarCamposSubirPost($st);
             if($missingFields){
                 displayStep1($missingFields);
             } else{
@@ -584,7 +585,7 @@ function processForm($requiredFields, $st){
         
         case 'step2':
           
-            ControlErroresSistemaEnArchivos::validarCampos($st);
+            $errores->validarCamposSubirPost($st);
             if($missingFields){
                 displayStep2($missingFields);
             }else {

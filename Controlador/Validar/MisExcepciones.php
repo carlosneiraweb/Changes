@@ -17,6 +17,10 @@ class MisExcepciones extends Exception{
          parent::__construct($message, $code, $previous);
     }
 
+    
+ 
+    
+    
  /**
     * Metodo que elimina variables de sesion
     * cuando un usuario ha acabado de subir 
@@ -24,7 +28,7 @@ class MisExcepciones extends Exception{
     */
 
 public function eliminarVariablesSesionPostAcabado(){
-   
+  
     if(isset($_SESSION['imgTMP'])){
             unset($_SESSION['imgTMP']);
         }
@@ -75,7 +79,7 @@ public function eliminarVariablesSesionPostAcabado(){
 
             try{
                 $testPostId = Post::eliminarPostId($idPost);
-                    echo "eliminar post ".$testPostId.'<br>';
+                    //echo "eliminar post ".$testPostId.'<br>';
                 if(!$testPostId){
                     $errores[1] = $idPost;
                 }
@@ -124,13 +128,13 @@ public function eliminarVariablesSesionPostAcabado(){
 
     
  /**
-     * Metodo que en caso de error 
-     * trabajar con archivos nos redirige 
+     * Metodo que en caso de error al
+     * trabajar con archivos cuando se sube un Post nos redirige 
      * a la pagina correspondiente y
      * elimina todas las variables de sesion
      */
    
-public  function redirigirPorErrorTrabajosEnArchivos(){
+public  function redirigirPorErrorTrabajosEnArchivosSubirPost(){
       
         
         $this->eliminarPostAlPublicar();
@@ -145,6 +149,48 @@ public  function redirigirPorErrorTrabajosEnArchivos(){
 //redirigirPorErrorArchivos    
 }
 
+
+/**
+ * Metodo que elimina los directorios creados
+ * al registrarse un usuario
+ */
+
+public function eliminarDirectoriosAlRegistrarseUsuario() {
+ 
+    try {
+        Directorios::eliminarDirectorioRegistro("../photos/".$_SESSION['usuario']['nick']);
+    } catch (Exception $exc) {echo $exc->getCode();}
+
+    try{
+        Directorios::eliminarDirectorioRegistro("../datos_usuario/".$_SESSION['usuario']['nick']);
+    } catch (Exception $ex) {echo $exc->getCode();}
+
+    try{
+         Directorios::eliminarDirectorioRegistro("../Videos/".$_SESSION['usuario']['nick']); 
+    } catch (Exception $ex){echo $exc->getCode();}
+
+//fin eliminarDirectoriosAlRegistrarseUsuario    
+}
+
+/**
+ * Metodo que es llamado cuando se produce un error
+ * al trabajar con archivos cuando un usuario se esta registrando
+ */
+
+public function redirigirPorErrorTrabajosEnArchivosAlRegistrarse(){
+    //echo 'mis excepciones <br>';
+    $this->eliminarDirectoriosAlRegistrarseUsuario();
+    $_SESSION["paginaError"] = "registrarse.php";
+    $_SESSION['error'] = ERROR_INGRESAR_USUARIO;
+    $_SESSION['errorArchivos'] = "existo";
+        mostrarError();
+        exit();
+    
+    
+    
+    
+//fin redirigirPorErrorTrabajosEnArchivosAlRegistrarse    
+}
    
     
 //fin mis excepciones    

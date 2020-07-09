@@ -22,7 +22,7 @@ var Conexion;
                   
 //Inicializamos la variable inicio que mostrara por el numero por donde empezar a mostrar los posts
 //La variable mostrar define que secciones mostrar 
-    //Comprobamos sin ya se ha inicializado, sino cada vez que el script
+    //Comprobamos si ya se ha inicializado, sino cada vez que el script
     //se instanciase recargaria su valor.
     if(typeof(inicio) === "undefined"){ inicio = 0; }; 
     //alert(inicio);

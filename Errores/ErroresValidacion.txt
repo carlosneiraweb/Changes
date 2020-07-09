@@ -1,16 +1,16 @@
 
             ******************************************************
-            Nueva entrada Con fecha:Día 29, de March, del año 2017, a la hora 17: 47 Ha habido un problema de registro de un usuario.
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 8: 44 Ha habido un problema de registro de un usuario.
 
             El error es: 1
-El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: parameter was not defined
+El error al ingresar datos usuario es: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '33-1' for key 'PRIMARY'
 
 En la linea: 208
 En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
 fin error.
 El error al introducir la direccion del usuario  es: 
-SQLSTATE[HY093]: Invalid parameter number: parameter was not defined
-En la linea: 251
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'idDireccion' cannot be null
+En la linea: 255
 En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
 fin de error.
 
@@ -18,140 +18,414 @@ fin de error.
             Los datos intruducidos por el usuario son: 
 
             
-            nombre =  pedro
+            nombre =  ddddd
 
-            1º Apellido: = primero
+            1º Apellido: = 
 
-            2º Apellido = segundo
+            2º Apellido = 
 
-            calle = dddd
-
-            numero del Portal = 
-
-            puerta = dddd
-
-            ciudad = ddddddddd
-
-            codigo Postal = 55555
-
-            provincia = Cadiz
-
-            telefono = 615496322
-
-            pais = españa
-
-            genero = otro
-
-            email = pedro@dddd.es
-
-            nick = pedro
-
-            password = 999999999999
-
-            pais = españa
-Los directorios de Datos_usuario y Photos se han elimanado.
-
-
-            ******************************************************
-            Nueva entrada Con fecha:Día 29, de March, del año 2017, a la hora 17: 49 Ha habido un problema de registro de un usuario.
-
-            El error es: 11
-El error al introducir la direccion del usuario  es: 
-SQLSTATE[HY093]: Invalid parameter number: parameter was not defined
-En la linea: 251
-En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
-fin de error.
-
-            La IP del visitante es: ::1
-            Los datos intruducidos por el usuario son: 
-
-            
-            nombre =  pedro
-
-            1º Apellido: = primero
-
-            2º Apellido = segundo
-
-            calle = dddd
+            calle = 
 
             numero del Portal = 
 
-            puerta = dddd
+            puerta = 
 
-            ciudad = ddddddddd
+            ciudad = dddddddddddddddd
 
-            codigo Postal = 55555
+            codigo Postal = 44444
 
-            provincia = Cadiz
+            provincia = No importa
 
-            telefono = 615496322
+            telefono = 615493145
 
-            pais = españa
+            pais = 
 
-            genero = otro
+            genero = hombre
 
-            email = pedro@dddd.es
+            email = daviddddddddd@gmail.com
 
-            nick = pedro
+            nick = david
 
-            password = 999999999999
+            password = 987654321
 
-            pais = españa
+            pais = 
 Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
 No ha sido eliminada la carpeta datos_usuario.
 No ha sido eliminada la carpeta Photos de este usuario.
 
 
             ******************************************************
-            Nueva entrada Con fecha:Día 29, de March, del año 2017, a la hora 17: 50 Ha habido un problema de registro de un usuario.
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 8: 45 Ha habido un problema de registro de un usuario.
 
-            El error es: 111
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '34-1' for key 'PRIMARY'
+
+En la linea: 208
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+El error al introducir la direccion del usuario  es: 
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'idDireccion' cannot be null
+En la linea: 255
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin de error.
 
             La IP del visitante es: ::1
             Los datos intruducidos por el usuario son: 
 
             
-            nombre =  pedro
+            nombre =  ffffffffffffffffffff
 
-            1º Apellido: = primero
+            1º Apellido: = 
 
-            2º Apellido = segundo
+            2º Apellido = 
 
-            calle = dddd
+            calle = 
 
             numero del Portal = 
 
-            puerta = dddd
+            puerta = 
 
-            ciudad = ddddddddd
+            ciudad = ffffffffffffffff
 
-            codigo Postal = 55555
+            codigo Postal = 44444
 
-            provincia = Cadiz
+            provincia = No importa
 
-            telefono = 615496322
+            telefono = 615493145
 
-            pais = españa
+            pais = 
 
-            genero = otro
+            genero = hombre
 
-            email = pedro@dddd.es
+            email = eeeeeeeeeeeee@gnnnnnn.es
 
-            nick = pedro
+            nick = david
 
-            password = 999999999999
+            password = 987654321
 
-            pais = españa
+            pais = 
 Los directorios de Datos_usuario y Photos se han elimanado.
 
 
             ******************************************************
-            Nueva entrada Con fecha:Día 29, de March, del año 2017, a la hora 17: 51 Ha habido un problema de registro de un usuario.
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 8: 51 Ha habido un problema de registro de un usuario.
 
-            El error es: 
-El error al introducir los datos login es: 
-SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'pedro' for key 'nick_UNIQUE'
-En la linea: 301
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '35-1' for key 'PRIMARY'
+
+En la linea: 208
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+El error al introducir la direccion del usuario  es: 
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'idDireccion' cannot be null
+En la linea: 255
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin de error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ffffffffffffffffffff
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ffffffffffffffff
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 615493145
+
+            pais = 
+
+            genero = hombre
+
+            email = eeeeeeeeeeeee@gnnnnnn.es
+
+            nick = david
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 8: 59 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '36-1' for key 'PRIMARY'
+
+En la linea: 208
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+El error al introducir la direccion del usuario  es: 
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'idDireccion' cannot be null
+En la linea: 255
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin de error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ffffffffffffffffffff
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ffffffffffffffff
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 615493145
+
+            pais = 
+
+            genero = hombre
+
+            email = eeeeeeeeeeeee@gnnnnnn.es
+
+            nick = david
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 9: 20 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '37-1' for key 'PRIMARY'
+
+En la linea: 208
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+El error al introducir la direccion del usuario  es: 
+SQLSTATE[HY093]: Invalid parameter number: parameter was not defined
+En la linea: 255
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin de error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ffffffffffffffffffff
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ffffffffffffffff
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 615493145
+
+            pais = 
+
+            genero = hombre
+
+            email = eeeeeeeeeeeee@gnnnnnn.es
+
+            nick = david
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 9: 21 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '38-1' for key 'PRIMARY'
+
+En la linea: 208
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+El error al introducir la direccion del usuario  es: 
+SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+En la linea: 256
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin de error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ffffffffffffffffffff
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ffffffffffffffff
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 615493145
+
+            pais = 
+
+            genero = hombre
+
+            email = eeeeeeeeeeeee@gnnnnnn.es
+
+            nick = david
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 9: 30 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al introducir la direccion del usuario  es: 
+SQLSTATE[HY093]: Invalid parameter number: parameter was not defined
+En la linea: 256
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin de error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ffffffffffffffffffff
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ffffffffffffffff
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 615493145
+
+            pais = 
+
+            genero = hombre
+
+            email = eeeeeeeeeeeee@gnnnnnn.es
+
+            nick = david
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 9: 41 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al introducir la direccion del usuario  es: 
+SQLSTATE[HY093]: Invalid parameter number: parameter was not defined
+En la linea: 256
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin de error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ffffffffffffffffffff
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ffffffffffffffff
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 615493145
+
+            pais = 
+
+            genero = hombre
+
+            email = eeeeeeeeeeeee@gnnnnnn.es
+
+            nick = david
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 9: 43 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+En la linea: 208
 En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
 fin error.
 
@@ -159,47 +433,49 @@ fin error.
             Los datos intruducidos por el usuario son: 
 
             
-            nombre =  pedro
+            nombre =  ffffffffffffffffffff
 
-            1º Apellido: = primero
+            1º Apellido: = 
 
-            2º Apellido = segundo
+            2º Apellido = 
 
-            calle = dddd
+            calle = 
 
             numero del Portal = 
 
-            puerta = dddd
+            puerta = 
 
-            ciudad = ddddddddd
+            ciudad = ffffffffffffffff
 
-            codigo Postal = 55555
+            codigo Postal = 44444
 
-            provincia = Cadiz
+            provincia = No importa
 
-            telefono = 615496322
+            telefono = 615493145
 
-            pais = españa
+            pais = 
 
-            genero = otro
+            genero = hombre
 
-            email = pedro@dddd.es
+            email = eeeeeeeeeeeee@gnnnnnn.es
 
-            nick = pedro
+            nick = david
 
-            password = 999999999999
+            password = 987654321
 
-            pais = españa
-Los directorios de Datos_usuario y Photos se han elimanado.
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
 
 
             ******************************************************
-            Nueva entrada Con fecha:Día 29, de March, del año 2017, a la hora 17: 52 Ha habido un problema de registro de un usuario.
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 9: 44 Ha habido un problema de registro de un usuario.
 
-            El error es: 
-El error al introducir los datos login es: 
-SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'pedro' for key 'nick_UNIQUE'
-En la linea: 301
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+En la linea: 208
 En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
 fin error.
 
@@ -207,54 +483,2660 @@ fin error.
             Los datos intruducidos por el usuario son: 
 
             
-            nombre =  pedro
+            nombre =  ffffffffffffffffffff
 
-            1º Apellido: = primero
+            1º Apellido: = 
 
-            2º Apellido = segundo
+            2º Apellido = 
 
-            calle = dddd
+            calle = 
 
             numero del Portal = 
 
-            puerta = dddd
+            puerta = 
 
-            ciudad = ddddddddd
+            ciudad = ffffffffffffffff
 
-            codigo Postal = 55555
+            codigo Postal = 44444
 
-            provincia = Cadiz
+            provincia = No importa
 
-            telefono = 615496322
+            telefono = 615493145
 
-            pais = españa
+            pais = 
+
+            genero = hombre
+
+            email = eeeeeeeeeeeee@gnnnnnn.es
+
+            nick = david
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 9: 47 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+En la linea: 208
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ffffffffffffffffffff
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ffffffffffffffff
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 615493145
+
+            pais = 
+
+            genero = hombre
+
+            email = eeeeeeeeeeeee@gnnnnnn.es
+
+            nick = david
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 9: 49 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+En la linea: 208
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ffffffffffffffffffff
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ffffffffffffffff
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 615493145
+
+            pais = 
+
+            genero = hombre
+
+            email = eeeeeeeeeeeee@gnnnnnn.es
+
+            nick = david
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 9: 50 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+En la linea: 209
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ffffffffffffffffffff
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ffffffffffffffff
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 615493145
+
+            pais = 
+
+            genero = hombre
+
+            email = eeeeeeeeeeeee@gnnnnnn.es
+
+            nick = david
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 9: 51 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+En la linea: 209
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ffffffffffffffffffff
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ffffffffffffffff
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 615493145
+
+            pais = 
+
+            genero = hombre
+
+            email = eeeeeeeeeeeee@gnnnnnn.es
+
+            nick = david
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 9: 58 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+En la linea: 209
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ffffffffffffffffffff
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ffffffffffffffff
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 615493145
+
+            pais = 
+
+            genero = hombre
+
+            email = eeeeeeeeeeeee@gnnnnnn.es
+
+            nick = david
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 10: 0 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+En la linea: 209
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ccc
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ssssssss
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = sssss@ddd.es
+
+            nick = CCC
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 10: 1 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+En la linea: 209
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ccc
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ssssssss
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = sssss@ddd.es
+
+            nick = CCC
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 10: 3 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+En la linea: 210
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ccc
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ssssssss
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = sssss@ddd.es
+
+            nick = CCC
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 10: 5 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+En la linea: 209
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ccc
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ssssssss
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = sssss@ddd.es
+
+            nick = CCC
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 10: 13 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+En la linea: 209
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ccc
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ssssssss
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = sssss@ddd.es
+
+            nick = CCC
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 10: 13 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+En la linea: 209
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ccc
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ssssssss
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = sssss@ddd.es
+
+            nick = CCC
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 10: 14 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+En la linea: 209
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ccc
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ssssssss
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = sssss@ddd.es
+
+            nick = CCC
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 10: 16 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: parameter was not defined
+
+En la linea: 210
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ccc
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ssssssss
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = sssss@ddd.es
+
+            nick = CCC
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 10: 16 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: parameter was not defined
+
+En la linea: 210
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ccc
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ssssssss
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = sssss@ddd.es
+
+            nick = CCC
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 10: 31 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+En la linea: 210
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ccc
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ssssssss
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = sssss@ddd.es
+
+            nick = C
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 10: 32 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: parameter was not defined
+
+En la linea: 209
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ccc
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ssssssss
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = sssss@ddd.es
+
+            nick = C
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 10: 37 Ha habido un problema de registro de un usuario.
+
+            El error es: 
+El error al introducir los datos login es: 
+SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'C' for key 'nick_UNIQUE'
+En la linea: 310
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ccc
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ssssssss
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = sssss@ddd.es
+
+            nick = C
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 10: 39 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[42000]: Syntax error or access violation: 1065 Query was empty
+
+En la linea: 214
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ccc
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ssssssss
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = sssssssss@ddd.es
+
+            nick = Ca
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 10: 39 Ha habido un problema de registro de un usuario.
+
+            El error es: 
+El error al introducir los datos login es: 
+SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'Ca' for key 'nick_UNIQUE'
+En la linea: 313
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  ccc
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ssssssss
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = sssssssss@ddd.es
+
+            nick = Ca
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 10: 41 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: parameter was not defined
+
+En la linea: 214
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  eeeeeeeeeeeeeeeeeeee
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = eeeeeeeeeeeeeeeeeee
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = wwwww@fff.es
+
+            nick = ddd
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 10: 42 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: parameter was not defined
+
+En la linea: 214
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  eeeeeeeeeeeeeeeeeeee
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = eeeeeeeeeeeeeeeeeee
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = wwswww@fff.es
+
+            nick = ddds
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 11: 33 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  rrrrrrrr
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = sssss
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = david@hhh.es
+
+            nick = david
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 11: 37 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  rrrrrrrr
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = sssss
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = david@hhh.es
+
+            nick = david
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 11: 41 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  dddddd
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = eeeeeeeeeeee
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = fff@fff.es
+
+            nick = david
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 18: 11 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+
+En la linea: 209
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  qqqqqq
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 615493145
+
+            pais = 
+
+            genero = hombre
+
+            email = eeeeee@es.es
+
+            nick = mama
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 18: 39 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'SELECT idUsuario FROM usuario where nick = 'mama'),
+                            ' at line 1
+
+En la linea: 210
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  qqqqqq
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 615493145
+
+            pais = 
+
+            genero = hombre
+
+            email = eeeeee@es.es
+
+            nick = mama
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 18: 57 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al ingresar datos usuario es: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'SELECT idUsuario FROM usuario where nick = 'mama'),
+                            ' at line 1
+
+En la linea: 210
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  qqqqqq
+
+            1º Apellido: = ddddddddddddddd
+
+            2º Apellido = ddddddddddddddddddddd
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 615493145
+
+            pais = 
+
+            genero = hombre
+
+            email = eeeeee@es.es
+
+            nick = mama
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 19: 0 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  qqqqqq
+
+            1º Apellido: = ddddddddddddddd
+
+            2º Apellido = ddddddddddddddddddddd
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 615493145
+
+            pais = 
+
+            genero = hombre
+
+            email = eeeeee@es.es
+
+            nick = mama
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 19: 2 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  qqqqqq
+
+            1º Apellido: = ddddddddddddddd
+
+            2º Apellido = ddddddddddddddddddddd
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 615493145
+
+            pais = 
+
+            genero = hombre
+
+            email = eeeeee@es.es
+
+            nick = mama
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 8, de July, del año 2020, a la hora 19: 12 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  mama
+
+            1º Apellido: = wwwwwwwwww
+
+            2º Apellido = wwwwwwww
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwwwwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 615493145
+
+            pais = 
+
+            genero = hombre
+
+            email = i0ehgvi@ijb.es
+
+            nick = mama
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 11: 24 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  fffffffffff
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ffffff
+
+            codigo Postal = 46520
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = dddd@gmail.es
+
+            nick = mama3
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 11: 26 Ha habido un problema de registro de un usuario.
+
+            El error es: 
+El error al introducir los datos login es: 
+SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'mama3' for key 'nick_UNIQUE'
+En la linea: 292
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  fffffffffff
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ffffff
+
+            codigo Postal = 46520
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = dddd@gmail.es
+
+            nick = mama3
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 11: 28 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  fffffffffff
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ffffff
+
+            codigo Postal = 46520
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = dddd@gmail.es
+
+            nick = mama3
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 11: 35 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  fffffffffff
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ffffff
+
+            codigo Postal = 46520
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = dddd@gmail.es
+
+            nick = mama3
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 12: 28 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  eeeee
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwwwwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = wwwww@gmail.es
+
+            nick = mama4
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 12: 29 Ha habido un problema de registro de un usuario.
+
+            El error es: 
+El error al introducir los datos login es: 
+SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'mama4' for key 'nick_UNIQUE'
+En la linea: 318
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  eeeee
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwwwwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = wwwww@gmail.es
+
+            nick = mama4
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 12: 29 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  eeeee
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwwwwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = wwwsww@gmail.es
+
+            nick = mama5
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 12: 31 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  eeeee
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwwwwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = wwwssww@gmail.es
+
+            nick = mama6
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 12: 31 Ha habido un problema de registro de un usuario.
+
+            El error es: 
+El error al introducir los datos login es: 
+SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'mama6' for key 'nick_UNIQUE'
+En la linea: 318
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  eeeee
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwwwwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = wwwssww@gmail.es
+
+            nick = mama6
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 12: 32 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  eeeee
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwwwwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = wswwssww@gmail.es
+
+            nick = mama6s
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 12: 33 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  eeeee
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwwwwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
 
             genero = otro
 
-            email = pedro@dddd.es
+            email = wsswssww@gmail.es
 
-            nick = pedro
+            nick = mama6ss
 
-            password = 999999999999
+            password = 987654321
 
-            pais = españa
+            pais = 
 Los directorios de Datos_usuario y Photos se han elimanado.
 
 
             ******************************************************
-            Nueva entrada Con fecha:Día 29, de March, del año 2017, a la hora 17: 53 Ha habido un problema de registro de un usuario.
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 12: 34 Ha habido un problema de registro de un usuario.
 
-            El error es: 111
+            El error es: 1
 
             La IP del visitante es: ::1
             Los datos intruducidos por el usuario son: 
 
             
-            nombre =  pedro
+            nombre =  eeeee
 
-            1º Apellido: = primero
+            1º Apellido: = 
 
-            2º Apellido = segundo
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwwwwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = otro
+
+            email = wssfffwssww@gmail.es
+
+            nick = mama6ssf
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 12: 37 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  eeeee
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwwwwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = otro
+
+            email = wssfffewssww@gmail.es
+
+            nick = mama6ssfe
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 12: 40 Ha habido un problema de registro de un usuario.
+
+            El error es: 
+El error al introducir los datos login es: 
+SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'mama6ssfe' for key 'nick_UNIQUE'
+En la linea: 319
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  eeeee
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwwwwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = otro
+
+            email = wssfffewssww@gmail.es
+
+            nick = mama6ssfe
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 12: 42 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  eeeee
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwwwwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = otro
+
+            email = wssfffewwwssww@gmail.es
+
+            nick = mawma6ssfew
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 12: 46 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  eeeee
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwwwwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = otro
+
+            email = wsWsfffewwwssww@gmail.es
+
+            nick = mawmWa6ssfew
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 12: 49 Ha habido un problema de registro de un usuario.
+
+            El error es: 
+El error al introducir los datos login es: 
+SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'mawmWa6ssfew' for key 'nick_UNIQUE'
+En la linea: 318
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  eeeee
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwwwwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = otro
+
+            email = wsWsfffewwwssww@gmail.es
+
+            nick = mawmWa6ssfew
+
+            password = 987654321
+
+            pais = 
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 12: 49 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  eeeee
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwwwwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = otro
+
+            email = wsWsfffewwwdssww@gmail.es
+
+            nick = mawmWsssa6ssfew
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 12: 53 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  eeeee
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwwwwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = otro
+
+            email = wsWsfffewwww@gmail.es
+
+            nick = mawmdWsssa6ssfew
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 12: 55 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  eeeee
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwwwwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = otro
+
+            email = wsWswwww@gmail.es
+
+            nick = mawmsssa6ssfew
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 12: 56 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  eeeee
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwwwwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = otro
+
+            email = wsWsww@gmail.es
+
+            nick = masssa6ssfew
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 12: 59 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  eeeee
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwwwwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = otro
+
+            email = wsWswdw@gmail.es
+
+            nick = masssea6ssfew
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 15: 36 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  eeeee
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwwwwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = otro
+
+            email = wswdw@gmail.es
+
+            nick = masssea6ssfe
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 15: 49 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  eeeee
+
+            1º Apellido: = 
+
+            2º Apellido = 
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = wwwwwwwww
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 666666666
+
+            pais = 
+
+            genero = hombre
+
+            email = wcccswvsdw@gmail.es
+
+            nick = cc
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 15: 59 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  lucia
+
+            1º Apellido: = eeee
+
+            2º Apellido = eee
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = eeeeeeee
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 615493145
+
+            pais = 
+
+            genero = mujer
+
+            email = ffff@ff.es
+
+            nick = LUCIA
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 16: 5 Ha habido un problema de registro de un usuario.
+
+            El error es: 11
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  lucia
+
+            1º Apellido: = kkk
+
+            2º Apellido = kkk
+
+            calle = 
+
+            numero del Portal = 
+
+            puerta = 
+
+            ciudad = ddddddd
+
+            codigo Postal = 44444
+
+            provincia = No importa
+
+            telefono = 615478963
+
+            pais = 
+
+            genero = hombre
+
+            email = dedddf@fepg.es
+
+            nick = lucia2
+
+            password = 987654321
+
+            pais = 
+Los directorios de Datos_usuario y Photos se han elimanado.
+
+
+            ******************************************************
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 16: 46 Ha habido un problema de registro de un usuario.
+
+            El error es: 1
+El error al introducir la direccion del usuario  es: 
+SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+En la linea: 264
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin de error.
+
+            La IP del visitante es: ::1
+            Los datos intruducidos por el usuario son: 
+
+            
+            nombre =  gato
+
+            1º Apellido: = gato
+
+            2º Apellido = gato
 
             calle = dddd
 
@@ -262,42 +3144,47 @@ Los directorios de Datos_usuario y Photos se han elimanado.
 
             puerta = dddd
 
-            ciudad = ddddddddd
+            ciudad = ddddddddddd
 
-            codigo Postal = 55555
+            codigo Postal = 44444
 
-            provincia = No importa
+            provincia = Santa Cruz de Tenerife
 
-            telefono = 615496322
+            telefono = 615493145
 
-            pais = 
+            pais = eeeeeeeee
 
-            genero = hombre
+            genero = mujer
 
-            email = pedro@dddd.es
+            email = dddddd@dd.es
 
-            nick = pedro
+            nick = DDDDD
 
-            password = 999999999999
+            password = 987654321
 
-            pais = 
+            pais = eeeeeeeee
 Los directorios de Datos_usuario y Photos se han elimanado.
 
 
             ******************************************************
-            Nueva entrada Con fecha:Día 29, de March, del año 2017, a la hora 17: 55 Ha habido un problema de registro de un usuario.
+            Nueva entrada Con fecha:Día 9, de July, del año 2020, a la hora 16: 47 Ha habido un problema de registro de un usuario.
 
-            El error es: 111
+            El error es: 11
+El error al introducir la direccion del usuario  es: 
+SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+En la linea: 264
+En el archivo: C:\xampp\htdocs\Changes\Modelo\Usuarios.php
+fin de error.
 
             La IP del visitante es: ::1
             Los datos intruducidos por el usuario son: 
 
             
-            nombre =  pedro
+            nombre =  gato
 
-            1º Apellido: = primero
+            1º Apellido: = gato
 
-            2º Apellido = segundo
+            2º Apellido = gato
 
             calle = dddd
 
@@ -305,24 +3192,26 @@ Los directorios de Datos_usuario y Photos se han elimanado.
 
             puerta = dddd
 
-            ciudad = ddddddddd
+            ciudad = ddddddddddd
 
-            codigo Postal = 55555
+            codigo Postal = 44444
 
-            provincia = No importa
+            provincia = Santa Cruz de Tenerife
 
-            telefono = 615496322
+            telefono = 615493145
 
-            pais = 
+            pais = eeeeeeeee
 
-            genero = hombre
+            genero = mujer
 
-            email = pedro@dddd.es
+            email = dddddd@dd.es
 
-            nick = pedro
+            nick = DDDDD
 
-            password = qqqqqqqqqqqq
+            password = 987654321
 
-            pais = 
-Los directorios de Datos_usuario y Photos se han elimanado.
+            pais = eeeeeeeee
+Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: 
+No ha sido eliminada la carpeta datos_usuario.
+No ha sido eliminada la carpeta Photos de este usuario.
 

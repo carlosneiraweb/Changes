@@ -142,11 +142,15 @@ $("#form_post_1").on('mouseover', '#primeroSubirPost',function(){
             });
            
             
-            $("#precioSubirPost").keydown(function() {      
-                $(this).css('color', 'black');  
+            $("#precioSubirPost").keydown(function() { 
+                //alert('oooo');
+                $("label[for='precioSubirPost']").css('color', 'black');
             });
          
-           
+            $('#precioSubirPost').blur(function() { 
+            $(this).prev().prev().css('color', '#0C0792');
+            });
+         
            
             
      

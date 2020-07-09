@@ -1,5 +1,10 @@
 <?php
 
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/System.php');
+
+
+
+
 /**
  * Description of Sistema
  *  Esta clase se encarga de crear, eliminar o mover archivos
@@ -25,7 +30,7 @@ class Directorios {
                     
                     }
             }
-                 
+                
                 switch ($test){
  
                     case 0:
@@ -62,7 +67,8 @@ class Directorios {
                        //Otros errores 
                         $_SESSION['error'] = ERROR_FOTO_GENERAL;     
                 }
-                
+            
+               
             return $test;
            
         //fin validar foto    
@@ -423,7 +429,7 @@ final static function eliminarDirectorioRegistro($src){
  * de la bbdd y de los archivos creados
  */
 final public function escribirErrorValidacion(DataObj $obj, $mensaje,$repEliminarDatosUsuario, $repEliminarPhotos, $repEliminarVideos){
-    $test;
+    $test = 1;
     
  
     try{
@@ -431,7 +437,7 @@ final public function escribirErrorValidacion(DataObj $obj, $mensaje,$repElimina
             ******************************************************
             Nueva entrada Con fecha:'. FECHA_DIA. ' Ha habido un problema de registro de un usuario.'.PHP_EOL.'
             El error es: '.$mensaje. ''.PHP_EOL.'
-            La IP del visitante es: '.Directorios::ipVisitante().'
+            La IP del visitante es: '.System::ipVisitante().'
             Los datos intruducidos por el usuario son: '.PHP_EOL.'
             
             nombre =  '.$obj->getValue("nombre").''.PHP_EOL.'
@@ -472,9 +478,12 @@ final public function escribirErrorValidacion(DataObj $obj, $mensaje,$repElimina
             }
             
         if(!($archivo = fopen(TXT_ERROR_VALIDACION, 'a'))) die("No se puede abrir el archivo");
-           $test =  fwrite($archivo, $cuerpoMensaje. PHP_EOL);
-           $test =  fclose($archivo);
-      
+           $testEscribir =  fwrite($archivo, $cuerpoMensaje. PHP_EOL);
+           $testCerrar =  fclose($archivo);
+           if((!$testEscribir) || (!$testCerrar)){
+                $test = false;
+           }
+           
            return $test;
     }catch(Exception $ex){
         echo "Error al abrir y escribir en el archivo.".$ex->getCode();

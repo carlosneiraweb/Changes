@@ -7,8 +7,6 @@
  * @nameAndExt Post.php
  * @fecha 04-oct-2016
  */
-require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
 
 /**
  * Esta clase extiende de DataObject
@@ -16,7 +14,10 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
  * para crear, actualizar y eliminar objetos de la clase Post
  */
 
-//extends DataObj
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
+
+
 class Post extends DataObj{
     
     
@@ -36,8 +37,7 @@ class Post extends DataObj{
        
     );
 
-    
-   /**
+       /**
     * 
      * Metodo que devuelve un array con
      * el id de las palabras buscada o ofrecidas.
@@ -47,12 +47,14 @@ class Post extends DataObj{
      */
 
 public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaIdPost, $idPostPalabra){
-       
+   // echo 'tabla '.$tabla. ' columnaIdImagen '.$columnaIdImagen. ' palabra '.$palabras.' columnaIdPOST '.$columnaIdPost. ' IDpOSTpALABRA '.$idPostPalabra.'<br>';    
          try {
            
             $con = Conne::connect();
 
+                            
                             $stm = "Select $columnaIdImagen, $palabras from $tabla where ".$columnaIdPost." = :idImagen;";
+                            //echo "idPab ".$stm.'<br>';
                             $stm = $con->prepare($stm);
                             $stm->bindValue(":idImagen", $idPostPalabra, PDO::PARAM_INT);
                             $stm->execute();
@@ -73,7 +75,8 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
      
        
        //devuelvoIdPalabras
-    }
+    }  
+ 
     
    /**
      * Metodo que actualiza las palabras
@@ -92,8 +95,10 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
         //no se puede distingir entre si ha habido un error
         $test = false;
         $actualizo = null;
+       
+        
         $idPostPa;
-            if(isset($_SESSION['lastId'])){
+            if(isset($_SESSION['lastId'][0])){
                 $idPostPa = $_SESSION['lastId'][0];
             }else{
                 $idPostPa = $idPostPalabras;
@@ -105,13 +110,13 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
             $count = 0;
             //Solicitamos el id de las palabras a modificar       
             $buscadas =  Post::devuelvoIdPalabras("busquedas_pbs_buscadas","palabrasBuscadas", "idPbsBuscada", "idPost_queridas", $idPostPa);
-           
             
             //Las palabras nuevas para modificar ls antiguas
             $nuevasPalabras = $this->getValue('Pa_queridas');
             
+            echo '<br>';
                 for($i = 0; $i < 4; $i++){
-                    
+               
                     //Para dejar la nuevas palabras en la misma posicion
                             if($buscadas[$i]["palabrasBuscadas"] == $nuevasPalabras[$i]){
                                 $count++;
@@ -119,7 +124,7 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
                             }
                             
                             $palabraNueva = $buscadas[$i]['idPbsBuscada'];
-                            $stm = " UPDATE ".TBL_PBS_QUERIDAS. " SET palabrasBuscadas =". "'$nuevasPalabras[$i]'"." WHERE idPbsBuscada = "."$palabraNueva"." and idPost_queridas = ".$idPostPa.";";
+                            $stm = " UPDATE ".TBL_PBS_QUERIDAS. " SET palabrasBuscadas = ". "'$nuevasPalabras[$i]'"." WHERE idPbsBuscada = "."$palabraNueva"." and idPost_queridas = ".$idPostPa.";";
                             $stm = $con->prepare($stm);
                             $stm->bindValue(":idPost_queridas", $idPostPa, PDO::PARAM_INT);
                             $stm->bindValue(":palabrasBuscadas", $nuevasPalabras[$i], PDO::PARAM_STR);
@@ -144,6 +149,7 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
             Conne::disconnect($con);
             echo "Error al actualizar palabras buscadas ".$exc->getLine().'<br>'.
                  "en el archivo ".$exc->getFile().'<br>'.
+                 "motivo ".$exc->getMessage().'<br>'.
                  "code ".$exc->getTraceAsString();
             
         }
@@ -166,9 +172,9 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
     private function actualizarPalarasOfrecidas($idPostPalabras){
         $test = false;
         $actualizo = null;
-        $idPostOfre;
        
-            if(isset($_SESSION['lastId'])){
+       
+            if(isset($_SESSION['lastId'][0])){
                 $idPostOfre = $_SESSION['lastId'][0];
             }else{
                 $idPostOfre = $idPostPalabras;
@@ -231,7 +237,7 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
      */
    
     public function actualizarPost(){
-    
+    //echo 'last id actualiar '.$_SESSION['lastId'][0].'<br>';
     try{
     $con = Conne::connect();
     
@@ -442,30 +448,25 @@ public function insertPost(){
             $st->bindValue(":comentario", $this->data["comentario"], PDO::PARAM_STR);
             $st->bindValue(":precio", $this->data["precio"], PDO::PARAM_STR);
             $st->bindValue(":fechaPost", $date, PDO::PARAM_STR);
+            $con->beginTransaction();
             $test = $st->execute();
-            $st->closeCursor();
-            
-            $sql2 = "SELECT last_insert_id() FROM ".TBL_POST;
-            $st2 = $con->prepare($sql2);
-            $st2->execute();
             //Esta variable luego se usa tambien 
             //en el segundo paso de subir un Post, cuando se sube una imagen
             //Si el usuario quiere eliminar una imagen en el proceso
-            $_SESSION['lastId'] =  $st2->fetch();
-            
-            
-            //cerramos el cursor
-            $st2->closeCursor();
+            $_SESSION['lastId'][0] =  $con->lastInsertId();
+           
+            //echo 'lastid '.$_SESSION['lastId'][0].'<br>';
+            $con->commit();
 
-            
-            if($test){
-                
-                //Mandamos insertar las palabras 
-                    $test = $this->insertarPalabrasQueridas();
-                    $test = $this->insertarPalabrasOfrecidas();
-                    $test = $this->insertarImagenDemo();
-                            
-            }
+                if($test){
+                   $test = $this->insertarPalabrasQueridas();
+                        if($test){
+                           $test = $this->insertarPalabrasOfrecidas();
+                       }
+                            if($test){
+                               $test = $this->insertarImagenDemo(); 
+                            }             
+                }
             
             
             Conne::disconnect($con);
@@ -477,6 +478,7 @@ public function insertPost(){
         } 
          
 
+//fin inserArticulo    
 //fin inserArticulo    
 }    
 
