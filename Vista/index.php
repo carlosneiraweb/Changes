@@ -1,9 +1,10 @@
 <?php 
-require_once ($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Post.php');
+
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ValidoForm.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes.php'); 
+require_once ($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Post.php');
 
 session_start();
 
@@ -15,7 +16,9 @@ session_start();
  * @fecha 04-oct-2016
  */
 
- $_SESSION["url"] = basename($_SERVER['PHP_SELF']);           
+ $_SESSION["url"] = basename($_SERVER['PHP_SELF']);   
+
+    
 
 ?>
 
@@ -58,7 +61,8 @@ session_start();
     </head>
     <body id="cuerpo">
         <?php
-    
+        
+        
         //Pasamos a JavaScript el tamaño de paginado de las paginas.
         //La utilizamos en el script elementos de javascript para mostrar 
         //paginados los posts y en json.php para la peticion 
@@ -66,7 +70,6 @@ session_start();
                echo "var PAGESIZE = "; echo PAGE_SIZE.';';          
         echo '</script>';
     
-       
  
     //Variable user para instanciar 
     //objetos usuario
@@ -99,14 +102,14 @@ session_start();
 			
                         //Mostramos la foto del usuario una vez se ha logueado
                             //Sin consultar la BBDD
-                        if(isset($_SESSION["user"]) and $_SESSION["user"] != ""){
+                        if(isset($_SESSION["userTMP"]) and $_SESSION["userTMP"] != ""){
                             echo '<section id="foto_usuario">';
                                 echo '<figure id="img_usuario">';
-                                    echo '<img src='."../datos_usuario/".$_SESSION['user']->getValue('nick')."/".$_SESSION['user']->getValue('nick').".jpg".' alt="imagen del usuario" title="este eres tú"/>';
+                                    echo '<img src='."../datos_usuario/".$_SESSION['userTMP']->getValue('nick')."/".$_SESSION['userTMP']->getValue('nick').".jpg".' alt="imagen del usuario" title="Este eres tú"/>';
                             echo '</section>';
                         }
                 
-                    if((!isset($_SESSION["user"]))){
+                    if((!isset($_SESSION["userTMP"]))){
                         echo'<input type="button" id="ingresar" name="ingresar" value="Ingresar"/>';
                         echo'<input type="button" id="registrar" name="registrar" value="Registrarse"/>';
                     }
@@ -117,10 +120,11 @@ session_start();
 		
             echo '<section id="btns_sesion">';
           
-                    if(isset($_SESSION["user"]) and $_SESSION["user"] != ""){
+                    if(isset($_SESSION["userTMP"]) and $_SESSION["userTMP"] != ""){
                         echo'<input type="button" id="salirSesion" name="salirSesion" value="Salir Sesion"/>';
                         echo'<input type="button" id="menu" name="menu" value="menu"/>';
-                        $nick = $_SESSION['user']->getValue('nick');
+                        $nick = $_SESSION['userTMP']->getValue('nick');
+                        
                        // echo $nick;
                         //Pasamos una variable a javascript
                         //para que si el usuario esta logeado
@@ -134,7 +138,7 @@ session_start();
                             echo '<script type="text/javascript">';
                                 echo 'var logeoParaComentar = '; echo '"logeado";';
                                 echo 'var user = '; echo "'$nick';";
-                                   
+                                  
                             echo '</script>'; 
                     }
                
@@ -212,7 +216,9 @@ function processForm(){
   
             )
             );
-           
+   
+  
+            
     foreach($requiredFields as $requiredField){
         if(!$user->getValue($requiredField)){
             
@@ -228,9 +234,9 @@ function processForm(){
             displayFormLogeo($missingFields, $user, $test);
        
     } else {       
-        $_SESSION["user"] = $loggedInMember;
-        //var_dump($_SESSION["user"]);
+        $_SESSION["userTMP"] = $loggedInMember;
         unset($loggedInMember);
+        unset($user);
         session_write_close();   
        
          
@@ -299,7 +305,7 @@ function processForm(){
     echo'<aside id="publi">';
 		echo'<p>Aqui va la publicidad</p>';
                 echo'<div>';
-        if(isset($_SESSION["user"]) and $_SESSION['user'] != ""){    
+        if(isset($_SESSION["userTMP"]) and $_SESSION['userTMP'] != ""){    
             echo'<input type="button" id="publicar" name="publicar" value="Publicar"/>';
         }
             echo'</div>';

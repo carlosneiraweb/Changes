@@ -11,13 +11,13 @@ var objSeccion, petSeccion, objTiempoCambio, petTiempoCambio,
     objLastImg, petLastImg, petImgEliminar, objImgEliminar, imgCargar,
     idPost, PS = null, PT = null;
 
-      
-    
+   
                 //Creamos una instancia de la clase CONEXION_AJAX
                 //Nos devuelve una conexion AJAX y propiedades 
                     var ConSubPost = new Conexion();
-    
+  
 window.onload=function(){
+   
     //Section donde se cargaran las imagenes que el usuario valla subiendo
     imgCargar = document.getElementById('cnt_img');
 
@@ -29,13 +29,16 @@ window.onload=function(){
             cargarPeticionSubirPost("PT", "opcion=PT"); //Peticion tiempoCambio
             PT = null;
         }
+        
+        
+       
+   
      //Esta variable se instancia en subir_posts.php
      //Cada vez que subimos una foto nueva en el post
      //Estan se van mostrando en el formulario
      //Para ir recuperandolas de la bbdd necesitamos el idPost
      cargarPeticionSubirPost("ImagenNueva", "opcion=ImagenNueva&idPost="+idPost);   
-     
-
+    
  };
 
 
@@ -318,3 +321,4 @@ function cargarImgEliminar(objImgEliminar){
         );//form;
 //fin cargarImgEliminar    
 }
+

@@ -19,10 +19,6 @@ $_SESSION["paginaError"] = basename($_SERVER['PHP_SELF']);
  * @nameAndExt registrarse.php
  * @fecha 04-oct-2016
  */
-
-
-
-//No podemos usar el redireccionamiento de javascript por que 
     //Utilizamos la misma url para mostrar los pasos
 function volverAnterior(){
     header('Location:'. $_SESSION["url"]);

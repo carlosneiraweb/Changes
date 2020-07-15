@@ -88,7 +88,7 @@ public function eliminarVariablesSesionPostAcabado(){
 
             try{
                 $testDir = Directorios::eliminarDirectorioRegistro($tmp);
-                echo "eliminar post ".$testPostId.'<br>';
+                
                 if(!$testDir){
                     $errores[2]= $tmp;
                 }

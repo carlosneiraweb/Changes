@@ -290,6 +290,16 @@ class ControlErroresSistemaEnArchivos extends MisExcepciones{
         
                 } else if ($testValidoFoto == 4) {
                     
+                    //Eliminamos la variable error
+                    //Por que para registrarse no es obligatorio subir
+                    //una imagen del usuario
+                    //Esta variable se instancia en el metodo 
+                    //validar fotos de la clase Directorios
+                    if(isset($_SESSION['error'])){
+                        unset($_SESSION['error']);
+                    }
+                    
+                    
                     try{
                           //Si no sube ninguna foto se le asigna la de default
                         $destino = "../datos_usuario/".$_SESSION['usuario']['nick'].'/'.$_SESSION['usuario']['nick'].'.jpg';

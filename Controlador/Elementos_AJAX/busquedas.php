@@ -138,7 +138,7 @@ try{
                         $stmBus->execute();
                         $v = $stmBus->fetchAll();
 
-                        $stmBus->closeCursor();
+                        
 
                         //Calculamos el total final como si  la clausula limit no estuviera
                         $stm2Bus = $conBusquedas->query("SELECT found_rows()  AS totalRows");
@@ -162,8 +162,8 @@ where p.idPost = :idPost limit 1";
                 $stm3Bus = $conBusquedas->prepare($sqlPost);
                 $stm3Bus->bindValue(":idPost", $id[0], PDO::PARAM_INT);
                 $stm3Bus->execute();
-                $tmp = $stm3Bus->fetch();
-                $stm3Bus->closeCursor();
+                $tmp = $stm3Bus->fetchAll();
+                
                 
                  array_push($rs,$tmp);
                   
@@ -221,7 +221,7 @@ where p.idPost = :idPost limit 1";
                             $stm4Bus->execute();
                             $tmp3 = $stm4Bus->fetchAll(); 
 
-                            $stm4Bus->closeCursor();
+                        
 
                                     echo json_encode($tmp3);
                             Conne::disconnect($conBusquedas);

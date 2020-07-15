@@ -9,6 +9,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Directorios.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ControlErroresSistemaEnArchivos.php');
 
 session_start();
+   
 
 //Iniciamos la variable de session contador a 0
 //Iremos incrementando el numero de fotos subidas
@@ -28,7 +29,29 @@ function volverAnterior(){
  */ 
 function mostrarError(){
         header('Location: mostrar_error.php');
-}    
+}  
+
+/**
+ * Metodo que elimina las variables de sesion
+ * cuando se ha finalizado el proceso
+ */
+function eliminarVariablesPost(){
+    if(isset($_SESSION['post']['comentarioSubirPost'])){
+                    unset($_SESSION['post']['comentarioSubirPost']);
+                }
+    if(isset($_SESSION['post']['tituloSubirPost'])){
+                    unset($_SESSION['post']['tituloSubirPost']);
+                }
+    if(isset($_SESSION['post']['precioSubirPost'])){
+                    unset($_SESSION['post']['precioSubirPost']);
+                }
+    if(isset($_SESSION['post']['Pa_queridas'])){
+                    unset($_SESSION['post']['Pa_queridas']);
+                }
+    if(isset($_SESSION['post']['Pa_ofrecidas'])){
+                    unset($_SESSION['post']['Pa_ofrecidas']);
+                }
+}
 
 //Variable que utiliza la pagina
 //Mostrar error para devolvernos a 
@@ -42,6 +65,7 @@ global $errores;
 $errores = new ControlErroresSistemaEnArchivos(null,null);
 
 
+    
 
 ?>
 <!DOCTYPE html>
@@ -54,6 +78,7 @@ $errores = new ControlErroresSistemaEnArchivos(null,null);
 
 <html>
     <head>
+       
         <meta charset="UTF-8">
         <title>Sube tu artículo para poder intercambiarlo</title>
         <link rel='stylesheet' type='text/css' href="css/estilos.css"/>
@@ -69,10 +94,15 @@ $errores = new ControlErroresSistemaEnArchivos(null,null);
         <script src="../Controlador/Validar/iconoObligatorio.js"></script>
         
     </head>
+   
+   
     <body id="cuerpo">
         
         
     <?php
+    
+    
+      
         
         echo'<div id="ocultar" class="oculto"> </div>';   
         
@@ -89,7 +119,7 @@ $errores = new ControlErroresSistemaEnArchivos(null,null);
 		        echo'<h3>Sube todos los artículos que desees.</h3>';
                 
 	echo'</section>';
-     
+   
     echo'</header>';
     
     
@@ -108,10 +138,13 @@ $errores = new ControlErroresSistemaEnArchivos(null,null);
         displayStep1(array());
     }
     
+
    
     /*Mandamos a comprobar los campos del primer formulario*/
     if(isset($_POST['primeroSubirPost']) and $_POST['primeroSubirPost'] == "Siguiente"){        
         $requiredFields = array('tituloSubirPost', 'comentarioSubirPost','precioSubirPost');
+        
+             
         //Pos si el usuario vuelve a este paso y decide
         //no publicar el post
           processForm($requiredFields, "step1");
@@ -122,12 +155,14 @@ $errores = new ControlErroresSistemaEnArchivos(null,null);
         if(isset($_SESSION['atras']) and $_SESSION['atras'] === "atras"){
             $errores->eliminarPostAlPublicar();
             $errores->eliminarVariablesSesionPostAcabado();
+            eliminarVariablesPost();
                 
         }else{
             //Si no se ha llegado al segundo paso
             //redirigimos a index.php y eliminamos las variables
             //con las que hemos trabajado
             $errores->eliminarVariablesSesionPostAcabado();
+            eliminarVariablesPost();
         } 
         
         
@@ -142,8 +177,12 @@ $errores = new ControlErroresSistemaEnArchivos(null,null);
         //Lo que hacemos es actualizar los datos, no volver a registrarlo
         //Para ello instanciamos una variable de session para que lo tenga en cuenta
         //Al ingresar en la bbdd
-        $_SESSION['atras'] = 'atras'; 
+        $_SESSION['atras'] = 'atras';
+             
         displayStep1(array());
+        
+                
+                
     } elseif(isset($_POST['segundoSubirPost']) and $_POST['segundoSubirPost'] == "Fin"){
         //El usuario ha terminado de ingresar los datos del post
         //Le redirigimos a cualqier url que estubiera
@@ -157,6 +196,7 @@ $errores = new ControlErroresSistemaEnArchivos(null,null);
             if(isset($_SESSION['lastId'])){
                 unset($_SESSION['lastId']);
             }
+                eliminarVariablesPost();
                 volverAnterior();
            
         
@@ -181,14 +221,32 @@ $errores = new ControlErroresSistemaEnArchivos(null,null);
            echo 'var PT = true;';
         echo '</script>';
         
+        
+                //Aqui ecojemos el valor del campo textarea comentarioPost
+                //Lo hacemos asi por que este tipo campo no tiene el 
+                //atributo value()
+                    if(isset($_SESSION['post']['comentarioSubirPost'])){
+                    $coment = $_SESSION['post']['comentarioSubirPost'];
+                    
+                            echo '<script type="text/javascript">'; 
+                            echo "coment = "; echo "`$coment`".';'; 
+                            echo '</script>';   
+                
+                    }else{
+                            echo '<script type="text/javascript">'; 
+                            echo "coment = "; echo "".';';    
+                            echo '</script>'; 
+                    }
+        
+        
     echo'<section id="form_post_1" class="fuenteFormulario, generalFormularios">';
                 echo'<h4>Introduzca los datos del artículo</h4>';
     echo'<form name="post" action="subir_posts.php" method="post" id="post_1" >';
         echo'<fieldset>';
         	echo'<legend>Rellena los campos</legend>';
-        echo"<input type='hidden' name='step' value='1'>"; 
+        echo"<input type='hidden' name='step' value='1'></input>"; 
         
-    echo '<section class="contenedor">';    
+    echo '<section class="contenedor">'; 
     echo'<label '.ValidoForm::validateField("tituloSubirPost", $missingFields).'  for="tituloSubirPost">Introduce un título para el anuncio. </label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="text" maxlength="60" name="tituloSubirPost" id="tituloSubirPost" autofocus placeholder="Máximo 60 caracteres."  value="';if(isset($_SESSION['post']['tituloSubirPost'])){echo $_SESSION['post']['tituloSubirPost'];} echo '">'; 
     echo'<label><span class="cnt">0</span></label>';
@@ -206,14 +264,18 @@ $errores = new ControlErroresSistemaEnArchivos(null,null);
                                                                                                                                                                          
     echo '<section class="contenedor">';
     echo'<label '.ValidoForm::validateField("comentarioSubirPost", $missingFields). ' for="comentarioSubirPost">Introduce una descripción general del artículo. </label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
-    echo'<textarea maxlength="255" name="comentarioSubirPost" id="comentarioSubirPost" placeholder= "Máximo 255 caracteres." maxlength="255" value="';if(isset($_SESSION['post']['comentarioSubirPost'])){echo $_SESSION['post']['comentarioSubirPost'];}  echo'">'; 
+    echo'<textarea spellcheck="true" maxlength="255" name="comentarioSubirPost" id="comentarioSubirPost" placeholder= "Máximo 255 caracteres." ';  echo'>'; 
     echo'</textarea>';
     echo'<label><span class="cnt">0</span></label>';
     echo'</section>';
     
+    
+  
     echo '<section class="contenedor">';
     echo'<label '.ValidoForm::validateField("precioSubirPost", $missingFields).' for="precioSubirPost">Introduce un precio aproximado  artículo. </label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
     echo'<input type="text" maxlength="10" name="precioSubirPost" id="precioSubirPost" placeholder="Precio aproximado, máximo 10 caracteres, solo se aceptan dígitos." maxlength="10" value="';if(isset($_SESSION['post']['precioSubirPost'])){echo $_SESSION['post']['precioSubirPost'];} echo '">';
+     
+ 
     echo'<label><span class="cnt">0</span></label>';
     echo'</section>';
     
@@ -273,6 +335,20 @@ $errores = new ControlErroresSistemaEnArchivos(null,null);
         echo'</fieldset>';  
         
     echo'</section>';
+  
+    //Agregamos el contenido del textara 
+    //comentario Post
+    echo '<script type="text/javascript">';
+       
+        echo 'if( coment != ""){';
+            //echo "document.getElementById('comentarioSubirPost').innerHTML = coment; ";
+            echo "$('#comentarioSubirPost').html(coment);";       
+        echo '}else{';
+            //echo "document.getElementById('comentarioSubirPost').innerHTML = coment; ";
+            echo "$('#comentarioSubirPost').html('');"; 
+        echo '}';
+                            
+    echo '</script>'; 
  //fin displayStep1
 }    
         
@@ -368,6 +444,7 @@ function displayStep2($missingFields){
 function ingresarPost(){
     //Declaramos variable articulo
     global $articulo;
+    global $errores;
     $testInsertar = true;
     
     
@@ -401,9 +478,9 @@ function ingresarPost(){
         //La ultima comprobacion es por si el usuario a intentado subir un Post
         //y el Sistema no ha cometido ningun error. En ese caso si el usuario
         //vuelve intentarlo se ingresa un post de nuevo.
-       
+            
         if((isset($_SESSION['atras']) || isset($_SESSION['error'])) and (!isset($_SESSION['errorArchivos']))){ 
-          
+           
             $test = $articulo->actualizarPost();
             if(isset($_SESSION['errorArchivos'])){
                     unset($_SESSION['errorArchivos']);
@@ -417,10 +494,14 @@ function ingresarPost(){
         }
         if(!$test){
             $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-            //mostrarError();
-                    }
+            $errores->eliminarPostAlPublicar();
+            $errores->eliminarVariablesSesionPostAcabado();
+           
+           // mostrarError();
+        }
+        
         unset($articulo);
-       
+        session_write_close();   
 //fin ingresarPost    
 }
 
@@ -538,7 +619,7 @@ function processForm($requiredFields, $st){
                 $_SESSION['post']['seccionSubirPost'] = isset($_POST['seccionSubirPost']) ? $_POST['seccionSubirPost'] : "";
                 $_SESSION['post']['tiempoCambioSubirPost'] = isset($_POST['tiempoCambioSubirPost']) ? $_POST['tiempoCambioSubirPost'] : "";
                 $_SESSION['post']['tituloSubirPost'] = isset($_POST["tituloSubirPost"]) ? preg_replace("/[^\-\_a-zA-Z0-9.,`'´ ñÑáéíóúäëïöü]/", "", $_POST["tituloSubirPost"]) : "";       
-                $_SESSION['post']['comentarioSubirPost'] = isset($_POST['comentarioSubirPost']) ? preg_replace("/[^\-\_a-zA-Z0-9.,ºª`'´ Ññáéíóúäëïöü \n\r\rn\s]/", "", nl2br($_POST["comentarioSubirPost"])) : "";//Nos devuelve el string intruducido con saltos de linea HTML
+                $_SESSION['post']['comentarioSubirPost'] = isset($_POST['comentarioSubirPost']) ? preg_replace("/[^\-\_a-zA-Z0-9.,ºª`'´ Ññáéíóúäëïöü \n\r\rn\s]/", "", $_POST["comentarioSubirPost"]) : "";
                 $_SESSION['post']['precioSubirPost'] = isset($_POST['precioSubirPost']) ? preg_replace("/[^\-\_a-zAZ0-9., €$]/", "", $_POST["precioSubirPost"]) : "";
                 $_SESSION['post']['Pa_queridas'][0] = isset($_POST["querida_1"]) ? preg_replace("/[^\-\_a-zA-Z0-9ºª., '``'´ñÑáéíóúäëïöü]/", "", $_POST["querida_1"]) : "";
                 $_SESSION['post']['Pa_queridas'][1] = isset($_POST["querida_2"]) ? preg_replace("/[^\-\_a-zA-Z0-9ºª., `'´Ññáéíóúäëïöü]/", "", $_POST["querida_2"]) : "";
@@ -549,8 +630,14 @@ function processForm($requiredFields, $st){
                 $_SESSION['post']['Pa_ofrecidas'][2] = isset($_POST["ofrecida_3"]) ? preg_replace("/[^\-\_a-zA-Z0-9ºª., `'´ñÑáéíóúäëïöü]/", "", $_POST["ofrecida_3"]) : "";
                 $_SESSION['post']['Pa_ofrecidas'][3] = isset($_POST["ofrecida_4"]) ? preg_replace("/[^\-\_a-zA-Z0-9ºª., `'´Ññáéíóúäëïöü]/", "", $_POST["ofrecida_4"]) : "";
                
+              
+                
+                
                 break;
             
+                
+                
+                
             case 'step2':
                 $_SESSION['post']['figcaption'] = isset($_POST['figcaption']) ? preg_replace("/[^\-\_a-zA-Z0-9.,ºª`'´ ñÑáéíóúäëïöü]/", "", $_POST["figcaption"]) : ""; 
                 break;
@@ -602,8 +689,10 @@ function processForm($requiredFields, $st){
     
     
 //fin processForm
-}        
-        
+}
+
+    
+            
         ?>
     </body>
 </html>

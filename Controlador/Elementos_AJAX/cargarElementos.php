@@ -52,7 +52,6 @@ if (isset($_POST['opcion'])){
         $resultCargarElementos = $stCargarElementoss->fetchAll();
         $datosCargarElementos = $resultCargarElementos; 
         echo json_encode($datosCargarElementos);
-        $stCargarElementoss->closeCursor();
         Conne::disconnect($conCargarElementos);
     
      

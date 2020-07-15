@@ -31,7 +31,7 @@ function cargarPost(objPost){
     //Eliminamos los posts ya mostrados y el h3 donde se muestra el total de posts
     //alert(inicio);
     if (inicio !== 1) {
-       // $(".cont_post").remove();
+        $(".cont_post").remove();
     }    
     
     //Aqui calculamos el numero final de posts mostrados
@@ -50,6 +50,8 @@ function cargarPost(objPost){
    $('#publi').after('<h3>Se muestran desde '+(inicio)+' al '+(final)+'º De un total de '+(parseInt(objPost[0].totalRows[0]))+' posts encontrados </h3>'); 
     for(var i = 1; i < objPost.length; i++){
          
+       
+     
        
         $("#posts").append($('<section>',{
                 class : "cont_post",
@@ -91,7 +93,8 @@ function cargarPost(objPost){
                 id : 'btnComentar',
                 type : 'button',
                 disabled : 'disabled',
-                value: 'Comentar'
+                value: 'Comentar', 
+                class : objPost[i].idPost
             })).append($('<section>',{
                 class : 'capaBoton'
             }))).append($('<span>',{
@@ -100,17 +103,30 @@ function cargarPost(objPost){
                 class : 'date',
                 text : objPost[i].fecha
             })))));
+
             
             //Verificamos que el usuario se ha logeado
             //Para habilitar el boton para poder comentar
-                if(logeoParaComentar === 'logeado') {
+                if(logeoParaComentar === 'logeado'){
+         
                     $('.capaBoton').addClass('oculto');
-                    //Activamos el boton
-                    $('#btnComentar').prop('disabled', "");        
+                    $("."+objPost[i].idPost).removeAttr('disabled');
+                     
                 }
-     
+                
+                    //Si el usario ha sido bloqueado parcialmente
+                    //eliminamos el boton de comentar
+                    if(objPost[i].coment == 1){
+                        $("."+objPost[i].idPost).hide();
+                       
+                        };
+                            
+                        
+                    
 //fin for 
     }
+    
+    
     
             //Calculamos el total de <li> que se van a mostrar 
     //para navegar por el conjunto de resultados

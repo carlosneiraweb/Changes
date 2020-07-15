@@ -187,7 +187,8 @@ class Usuarios extends DataObj{
 /**
  * Ingresa los datos del usuario
  * telefono, nombre, apellidos, etc
- * @return boolean true o false
+ @param type dataObject
+ *  @return type boolean
  */
 public final function insertDatosUsuario($usu){
     
@@ -231,8 +232,8 @@ public final function insertDatosUsuario($usu){
  * 
  * Este metodo ingresa la direccion
  * del usuario, poblacion, calle, etc
- * return boolean 
- * 
+ @param type dataObject
+ *  @return type boolean
  * OJO DETALLE
  * Fijemonos como este metodo usa la clase abstracta
  */
@@ -321,7 +322,7 @@ public final function insert(){
                 
             $testInsert .= $this->insertDatosUsuario($idUsu);
             $testInsert .= $this->insertarDireccionUsuario($idUsu); 
-           
+            
             Conne::disconnect($con);
             return $testInsert;   
         } catch (Exception $ex) {
@@ -336,8 +337,9 @@ public final function insert(){
    
   
     /**
-     * Metodo publico que revive
+     * Metodo publico que recive
      * el nick de un usuario y nos devuelve el id
+     *  @return type id usuario
      */
 
     public  function devuelveId(){
@@ -345,10 +347,9 @@ public final function insert(){
         try{
             
             $sql = "Select idUsuario from ".TBL_USUARIO. " WHERE nick = :nick";
-            //echo "sql devuelveId ".$sql.'<br>';
             
                 $st = $con->prepare($sql);
-                $st->bindValue(":nick", $this->data['nick'], PDO::PARAM_INT);
+                $st->bindValue(":nick", $this->getValue('nick'), PDO::PARAM_STR);
                 $st->execute();
                 $row = $st->fetch();
                 $st->closeCursor();
@@ -373,6 +374,8 @@ public final function insert(){
     * de la cual eliminar los datos, 
     * usuario para los datos de la tabla usuario
     * o datos_usuario para eliminar de la tabla datos_usuario
+    *  @param type tabla de la bbdd
+     * 
     */
     public function deleteFrom($var){
         
@@ -408,6 +411,8 @@ public final function insert(){
      * Devuelve el hash si es posible o false 
      * en caso negativo.
      * Recive el nick del usuario.
+     * @param type nick de usuario
+     *  @return type columna de la tabla el Hash
      */
     final private static function recuperarHash($nick){
         
@@ -444,6 +449,46 @@ public final function insert(){
     //fin recuperarHash    
     }
 
+/**
+ * Metodo que recive el id del usuario logeado
+ * y devuelve los posibles usuarios bloqueados
+ * @param type $Usuario
+ * @return type array de ids de usuarios
+ */
+public final function devuelveUsuariosBloqueados($id){
+    
+   
+    $conBloqueo = Conne::connect();
+        
+        try{
 
+            $sqlBloqueo = "Select idUsuarioBloqueado, bloqueadoTotal, bloqueadoParcial
+            from usuarios_bloqueados where usuario_idUsuario = :usuario_idUsuario;";
+
+            $stmBloqueo = $conBloqueo->prepare($sqlBloqueo);
+            $stmBloqueo->bindValue(":usuario_idUsuario", $id);
+            $stmBloqueo->execute();
+            $usuBloqueados = $stmBloqueo->fetchAll();
+           
+             
+            $stmBloqueo->closeCursor();
+            Conne::disconnect($conBloqueo);
+            
+            return $usuBloqueados;
+        } catch (Exception $ex) {
+            Conne::disconnect($conBloqueo);
+            echo $ex->getCode();
+            echo '<br>';
+            echo $ex->getLine().'<br>';
+            echo $ex->getFile().'<br>';
+        }
+
+ // devuelveUsuariosBloqueados()  
+}
+    
+    
+    
+    
+    
 //fin Usuarios    
 }

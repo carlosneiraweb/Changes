@@ -14,3 +14,7 @@ select * from datos_usuario;
 delete from usuario where idDatosUsuario >=0;
 select * from direccion;
 delete from direccion where idDireccion >= 0;
+
+select * from usuarios_bloqueados;
+insert into usuarios_bloqueados (usuario_idUsuario, idUsuarioBloqueado, bloqueadoTotal, bloqueadoParcial)
+	values (130,132,0,1);

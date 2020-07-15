@@ -59,9 +59,7 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
                             $stm->bindValue(":idImagen", $idPostPalabra, PDO::PARAM_INT);
                             $stm->execute();
                             $misPalabras = $stm->fetchAll(PDO::FETCH_ASSOC);//fetchAll(PDO::FETCH_COLUMN, 0);
-                           
-
-            $stm->closeCursor();     
+                          
             Conne::disconnect($con);  
             return $misPalabras;   
         } catch (Exception $exc) {
@@ -237,7 +235,7 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
      */
    
     public function actualizarPost(){
-    //echo 'last id actualiar '.$_SESSION['lastId'][0].'<br>';
+    
     try{
     $con = Conne::connect();
     
@@ -277,8 +275,7 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
                        $test = $this->actualizarPalarasOfrecidas(null); 
                     }  
             }  
-            
-        $stm->closeCursor();     
+          
         Conne::disconnect($con);  
         return $test;   
     }catch(Exception $ex){
@@ -457,7 +454,7 @@ public function insertPost(){
            
             //echo 'lastid '.$_SESSION['lastId'][0].'<br>';
             $con->commit();
-
+                            
                 if($test){
                    $test = $this->insertarPalabrasQueridas();
                         if($test){
