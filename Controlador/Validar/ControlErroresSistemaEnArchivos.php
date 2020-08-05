@@ -50,7 +50,7 @@ class ControlErroresSistemaEnArchivos extends MisExcepciones{
       
                 if(($_SESSION['contador'] == 0) and (!isset($_SESSION['atras'])) ){
                    
-                    $_SESSION['nuevoSubdirectorio'] = Directorios::crearSubdirectorio("../photos/".$_SESSION['user']->getValue('nick'));
+                    $_SESSION['nuevoSubdirectorio'] = Directorios::crearSubdirectorio("../photos/".$_SESSION['userTMP']->getValue('nick'));
                     Directorios::copiarFoto("../photos/demo.jpg",$_SESSION['nuevoSubdirectorio']."/demo.jpg");    
                   
                 }

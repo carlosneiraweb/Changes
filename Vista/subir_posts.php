@@ -294,13 +294,13 @@ $errores = new ControlErroresSistemaEnArchivos(null,null);
     echo '<section id="contenedorQueridas" class="contenedor">';
     echo'<label  for="Pa_queridas" class="centrar">Introduce 4 pequeñas frases por lo que tú estarías interesado en cambiarlo. </label>';
         echo '<section id="buscadas" class="introducir_palabras">';       
-    echo'<input type="text" name="querida_1" id="querida_1" placeholder="Máximo 25" maxlength="25"   value="';if(isset($_SESSION['post']['Pa_queridas'][0])){echo $_SESSION['post']['Pa_queridas'][0];} echo '">';
+    echo'<input type="text" name="querida_1" id="querida_1" placeholder="Máximo 40" maxlength="40"   value="';if(isset($_SESSION['post']['Pa_queridas'][0])){echo $_SESSION['post']['Pa_queridas'][0];} echo '">';
         echo'<label><span class="cnt">0</span></label>';
-    echo'<input type="text" name="querida_2" id="querida_2" maxlength="25" value="';if(isset($_SESSION['post']['Pa_queridas'][1])){echo $_SESSION['post']['Pa_queridas'][1];} echo '">';
+    echo'<input type="text" name="querida_2" id="querida_2" maxlength="40" value="';if(isset($_SESSION['post']['Pa_queridas'][1])){echo $_SESSION['post']['Pa_queridas'][1];} echo '">';
         echo'<label><span class="cnt">0</span></label>';
-    echo'<input type="text" name="querida_3" id="querida_3" maxlength="25" value="';if(isset($_SESSION['post']['Pa_queridas'][2])){echo $_SESSION['post']['Pa_queridas'][2];} echo '">';
+    echo'<input type="text" name="querida_3" id="querida_3" maxlength="40" value="';if(isset($_SESSION['post']['Pa_queridas'][2])){echo $_SESSION['post']['Pa_queridas'][2];} echo '">';
         echo'<label><span class="cnt">0</span></label>';
-    echo'<input type="text" name="querida_4" id="querida_4" maxlength="25" value="';if(isset($_SESSION['post']['Pa_queridas'][3])){echo $_SESSION['post']['Pa_queridas'][3];} echo '">';
+    echo'<input type="text" name="querida_4" id="querida_4" maxlength="40" value="';if(isset($_SESSION['post']['Pa_queridas'][3])){echo $_SESSION['post']['Pa_queridas'][3];} echo '">';
         echo'<label><span class="cnt">0</span></label>';
         echo'</section>';
      
@@ -310,13 +310,13 @@ $errores = new ControlErroresSistemaEnArchivos(null,null);
     echo '<section id="contenedorOfrecidas" class="contenedor">'; 
     echo'<label  for="Pa_ofrecidas" class="centrar">Introduce 4 pequeñas frases para que la gente encuentre tu artículo. </label>';
         echo '<section id="ofrecidas" class="introducir_palabras">';
-    echo'<input type="text" name="ofrecida_1" id="ofrecida_1" placeholder="Máximo 25" maxlength="25" value="';if(isset($_SESSION['post']['Pa_ofrecidas'][0])){echo $_SESSION['post']['Pa_ofrecidas'][0];} echo '">';
+    echo'<input type="text" name="ofrecida_1" id="ofrecida_1" placeholder="Máximo 40" maxlength="40" value="';if(isset($_SESSION['post']['Pa_ofrecidas'][0])){echo $_SESSION['post']['Pa_ofrecidas'][0];} echo '">';
         echo'<label><span class="cnt">0</span></label>';
-    echo'<input type="text" name="ofrecida_2" id="ofrecida_2" maxlength="25" value="';if(isset($_SESSION['post']['Pa_ofrecidas'][1])){echo $_SESSION['post']['Pa_ofrecidas'][1];} echo '">';
+    echo'<input type="text" name="ofrecida_2" id="ofrecida_2" maxlength="40" value="';if(isset($_SESSION['post']['Pa_ofrecidas'][1])){echo $_SESSION['post']['Pa_ofrecidas'][1];} echo '">';
         echo'<label><span class="cnt">0</span></label>';
-    echo'<input type="text" name="ofrecida_3" id="ofrecida_3" maxlength="25" value="';if(isset($_SESSION['post']['Pa_ofrecidas'][2])){echo $_SESSION['post']['Pa_ofrecidas'][2];} echo '">';
+    echo'<input type="text" name="ofrecida_3" id="ofrecida_3" maxlength="40" value="';if(isset($_SESSION['post']['Pa_ofrecidas'][2])){echo $_SESSION['post']['Pa_ofrecidas'][2];} echo '">';
         echo'<label><span class="cnt">0</span></label>';
-    echo'<input type="text" name="ofrecida_4" id="ofrecida_4" maxlength="25" value="';if(isset($_SESSION['post']['Pa_ofrecidas'][3])){echo $_SESSION['post']['Pa_ofrecidas'][3];} echo '">';
+    echo'<input type="text" name="ofrecida_4" id="ofrecida_4" maxlength="40" value="';if(isset($_SESSION['post']['Pa_ofrecidas'][3])){echo $_SESSION['post']['Pa_ofrecidas'][3];} echo '">';
         echo'<label><span class="cnt">0</span></label>';
         echo '</section>';
         
@@ -449,7 +449,7 @@ function ingresarPost(){
     
     
         $articulo = new Post(array(
-            "idUsuarioPost" => $_SESSION['user']->getValue('nick'),
+            "idUsuarioPost" => $_SESSION['userTMP']->getValue('nick'),
             "secciones_idsecciones" => $_SESSION['post']['seccionSubirPost'],
             "tiempo_cambio_idTiempoCambio" => $_SESSION['post']['tiempoCambioSubirPost'],
             "titulo" => $_SESSION['post']['tituloSubirPost'],

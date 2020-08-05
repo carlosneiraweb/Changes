@@ -24,7 +24,8 @@ var Conexion;
 //La variable mostrar define que secciones mostrar 
     //Comprobamos si ya se ha inicializado, sino cada vez que el script
     //se instanciase recargaria su valor.
-    if(typeof(inicio) === "undefined"){ inicio = 0; }; 
+    if(typeof(inicio) === "undefined"){ inicio = 0; }
+    
     //alert(inicio);
     //Aqui guardaremos la ultima peticion JSON en un array
     //Para volver a ese punto cuando lo necesitemos
@@ -39,7 +40,7 @@ var Conexion;
     //Es una bandera que usamos para guardar la ultima peticion JSON
     //Para cuando el usuario quiera salir de paginacion o de mostrar un post seleccionado
     if(typeof(vistaIndependiente ) === "undefined"){ vistaIndependiente  = true; } 
-    if(typeof(jsonVolver) === "undefined"){ jsonVolver = ["PPS",'', "opcion=PPS&inicio="+inicio, '','','',vistaIndependiente]; };
+    if(typeof(jsonVolver) === "undefined"){ jsonVolver = ["PPS",'', "opcion=PPS&inicio="+inicio, '','','','']; };
     
     
     
@@ -60,12 +61,10 @@ window.onload=function(){
         
 //Esta llamada a JSON solo se realiza en la primera carga del script
     //Despues se iran mostrando los posts a traves de los botones 
+       
         if(inicio === 0 && PPS === true){
             cargarPeticion("PPS", "opcion=PPS&inicio="+inicio); //Cargar Post
-        } 
-        
-    
-   
+        }
     /*      METODO QUE LANZA EL SLIDER CON EL 
      *      CONTENIDO DEL POST SELECCIONADO POR
      *      EL USUARIO AL HACER CLICK SOBRE LA IMAGEN
@@ -75,8 +74,8 @@ window.onload=function(){
         
         $('#cuerpo').on('click','.lanzar', function(e){
                 var src = $(this).children().attr('src');
-                //alert(src);
-                cargarPeticion("SLD", "opcion=SLD&srcImg="+src, inicio);
+                cargarPeticion("SLD", "opcion=SLD&srcImg="+src+"&inicio="+inicio);
+               
             });
    
     
@@ -105,7 +104,7 @@ window.onload=function(){
 
 
 function cargarPeticion(tipo, parametros){
-//alert('Estamos en cargarPeticion y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
+//alert('Estamos en cargarPeticionPrincipal y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
     //para comprobar el tipo de peticion
     switch(tipo){
         
@@ -123,15 +122,9 @@ function cargarPeticion(tipo, parametros){
            petPostSeleccionado.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
            petPostSeleccionado.send(parametros);
                 break;
-        case(null):
-            petVolver = ConElementos.conection();
-            petVolver.onreadystatechange = procesaRespuesta();
-            petVolver.open('POST', "../Controlador/Elementos_AJAX/json.php?", true);
-            petVolver.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-            petVolver.send(parametros);
-                break;
+        
         default:
-            alert('Error');
+           // alert('Error');
     //fin switch
     }
     
@@ -141,16 +134,16 @@ function cargarPeticion(tipo, parametros){
             try{
                 if(tipo === 'PPS'){
                     objPost= JSON.parse(petPost.responseText);
-                  
+                   
                      //Eliminamos el objeto conexion
                     delete ConElementos;
                 } else if(tipo === 'SLD'){
+                    //alert('ruta es: '+objPostSelecconado[0][1].ruta);
                     objPostSeleccionado = JSON.parse(petPostSeleccionado.responseText);
+                    //alert(objPostSeleccionado[0][0].ruta);
                     //Eliminamos el objeto conexion
                     delete ConElementos;
-                } else if(tipo === null){
-                    objVolver = null;
-                }
+                } 
                 
                 
             } catch(e){
@@ -170,6 +163,7 @@ function cargarPeticion(tipo, parametros){
                     cargarPost(objPost);
                         break;
                 case 'SLD':
+                    
                     cargarPostSeleccionado(objPostSeleccionado);
                         break;
                 
@@ -186,6 +180,85 @@ function cargarPeticion(tipo, parametros){
     
 //fin cargarPeticion    
 }
+
+
+
+
+/**
+ * @description 
+ * Dependiendo de la variable mostrar
+ * manda al metodo adecuado la peticion JSON
+ * con los parametros adecuados.
+ * @param {string} opcion
+ * Es el encargado de mandar al script indicado
+ * la url con la peticion JSON adecuada
+ * cuando estamos paginando.
+ */
+function cargarContenidoPorSeccion(){
+        if(jsonVolver[6] === 'ENCONTRADO'){
+            opcion = jsonVolver[6];
+        }else{
+            opcion = jsonVolver[0];
+        }
+        
+        
+        switch (opcion){
+                case 'PPS':
+                    cargarPeticion("PPS", "opcion=PPS&inicio="+inicio);
+                        break;
+                case 'ENCONTRADO':
+                    cargarPeticionBuscador('ENCONTRADO', "opcion=ENCONTRADO&ENCONTRAR="+textoElegido+"&tabla="+radioBusqueda+"&inicio="+inicio);
+                        break;
+                    default:
+                        break;
+            }
+    
+    
+//cargarContenidoPorSeccion    
+}
+
+
+
+/**
+ * @description 
+ * Al cambiar de seccion hay que volver a asignar
+ * valores a los elementos de paginacion.
+ * No hay los mismos posts en cada seccion
+ * @param {type} posts
+ * Entero con el numero total de posts encontrandos
+ */
+function resetearValoresDePaginacion(posts){
+    
+    numLi = (posts) / PAGESIZE; //Numeros de <li>
+        //Si al dividir sale decimal le sumamos un <li>
+            if ((numLi % 2 ) !== 0){
+                numLi++;
+            }
+    numeroEnLi = 0;
+    inicio = 0;
+    
+       
+        //Parseamos a Integer y ya tenemos el total de <li> a mostrar
+            numLi = parseInt(numLi);
+           // alert('en resetear numLi '+numLi+ ' inicio '+inicio);     
+        //Queremos limitar el numero de <li> a 10 por pagina
+            //En caso de que numLi sea mayor a 10 * PAGESIZE
+            if (numLi > PAGESIZE * 10){
+                tmpLi = numeroEnLi + 10;
+            }else{
+                tmpLi = numLi;
+            }        
+    
+    //Ponemos a bandera false por que no
+    //queremos que se vuelvan a reseter las variables de los <li>
+    banderaCambioSeccion = false;  
+//fin   resetearValoresDePaginacion  
+}
+
+
+
+
+
 
 function volverAnteriorJSON(){
     

@@ -19,7 +19,7 @@ var numLi, totalPost, final;
  * en cada una de las secciones, y ese valor sera pasado como 
  * la variable inicio para mostrar el rango adecuado de post
  * en la peticion JSON.
- * VARIABLES IMPOSTARNTES
+ * VARIABLES IMPORTANTES
  *  Ambas variables son modificadas en paginacion.js segun
  *  el usuario va pulsando cada uno de los <li> a delante y atras
  * tmpLi => Es la variable de comparacion en el bucle for que muestra los <li>
@@ -27,7 +27,7 @@ var numLi, totalPost, final;
  * @param {type} objPost
   */
 function cargarPost(objPost){
-   
+   //alert("estamos en cargarPost"+objPost);
     //Eliminamos los posts ya mostrados y el h3 donde se muestra el total de posts
     //alert(inicio);
     if (inicio !== 1) {
@@ -48,10 +48,9 @@ function cargarPost(objPost){
     //Se agrega antes del contenedor posts
    $('#contenedor>h3').remove(); 
    $('#publi').after('<h3>Se muestran desde '+(inicio)+' al '+(final)+'º De un total de '+(parseInt(objPost[0].totalRows[0]))+' posts encontrados </h3>'); 
+    
+    
     for(var i = 1; i < objPost.length; i++){
-         
-       
-     
        
         $("#posts").append($('<section>',{
                 class : "cont_post",
@@ -115,7 +114,7 @@ function cargarPost(objPost){
                 }
                 
                     //Si el usario ha sido bloqueado parcialmente
-                    //eliminamos el boton de comentar
+                    //eliminamos el boton de comentar con JAVASCRIPT
                     if(objPost[i].coment == 1){
                         $("."+objPost[i].idPost).hide();
                        
@@ -154,7 +153,7 @@ function cargarLis(){
     //se ira modificando
     if(typeof(numeroEnLi) === "undefined"){ numeroEnLi = 0; }; 
    
-    
+    //numLi es el numero real de <li> que salen
     if(typeof(numLi) === "undefined"){      
         numLi = totalPost / PAGESIZE; //Numeros de <li> 
         //Si al dividir sale decimal le sumamos un <li>
@@ -167,9 +166,11 @@ function cargarLis(){
         //Queremos limitar el numero de <li> a 10 por pagina
             //En caso de que numLi sea mayor a 10 * PAGESIZE
             if (numLi > PAGESIZE * 10 ){
-                tmpLi = numeroEnLi + 10;
+                tmpLi = numeroEnLi + 10; //pasamos de  10, osea 11,21,31
+            }else if(numLi > 10){
+                tmpLi = 10;//del 0 al 9
             }else{
-                tmpLi = numLi - 1;
+                tmpLi = numLi + 1;
             }
     }
     
@@ -180,7 +181,8 @@ function cargarLis(){
     
                     //Mostramos los <li>
     var listaLi = '<ul class="listaLis"><li class="atras">Atras</li>';
-    
+        //Fijarse que numeroEnLi es global
+        //Recuerda los incrementos del bucle for
         for (numeroEnLi ; numeroEnLi < tmpLi; numeroEnLi++){
             listaLi += '<li class="pagina">'+numeroEnLi+'</li>';
         }

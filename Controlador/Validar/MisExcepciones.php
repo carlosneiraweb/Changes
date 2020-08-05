@@ -62,7 +62,7 @@ public function eliminarVariablesSesionPostAcabado(){
     
    //SubDirectorio que se creo para ir subiendo los post
      //../photos/carlos/10
-   $usuario =  $_SESSION['user']->getValue('nick');
+   $usuario =  $_SESSION['userTMP']->getValue('nick');
    
    $tmp=  $_SESSION['nuevoSubdirectorio'];//de fotos
    $errores = array("usuario" => $usuario,
@@ -96,7 +96,7 @@ public function eliminarVariablesSesionPostAcabado(){
 
             try {
                 $testImgPost = Post::eliminarImagenesPost($idPost);
-               echo "testImg ".$testImgPost.'<br>';
+             
                 if(!$testImgPost){
                     $errores[3] = $idPost;
                 }
@@ -104,7 +104,7 @@ public function eliminarVariablesSesionPostAcabado(){
 
             try {
                 $testElimQueri = Post::eliminarPalabrasQueridas($idPost);
-                echo "queri ".$testElimQueri."<br>";
+               
                 if(!$testElimQueri){
                     $errores[4] = "No se han podido eliminar las palabras buscadas.";
                 }
@@ -113,7 +113,7 @@ public function eliminarVariablesSesionPostAcabado(){
 
             try {
                  $testElimOfre = Post::eliminarPalabrasOfrecidas($idPost);
-                    echo "ofre ".$testElimOfre.'<br>';
+                  
                 if(!$testElimOfre){
                     $errores[5] =  "No se han podido eliminar las palabras ofrecidas.";
                 }   

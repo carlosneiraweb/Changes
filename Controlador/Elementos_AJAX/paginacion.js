@@ -33,6 +33,10 @@ function navegarPorPosts(li){
             tmpLi = parseInt($('.pagina').last().html())+ 1;
             numeroEnLi = parseInt($('.pagina').first().html());
            
+            //La variable li es el <li> que se ha pinchado
+            //Tiene un valor html (,0,1,2,3,4,5,6,7,8,9) etc
+            //Se modifica la variable inicio que se usa en la SQL 
+            //que nos devuelve los siguientes Post
             inicio = li * PAGESIZE;
             cargarContenidoPorSeccion();
             
@@ -49,7 +53,7 @@ function navegarPorPosts(li){
  * mostrara los posts dentro del rango de
  * los <li> del 10 al 19.
  * Modificamos 2 variables del bucle for del metodo
- * cargarPosts del archivo mostrarPosts.js
+ * cargarLis del archivo mostrarPosts.js
  * que muestra los <li>
  * tmpLi => variable que hace de tope en el for
  * numeroEnLi => el numero que parece en el <li>
@@ -159,89 +163,3 @@ function mostrarAnteriorRango(){
 }
 
 
-/**
- * @description 
- * Dependiendo de la variable mostrar
- * manda al metodo adecuado la peticion JSON
- * con los parametros adecuados.
- * @param {string} opcion
- * Es el encargado de mandar al script indicado
- * la url con la peticion JSON adecuada
- * cuando estamos paginando.
- */
-function cargarContenidoPorSeccion(){
-        if(jsonVolver[6] === 'ENCONTRADO'){
-            opcion = jsonVolver[6];
-        }else if(jsonVolver[6] === "POST-SELECCIONADO"){
-            opcion = jsonVolver[6];
-        }else{
-            opcion = jsonVolver[0];
-        }
-        
-        
-        switch (opcion){
-                case 'PPS':
-                    cargarPeticion("PPS", "opcion=PPS&inicio="+inicio);
-                        break;
-                case 'ENCONTRADO':
-                    cargarPeticionBuscador('ENCONTRADO', "opcion=ENCONTRADO&ENCONTRAR="+textoElegido+"&tabla="+radioBusqueda+"&inicio="+inicio);
-                        break;
-                case 'POST-SELECCIONADO':
-                    //mandamos el array con los datos de la anterior
-                    //peticion. Cuando un usuario a pinchado en la 
-                    //foto de un post y ha visto los detalles de este
-                    //al pulsar el boton de salir quiere volver
-                    //al punto esacto donde estaba. En la seccion y subseccion
-                    //y en el punto esacto de paginacion.
-                    //Del array recuperaremos el nombre de la seccion, subseccion y la variable 
-                   
-                    //actualizamos los <li> de la paginacion
-                    tmpLi= jsonVolver[3];
-                    numeroEnLi = jsonVolver[4];
-                    jsonVolver[6]= null;
-                    vistaIndependiente = true;
-                    cargarPeticion(null, 'opcion='+jsonVolver[0]+'&subseccion='+jsonVolver[1]+'&inicio='+inicio);
-                     
-            }
-    
-    
-//cargarContenidoPorSeccion    
-}
-
-
-
-/**
- * @description 
- * Al cambiar de seccion hay que volver a asignar
- * valores a los elementos de paginacion.
- * No hay los mismos posts en cada seccion
- * @param {type} posts
- * Entero con el numero total de posts encontrandos
- */
-function resetearValoresDePaginacion(posts){
-    
-    numLi = (posts) / PAGESIZE; //Numeros de <li>
-        //Si al dividir sale decimal le sumamos un <li>
-            if ((numLi % 2 ) !== 0){
-                numLi++;
-            }
-    numeroEnLi = 0;
-    inicio = 0;
-    
-       
-        //Parseamos a Integer y ya tenemos el total de <li> a mostrar
-            numLi = parseInt(numLi);
-           // alert('en resetear numLi '+numLi+ ' inicio '+inicio);     
-        //Queremos limitar el numero de <li> a 10 por pagina
-            //En caso de que numLi sea mayor a 10 * PAGESIZE
-            if (numLi > PAGESIZE * 10){
-                tmpLi = numeroEnLi + 10;
-            }else{
-                tmpLi = numLi;
-            }        
-    
-    //Ponemos a bandera false por que no
-    //queremos que se vuelvan a reseter las variables de los <li>
-    banderaCambioSeccion = false;  
-//fin   resetearValoresDePaginacion  
-}

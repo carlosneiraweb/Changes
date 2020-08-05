@@ -17,7 +17,7 @@
  */
 
 function cargarPostSeleccionado(objPost){
-       // alert(objPost[0][0].ruta);
+  //alert('post selecionado'+objPost[0][6]);     
         //Agregamos las imagenes al Slider 
         
         $("#ocultar").removeClass('oculto').addClass('mostrar_transparencia');
@@ -121,12 +121,10 @@ function cargarPostSeleccionado(objPost){
             id : 'salirSlider',
             value : 'salir'
         })).on('click',function(){
-                   jsonVolver[6] = "POST-SELECCIONADO";
-                   vistaIndependiente = false;
                    $("#contPostSeleccionado").remove();
                    $("#mostrarPostSeleccionado").addClass('oculto');
                    $("#ocultar").addClass('oculto');
-                   cargarContenidoPorSeccion();
+                   //cargarContenidoPorSeccion();
             })));
 
         var tmp = "";
@@ -139,6 +137,7 @@ function cargarPostSeleccionado(objPost){
             
 //fin cargarSlider    
 }
+
 
 
 

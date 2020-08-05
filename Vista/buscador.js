@@ -86,15 +86,15 @@
         
         //Cargamos los combos una vez creados por jquery
        
-        cargarPeticionBuscador("PP", "opcion=PP");
-        cargarPeticionBuscador("PT", "opcion=PT");
+        cargarPeticionBuscador("PP", "&opcion=PP");
+        cargarPeticionBuscador("PT", "&opcion=PT");
          
          
         //Al pulsar una letra mandamos una busqueda
         // a busquedas.php donde nos devolvra el resultado
         //
     $('#buscar_datos').on('keyup', '.buscador', function(e){
-          
+        
          
          //Algunas teclas dan problemas como el ir hacia atras <- 
          //Por eso anulamos el evento si se pulsan
@@ -105,6 +105,8 @@
          
         //Recuperamos el valor de los filtros de busqueda
         
+        
+        //Tablas buscados y ofrecidas
         radioBusqueda = $('input:radio[name=busqueda]:checked').val();
         
         buscarPorProvincia = $('#porProvincia').val();
@@ -118,20 +120,21 @@
            
         buscarPorTiempoCambio = $('#porTiempoCambio').val();;
             
-        if(buscarPorProvincia === "No importa"){  buscarPorProvincia = 0; };
-        if(buscarPorPrecio === "No importa"){ buscarPorPrecio = 0; };
-        if(buscarPorTiempoCambio === "No importa"){  buscarPorTiempoCambio = 0; };
+        if(buscarPorProvincia === "No importa"){  buscarPorProvincia = '1'; };
+        if(buscarPorPrecio === "No importa"){ buscarPorPrecio = '0'; };
+        if(buscarPorTiempoCambio == "No importa"){  buscarPorTiempoCambio = '0'; };
         
     
         //Recuperamos los que el usuario ha escrito en el campo para buscar
         txtBuscar = $(this).val();
         inputTmp = $(this);
         
-        //alert('BUSCADOR'+"opcion=BUSCADOR&BUSCAR="+txtBuscar+"&tabla="+radioBusqueda+"&buscarPorProvincia="+buscarPorProvincia+
-        //        '&buscarPorPrecio='+buscarPorPrecio+'&buscarPorTiempoCambio='+buscarPorTiempoCambio);
+        //alert('BUSCADOR'+"&opcion=BUSCADOR&BUSCAR="+txtBuscar+"&tabla="+radioBusqueda+"&buscarPorProvincia="+buscarPorProvincia+
+               //'&buscarPorPrecio='+buscarPorPrecio+'&buscarPorTiempoCambio='+buscarPorTiempoCambio);
             cargarPeticionBuscador('BUSCADOR', "opcion=BUSCADOR&BUSCAR="+txtBuscar+"&tabla="+radioBusqueda+"&buscarPorProvincia="+buscarPorProvincia+
                     '&buscarPorPrecio='+buscarPorPrecio+'&buscarPorTiempoCambio='+buscarPorTiempoCambio);
              }
+             
         
                     //Si se encuentra un resultado y el usuario pincha sobre el    
                     //Recuperamos el contenido del li que se ha pulsado
@@ -151,8 +154,11 @@
                                     banderaCambioSeccion = true;
                                         //Ahora hacemos un select de todos los Posts donde tengan ese texto
                                         //En sus palabras de busquedas o queridas
-                                        cargarPeticionBuscador('ENCONTRADO', "opcion=ENCONTRADO&ENCONTRAR="+textoElegido+"&tabla="+radioBusqueda+"&inicio="+inicio);
-                            //fin mostrarEncontrado               
+                                        
+                                cargarPeticionBuscador('ENCONTRADO', "&opcion=ENCONTRADO&ENCONTRAR="+textoElegido+"&tabla="+radioBusqueda+"&inicio="+inicio);
+                                
+                                
+                                //fin mostrarEncontrado               
                             }
                            
                                 
@@ -240,15 +246,16 @@ function mostrarFormularioGuardarBusquedas(){
  * */
 function cargarBuscador(objBuscador){
     
-    //alert(objBuscador[0].palabra);
+    
     var vacio = "<li>No se han encontrado resultados con la busqueda <strong>"+txtBuscar+"</strong></li>";
-                
-    //alert(vacio);
-    if(typeof objBuscador[0] === "undefined"){
+          
+    
+    if(typeof objBuscador[0].palabras == "undefined"){
         $('#contenidoBuscado').append(vacio);
-            alert(logeoParaComentar);
+           // alert(logeoParaComentar);
                 //Solo si el usuario se ha registrado
             if(logeoParaComentar !== null){
+                
                 $('#contenidoBuscado').append($('<li>',{
                     id : "insertarMisBusquedas",
                     text : "Pincha aqui para recibir un email,"            
@@ -262,6 +269,7 @@ function cargarBuscador(objBuscador){
                     text : "con esas palabras."
                 }));
             }else{
+               
                $('#contenidoBuscado').append($('<li>',{
                     text : "Si te logeas podras recibir avisos en tú email."            
                 })).append($('<li>',{
@@ -271,16 +279,21 @@ function cargarBuscador(objBuscador){
                 }));
             }
     }else{
-        for(var b = 0; b < objBuscador.length; b++){
-            $('#contenidoBuscado').append('<li class="li">'+objBuscador[b].palabra+'</li>');
+       
+        for( var b = 0; b < objBuscador.length; b++){
+           
+               $('#contenidoBuscado').append('<li class="li">'+objBuscador[b].palabras+'</li>');
+            
         }
+      
     }
+                
 //fin cargarBuscador      
 }
 
 
 function cargarPeticionBuscador(tipo, parametros){
-//alert('Estamos en cargarPeticionBuscador y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
+alert('Estamos en cargarPeticionBuscador y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
     //para comprobar el tipo de peticion
     switch(tipo){
         case('PP'):
@@ -297,6 +310,7 @@ function cargarPeticionBuscador(tipo, parametros){
             petTiempoCambio.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
             petTiempoCambio.send(parametros);
                 break;
+      
         case('BUSCADOR'):
             petBuscador = ConBuscador.conection();
             petBuscador.onreadystatechange = procesaRespuesta;
@@ -327,6 +341,7 @@ function cargarPeticionBuscador(tipo, parametros){
        
        if(this.readyState === ConBuscador.READY_STATE_COMPLETE && this.status === 200){
             try{
+               
                 if(tipo === 'PP'){
                     objPro = JSON.parse(petPro.responseText);
                     //Eliminamos el objeto conexion
@@ -350,7 +365,7 @@ function cargarPeticionBuscador(tipo, parametros){
 
                     default:
                         
-                       // location.href= 'mostrar_error.php';
+                      // location.href= 'mostrar_error.php';
                 }
             //fin catch
             }
@@ -372,6 +387,7 @@ function cargarPeticionBuscador(tipo, parametros){
                     if(banderaCambioSeccion){resetearValoresDePaginacion(totalPostEnconrados);};
                     jsonVolver[6] = "ENCONTRADO";
                     vistaIndependiente = false;
+                    //Modificado 17/07
                     cargarPost(objEncontrado);
                         break;
                         

@@ -18,8 +18,7 @@ session_start();
 
  $_SESSION["url"] = basename($_SERVER['PHP_SELF']);   
 
-    
-
+ 
 ?>
 
 <!DOCTYPE html>
@@ -149,6 +148,85 @@ session_start();
      
     echo'</header>';
     
+ 
+
+    echo'<nav class="slider-container">';
+	echo'<figure id="derecha">';
+		echo'<img src="../img/derecha.png" class="activar" alt="Botones de desplazamiento"/>';
+	echo'</figure>';
+	
+        echo'<figure id="arriba" class="noOcupar">';
+		echo'<img src="../img/arriba.png" class="activar" alt="Botones de desplazamiento"/>';
+        echo'</figure>';	
+	
+            echo'<ul id="slider" class="slider-wrapper">';
+                echo'<li class="slide-current"><a class="separarLetras" href="index.php">Inicio</a><a class="separarLetras" href="index.php">Servicios</a><a class="separarLetras" href="index.php">Automoción</a><a class="separarLetras" href="index.php">Ocio</a></li>';
+		echo'<li><a class="separarLetras" href="index.php">Inicio</a><a class="separarLetras" href="index.php">Bricolage</a><a class="separarLetras" href="index.php">Electrónica</a><a class="separarLetras" href="index.php">Moda</a></li>';
+		echo'<li><a class="separarLetras" href="index.php">Inicio</a><a class="separarLetras" href="index.php">Hogar</a><a class="separarLetras" href="index.php">Hospedaje</a><a class="separarLetras" href="index.php">Cultura</a></li>';
+            echo'</ul>';
+	
+	echo'<figure id="abajo" class="noOcupar">';
+		echo'<img src="../img/abajo.png" class="activar" alt="Botones de desplazamiento"/>';
+	echo'</figure>';
+	echo'<figure id="izquierda" class="slider-controls, ocultar">';
+		echo'<img src="../img/izquierda.png" class="activar"  alt="Botones de desplazamiento"/>';
+	echo'</figure>';
+    echo'</nav>';
+   
+    /**
+     * En esta seccion agregamos el buscador por jquery
+     */
+    echo '<section id="buscar_datos">';
+       
+    echo '</section>';
+   
+    
+    
+    echo'<section id="contenedor">';
+    
+    /**
+    * Elemento html que se agregaran 
+    * el formulario para aregar busquedas psonales
+    */
+        echo'<section id="busquedasPersonales">';
+        echo'</section>';
+        
+        
+        
+    //para la publicidad
+    echo'<aside id="publi">';
+		echo'<p>Aqui va la publicidad</p>';
+                echo'<div>';
+        if(isset($_SESSION["userTMP"]) and $_SESSION['userTMP'] != ""){    
+            echo'<input type="button" id="publicar" name="publicar" value="Publicar"/>';
+        }
+            echo'</div>';
+	echo'</aside>';
+     
+       
+        /**
+         * Elemento html que se agregaran los posts
+         */
+        echo'<section id="posts">';
+        echo'</section>';
+   
+    
+        /**
+         * Elemento html que se agregara los
+         * li para la navegacion
+         */
+        echo '<section id="btn_navegacion">';
+        echo '</section>';
+    
+        /*
+         * Elemento html al que se le 
+         * añadira elementos para mostrar 
+         * el posts seleccionado al hacer click
+         * en la imagen en la pagina principal
+         */ 
+        echo '<section id="mostrarPostSeleccionado" class="oculto">';
+        echo "</section>";
+    
  echo'<div id="ocultar" class="oculto"> </div>'; 
  
      
@@ -237,8 +315,8 @@ function processForm(){
         $_SESSION["userTMP"] = $loggedInMember;
         unset($loggedInMember);
         unset($user);
-        session_write_close();   
-       
+        session_write_close(); 
+        
          
     }
 //fin processForm
@@ -247,95 +325,7 @@ function processForm(){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-    echo'<nav class="slider-container">';
-	echo'<figure id="derecha">';
-		echo'<img src="../img/derecha.png" class="activar" alt="Botones de desplazamiento"/>';
-	echo'</figure>';
-	
-        echo'<figure id="arriba" class="noOcupar">';
-		echo'<img src="../img/arriba.png" class="activar" alt="Botones de desplazamiento"/>';
-        echo'</figure>';	
-	
-            echo'<ul id="slider" class="slider-wrapper">';
-                echo'<li class="slide-current"><a class="separarLetras" href="index.php">Inicio</a><a class="separarLetras" href="index.php">Servicios</a><a class="separarLetras" href="index.php">Automoción</a><a class="separarLetras" href="index.php">Ocio</a></li>';
-		echo'<li><a class="separarLetras" href="index.php">Inicio</a><a class="separarLetras" href="index.php">Bricolage</a><a class="separarLetras" href="index.php">Electrónica</a><a class="separarLetras" href="index.php">Moda</a></li>';
-		echo'<li><a class="separarLetras" href="index.php">Inicio</a><a class="separarLetras" href="index.php">Hogar</a><a class="separarLetras" href="index.php">Hospedaje</a><a class="separarLetras" href="index.php">Cultura</a></li>';
-            echo'</ul>';
-	
-	echo'<figure id="abajo" class="noOcupar">';
-		echo'<img src="../img/abajo.png" class="activar" alt="Botones de desplazamiento"/>';
-	echo'</figure>';
-	echo'<figure id="izquierda" class="slider-controls, ocultar">';
-		echo'<img src="../img/izquierda.png" class="activar"  alt="Botones de desplazamiento"/>';
-	echo'</figure>';
-    echo'</nav>';
-   
-    /**
-     * En esta seccion agregamos el buscador por jquery
-     */
-    echo '<section id="buscar_datos">';
        
-    echo '</section>';
-   
-    
-    
-    echo'<section id="contenedor">';
-    
-    /**
-    * Elemento html que se agregaran 
-    * el formulario para aregar busquedas psonales
-    */
-        echo'<section id="busquedasPersonales">';
-        echo'</section>';
-        
-        
-        
-    //para la publicidad
-    echo'<aside id="publi">';
-		echo'<p>Aqui va la publicidad</p>';
-                echo'<div>';
-        if(isset($_SESSION["userTMP"]) and $_SESSION['userTMP'] != ""){    
-            echo'<input type="button" id="publicar" name="publicar" value="Publicar"/>';
-        }
-            echo'</div>';
-	echo'</aside>';
-     
-       
-        /**
-         * Elemento html que se agregaran los posts
-         */
-        echo'<section id="posts">';
-        echo'</section>';
-   
-    
-        /**
-         * Elemento html que se agregara los
-         * li para la navegacion
-         */
-        echo '<section id="btn_navegacion">';
-        echo '</section>';
-    
-        /*
-         * Elemento html al que se le 
-         * añadira elementos para mostrar 
-         * el posts seleccionado al hacer click
-         * en la imagen en la pagina principal
-         */ 
-        echo '<section id="mostrarPostSeleccionado" class="oculto">';
-        echo "</section>";
-    
-        
         
      echo' <footer>';
     /*

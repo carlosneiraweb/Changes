@@ -1,4 +1,8 @@
 <?php
+
+  header('Content-type: application/json; charset=utf-8');
+  header('Cache-Control: no-cache, must-revalidate');
+  header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 /**
  * @author Carlos Neira Sanchez
  * @mail arj.123@hotmail.es
@@ -14,10 +18,7 @@
  session_start();  
    
 
-  // -------  cabeceras indicando que se envian datos JSON.
-  header('Content-type: application/json; charset=utf-8');
-  header('Cache-Control: no-cache, must-revalidate');
-  header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+ 
 
   // -------   Crear la conexión al servidor y ejecutar la consulta.
     try{
@@ -40,7 +41,8 @@ if(isset($_POST['srcImg'])){
          $idImg = $_GET['srcImg'];
         }
     } 
-    
+
+ 
 if(isset($_POST['inicio'])){
         $inicio = ((int)$_POST['inicio']);
     } else if (isset($_GET['inicio'])){
@@ -56,6 +58,7 @@ if(isset($_POST['usuario'])){
 
       //Solo en caso el usuario se logee
     if(isset($_SESSION['userTMP'])){
+        //var_dump($_SESSION['userTMP']);
         $usuBloqueo = new Usuarios(array());
         $usuLogeado = $_SESSION['userTMP']->devuelveId();
     }
@@ -150,7 +153,7 @@ if(isset($_SESSION['userTMP'])){
             //Nos quedamos con la parte necesaria para sacar de la tabla imagenes el id del post
              $tmpIdImg = substr($idImg, 10);
              $tmpIdImg = strstr($tmpIdImg,'.',true);
-             
+        
              $sql = 'select post_idPost from imagenes where ruta = "'.$tmpIdImg.'";' ;
            
              $stm4 = $conPost->query($sql);
@@ -164,8 +167,8 @@ if(isset($_SESSION['userTMP'])){
              //Recuperamos la ruta de la imagen y la descripcion de cada una
              $sql = "select ruta, texto from imagenes where post_idPost =".$idImgSLD[0].";";
              $stm5 = $conPost->query($sql);
-             $tmpRutaTexto = $stm5->fetch();
-             $stm5->closeCursor();
+             $tmpRutaTexto = $stm5->fetchAll();
+            
              
             //Recuperamos las palabras queridas o buscadas del usuario
              $sql ="select palabrasBuscadas as pbsQueridas from busquedas_pbs_buscadas where idPost_queridas = ".$idImgSLD[0].";";
@@ -173,7 +176,8 @@ if(isset($_SESSION['userTMP'])){
              $tmpPbsBuscadas = $stm6->fetchAll();
             
              array_push($rutaTextoPbsBuscadas, $tmpRutaTexto, $tmpPbsBuscadas);
-             //var_dump($tmpPbsBuscadas);
+             
+             
              echo json_encode($rutaTextoPbsBuscadas);
         
     }
