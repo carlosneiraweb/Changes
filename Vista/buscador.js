@@ -147,14 +147,11 @@
                             $('#contenidoBuscado li').remove();
                                 textoElegido = $(this).text();
                                 inputTmp.val("");
-                                inicio = 0;
-                                    //Esta variable la usaremos luego 
-                                    //para que solo se reinicien las variables de paginacion
-                                    //la primera vez que se cambia de seccion
-                                    banderaCambioSeccion = true;
+                                
+                                    
                                         //Ahora hacemos un select de todos los Posts donde tengan ese texto
                                         //En sus palabras de busquedas o queridas
-                                        
+                                inicio = 0;        
                                 cargarPeticionBuscador('ENCONTRADO', "&opcion=ENCONTRADO&ENCONTRAR="+textoElegido+"&tabla="+radioBusqueda+"&inicio="+inicio);
                                 
                                 
@@ -245,12 +242,13 @@ function mostrarFormularioGuardarBusquedas(){
  * @returns {ActiveXObject|XMLHttpRequest} 
  * */
 function cargarBuscador(objBuscador){
-    
+   
     
     var vacio = "<li>No se han encontrado resultados con la busqueda <strong>"+txtBuscar+"</strong></li>";
-          
-    
-    if(typeof objBuscador[0].palabras == "undefined"){
+    //typeof objBuscador === "undefined"     
+    // $.isEmptyObject(obj)
+    if($.isEmptyObject(objBuscador)){
+       
         $('#contenidoBuscado').append(vacio);
            // alert(logeoParaComentar);
                 //Solo si el usuario se ha registrado
@@ -262,7 +260,7 @@ function cargarBuscador(objBuscador){
                 }).on('click', function(){
                         mostrarFormularioGuardarBusquedas();
                         
-                    //cargarPeticionBuscador('PEMP', "opcion=PEMP&usuario="+user+"&tabla="+radioBusqueda);           
+        //cargarPeticionBuscador('PEMP', "opcion=PEMP&usuario="+user+"&tabla="+radioBusqueda);           
                 })).append($('<li>',{
                     text : "Si alguien publica un anuncio,"         
                 })).append($('<li>',{
@@ -293,7 +291,7 @@ function cargarBuscador(objBuscador){
 
 
 function cargarPeticionBuscador(tipo, parametros){
-alert('Estamos en cargarPeticionBuscador y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
+//alert('Estamos en cargarPeticionBuscador y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
     //para comprobar el tipo de peticion
     switch(tipo){
         case('PP'):
@@ -365,7 +363,7 @@ alert('Estamos en cargarPeticionBuscador y tipo vale: ' +tipo+ ' parametros vale
 
                     default:
                         
-                      // location.href= 'mostrar_error.php';
+                       location.href= 'index.php';
                 }
             //fin catch
             }
@@ -381,12 +379,22 @@ alert('Estamos en cargarPeticionBuscador y tipo vale: ' +tipo+ ' parametros vale
                     cargarBuscador(objBuscador);
                         break;
                 case 'ENCONTRADO':
+                    
+                    
                     //Tenemos que resetear todas las variables
                     //de paginacion cada vez que cambiamos de seccion
-                    var totalPostEnconrados = (parseInt(objEncontrado[0].totalRows[0]) - 1);
-                    if(banderaCambioSeccion){resetearValoresDePaginacion(totalPostEnconrados);};
-                    jsonVolver[6] = "ENCONTRADO";
-                    vistaIndependiente = false;
+                    if(jsonVolver[0] != "ENCONTRADO"){
+                        //Esta variable la usaremos luego 
+                    //para que solo se reinicien las variables de paginacion
+                    //la primera vez que se cambia de seccion 
+                    banderaCambioSeccion = true;
+                        cargarUrlVolver();
+                    }
+                   
+                        var totalPostEnconrados = (parseInt(objEncontrado[0].totalRows[0]) - 1);
+                        if(banderaCambioSeccion){resetearValoresDePaginacion(totalPostEnconrados);};
+                            jsonVolver[0] = "ENCONTRADO";
+                                vistaIndependiente = false;
                     //Modificado 17/07
                     cargarPost(objEncontrado);
                         break;

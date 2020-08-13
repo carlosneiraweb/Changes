@@ -27,7 +27,7 @@ var numLi, totalPost, final;
  * @param {type} objPost
   */
 function cargarPost(objPost){
-   //alert("estamos en cargarPost"+objPost);
+  // alert("estamos en cargarPost"+objPost);
     //Eliminamos los posts ya mostrados y el h3 donde se muestra el total de posts
     //alert(inicio);
     if (inicio !== 1) {
@@ -113,13 +113,24 @@ function cargarPost(objPost){
                      
                 }
                 
+                
                     //Si el usario ha sido bloqueado parcialmente
                     //eliminamos el boton de comentar con JAVASCRIPT
-                    if(objPost[i].coment == 1){
-                        $("."+objPost[i].idPost).hide();
-                       
-                        };
-                            
+                    if(objPost[i].coment == 1){   
+                        $("."+objPost[i].idPost).hide();//.attr('disabled',true);  
+                    };
+                    
+                    if(objPost[i].coment == 2){
+                        
+                        $("#"+objPost[i].idPost).empty();
+                        $("#"+objPost[i].idPost).prepend($('<section>',{
+                        class : 'cont_post',
+                        }).append($('<h1>',{
+                            text : "Esto pinta mal para ti !!!"
+                        }))); 
+                    };
+                        
+                   
                         
                     
 //fin for 
@@ -170,14 +181,11 @@ function cargarLis(){
             }else if(numLi > 10){
                 tmpLi = 10;//del 0 al 9
             }else{
-                tmpLi = numLi + 1;
+                tmpLi = numLi;
             }
     }
     
-    //En caso de paginacion o mostrar un post seleccionado en el slider
-    //Recuperamos la url anterior para mostrar el punto anterior 
-    
-    if(vistaIndependiente){jsonVolver = ["PPS",'', "opcion=PPS&inicio="+inicio, tmpLi, numeroEnLi, numLi, vistaIndependiente];}
+       // alert('mostrar numLI '+numLi+ 'tmpLi '+tmpLi+ 'numeroEnLi' + numeroEnLi);
     
                     //Mostramos los <li>
     var listaLi = '<ul class="listaLis"><li class="atras">Atras</li>';
@@ -194,11 +202,13 @@ function cargarLis(){
             //Este boton nos permite hacer eso.
         if (vistaIndependiente === false) {
             listaLi += '<span id="cont_volver">';
-            listaLi += '<input type="button" id="btn_volver" value="Salir"></span>';
+            listaLi += '<input type="button" id="btn_volver" value="Volver"></span>';
         }
         
                 $('#btn_navegacion').html(listaLi);
         
-       
+//        alert('mostrarLis => numeroEnLi '+numeroEnLi+ 
+//                ' numLi '+numLi+ ' tmpLi '+tmpLi);
 //fin cargarLis
 } 
+

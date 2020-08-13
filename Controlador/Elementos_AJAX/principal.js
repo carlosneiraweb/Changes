@@ -8,7 +8,10 @@
  */
 
 var petPost, objPost, objPostSeleccionado, petPostSeleccionado,
-    petVolver, objVolver, PAGESIZE;
+    petVolver, objVolver, PAGESIZE, banderaCambioSeccion = false,
+     opcionSwitchVolver, opcionPeticionVolver, peticionVolver,
+        tmpLiVolver, numeroEnLiVolver, numLiVolver, inicioVolver,
+        xlis;
 
 
 var fecha = new Date();
@@ -40,9 +43,16 @@ var Conexion;
     //Es una bandera que usamos para guardar la ultima peticion JSON
     //Para cuando el usuario quiera salir de paginacion o de mostrar un post seleccionado
     if(typeof(vistaIndependiente ) === "undefined"){ vistaIndependiente  = true; } 
-    if(typeof(jsonVolver) === "undefined"){ jsonVolver = ["PPS",'', "opcion=PPS&inicio="+inicio, '','','','']; };
-    
-    
+    if(typeof(jsonVolver) === "undefined"){ jsonVolver = ["PPS", "opcion=PPS&inicio="+inicio, '']; };
+              
+    //Si el usuario no esta logeado inicializamos la variable 
+    //logeoParaComentar a null
+    //Mas adelante la utilizamos para mostrar un boton
+    //Que se utiliza para poder subir un comentario a un post
+        if(typeof(logeoParaComentar) === "undefined"){ 
+                 logeoParaComentar = null;
+            };
+
     
 window.onload=function(){          
 
@@ -50,14 +60,7 @@ window.onload=function(){
  //Creamos la seccion del buscador por jquery
         insertarBuscador();
         
-          
-//Si el usuario no esta logeado inicializamos la variable 
-//logeoParaComentar a null
-//Mas adelante la utilizamos para mostrar un boton
-//Que se utiliza para poder subir un comentario a un post
-    if(typeof(logeoParaComentar) === "undefined"){ 
-             logeoParaComentar = null;
-        };
+
         
 //Esta llamada a JSON solo se realiza en la primera carga del script
     //Despues se iran mostrando los posts a traves de los botones 
@@ -77,7 +80,9 @@ window.onload=function(){
                 cargarPeticion("SLD", "opcion=SLD&srcImg="+src+"&inicio="+inicio);
                
             });
-   
+            
+       
+        
     
     $('#cuerpo').on('click','li.pagina', function(e){
        //Llamamos al metodo que nos 
@@ -99,6 +104,15 @@ window.onload=function(){
     
     
     
+     //Recuperamos la opcion del menu
+        $('#cuerpo').on('click', '.separarLetras', function(){
+                inicio = 0;
+                opcionMenu = $(this).text();
+                parametrosMenu = "opcion="+opcionMenu+"&inicio="+inicio;
+      
+                cargarPeticionMenu(opcionMenu, parametrosMenu);
+           
+            });
 //fin onload    
 };      
 
@@ -106,6 +120,7 @@ window.onload=function(){
 function cargarPeticion(tipo, parametros){
 //alert('Estamos en cargarPeticionPrincipal y tipo vale: ' +tipo+ ' parametros vale: ' +parametros);
     //para comprobar el tipo de peticion
+   
     switch(tipo){
         
         case('PPS'):
@@ -134,7 +149,6 @@ function cargarPeticion(tipo, parametros){
             try{
                 if(tipo === 'PPS'){
                     objPost= JSON.parse(petPost.responseText);
-                   
                      //Eliminamos el objeto conexion
                     delete ConElementos;
                 } else if(tipo === 'SLD'){
@@ -150,7 +164,7 @@ function cargarPeticion(tipo, parametros){
                 switch(tipo){        
 
                     default:
-                       // location.href= 'mostrar_error.php';
+                        location.href= 'index.php';
                 }
             //fin catch
             }
@@ -160,6 +174,8 @@ function cargarPeticion(tipo, parametros){
                 case 'PPS':
                     //Tenemos que resetear todas las variables
                     //de paginacion cada vez que cambiamos de seccion
+                    var totalPostEnconrados = (parseInt(objPost[0].totalRows[0]) - 1);
+                    if(banderaCambioSeccion){resetearValoresDePaginacion(totalPostEnconrados);};
                     cargarPost(objPost);
                         break;
                 case 'SLD':
@@ -186,7 +202,7 @@ function cargarPeticion(tipo, parametros){
 
 /**
  * @description 
- * Dependiendo de la variable mostrar
+ * Dependiendo de la variable a mostrar
  * manda al metodo adecuado la peticion JSON
  * con los parametros adecuados.
  * @param {string} opcion
@@ -195,8 +211,11 @@ function cargarPeticion(tipo, parametros){
  * cuando estamos paginando.
  */
 function cargarContenidoPorSeccion(){
-        if(jsonVolver[6] === 'ENCONTRADO'){
-            opcion = jsonVolver[6];
+    
+        if(jsonVolver[0] === 'ENCONTRADO'){
+            opcion = jsonVolver[0];
+        }else if(jsonVolver[0] === "PPS"){
+            opcion = jsonVolver[0];
         }else{
             opcion = jsonVolver[0];
         }
@@ -204,13 +223,19 @@ function cargarContenidoPorSeccion(){
         
         switch (opcion){
                 case 'PPS':
-                    cargarPeticion("PPS", "opcion=PPS&inicio="+inicio);
+                    //Actualizamos la url del array
+                    jsonVolver[1] = "opcion=PPS&inicio="+inicio;
+                    cargarPeticion(opcion, "opcion=PPS&inicio="+inicio);
                         break;
+                        
                 case 'ENCONTRADO':
-                    cargarPeticionBuscador('ENCONTRADO', "opcion=ENCONTRADO&ENCONTRAR="+textoElegido+"&tabla="+radioBusqueda+"&inicio="+inicio);
+                    cargarPeticionBuscador(opcion, "opcion=ENCONTRADO&ENCONTRAR="+textoElegido+"&tabla="+radioBusqueda+"&inicio="+inicio);
                         break;
-                    default:
-                        break;
+                        
+                default:
+                    //Actualizamos la url del array
+                    jsonVolver[1] = "opcion=PPS&inicio="+inicio;
+                    cargarPeticionMenu(opcionMenu, parametrosMenu);   
             }
     
     
@@ -229,13 +254,20 @@ function cargarContenidoPorSeccion(){
  */
 function resetearValoresDePaginacion(posts){
     
+    
+    
+    
+    
     numLi = (posts) / PAGESIZE; //Numeros de <li>
         //Si al dividir sale decimal le sumamos un <li>
             if ((numLi % 2 ) !== 0){
                 numLi++;
             }
+  
+          
     numeroEnLi = 0;
-    inicio = 0;
+    
+    //inicio = 0;
     
        
         //Parseamos a Integer y ya tenemos el total de <li> a mostrar
@@ -247,27 +279,49 @@ function resetearValoresDePaginacion(posts){
                 tmpLi = numeroEnLi + 10;
             }else{
                 tmpLi = numLi;
-            }        
+            }
+            
+            //Queremos limitar el numero de <li> a 10 por pagina
+            //En caso de que numLi sea mayor a 10 * PAGESIZE
+            if (numLi > PAGESIZE * 10 ){
+                tmpLi = numeroEnLi + 10; //pasamos de  10, osea 11,21,31
+            }else if(numLi > 10){
+                tmpLi = 10;//del 0 al 9
+            }else{
+                tmpLi = numLi;
+            }
+    
+            
+    //alert('Resetear numLi '+numLi+ ' tmpLi '+tmpLi+ ' numeroEnLi '+numeroEnLi);      
     
     //Ponemos a bandera false por que no
     //queremos que se vuelvan a reseter las variables de los <li>
     banderaCambioSeccion = false;  
+    
+    
 //fin   resetearValoresDePaginacion  
 }
 
 
 
-
+function cargarUrlVolver(){
+    
+    
+    opcionPeticionVolver = jsonVolver[0];
+    //Esta peticion es actualiada 
+    //cada vez que se pulsa en un <li> 
+    //Se actualiza en cargarContenidoPorSeccion
+    peticionVolver = jsonVolver[1];
+   
+}
 
 
 function volverAnteriorJSON(){
     
     vistaIndependiente = true;
-    numLi = parseInt(jsonVolver[5])
-    numeroEnLi = parseInt(jsonVolver[4]);
-    tmpLi = parseInt(jsonVolver[3]);
-    
-    cargarPeticion(jsonVolver[0], jsonVolver[2]);
+    banderaCambioSeccion = true;
+    jsonVolver[0] = opcionPeticionVolver;
+    cargarPeticion(opcionPeticionVolver, peticionVolver);
     
 }
 

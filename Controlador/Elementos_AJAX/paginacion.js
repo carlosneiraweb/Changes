@@ -62,8 +62,8 @@ function navegarPorPosts(li){
 function  mostrarSiguienteRango(e){
         
    
-        ultimoLi = parseInt($('.pagina').last().html()) +1;
-        
+        ultimoLi = parseInt($('.pagina').last().html())+1;
+       
        
             if(numLi <= ultimoLi){
                 tmpLi = numLi;
@@ -71,7 +71,7 @@ function  mostrarSiguienteRango(e){
                 $('#btn_navegacion').off('click', 'ul>li.siguiente', mostrarSiguienteRango);
                
                 }else{
-                
+                   
                     //En caso que el numero de post
                     //Sea mayor que el siguiente rango
                     //Osea que el siguiente rango por ejemplo
@@ -102,7 +102,7 @@ function  mostrarSiguienteRango(e){
                           
                             inicio =  (parseInt($('.pagina').last().html()) + 1) * PAGESIZE;
                     }
-                   
+     //alert('MOSTRARRANGO ultimoLi '+ultimoLi+ ' numLi '+numLi+ ' tmpLi '+tmpLi+ ' numeroEnLi '+numeroEnLi);               
                 //Mandamos la peticion JSON segun la seccion
                 //en la que estemos
                 cargarContenidoPorSeccion();    

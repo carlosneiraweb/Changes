@@ -56,7 +56,6 @@ insert into genero (genero) values ('hombre');
 insert into genero (genero) values ('mujer');
 insert into genero (genero) values ('otro');
 
-insert into secciones (nombre_seccion) values ('Servicios');
 insert into secciones (nombre_seccion) values ('Automocion');
 insert into secciones (nombre_seccion) values ('Ocio');
 insert into secciones (nombre_seccion) values ('Bricolage');
@@ -68,7 +67,7 @@ insert into secciones (nombre_seccion) values ('Cultura');
 
 
 insert into tiempo_cambio (tiempo) values ('No importa');
-insert into tiempo_cambio (tiempo) values ('Por un par de d�as');
+insert into tiempo_cambio (tiempo) values ('Por un par de dias');
 insert into tiempo_cambio (tiempo) values ('Por un fin de semana');
 insert into tiempo_cambio (tiempo) values ('Por una semana');
 insert into tiempo_cambio (tiempo) values ('Por una temporada');

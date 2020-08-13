@@ -5,6 +5,9 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ValidoForm.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes.php'); 
 require_once ($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Post.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/System.php');
+
+
 
 session_start();
 
@@ -35,14 +38,18 @@ session_start();
         <script src="../Controlador/Validar/formulario_login.js"></script>
         <script src="../Controlador/Validar/iconoObligatorio.js"></script>
         <script src="../Controlador/redireccionar.js"></script>
-        <script src="../Controlador/menu.js"></script>
+        <script src="../Controlador/menuPrincipal.js"></script>
         <!--<script src="../Controlador/script.js"></script>-->
         <script src="../Controlador/Elementos_AJAX/CONEXION_AJAX.js"></script>
+        <script src="../Controlador/Elementos_AJAX/Menu.js"></script>
+        <script src="../Controlador/Elementos_AJAX/paginacion.js"></script>
         <script src="../Controlador/Elementos_AJAX/principal.js"></script>
+         
         <script src="./cargarPostsElegido.js"></script>
         <script src="./mostrarPosts.js"></script>
         <script src="./buscador.js"></script>
-        <script src="../Controlador/Elementos_AJAX/paginacion.js"></script>
+        
+        
         <script src="./subirComentario.js"></script>
         
     <!--Para navegadores viejos-->
@@ -160,9 +167,9 @@ session_start();
         echo'</figure>';	
 	
             echo'<ul id="slider" class="slider-wrapper">';
-                echo'<li class="slide-current"><a class="separarLetras" href="index.php">Inicio</a><a class="separarLetras" href="index.php">Servicios</a><a class="separarLetras" href="index.php">Automoción</a><a class="separarLetras" href="index.php">Ocio</a></li>';
-		echo'<li><a class="separarLetras" href="index.php">Inicio</a><a class="separarLetras" href="index.php">Bricolage</a><a class="separarLetras" href="index.php">Electrónica</a><a class="separarLetras" href="index.php">Moda</a></li>';
-		echo'<li><a class="separarLetras" href="index.php">Inicio</a><a class="separarLetras" href="index.php">Hogar</a><a class="separarLetras" href="index.php">Hospedaje</a><a class="separarLetras" href="index.php">Cultura</a></li>';
+                echo'<li class="slide-current"><a class="separarLetras" ">Inicio</a><a class="separarLetras" ">Servicios</a><a class="separarLetras">Automoción</a><a class="separarLetras" >Ocio</a></li>';
+		echo'<li><a class="separarLetras">Inicio</a><a class="separarLetras">Bricolage</a><a class="separarLetras">Electrónica</a><a class="separarLetras">Moda</a></li>';
+		echo'<li><a class="separarLetras">Inicio</a><a class="separarLetras">Hogar</a><a class="separarLetras">Hospedaje</a><a class="separarLetras">Cultura</a></li>';
             echo'</ul>';
 	
 	echo'<figure id="abajo" class="noOcupar">';

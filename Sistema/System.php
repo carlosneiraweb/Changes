@@ -73,7 +73,7 @@ do {
 /**
  * No implementado
  */   
-function calculoMemoria(){
+public function calculoMemoria(){
   $a = exec("vmstat -n 1 2");
      
     $nofin = true;

@@ -223,7 +223,27 @@
     }
 
    
-
+    
+    
+    
+    /**
+     * Metodo que comprueba los 
+     * usuarios bloqueados
+     * @param type $posts array mysql 
+     * @return $array 
+     */
+    
+    
+    public static function siUsuariosBloqueados($posts, $id){
+        
+        
+    }
+    
+    
+    
+    
+    
+    
     //fin clase
     }
        

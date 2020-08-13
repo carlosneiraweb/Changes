@@ -13,11 +13,17 @@
     require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
     require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
     require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes.php');
-    require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
+    require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ValidoForm.php');
+    
     
  session_start();  
    
-
+//Solo en caso el usuario se logee
+    if(isset($_SESSION['userTMP'])){
+        //var_dump($_SESSION['userTMP']);
+        $usuBloqueo = new Usuarios(array());
+        $usuLogeado = $_SESSION['userTMP']->devuelveId();
+    }
  
 
   // -------   Crear la conexión al servidor y ejecutar la consulta.
@@ -56,12 +62,7 @@ if(isset($_POST['usuario'])){
          $usuario = $_GET['usuario'];   
     } 
 
-      //Solo en caso el usuario se logee
-    if(isset($_SESSION['userTMP'])){
-        //var_dump($_SESSION['userTMP']);
-        $usuBloqueo = new Usuarios(array());
-        $usuLogeado = $_SESSION['userTMP']->devuelveId();
-    }
+      
     
     if($opc == "PPS"){
                 
@@ -73,66 +74,67 @@ if(isset($_POST['usuario'])){
                         $stmBus->bindValue(":numRows", PAGE_SIZE, PDO::PARAM_INT);
                         $stmBus->execute();
                         $v = $stmBus->fetchAll();
-
+                        
                 
                                 //Calculamos el total final como si  la clausula limit no estuviera
                                 $stm2Bus = $conPost->query("SELECT found_rows()  AS totalRows");
                                 $row = array ('totalRows' => $stm2Bus->fetch());
                                 $stm2Bus->closeCursor();
-
+                                
                                 $rs = array();
                                 array_push($rs, $row);
         
         foreach($v as $id){
                  
       
-                $sqlPost = "select pos.idPost, u.nick, u.idUsuario as idUsu, prov.nombre AS provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, p.titulo, img.ruta, p.comentario, tc.tiempo as tiempoCambio
+                $sqlPost = "select p.idPost, u.nick, u.idUsuario as idUsu,
+                    prov.nombre AS provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, 
+                    p.titulo, img.ruta, p.comentario, tc.tiempo as tiempoCambio
 from post p
-inner join usuario u on u.idUsuario= p.idUsuarioPost
-inner join direccion dire on dire.idDireccion = u.idUsuario
-inner join post pos on u.idUsuario = pos.idUsuarioPost
-inner join provincias prov on prov.nombre = dire.provincia
-inner join imagenes img on img.post_idPost = :idPost 
-inner join tiempo_cambio tc on tc.idTiempoCambio = p.tiempo_cambio_idTiempoCambio
-where pos.idPost = :idPost limit 1";
+inner join usuario AS u on u.idUsuario= p.idUsuarioPost
+inner join direccion AS dire on dire.idDireccion = u.idUsuario
+inner join provincias AS prov on prov.nombre = dire.provincia
+inner join imagenes AS img on img.post_idPost = :idPost 
+inner join tiempo_cambio AS tc on tc.idTiempoCambio = p.tiempo_cambio_idTiempoCambio
+where p.idPost = :idPost limit 1";
                 
-        
+       
                 $stm3Bus = $conPost->prepare($sqlPost);
                 $stm3Bus->bindValue(":idPost", $id[0], PDO::PARAM_INT);
                 $stm3Bus->execute();
                 $tmp = $stm3Bus->fetch();
                 $stm3Bus->closeCursor();
- 
-                
-                //Solo en caso el usuario se logee
+          
+       
+       
+                 
+         //Solo en caso el usuario se logee
 if(isset($_SESSION['userTMP'])){
     $usuBloqueados = $usuBloqueo->devuelveUsuariosBloqueados($tmp[2]); 
+    //var_dump($usuBloqueados);
     $totalUsuarioBloqueado =  count($usuBloqueados);
     
-        $x= 0;
         
+
             //  Si el usuario que ha colgado el Post ha bloqueado 
             // algun usuario se verifica que no sea el que esta logueado
             //Se le impide ver este Post
         
                 if($totalUsuarioBloqueado > 0){
                     for($i=0; $i < $totalUsuarioBloqueado; $i++){
-                        if(($usuLogeado[0] == $usuBloqueados[$i][0]) and ($usuBloqueados[$i]["bloqueadoTotal"] == 1) ){
-                            $x++;
-                        }else if (($usuLogeado[0] == $usuBloqueados[$i][0]) and ($usuBloqueados[$i]["bloqueadoParcial"] == 1)){
+                        if(($usuLogeado[0] == $usuBloqueados[$i][0]) and ($usuBloqueados[$i]['bloqueadoTotal'] == 1) ){
+                            $tmp['coment'] = 2;
+                        }else if (($usuLogeado[0] == $usuBloqueados[$i][0]) and ($usuBloqueados[$i]['bloqueadoParcial'] == 1)){
                             //Agregamos un testigo para cuando se 
                             //muestre en JAVASCRIPT el POST
                             //Se inavilite el boton de comentar
                             $tmp['coment'] = 1;
                         }
+                        
                     }
-                    //Si el usuario logueado no esta en el 
-                    //array del usuario de bloqueados por la 
-                    //persona que ha subido el Post
-                    //se agrega al array de Posts
-                            if($x == 0){
-                                array_push($rs, $tmp);
-                            }
+                    
+                    array_push($rs, $tmp);
+
                     
                     
                     }else{
@@ -140,14 +142,18 @@ if(isset($_SESSION['userTMP'])){
                     }
       
         }else{
+           
                 array_push($rs, $tmp);
        
         }
-                 
-    }
-      
-                    //var_dump($rs);
-                 echo json_encode($rs);
+                  
+    }  
+                
+               
+                echo json_encode($rs);
+                
+            
+                           
         
     }else if($opc == "SLD"){
             //Nos quedamos con la parte necesaria para sacar de la tabla imagenes el id del post

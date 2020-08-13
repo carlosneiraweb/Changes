@@ -1,7 +1,6 @@
 <?php
 
-
-  header('Content-Type: application/json');
+header('Content-Type: application/json');
   header('Cache-Control: no-cache, must-revalidate');
   header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
   header('Content-type: application/json; charset=utf-8');
@@ -13,7 +12,12 @@ require_once($_SERVER['DOCUMENT_ROOT']."/Changes/Modelo/Usuarios.php");
 
  session_start();  
 
- 
+ //Solo en caso el usuario se logee
+    if(isset($_SESSION['userTMP'])){
+        //var_dump($_SESSION['userTMP']);
+        $usuBloqueo = new Usuarios(array());
+        $usuLogeado = $_SESSION['userTMP']->devuelveId();
+    }
 
  
     try{
