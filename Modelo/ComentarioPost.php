@@ -9,14 +9,17 @@
 
 
 
-class ComentarioPost {
+class ComentarioPost extends DataObj{
     
      protected $data = array(
-            "imgUsuarioComentario" => "",
-            "tituloComentario" =>"",
-            "comentarioPost" => "",
-            "ciudadComentario" =>"",
-            "fechaComentario" =>  ""    
+            "idPostComentado" => "",
+            "idUsuarioComentario" =>"",
+            "nombreComenta" => "",
+            "imgUsuario" =>"",
+            "tituloComenatario" =>  "",
+            "Comenatario" =>  "",
+            "ciudad" =>  "",
+            "fecha" =>""
         );
     
     

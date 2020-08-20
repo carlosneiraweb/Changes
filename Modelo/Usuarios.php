@@ -486,8 +486,44 @@ public final function devuelveUsuariosBloqueados($id){
  // devuelveUsuariosBloqueados()  
 }
     
+ 
+
+/**
+ * Metodo que devuelve la direcion 
+ * de un susuario
+ * @return array direccion
+ */
+
+public function retornoDireccionUsuario(){
+    
+    $conDireccion = Conne::connect();
+        
+        try{
+
+            $sqlBloqueo = "Select calle, numeroPortal, ptr,
+                codigoPostal, ciudad, provincia, pais
+            from direccion where idDireccion = :usuario_idUsuario;";
+
+            $stmDireccion = $conDireccion->prepare($sqlBloqueo);
+            $stmDireccion->bindValue(":usuario_idUsuario", $this->devuelveId()[0]);
+            $stmDireccion->execute();
+            $direccion = $stmDireccion->fetchAll();
+           
+            Conne::disconnect($conDireccion);
+            
+            return $direccion;
+        } catch (Exception $ex) {
+            Conne::disconnect($conBloqueo);
+            echo $ex->getCode();
+            echo '<br>';
+            echo $ex->getLine().'<br>';
+            echo $ex->getFile().'<br>';
+        }
+
     
     
+//fin devuelvoDireccion    
+}  
     
     
 //fin Usuarios    

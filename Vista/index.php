@@ -1,6 +1,7 @@
 <?php 
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/ComentarioPost.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ValidoForm.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes.php'); 
@@ -34,22 +35,27 @@ session_start();
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link href="../img/fabicon.ico" rel="icon" type="image/x-icon"/>
         <link rel="stylesheet" href="../css/estilos.css"/>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="../Controlador/jquery-2.2.2.js"></script>
         <script src="../Controlador/Validar/formulario_login.js"></script>
+        
         <script src="../Controlador/Validar/iconoObligatorio.js"></script>
+        <script src="../Controlador/Elementos_AJAX/CONEXION_AJAX.js"></script>
         <script src="../Controlador/redireccionar.js"></script>
         <script src="../Controlador/menuPrincipal.js"></script>
         <!--<script src="../Controlador/script.js"></script>-->
-        <script src="../Controlador/Elementos_AJAX/CONEXION_AJAX.js"></script>
+        <script src="../Controlador/Elementos_AJAX/buscarComentarios.js"></script>
+        <script src="../Controlador/Validar/formulario_comentarios.js"></script>
         <script src="../Controlador/Elementos_AJAX/Menu.js"></script>
         <script src="../Controlador/Elementos_AJAX/paginacion.js"></script>
         <script src="../Controlador/Elementos_AJAX/principal.js"></script>
-         
+        <script src="../Controlador/Elementos_AJAX/subirComentarios.js"></script>
+        
         <script src="./cargarPostsElegido.js"></script>
         <script src="./mostrarPosts.js"></script>
         <script src="./buscador.js"></script>
-        
-        
+        <script src="../Controlador/Elementos_AJAX/comentarios.js"></script>
+        <script src="./mostrarComentarios.js"></script>
         <script src="./subirComentario.js"></script>
         
     <!--Para navegadores viejos-->
@@ -92,8 +98,11 @@ session_start();
         //Un bolean para saber si la validacion ha sido correcto
         displayFormLogeo(array(), new Usuarios(array()), true); 
         }
+    
         
         
+   
+       
     //en caso de error en la validacion PHP se muestra la capa de fondo
     function mostrarOculto(){
        echo'<div id="ocultarPHP" class="mostrar_transparencia"></div>';
@@ -144,7 +153,7 @@ session_start();
                             echo '<script type="text/javascript">';
                                 echo 'var logeoParaComentar = '; echo '"logeado";';
                                 echo 'var user = '; echo "'$nick';";
-                                  
+                                
                             echo '</script>'; 
                     }
                
@@ -167,9 +176,9 @@ session_start();
         echo'</figure>';	
 	
             echo'<ul id="slider" class="slider-wrapper">';
-                echo'<li class="slide-current"><a class="separarLetras" ">Inicio</a><a class="separarLetras" ">Servicios</a><a class="separarLetras">Automoción</a><a class="separarLetras" >Ocio</a></li>';
+                echo'<li class="slide-current"><a class="separarLetras" ">Inicio</a><a class="separarLetras" ">Salud</a><a class="separarLetras">Automoción</a><a class="separarLetras" >Ocio</a></li>';
 		echo'<li><a class="separarLetras">Inicio</a><a class="separarLetras">Bricolage</a><a class="separarLetras">Electrónica</a><a class="separarLetras">Moda</a></li>';
-		echo'<li><a class="separarLetras">Inicio</a><a class="separarLetras">Hogar</a><a class="separarLetras">Hospedaje</a><a class="separarLetras">Cultura</a></li>';
+		echo'<li><a class="separarLetras">Inicio</a><a class="separarLetras">Hogar</a><a class="separarLetras">Viajes</a><a class="separarLetras">Cultura</a></li>';
             echo'</ul>';
 	
 	echo'<figure id="abajo" class="noOcupar">';
@@ -236,7 +245,49 @@ session_start();
     
  echo'<div id="ocultar" class="oculto"> </div>'; 
  
-     
+
+ echo'<section id="form_comentario" class="oculto">'; 
+   
+                echo'<h4>Introduzca su Comentario</h4>';
+    echo'<form name="comentario_post" action="index.php" method="POST" id="comentario_post">';
+        echo'<fieldset>';
+        	echo'<legend>Haz tú cometario</legend>';
+    echo '<section id="comentar">';
+    echo'<label for="tituloComentario">Titulo:</label> ';
+    echo'<input type="text" name="tituloComentario" id="tituloComentario" autofocus  placeholder="Escribe el comentario" maxlength= "75" value="">';
+     echo'<label  for="comentarioPost">Escribe tú comentario aqui. </label>';
+    echo'<textarea spellcheck="true" maxlength="255" name="comentarioPost" id="comentarioPost" placeholder= "Máximo 255 caracteres." ';  echo'>'; 
+    echo'</textarea>';
+    echo '</section>';
+    
+    echo '<section id="botones_comentar">';
+    echo'<input type="button" id="btn_mandar_comentario" name="btn_mandar_comentario" value="Mandar" />'; 
+    echo'<input type="button" id="btn_salir_comentario" name="btn_salir_comentario" value="Salir " />'; 
+    
+    echo'<figure id="vComentario">';
+    echo'<img id="imgResultComentVerde" class="oculto" src="../img/verde.png" />';
+    echo'<img id="imgResultComentRojo" class="oculto" src="../img/rojo.png" />';
+    echo'<figcaption id="captionComentario"></figcaption>';
+    echo'</figure>';
+    
+    
+    echo '</section>';  
+    
+      echo "</form>";
+      echo'</section>';    
+  
+       
+      
+ 
+      
+  
+
+ 
+ 
+ 
+ 
+ 
+ 
 function displayFormLogeo($missingFields, $user, $test){
       global $valido;
       
@@ -320,6 +371,7 @@ function processForm(){
        
     } else {       
         $_SESSION["userTMP"] = $loggedInMember;
+        
         unset($loggedInMember);
         unset($user);
         session_write_close(); 
@@ -331,6 +383,9 @@ function processForm(){
 
 
 
+    
+    
+       
 
        
         

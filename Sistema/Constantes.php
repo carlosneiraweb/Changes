@@ -27,6 +27,7 @@ define("TBL_GENERO", "genero");
 define("TBL_PBS_OFRECIDAS", "busquedas_pbs_ofrecidas");
 define("TBL_PBS_QUERIDAS", "busquedas_pbs_buscadas");
 define("TBL_POST", "post");
+define("TBL_COMENTARIO", "comentariosposts");
 define("TBL_PROVINCIAS", "provincias");
 define("TBL_SECCIONES", "secciones");
 define("TBL_USUARIO", "usuario");
@@ -61,7 +62,7 @@ define("TXT_ERROR_ELIMINAR_POST", "../Errores/ErroresEliminarPost.txt");
 //Constante con la fecha actual 
 $fecha_actual = getdate();
 define("FECHA_DIA", "Día $fecha_actual[mday], de $fecha_actual[month], del año $fecha_actual[year], a la hora $fecha_actual[hours]: $fecha_actual[minutes]" );
-
+define("ERROR_SUBIR_COMENTARIO", "<h5>Hemos tenido un problema. Revisa todos los campos.</h5>");
 /*
  * Constantes para email
  */

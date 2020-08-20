@@ -89,7 +89,7 @@ if(isset($_POST['usuario'])){
       
                 $sqlPost = "select p.idPost, u.nick, u.idUsuario as idUsu,
                     prov.nombre AS provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, 
-                    p.titulo, img.ruta, p.comentario, tc.tiempo as tiempoCambio
+                    p.titulo, img.ruta, p.comentario, tc.tiempo as tiempoCambio                   
 from post p
 inner join usuario AS u on u.idUsuario= p.idUsuarioPost
 inner join direccion AS dire on dire.idDireccion = u.idUsuario
@@ -105,7 +105,19 @@ where p.idPost = :idPost limit 1";
                 $tmp = $stm3Bus->fetch();
                 $stm3Bus->closeCursor();
           
-       
+        
+        $sqlTotal = "Select IFNULL(COUNT(idComentariosPosts),0) as comentarios "
+                . " FROM comentariosposts where post_idPost = :idPost";
+        
+                $stm3To = $conPost->prepare($sqlTotal);
+                $stm3To->bindValue(":idPost", $id[0], PDO::PARAM_INT);
+                $stm3To->execute();
+                $tmp3To = $stm3To->fetch();
+                $stm3To->closeCursor();
+                $x = $tmp3To[0];
+                array_push($tmp, $x);
+                
+
        
                  
          //Solo en caso el usuario se logee
@@ -114,7 +126,7 @@ if(isset($_SESSION['userTMP'])){
     //var_dump($usuBloqueados);
     $totalUsuarioBloqueado =  count($usuBloqueados);
     
-        
+   
 
             //  Si el usuario que ha colgado el Post ha bloqueado 
             // algun usuario se verifica que no sea el que esta logueado
@@ -134,16 +146,17 @@ if(isset($_SESSION['userTMP'])){
                     }
                     
                     array_push($rs, $tmp);
-
                     
                     
                     }else{
+                        
                         array_push($rs, $tmp);
+                        
                     }
       
         }else{
-           
                 array_push($rs, $tmp);
+                
        
         }
                   

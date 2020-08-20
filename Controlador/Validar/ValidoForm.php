@@ -29,7 +29,7 @@
      * Antes quitamos los posibles espacios en blanco
      * Evita ataques Java al no ejecutarse como codigo
      */
-    final private function htmlCaracteres($string){
+    final static function htmlCaracteres($string){
         $cadena = trim($string);
         $cadena = htmlspecialchars($cadena, ENT_QUOTES, 'UTF-8');
    
@@ -225,19 +225,7 @@
    
     
     
-    
-    /**
-     * Metodo que comprueba los 
-     * usuarios bloqueados
-     * @param type $posts array mysql 
-     * @return $array 
-     */
-    
-    
-    public static function siUsuariosBloqueados($posts, $id){
-        
-        
-    }
+ 
     
     
     

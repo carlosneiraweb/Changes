@@ -836,7 +836,7 @@ section#confirmarRegistro input[type="submit"]{
 
 
 /*Estilo de border redondeado para todos los elementos de la pagina*/
-section#foto_usuario img, .login_form_tamanyo, .registro_form_tamanyo, #ocultar, figure#imagen_error, section#form_registro, section#form_post, .img_usuario_tmp img, section#mostrarImgSeleccionada, section#mostrarPostSeleccionado, section#verificarCondiciones{
+section#foto_usuario img, .login_form_tamanyo, .registro_form_tamanyo, #ocultar, figure#imagen_error, section#form_registro, section#form_post, .img_usuario_tmp img, section#mostrarImgSeleccionada, section#mostrarPostSeleccionado, section#verificarCondiciones, section#form_comentario{
 	border-radius: 1em;
 	-moz-border-radius: 1em; /* Firefox 3.5 */
         -webkit-border-radius: 1em; /* Google Chrome y Safari */
@@ -875,9 +875,10 @@ section#foto_usuario img, .login_form_tamanyo, .registro_form_tamanyo, #ocultar,
 	height: 0;
 	max-height: 0;
 	opacity: 0;
-	visibility: hidden;
+        display: none;
 	width: 0;
 	z-index: 10;
+        
 }
 
 
@@ -1113,6 +1114,36 @@ section#salir{
    background-color : #fff;
 }
 /*********************FIN ESTILOS SLIDER ******************************/
+
+
+  /**COMENTARIO POSTS**/
+  
+
+  
+ .mostrar_formulario_comentarios{
+	background-color: white;
+	padding: .3em;
+	margin: auto;
+	position:absolute;
+	top: 30px;
+	left: 0;
+	right: 0;
+	
+	visibility: visible;
+	z-index: 20
+}
+
+
+
+/**********MOSTRAR POST******************/
+
+section#cabeceraComentarios section#imgUsuarioPublica, #h2Publica, #x {
+    display: inline-block;
+}
+
+
+
+
 
 
 		/*MediaQuery*/

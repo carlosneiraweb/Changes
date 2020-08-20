@@ -64,8 +64,11 @@ $(document).ready(function(){
              * 
              */
          
-            $('#login_form, input').keydown(function() { 
-            $(this).prev().prev().css('color', 'black');
+            $('#nick').keydown(function() { 
+                $(this).prev().prev().css('color', 'black');
+            });
+            $('#password').keydown(function() { 
+                $(this).prev().prev().css('color', 'black');
             });
        
             /**
@@ -73,9 +76,17 @@ $(document).ready(function(){
              * color original la label
              */
        
-            $('#login_form, input').blur(function() { 
-            $(this).prev().prev().css('color', '#0C0792');
+            $('#nick').blur(function() { 
+               
+                $(this).prev().prev().css('color','#0C0792' );//
+               //$('#login_form,  type="text"').css('color' , 'black');
             });
+            $('#password').blur(function() { 
+               
+                $(this).prev().prev().css('color','#0C0792' );//
+               //$('#login_form,  type="text"').css('color' , 'black');
+            });
+            
             
             
             

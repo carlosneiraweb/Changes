@@ -151,7 +151,8 @@
                                     
                                         //Ahora hacemos un select de todos los Posts donde tengan ese texto
                                         //En sus palabras de busquedas o queridas
-                                inicio = 0;        
+                                inicio = 0;   
+                                buscador = true;
                                 cargarPeticionBuscador('ENCONTRADO', "&opcion=ENCONTRADO&ENCONTRAR="+textoElegido+"&tabla="+radioBusqueda+"&inicio="+inicio);
                                 
                                 
@@ -379,22 +380,14 @@ function cargarPeticionBuscador(tipo, parametros){
                     cargarBuscador(objBuscador);
                         break;
                 case 'ENCONTRADO':
-                    
-                    
-                    //Tenemos que resetear todas las variables
-                    //de paginacion cada vez que cambiamos de seccion
-                    if(jsonVolver[0] != "ENCONTRADO"){
-                        //Esta variable la usaremos luego 
-                    //para que solo se reinicien las variables de paginacion
-                    //la primera vez que se cambia de seccion 
+
                     banderaCambioSeccion = true;
-                        cargarUrlVolver();
-                    }
-                   
+                    buscador = true;  
+                  
                         var totalPostEnconrados = (parseInt(objEncontrado[0].totalRows[0]) - 1);
                         if(banderaCambioSeccion){resetearValoresDePaginacion(totalPostEnconrados);};
                             jsonVolver[0] = "ENCONTRADO";
-                                vistaIndependiente = false;
+                              
                     //Modificado 17/07
                     cargarPost(objEncontrado);
                         break;

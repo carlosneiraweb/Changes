@@ -30,13 +30,11 @@ function cargarPost(objPost){
   // alert("estamos en cargarPost"+objPost);
     //Eliminamos los posts ya mostrados y el h3 donde se muestra el total de posts
     //alert(inicio);
-    if (inicio !== 1) {
-        $(".cont_post").remove();
-    }    
-    
+       
+    $(".cont_post").remove();
     //Aqui calculamos el numero final de posts mostrados
     //que aparecera en el h3 
-    
+   
     if((inicio + PAGESIZE) >= parseInt(objPost[0].totalRows[0])){
         final = parseInt(objPost[0].totalRows[0]);
     }else{
@@ -44,16 +42,19 @@ function cargarPost(objPost){
     }
     
     
+    
     //Cargamos el total de resultados y los mostrados en cada pagina
     //Se agrega antes del contenedor posts
    $('#contenedor>h3').remove(); 
-   $('#publi').after('<h3>Se muestran desde '+(inicio)+' al '+(final)+'º De un total de '+(parseInt(objPost[0].totalRows[0]))+' posts encontrados </h3>'); 
+   $('#publi').after('<h3 id="totalResultados">Se muestran desde '+(inicio)+' al '+(final)+'º De un total de '+(parseInt(objPost[0].totalRows[0]))+' posts encontrados </h3>'); 
     
     
-    for(var i = 1; i < objPost.length; i++){
-       
+    
+    for(var i = 0; i < objPost.length; i++){
+        if(i !=0){
+            
         $("#posts").append($('<section>',{
-                class : "cont_post",
+                class : " cont_post",
                 id : objPost[i].idPost
             }).append($('<h2>',{
                 text : objPost[i].titulo
@@ -101,7 +102,14 @@ function cargarPost(objPost){
             }).append($('<span>',{
                 class : 'date',
                 text : objPost[i].fecha
-            })))));
+            }))).append($('<span>',{
+                id: 'mostrarTotalComentarios',
+                class :objPost[i].idPost,
+                text : 'Total Comentarios :'
+            })).append($('<span>',{
+                id : 'totalComentarios',
+                text: objPost[i][9]
+            }))));
 
             
             //Verificamos que el usuario se ha logeado
@@ -131,7 +139,7 @@ function cargarPost(objPost){
                     };
                         
                    
-                        
+        }               
                     
 //fin for 
     }
@@ -185,7 +193,7 @@ function cargarLis(){
             }
     }
     
-       // alert('mostrar numLI '+numLi+ 'tmpLi '+tmpLi+ 'numeroEnLi' + numeroEnLi);
+       
     
                     //Mostramos los <li>
     var listaLi = '<ul class="listaLis"><li class="atras">Atras</li>';
@@ -195,20 +203,25 @@ function cargarLis(){
             listaLi += '<li class="pagina">'+numeroEnLi+'</li>';
         }
             listaLi +='<li class="siguiente">Siguiente</li></ul>';
-            
-            //Si hemos buscado en el buscador algo y hemos estamos
-            //navegando por los posts de la busqueda queremos volver 
-            //a donde estabamos antes de la busqueda
-            //Este boton nos permite hacer eso.
-        if (vistaIndependiente === false) {
-            listaLi += '<span id="cont_volver">';
-            listaLi += '<input type="button" id="btn_volver" value="Volver"></span>';
-        }
+     
+    //Añadimos parafo para saber donde estamos
+    if(opcionMenu == ""){
+        seccion = "Inicio";
+    }else{
+        seccion = opcionMenu;
+    }
+    
+    $('#btn_navegacion').html('<h3 id="seccion">Usted se encuentra en la sección '+ seccion + '<h3>');
+    
+    if(buscador){
+        $('#seccion').remove();
+        $('#btn_navegacion').html('<h3>Usted ha hecho una busqueda con '+textoElegido+'</h3>');
+    buscador = false;
+    }
+    
+                $('#btn_navegacion').append(listaLi);
         
-                $('#btn_navegacion').html(listaLi);
-        
-//        alert('mostrarLis => numeroEnLi '+numeroEnLi+ 
-//                ' numLi '+numLi+ ' tmpLi '+tmpLi);
+
 //fin cargarLis
 } 
 
