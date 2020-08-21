@@ -86,8 +86,18 @@ where p.idPost = :idPost limit 1";
                 $tmp = $stm3Menu->fetch();
                 $stm3Menu->closeCursor();
  
+                $sqlTotal = "Select IFNULL(COUNT(idComentariosPosts),0) as comentarios "
+                . " FROM comentariosposts where post_idPost = :idPost";
+        
+                $stm3Menu = $conMenu->prepare($sqlTotal);
+                $stm3Menu->bindValue(":idPost", $id[0], PDO::PARAM_INT);
+                $stm3Menu->execute();
+                $tmp3Menu = $stm3Menu->fetch();
+                $stm3Menu->closeCursor();
+                $x = $tmp3Menu[0];
+                array_push($tmp, $x);
+       
                 
-                         
          //Solo en caso el usuario se logee
 if(isset($_SESSION['userTMP'])){
     $usuBloqueados = $usuBloqueo->devuelveUsuariosBloqueados($tmp[2]); 

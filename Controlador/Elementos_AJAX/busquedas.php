@@ -1,6 +1,6 @@
 <?php
 
-header('Content-Type: application/json');
+  header('Content-Type: application/json');
   header('Cache-Control: no-cache, must-revalidate');
   header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
   header('Content-type: application/json; charset=utf-8');
@@ -225,6 +225,20 @@ where pos.idPost = :idPost limit 1";
                 $stm3Bus->execute();
                 $tmp = $stm3Bus->fetch();
                 $stm3Bus->closeCursor();
+                
+        $sqlTotal = "Select IFNULL(COUNT(idComentariosPosts),0) as comentarios "
+                . " FROM comentariosposts where post_idPost = :idPost";                
+                
+                $stm3To = $conBusquedas->prepare($sqlTotal);
+                $stm3To->bindValue(":idPost", $id[0], PDO::PARAM_INT);
+                $stm3To->execute();
+                $tmpTo = $stm3To->fetch();
+                $stm3To->closeCursor();
+                $x = $tmpTo[0];
+                array_push($tmp, $x);
+
+                 
+
                 
          //Solo en caso el usuario se logee
 if(isset($_SESSION['userTMP'])){

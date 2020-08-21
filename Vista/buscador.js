@@ -318,15 +318,54 @@ function cargarPeticionBuscador(tipo, parametros){
             petBuscador.send(parametros);
                 break; 
         case('ENCONTRADO'):
+          
+        
+        
+       $.ajax({
+                    data: { opcion : "ENCONTRADO",
+                            ENCONTRAR : textoElegido,
+                            tabla : radioBusqueda,
+                            inicio : inicio
+                           },
+                    type: "POST",
+                    dataType: 'json',
+                    url: "../Controlador/Elementos_AJAX/busquedas.php"
+                }).done(function( data, textStatus, jqXHR ) {
+                        if ( console && console.log ) {
+                     
+                    banderaCambioSeccion = true;
+                    buscador = true;  
+                  
+                        var totalPostEnconrados = (parseInt(data[0].totalRows[0]) - 1);
+                        if(banderaCambioSeccion){resetearValoresDePaginacion(totalPostEnconrados);};
+                            jsonVolver[0] = "ENCONTRADO";
+                            cargarPost(data);
+                            
+                            
+//                        console.log( "La solicitud se ha completado correctamente." );
+//                        
+                }
+                }).fail(function( jqXHR, textStatus, errorThrown ) {
+                        if ( console && console.log ) {
+                        console.log( "La solicitud a fallado: " + textStatus);
+                }
+                });   
+            
+            
+            
+           /*
             petEncontrado = ConBuscador.conection();
             petEncontrado.onreadystatechange = procesaRespuesta;
             petEncontrado.open('POST', "../Controlador/Elementos_AJAX/busquedas.php?", true);
             petEncontrado.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
             petEncontrado.send(parametros);
                 break;
+       */
         case('PIPB'):
             petPalabraBuscada = ConBuscador.conection();
             petPalabraBuscada.onreadystatechange = procesaRespuesta;
+             
+             
             petPalabraBuscada.open('POST', "../Controlador/Elementos_AJAX/busquedas.php?", true);
             petPalabraBuscada.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
             petPalabraBuscada.send(parametros);
@@ -354,9 +393,9 @@ function cargarPeticionBuscador(tipo, parametros){
                     //Eliminamos el objeto conexion
                     delete ConBuscador;
                 } else if(tipo === 'ENCONTRADO'){
-                    objEncontrado = JSON.parse(petEncontrado.responseText);
+                   // objEncontrado = JSON.parse(petEncontrado.responseText);
                     //Eliminamos el objeto conexion
-                    delete ConBuscador;
+                   // delete ConBuscador;
                 }
                 
             } catch(e){
@@ -381,16 +420,9 @@ function cargarPeticionBuscador(tipo, parametros){
                         break;
                 case 'ENCONTRADO':
 
-                    banderaCambioSeccion = true;
-                    buscador = true;  
-                  
-                        var totalPostEnconrados = (parseInt(objEncontrado[0].totalRows[0]) - 1);
-                        if(banderaCambioSeccion){resetearValoresDePaginacion(totalPostEnconrados);};
-                            jsonVolver[0] = "ENCONTRADO";
+                    
                               
-                    //Modificado 17/07
-                    cargarPost(objEncontrado);
-                        break;
+                   
                         
             //fin switch
             }

@@ -92,9 +92,9 @@ function salirDeComentarios(){
     $('section').remove('#mostrarComentarios');
     $('section').remove('#finComentarios');
     
+    $('#buscar_datos').show();
     $('.cont_post').show();
     $('#totalResultados').show();
-    $('#buscar_datos').show;
     $('#btn_navegacion').show();
     
     
