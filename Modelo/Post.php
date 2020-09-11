@@ -16,6 +16,7 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/mandarEmails.php');
 
 
 class Post extends DataObj{
@@ -36,6 +37,80 @@ class Post extends DataObj{
         "fechaPost" => ""
        
     );
+    
+   /**
+    * Si hay coincidencia mandaremos email
+    * al usuario
+    * @param type array palabras buscadas
+    */ 
+    public function buscarUsuariosInteresados($datosEmail){
+        
+        
+        try {
+           
+            $con = Conne::connect();
+        
+        $sqlNombre ="Select provincia as provinciaPublica 
+                    from direccion d where d.idDireccion 
+                    = (select idUsuario from usuario where nick = :nick) ";
+        
+            $stmNombre = $con->prepare($sqlNombre);
+            $stmNombre->bindValue(":nick", $datosEmail[3], PDO::PARAM_STR);
+            $stmNombre->execute();
+            array_push($datosEmail, $stmNombre->fetch());
+            $stmNombre->closeCursor();
+            
+        $sql = "select pe.id_usuario as idUsuBusca, pe.email as emailUsuBusca, usu.nick as nickRecibeEmail 
+                from ".TBL_PALABRAS_EMAIL." pe
+                inner join usuario usu on usu.idUsuario = pe.id_usuario
+                    where palabras_detectar like :palabra;";
+ 
+                      
+            $stm = $con->prepare($sql);
+            $stm->bindValue(":palabra", "%{$datosEmail[0][0]}%", PDO::PARAM_STR);
+            $stm->execute();
+            $usu = $stm->fetch();
+            
+            $stm->closeCursor();
+            if($usu != null){
+                array_push($datosEmail, $usu);
+            }
+                
+                
+        $sqlRutaImg = "Select ruta as ruta from imagenes where "
+                . "post_idPost = :post_idPost";
+        
+        $stmRutaImg = $con->prepare($sqlRutaImg);
+            $stmRutaImg->bindValue(":post_idPost", $datosEmail[1], PDO::PARAM_STR);
+            $stmRutaImg->execute();
+            $ruta = $stmRutaImg->fetch();
+            
+            
+        array_push($datosEmail, $ruta[0]);     
+        
+        
+                //var_dump($datosEmail);
+            $objMandarEmails = new mandarEmails();
+            $objMandarEmails->mandarEmailPalabrasBuscadas($datosEmail);
+                
+                        
+                            
+        Conne::disconnect($con);  
+          
+        } catch (Exception $exc) {
+            Conne::disconnect($con);
+            echo "Error al pedir idPalabras para actualizar ".$exc->getLine().'<br>'.
+                 "en el archivo ".$exc->getFile().'<br>'.
+                 "code ".$exc->getTraceAsString();
+            
+        }
+        
+        
+   //fin palabras     
+    }
+    
+    
+    
 
        /**
     * 
@@ -355,7 +430,11 @@ private function insertarPalabrasOfrecidas(){
                     $test = $st3->execute();
             
                 }
-                 Conne::disconnect($con);
+                
+                
+                
+                
+                Conne::disconnect($con);
                 return $test;
             } catch (Exception $exc) {
                 Conne::disconnect($con);
@@ -446,14 +525,14 @@ public function insertPost(){
             $st->bindValue(":precio", $this->data["precio"], PDO::PARAM_STR);
             $st->bindValue(":fechaPost", $date, PDO::PARAM_STR);
             $con->beginTransaction();
+           
             $test = $st->execute();
             //Esta variable luego se usa tambien 
             //en el segundo paso de subir un Post, cuando se sube una imagen
             //Si el usuario quiere eliminar una imagen en el proceso
             $_SESSION['lastId'][0] =  $con->lastInsertId();
-           
-            //echo 'lastid '.$_SESSION['lastId'][0].'<br>';
             $con->commit();
+           
                             
                 if($test){
                    $test = $this->insertarPalabrasQueridas();
@@ -465,7 +544,7 @@ public function insertPost(){
                             }             
                 }
             
-            
+           
             Conne::disconnect($con);
             return $test;
         }catch(Exception $ex){
@@ -850,6 +929,8 @@ static function eliminarPostId($id){
    
 //fin insertarFotos  
 }
+
+
 
 
 

@@ -34,6 +34,7 @@
 	$mail->Username ="administracion@ichangeityou.com";//"administracion@ichangeityou.com";//;Aqui pon tu correo de gmail// //
 	$mail->Password = EMAIL_PASSWORD;//Aqui pon tu contrase�a de gmail
         $mail->IsHTML(true);
+        $mail->CharSet = 'UTF-8';
         //$mail->AltBody = "Usted esta viendo este mensaje simple debido a que su servidor de correo no admite formato HTML.";
 	$mail->Subject = "Email de TE LO CAMBIO"; //Asunto del correo
 	//$mail->Body = $cuerpoEmail;

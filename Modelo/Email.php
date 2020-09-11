@@ -32,8 +32,9 @@ class Email {
      * Constructor de emails
      * @param type $emailAcabado
      */
-    public function __construct($emailAcabado) {
-          $this->email = $emailAcabado;    
+    public function __construct($emailAcabado ) {
+          $this->email = $emailAcabado;
+         
     }
     
     public function mandarEmail($destino){
@@ -54,6 +55,7 @@ class Email {
             $mail->AddAddress($destino);// Destinatario
             $mail->Username = EMAIL_USERNAME;//"administracion@ichangeityou.com";
             $mail->Password = EMAIL_PASSWORD;
+            //$mail->addEmbeddedImage($_SERVER['DOCUMENT_ROOT']."/Changes/photos/carlos/48/1.jpg", "prueba");
             //Solucion temporal para XAMPP
             //En Linux no es necesario
             //En php.ini tambien se puede modificar
@@ -64,6 +66,7 @@ class Email {
             'allow_self_signed' => true
                                     ));
             $mail->IsHTML(true);
+            //$mail->CharSet = 'UTF-8';
             //$mail->AltBody = "Usted esta viendo este mensaje simple debido a que su servidor de correo no admite formato HTML.";
             $mail->Subject = "Correo de TE LO CAMBIO"; //Asunto del correo
             //$mail->Body = $cuerpoEmail;

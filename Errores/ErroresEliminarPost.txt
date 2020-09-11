@@ -202,3 +202,30 @@ los datos introducidos.
 ***********************************************
 
 
+Nueva entrada Con fecha:Día 24, de August, del año 2020, a la hora 12: 4
+Parece ser que el usuario  No ha acabado de publicar
+Un Post y el sistema ha tenido algun problema al querrer eliminar 
+los datos introducidos.
+ Ha habido un problema al eliminar imagenes id de las imagenes 68
+
+***********************************************
+
+
+Nueva entrada Con fecha:Día 6, de September, del año 2020, a la hora 18: 36
+Parece ser que el usuario  No ha acabado de publicar
+Un Post y el sistema ha tenido algun problema al querrer eliminar 
+los datos introducidos.
+ Ha habido un problema al eliminar imagenes id de las imagenes 83
+
+***********************************************
+
+
+Nueva entrada Con fecha:Día 6, de September, del año 2020, a la hora 18: 46
+Parece ser que el usuario  No ha acabado de publicar
+Un Post y el sistema ha tenido algun problema al querrer eliminar 
+los datos introducidos.
+ Ha habido un problema al eliminar imagenes id de las imagenes 84
+
+***********************************************
+
+

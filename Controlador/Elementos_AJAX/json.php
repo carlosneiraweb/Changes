@@ -74,7 +74,7 @@ if(isset($_POST['usuario'])){
                         $stmBus->bindValue(":numRows", PAGE_SIZE, PDO::PARAM_INT);
                         $stmBus->execute();
                         $v = $stmBus->fetchAll();
-                        
+                       
                 
                                 //Calculamos el total final como si  la clausula limit no estuviera
                                 $stm2Bus = $conPost->query("SELECT found_rows()  AS totalRows");
@@ -83,10 +83,11 @@ if(isset($_POST['usuario'])){
                                 
                                 $rs = array();
                                 array_push($rs, $row);
+                               
         
         foreach($v as $id){
-                 
-      
+             
+     
                 $sqlPost = "select p.idPost, u.nick, u.idUsuario as idUsu,
                     prov.nombre AS provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, 
                     p.titulo, img.ruta, p.comentario, tc.tiempo as tiempoCambio                   
@@ -104,8 +105,7 @@ where p.idPost = :idPost limit 1";
                 $stm3Bus->execute();
                 $tmp = $stm3Bus->fetch();
                 $stm3Bus->closeCursor();
-          
-        
+               
         $sqlTotal = "Select IFNULL(COUNT(idComentariosPosts),0) as comentarios "
                 . " FROM comentariosposts where post_idPost = :idPost";
         
@@ -115,9 +115,10 @@ where p.idPost = :idPost limit 1";
                 $tmp3To = $stm3To->fetch();
                 $stm3To->closeCursor();
                 $x = $tmp3To[0];
+                
                 array_push($tmp, $x);
                 
-
+                   
        
                  
          //Solo en caso el usuario se logee

@@ -22,6 +22,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Email.php');
  */
 class mandarEmails {
  
+
   final function mandarEmailProblemasRegistro($mensaje){
       
     try{
@@ -95,6 +96,76 @@ final function mandarEmailWelcome(DataObj $obj){
     }
 
 
+ /**
+  * palabras buscadas por el usuario
+  * @param type array
+  */
+  final function mandarEmailPalabrasBuscadas($datosPalabras){
+        
+       //Creamos el objeto email con los datos
+            //Que necesitamos de $user para el cuerpo del email
+            //La cabecera y el footer son dos constantes
+      
+            
+            
+            $urlImagen = base64_encode(file_get_contents($_SERVER['DOCUMENT_ROOT']."/Changes/photos/".$datosPalabras[6].".jpg"));
+            $urlImagen = "data:image/jpeg;base64,$urlImagen";
+            //$urlImagen = 'data: '.mime_content_type($urlImagen).';base64,';
+            
+            //echo $_SERVER['DOCUMENT_ROOT']."/Changes/photos/".$datosPalabras[6].".jpg";
+
+            try{
+                $cuerpoEmail = "<section id='saludo'>
+                    
+                       //src='cid:prueba'
+                        <h4>Enhorabuena ".$datosPalabras[5]['nickRecibeEmail']."  </h4>
+                        <span class='usuPublica'>".$datosPalabras[3]." de "
+                        .$datosPalabras[4] ["provinciaPublica"]. " a publicado este Post.</span>".
+                        "<figure id='imgEmailBuscado'><img src='".$urlImagen."'  alt='prueba'><figcaption>Imagen publicada</figcaption></figure>"    
+                        ."<h3>Esta persona esta interesada en cambiarlo por: "
+                        
+                        ."<li>".$datosPalabras[0][0]."</li>"
+                        ."<li>".$datosPalabras[0][1]."</li>"
+                        ."<li>".$datosPalabras[0][2]."</li>"
+                        ."<li>".$datosPalabras[0][3]."</li>"
+                        
+                        ."<h4>Si quieres verlo completamenta podrás encontrarlo en la"
+                        . "sección  de ".$datosPalabras[2]. ".";
+                        "<h5>Saludos del equipo.</h5>".
+                                $datosPalabras[5]["emailUsuBusca"].
+                        "</section>";
+                        
+
+                $emailAcabado = EMAIL_CABECERA.$cuerpoEmail.EMAIL_FOOTER;
+                $emailAcabado = utf8_decode($emailAcabado);
+                
+                
+                $email = new Email($emailAcabado);
+                
+                //MANDAMOS EL EMAIL
+                $test = $email->mandarEmail('carlosneirasanchez@gmail.com');
+                //echo $test.'<br />';
+                    if($test === true) {
+                        //Si todo ha ido bien eliminamos los objetos user y email
+                       
+                        unset($email);
+                     
+                    }
+            }catch (Exception $ex){
+                echo "Error al mandar email welcome ".$ex->getMessage().'<br>';
+                echo "El codigo es: ".$ex->getCode().'<br>';
+                echo "La traza es: ".$ex->getTrace().'<br>';
+            }                        
+                            
+        
+        
+        
+  //fin mandarEmailPalabrasBucadas      
+    }
+    
+    
+    
+    
     
 //fin clase
 }

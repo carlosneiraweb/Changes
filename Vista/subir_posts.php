@@ -64,9 +64,7 @@ $articulo = new Post(array());
 global $errores;
 $errores = new ControlErroresSistemaEnArchivos(null,null);
 
-
-    
-
+ 
 ?>
 <!DOCTYPE html>
 <!--
@@ -492,15 +490,20 @@ function ingresarPost(){
                     unset($_SESSION['errorArchivos']);
                 }
         }
+       
         if(!$test){
             $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
             $errores->eliminarPostAlPublicar();
             $errores->eliminarVariablesSesionPostAcabado();
            
-           // mostrarError();
+           mostrarError();
         }
         
-        unset($articulo);
+        
+        
+        
+        /******************************************************************/
+        //unset($articulo);
         session_write_close();   
 //fin ingresarPost    
 }
@@ -525,10 +528,14 @@ function ingresarPost(){
 
 function ingresarImagenes(){
    
+    global $articulo;
+   
+   
     $articulo = new Post(array(
        "figcaption" => $_SESSION['post']['figcaption'],
        "idImagen" => $_SESSION['idImagen']
     ));
+   
    
     //echo ' en ingresar idImagen '.$_SESSION['idImagen'].'<br>';  
     $result = $articulo->insertarFotos();
@@ -538,6 +545,30 @@ function ingresarImagenes(){
         //para que el usuario pueda intentarlo otra vez
         $_SESSION['error'] = ERROR_FOTO_GENERAL;
         mostrarError();
+        
+    }else{
+      
+        $pa_queridas = array(
+                $_SESSION['post']['Pa_queridas'][0],
+                $_SESSION['post']['Pa_queridas'][1],
+                $_SESSION['post']['Pa_queridas'][2],
+                $_SESSION['post']['Pa_queridas'][3]
+            );
+        
+        if($_SESSION['contador'] == 1){
+            
+            //Metodo que busca entre las palabras 
+                //que un usuario ha guardado en sus
+                //busquedas personales
+                //si coincide se le manda email
+                $datosPalabras = array();
+                array_push($datosPalabras, $pa_queridas,$_SESSION['lastId'][0], $_SESSION['post']['seccionSubirPost'],$_SESSION['userTMP']->getValue('nick'));
+               
+                $articulo->buscarUsuariosInteresados($datosPalabras);
+            
+ 
+        }
+        
         
     }
     return $result;

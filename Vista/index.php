@@ -35,7 +35,7 @@ session_start();
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<link href="../img/fabicon.ico" rel="icon" type="image/x-icon"/>
         <link rel="stylesheet" href="../css/estilos.css"/>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        
         <script src="../Controlador/jquery-2.2.2.js"></script>
         <script src="../Controlador/Validar/formulario_login.js"></script>
         

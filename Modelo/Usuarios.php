@@ -524,7 +524,42 @@ public function retornoDireccionUsuario(){
     
 //fin devuelvoDireccion    
 }  
+  
+
+/**
+ * Metodo que recive un id de
+ * Usuario y devuelve el email
+ * @return  String email usuario
+ * @param type String idUsuario
+ * 
+ */
+
+public function devuelveEmailPorId($id){
     
+    $con = Conne::connect();
+        $sql = "SELECT email FROM ".TBL_USUARIO." WHERE idUsuario = :idUsuario";
+        try{
+            $st = $con->prepare($sql);
+            $st->bindValue(":idUsuario", $id, PDO::PARAM_INT);
+            $st->execute();
+            $row = $st->fetch();
+            $st->closeCursor();
+            Conne::disconnect($con);
+            return $row; 
+        } catch(Exception $ex) {
+            Conne::disconnect($con);
+            echo $ex->getLine().'<br>';
+            echo $ex->getFile().'<br>';
+        }
+    
+    
+    
+//fin devuelveEmailPorId    
+}
+
+
+
+
     
 //fin Usuarios    
 }

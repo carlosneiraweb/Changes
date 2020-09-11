@@ -216,20 +216,39 @@ function cargarTiempoDeCambio(objTiempoCambio){
 function mostrarFormularioGuardarBusquedas(){
        $('#ocultar').removeClass('oculto');
        $('#ocultar').addClass('mostrar_transparencia');
+       $('#busquedasPersonales').show(); 
+       
        
        $('#busquedasPersonales').append($('<section>',{
             id : 'busquedaPalabrasPersonales'
         }).append($('<h3>', {
             text : 'Inserta las palabras de busqueda'
         })).append($('<input>',{
-            type : 'text'
+            id : 'pabrasBuscarFinal',
+            type : 'text',
+            val : txtBuscar
         })).append($('<input>',{
             type : 'button',
             id : 'buttonBusquedasPersonales',
             value : 'Aceptar'
-        })).on('click', function(){
-                alert('saludos');
-        }));
+        })).append($('<input>',{
+            type : 'button',
+            id : 'buttonSalirBusquedasPersonales',
+            value : 'Salir'
+        })));
+    
+    
+        $('#busquedasPersonales').on('click','#buttonBusquedasPersonales',function(){
+            txtBuscar = $('#pabrasBuscarFinal').val();
+            cargarPeticionBuscador('PIPB', '&opcion=PIPB');
+        });
+    
+        $('#busquedasPersonales').on('click','#buttonSalirBusquedasPersonales', function(){
+            $('#busquedasPersonales').hide(); 
+            $('#ocultar').addClass('oculto');
+            $('#ocultar').removeClass('mostrar_transparencia');
+        });
+    
     
     //fin mostrarFormularioGuardarBusquedas
 }
@@ -261,7 +280,7 @@ function cargarBuscador(objBuscador){
                 }).on('click', function(){
                         mostrarFormularioGuardarBusquedas();
                         
-        //cargarPeticionBuscador('PEMP', "opcion=PEMP&usuario="+user+"&tabla="+radioBusqueda);           
+                   
                 })).append($('<li>',{
                     text : "Si alguien publica un anuncio,"         
                 })).append($('<li>',{
@@ -318,9 +337,7 @@ function cargarPeticionBuscador(tipo, parametros){
             petBuscador.send(parametros);
                 break; 
         case('ENCONTRADO'):
-          
-        
-        
+ 
        $.ajax({
                     data: { opcion : "ENCONTRADO",
                             ENCONTRAR : textoElegido,
@@ -340,38 +357,45 @@ function cargarPeticionBuscador(tipo, parametros){
                         if(banderaCambioSeccion){resetearValoresDePaginacion(totalPostEnconrados);};
                             jsonVolver[0] = "ENCONTRADO";
                             cargarPost(data);
-                            
-                            
-//                        console.log( "La solicitud se ha completado correctamente." );
-//                        
+      
                 }
-                }).fail(function( jqXHR, textStatus, errorThrown ) {
-                        if ( console && console.log ) {
-                        console.log( "La solicitud a fallado: " + textStatus);
-                }
-                });   
+                });
             
             
-            
-           /*
-            petEncontrado = ConBuscador.conection();
-            petEncontrado.onreadystatechange = procesaRespuesta;
-            petEncontrado.open('POST', "../Controlador/Elementos_AJAX/busquedas.php?", true);
-            petEncontrado.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-            petEncontrado.send(parametros);
-                break;
-       */
         case('PIPB'):
-            petPalabraBuscada = ConBuscador.conection();
-            petPalabraBuscada.onreadystatechange = procesaRespuesta;
-             
-             
-            petPalabraBuscada.open('POST', "../Controlador/Elementos_AJAX/busquedas.php?", true);
-            petPalabraBuscada.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-            petPalabraBuscada.send(parametros);
-                break;
             
-        
+
+                      
+            $.ajax({
+                    data: { opcion : "PIPB",
+                            palabrasBuscadas : txtBuscar
+                           },
+                    type: "POST",
+                    dataType: 'json',
+                    url: "../Controlador/Elementos_AJAX/busquedas.php"
+                }).complete(function() {
+                        
+                       
+                       
+                            $('#busquedaPalabrasPersonales').append($('<figure>',{
+                                id : 'figuPalabras'
+                            }).append($('<figcaption>',{
+                                id : 'figPalabras',
+                                text : "Tus palabras se han guardado."
+                            })).append($('<img>',{
+                                src : "../img/verde.png",
+                                alt : "Nombre del usuario que ha hecho el comentario.",
+                                title : "Correcto",
+                                class : "imgPalabras"
+                            }))); 
+                            
+                     
+                    });   
+                            
+            
+          
+            
+
     //fin switch
     }
     

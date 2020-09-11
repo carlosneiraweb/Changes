@@ -17,6 +17,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/Changes/Modelo/Usuarios.php");
         //var_dump($_SESSION['userTMP']);
         $usuBloqueo = new Usuarios(array());
         $usuLogeado = $_SESSION['userTMP']->devuelveId();
+        $email = $_SESSION['userTMP']->devuelveEmailPorId($usuLogeado[0]);
     }
 
  
@@ -41,10 +42,6 @@ require_once($_SERVER['DOCUMENT_ROOT']."/Changes/Modelo/Usuarios.php");
                 $buscar=$_GET['BUSCAR'];
     }
 
-
-
-     
-     
     if(isset($_POST['inicio'])){
             $inicio = (int)$_POST['inicio'];
         } else if (isset($_GET['inicio'])){
@@ -52,7 +49,16 @@ require_once($_SERVER['DOCUMENT_ROOT']."/Changes/Modelo/Usuarios.php");
         }   
     
     
-    
+ /**para ingresar las palabras buscadas**/
+        
+        
+    if(isset($_POST['palabrasBuscadas'])){
+            $palabrasBuscadas = $_POST['palabrasBuscadas'];
+        } else if (isset($_GET['palabrasBuscadas'])){
+             $palabrasBuscadas = $_GET['palabrasBuscadas'];   
+        }     
+        
+        
     
         /*********  Variable que recibimos de los filtros de busqueda   ***************/
 
@@ -288,21 +294,22 @@ if(isset($_SESSION['userTMP'])){
                 
                 break;
                 
-            case "PEMP":
+            case "PIPB":
                 
                 //Creamos dinamicamente los campos 
                 //de las tablas. Segun el parametro $tabla
                     
-                    $sqlInsertarPalabras = "insert into $tablaPbsPrivada (usuario_idUsuario,".(($radioBusqueda === "busco" ) ? " palabrasBuscadasPrivadas" : "palabrasOfecidasPrivadas").") values (:idUsuario, :palabras);";         
+                    $sqlInsertarPalabras = "insert into ".TBL_PALABRAS_EMAIL." (id_usuario,email,palabras_detectar) "
+                    . "values (:id_usuario, :email, :palabras_detectar);";         
                
-                
-//                
-//                $stm5Bus = $conBusquedas->prepare($sqlInsertarPalabras);
-//                $stm5Bus->bindValue(":idUsuario", Usuarios::devuelveId($usuario), PDO::PARAM_INT);
-//                $stm5Bus->bindValue(":palabras", $insertarPalabraBuscada, PDO::PARAM_STR);
-//                $testInsertPalabras = $stm5Bus->execute();
-                
-//                   echo json_encode($testInsertPalabras);
+
+                $stm4Insert = $conBusquedas->prepare($sqlInsertarPalabras);
+                $stm4Insert->bindValue(":id_usuario", $usuLogeado[0], PDO::PARAM_INT);
+                $stm4Insert->bindValue(":email", $email[0], PDO::PARAM_STR);
+                $stm4Insert->bindValue(":palabras_detectar", $palabrasBuscadas, PDO::PARAM_STR);
+                $stm4Insert->execute();
+                $stm4Insert->closeCursor();
+
                       
                 break;
            
