@@ -17,7 +17,7 @@ require_once($_SERVER['DOCUMENT_ROOT']."/Changes/Modelo/Usuarios.php");
         //var_dump($_SESSION['userTMP']);
         $usuBloqueo = new Usuarios(array());
         $usuLogeado = $_SESSION['userTMP']->devuelveId();
-        $email = $_SESSION['userTMP']->devuelveEmailPorId($usuLogeado[0]);
+        $email = $_SESSION['userTMP']->devuelveEmailPorId($usuLogeado);
     }
 
  
@@ -261,7 +261,7 @@ if(isset($_SESSION['userTMP'])){
                     for($i=0; $i < $totalUsuarioBloqueado; $i++){
                         if(($usuLogeado[0] == $usuBloqueados[$i][0]) and ($usuBloqueados[$i]["bloqueadoTotal"] == 1) ){
                             $x++;
-                        }else if (($usuLogeado[0] == $usuBloqueados[$i][0]) and ($usuBloqueados[$i]["bloqueadoParcial"] == 1)){
+                        }else if (($usuLogeado == $usuBloqueados[$i][0]) and ($usuBloqueados[$i]["bloqueadoParcial"] == 1)){
                             //Agregamos un testigo para cuando se 
                             //muestre en JAVASCRIPT el POST
                             //Se inavilite el boton de comentar
@@ -304,7 +304,7 @@ if(isset($_SESSION['userTMP'])){
                
 
                 $stm4Insert = $conBusquedas->prepare($sqlInsertarPalabras);
-                $stm4Insert->bindValue(":id_usuario", $usuLogeado[0], PDO::PARAM_INT);
+                $stm4Insert->bindValue(":id_usuario", $usuLogeado, PDO::PARAM_INT);
                 $stm4Insert->bindValue(":email", $email[0], PDO::PARAM_STR);
                 $stm4Insert->bindValue(":palabras_detectar", $palabrasBuscadas, PDO::PARAM_STR);
                 $stm4Insert->execute();

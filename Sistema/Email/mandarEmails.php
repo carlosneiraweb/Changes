@@ -14,12 +14,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Email.php');
 
 
 
-/**
- * Esta clase tiene metodos concretos
- *  para mandar emails segun el caso
- * Siempre destruyen los objetos que recive DataObject
- * 
- */
+
 class mandarEmails {
  
 
@@ -113,14 +108,14 @@ final function mandarEmailWelcome(DataObj $obj){
             //$urlImagen = 'data: '.mime_content_type($urlImagen).';base64,';
             
             //echo $_SERVER['DOCUMENT_ROOT']."/Changes/photos/".$datosPalabras[6].".jpg";
-
+            //src='cid:prueba'
             try{
                 $cuerpoEmail = "<section id='saludo'>
                     
-                       //src='cid:prueba'
-                        <h4>Enhorabuena ".$datosPalabras[5]['nickRecibeEmail']."  </h4>
+                       
+                        <h4>Enhorabuena ".$datosPalabras[4]['nickRecibeEmail']."  </h4>
                         <span class='usuPublica'>".$datosPalabras[3]." de "
-                        .$datosPalabras[4] ["provinciaPublica"]. " a publicado este Post.</span>".
+                        .$datosPalabras[5] ["provinciaPublica"]. " a publicado este Post.</span>".
                         "<figure id='imgEmailBuscado'><img src='".$urlImagen."'  alt='prueba'><figcaption>Imagen publicada</figcaption></figure>"    
                         ."<h3>Esta persona esta interesada en cambiarlo por: "
                         
@@ -132,7 +127,7 @@ final function mandarEmailWelcome(DataObj $obj){
                         ."<h4>Si quieres verlo completamenta podrás encontrarlo en la"
                         . "sección  de ".$datosPalabras[2]. ".";
                         "<h5>Saludos del equipo.</h5>".
-                                $datosPalabras[5]["emailUsuBusca"].
+                                $datosPalabras[4]["emailUsuBusca"].
                         "</section>";
                         
 
@@ -164,7 +159,56 @@ final function mandarEmailWelcome(DataObj $obj){
     }
     
     
-    
+ final function mandarEmailBajaUsuario(DataObj $usuBaja){
+     
+    try {
+        
+        $nick = $usuBaja->getValue('nick');
+        
+        $cuerpoEmail = "<section id='emailBaja'>";
+        $cuerpoEmail .=  "<h2> Hola $nick tú baja ha sido realizada con exito</h2>";
+        $cuerpoEmail .=  "<p>Esperamos volver a verte pronto por aqui.</p>";
+        $cuerpoEmail .= "<h4> Saludos del equipo de Te lo Cambio</h4>";
+        
+        
+            $emailAcabado = EMAIL_CABECERA.$cuerpoEmail.EMAIL_FOOTER;
+                $emailAcabado = utf8_decode($emailAcabado);
+                
+                
+                $email = new Email($emailAcabado);
+                
+                //MANDAMOS EL EMAIL
+                $test = $email->mandarEmail($usuBaja->getValue('email'));
+                
+                    if($test === true) {
+                        //Si todo ha ido bien eliminamos los objetos user y email
+                       
+                        unset($email);
+                     
+                    }
+        
+        return $test;
+    } catch (Exception $exc) {
+         echo 'Archivo :'.$exc->getFile();
+         echo "Motivo :".$exc->getMessage();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     //mandarEmailBajaUsuario    
+ }   
     
     
 //fin clase

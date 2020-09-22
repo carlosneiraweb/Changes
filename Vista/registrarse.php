@@ -1,33 +1,20 @@
 <?php 
-session_start(); 
-
-//En caso de error nos redirige
-//A la pagina donde nos informa del error
-//y nos da la opcion de volver a intentarlo
 function mostrarError(){
     header('Location: mostrar_error.php');
+}
+function volverAnterior(){
+    header('Location:'. $_SESSION["url"]);
+    die();
+}
+function volverPrincipio(){
+    header('Location: index.php');
+    die();
 }
 //Variable que utiliza la pagina
 //Mostrar error para devolvernos a 
 //la pagina donde se a producido
 $_SESSION["paginaError"] = basename($_SERVER['PHP_SELF']);
-
-/**
- * @author Carlos Neira Sanchez
- * @mail arj.123@hotmail.es
- * @telefono ""
- * @nameAndExt registrarse.php
- * @fecha 04-oct-2016
- */
-    //Utilizamos la misma url para mostrar los pasos
-function volverAnterior(){
-    header('Location:'. $_SESSION["url"]);
-}
-//Volvemos al principio
-function volverPrincipio(){
-    header('Location: index.php');
-}
-
+session_start();
 ?>
 <!DOCTYPE html>
 
@@ -204,7 +191,7 @@ function displayStep2($missingFields){
     echo'<label for="apellido_2">Segundo Apellido:</label>';
     echo'<input type="text" name="apellido_2" id="apellido_2" placeholder="Escribe tú segundo apellido" maxlength= "25" value= ';if(isset($_SESSION['usuario']['apellido_2'])){echo $_SESSION['usuario']['apellido_2'];} echo ">";        
     echo'<label '.ValidoForm::validateField("telefono", $missingFields). ' for="telefono">Teléfono:</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
-    echo'<input type="text" name="telefono" id="telefono" placeholder="Teléfono contacto" maxlength="12" value=';if(isset($_SESSION['usuario']['telefono'])){echo $_SESSION['usuario']['telefono'];} echo ">";
+    echo'<input type="text" name="telefono" id="telefono" placeholder="Teléfono contacto" maxlength="9" value=';if(isset($_SESSION['usuario']['telefono'])){echo $_SESSION['usuario']['telefono'];} echo ">";
         echo'<label for="genero">Selecciona tu sexo:</label>';
 		echo'<select name="genero" id="genero">';			
 		echo'</select>';
@@ -371,7 +358,7 @@ function confirmarRegistro(){
                 ));
                 
             $testInsert = $user->insert();
-           
+            
               $objMandarEmails = new mandarEmails();
             //comparamos con 111 print que 
             // es la respuesta esperada

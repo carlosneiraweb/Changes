@@ -7,14 +7,13 @@
  */
 
 function cargarComentarios(data){
-    
-    
+   
     $('.cont_post').hide();
     $('#totalResultados').hide();
     $('#buscar_datos').hide();
     $('#btn_navegacion').hide();
-    
-    
+  
+   
     $('#posts').append($('<section>',{
                 id : 'cabeceraComentarios',
                 class : "cont_post"
@@ -38,7 +37,6 @@ function cargarComentarios(data){
             }))   
             );
                    
-           
     
     var i= 0;
     $.each( data, function( i, item  ) {
@@ -53,6 +51,9 @@ function cargarComentarios(data){
             }).append($('<figcaption>',{
                 id : 'figComenta',
                 text : "Comentario de "+item.nombreComenta
+            })).append($('<span>',{
+                id : 'fechaComentarioPost',
+                text : 'Fecha del comentario '+item.fechaComentario+"."
             })).append($('<img>',{
                 src : "../datos_usuario/"+item.nombreComenta+"/"+item.nombreComenta+".jpg",
                 alt : "Nombre del usuario que ha hecho el comentario.",
@@ -77,7 +78,7 @@ function cargarComentarios(data){
             value : 'Salir'
         })));
     
-  
+
 //fin cargarComentarios
 }
 

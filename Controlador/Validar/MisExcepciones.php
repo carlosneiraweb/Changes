@@ -1,10 +1,6 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Directorios.php');
 
 /**
  * Description of MisExcepciones
@@ -159,7 +155,8 @@ public function eliminarDirectoriosAlRegistrarseUsuario() {
  
     try {
         Directorios::eliminarDirectorioRegistro("../photos/".$_SESSION['usuario']['nick']);
-    } catch (Exception $exc) {echo $exc->getCode();}
+    } catch (Exception $exc) {echo $exc->getCode();
+                              echo $exc->getMessage();}
 
     try{
         Directorios::eliminarDirectorioRegistro("../datos_usuario/".$_SESSION['usuario']['nick']);

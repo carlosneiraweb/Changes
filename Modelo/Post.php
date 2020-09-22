@@ -40,7 +40,8 @@ class Post extends DataObj{
     
    /**
     * Si hay coincidencia mandaremos email
-    * al usuario
+    * al usuario 
+    * que este interesado en las palabras que se acaban de publicar
     * @param type array palabras buscadas
     */ 
     public function buscarUsuariosInteresados($datosEmail){
@@ -49,16 +50,8 @@ class Post extends DataObj{
         try {
            
             $con = Conne::connect();
-        
-        $sqlNombre ="Select provincia as provinciaPublica 
-                    from direccion d where d.idDireccion 
-                    = (select idUsuario from usuario where nick = :nick) ";
-        
-            $stmNombre = $con->prepare($sqlNombre);
-            $stmNombre->bindValue(":nick", $datosEmail[3], PDO::PARAM_STR);
-            $stmNombre->execute();
-            array_push($datosEmail, $stmNombre->fetch());
-            $stmNombre->closeCursor();
+            
+            
             
         $sql = "select pe.id_usuario as idUsuBusca, pe.email as emailUsuBusca, usu.nick as nickRecibeEmail 
                 from ".TBL_PALABRAS_EMAIL." pe
@@ -74,7 +67,19 @@ class Post extends DataObj{
             $stm->closeCursor();
             if($usu != null){
                 array_push($datosEmail, $usu);
-            }
+                
+                
+             $sqlNombre ="Select provincia as provinciaPublica 
+                    from direccion d where d.idDireccion 
+                    = (select idUsuario from usuario where nick = :nick) ";
+        
+            $stmNombre = $con->prepare($sqlNombre);
+            $stmNombre->bindValue(":nick", $datosEmail[3], PDO::PARAM_STR);
+            $stmNombre->execute();
+            array_push($datosEmail, $stmNombre->fetch());
+            $stmNombre->closeCursor();
+            
+        
                 
                 
         $sqlRutaImg = "Select ruta as ruta from imagenes where "
@@ -89,11 +94,15 @@ class Post extends DataObj{
         array_push($datosEmail, $ruta[0]);     
         
         
-                //var_dump($datosEmail);
+            //var_dump($datosEmail);
             $objMandarEmails = new mandarEmails();
             $objMandarEmails->mandarEmailPalabrasBuscadas($datosEmail);
                 
-                        
+                            
+                
+            }
+        
+       
                             
         Conne::disconnect($con);  
           
@@ -467,15 +476,18 @@ private function insertarImagenDemo(){
             $st4 = $con->prepare($st4);
             $st4->bindValue(":idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
             $st4->bindValue(":ruta", "demo", PDO::PARAM_STR);
+             
             $test = $st4->execute();
-        
+               
         Conne::disconnect($con);
         return $test;
     } catch (Exception $exc) {
         Conne::disconnect($con);
         echo "Error al ingresar la imagen demo en la linea ".$exc->getLine().'<br>'.
                         " En el archivo ".$exc->getFile().'<br>'.
-                        "con codigo ". $exc->getTraceAsString();
+                        "con codigo ". $exc->getTraceAsString().'<br>'.
+                        "causa".$exc->getMessage();
+        
     }
 
 //insertarImagenDemo    
@@ -550,7 +562,7 @@ public function insertPost(){
         }catch(Exception $ex){
             Conne::disconnect($con);
             echo 'El error se produce en la línea: '.$ex->getLine().'archivo '.$ex->getFile().'<br>';
-            die("Query failed: ".$ex->getMessage());
+            die("Query failed: ".$ex->getMessage().$ex->getCode());
         } 
          
 
@@ -930,8 +942,41 @@ static function eliminarPostId($id){
 //fin insertarFotos  
 }
 
-
-
+/**
+ * Metodo que elimina las palabras
+ * que un usuario guarda para
+ * recibir emails cuando alguien cuelga un post
+ * y ofrece alguna de estas
+ */
+public function eliminarPalabrasEmail($idUsu){
+  
+    try{
+        
+        
+        $con = Conne::connect();
+        $sql = "DELETE  from ".TBL_PALABRAS_EMAIL.
+                " where id_usuario = :id_usuario";
+                
+        //echo "sql actualizarTexto ".$sql.'<br>';
+        
+        $stm = $con->prepare($sql);
+        $stm->bindValue(":id_usuario",$idUsu , PDO::PARAM_INT);
+        $test = $stm->execute();
+        
+       
+        Conne::disconnect($con);
+        return  $test;
+    }catch(Exception $ex){
+        Conne::disconnect($con);
+        echo 'El error se produce en la línea => '.$ex->getCode().'<br>';
+        echo "Del archivo ".$ex->getFile().'<br>';
+        die("Query failed: ".$ex->getMessage());
+    }
+    
+    
+    
+//fin eliminarPalabrasEmail(){    
+}
 
 
 

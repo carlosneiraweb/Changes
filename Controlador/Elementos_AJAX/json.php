@@ -107,7 +107,7 @@ where p.idPost = :idPost limit 1";
                 $stm3Bus->closeCursor();
                
         $sqlTotal = "Select IFNULL(COUNT(idComentariosPosts),0) as comentarios "
-                . " FROM comentariosposts where post_idPost = :idPost";
+                . " FROM Comentariosposts where post_idPost = :idPost";
         
                 $stm3To = $conPost->prepare($sqlTotal);
                 $stm3To->bindValue(":idPost", $id[0], PDO::PARAM_INT);
@@ -115,7 +115,7 @@ where p.idPost = :idPost limit 1";
                 $tmp3To = $stm3To->fetch();
                 $stm3To->closeCursor();
                 $x = $tmp3To[0];
-                
+                //var_dump($tmp);
                 array_push($tmp, $x);
                 
                    

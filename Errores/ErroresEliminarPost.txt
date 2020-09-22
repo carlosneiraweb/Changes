@@ -229,3 +229,213 @@ los datos introducidos.
 ***********************************************
 
 
+Nueva entrada Con fecha:Día 17, de September, del año 2020, a la hora 18: 12
+Parece ser que el usuario  No ha acabado de publicar
+Un Post y el sistema ha tenido algun problema al querrer eliminar 
+los datos introducidos.
+ Ha habido un problema al eliminar imagenes id de las imagenes 88
+Palabras queridas No se han podido eliminar las palabras buscadas.
+Palabras ofrecidas No se han podido eliminar las palabras ofrecidas.
+
+***********************************************
+
+
+Nueva entrada Con fecha:Día 17, de September, del año 2020, a la hora 18: 13
+Parece ser que el usuario  No ha acabado de publicar
+Un Post y el sistema ha tenido algun problema al querrer eliminar 
+los datos introducidos.
+ Ha habido un problema al eliminar imagenes id de las imagenes 89
+Palabras queridas No se han podido eliminar las palabras buscadas.
+Palabras ofrecidas No se han podido eliminar las palabras ofrecidas.
+
+***********************************************
+
+
+Nueva entrada Con fecha:Día 17, de September, del año 2020, a la hora 19: 46
+Parece ser que el usuario  No ha acabado de publicar
+Un Post y el sistema ha tenido algun problema al querrer eliminar 
+los datos introducidos.
+ Ha habido un problema al eliminar imagenes id de las imagenes 15
+Palabras queridas No se han podido eliminar las palabras buscadas.
+Palabras ofrecidas No se han podido eliminar las palabras ofrecidas.
+
+***********************************************
+
+
+Nueva entrada Con fecha:Día 18, de September, del año 2020, a la hora 19: 30
+Parece ser que el usuario  No ha acabado de publicar
+Un Post y el sistema ha tenido algun problema al querrer eliminar 
+los datos introducidos.
+ Ha habido un problema al eliminar imagenes id de las imagenes 10
+Palabras queridas No se han podido eliminar las palabras buscadas.
+Palabras ofrecidas No se han podido eliminar las palabras ofrecidas.
+
+***********************************************
+
+
+Nueva entrada Con fecha:Día 18, de September, del año 2020, a la hora 19: 31
+Parece ser que el usuario  No ha acabado de publicar
+Un Post y el sistema ha tenido algun problema al querrer eliminar 
+los datos introducidos.
+ Ha habido un problema al eliminar imagenes id de las imagenes 11
+Palabras queridas No se han podido eliminar las palabras buscadas.
+Palabras ofrecidas No se han podido eliminar las palabras ofrecidas.
+
+***********************************************
+
+
+Nueva entrada Con fecha:Día 18, de September, del año 2020, a la hora 19: 32
+Parece ser que el usuario  No ha acabado de publicar
+Un Post y el sistema ha tenido algun problema al querrer eliminar 
+los datos introducidos.
+ Ha habido un problema al eliminar imagenes id de las imagenes 12
+Palabras queridas No se han podido eliminar las palabras buscadas.
+Palabras ofrecidas No se han podido eliminar las palabras ofrecidas.
+
+***********************************************
+
+
+Nueva entrada Con fecha:Día 18, de September, del año 2020, a la hora 19: 33
+Parece ser que el usuario  No ha acabado de publicar
+Un Post y el sistema ha tenido algun problema al querrer eliminar 
+los datos introducidos.
+ Ha habido un problema al eliminar imagenes id de las imagenes 13
+Palabras queridas No se han podido eliminar las palabras buscadas.
+Palabras ofrecidas No se han podido eliminar las palabras ofrecidas.
+
+***********************************************
+
+
+Nueva entrada Con fecha:Día 18, de September, del año 2020, a la hora 19: 34
+Parece ser que el usuario  No ha acabado de publicar
+Un Post y el sistema ha tenido algun problema al querrer eliminar 
+los datos introducidos.
+ El id del Post a eliminar era 13
+ El Directorio a eliminar era ../photos/pedro/2
+ Ha habido un problema al eliminar imagenes id de las imagenes 13
+Palabras queridas No se han podido eliminar las palabras buscadas.
+Palabras ofrecidas No se han podido eliminar las palabras ofrecidas.
+
+***********************************************
+
+
+Nueva entrada Con fecha:Día 18, de September, del año 2020, a la hora 19: 34
+Parece ser que el usuario  No ha acabado de publicar
+Un Post y el sistema ha tenido algun problema al querrer eliminar 
+los datos introducidos.
+ Ha habido un problema al eliminar imagenes id de las imagenes 14
+Palabras queridas No se han podido eliminar las palabras buscadas.
+Palabras ofrecidas No se han podido eliminar las palabras ofrecidas.
+
+***********************************************
+
+
+Nueva entrada Con fecha:Día 18, de September, del año 2020, a la hora 19: 35
+Parece ser que el usuario  No ha acabado de publicar
+Un Post y el sistema ha tenido algun problema al querrer eliminar 
+los datos introducidos.
+ El id del Post a eliminar era 14
+ El Directorio a eliminar era ../photos/pedro/2
+ Ha habido un problema al eliminar imagenes id de las imagenes 14
+Palabras queridas No se han podido eliminar las palabras buscadas.
+Palabras ofrecidas No se han podido eliminar las palabras ofrecidas.
+
+***********************************************
+
+
+Nueva entrada Con fecha:Día 18, de September, del año 2020, a la hora 19: 35
+Parece ser que el usuario  No ha acabado de publicar
+Un Post y el sistema ha tenido algun problema al querrer eliminar 
+los datos introducidos.
+ Ha habido un problema al eliminar imagenes id de las imagenes 15
+Palabras queridas No se han podido eliminar las palabras buscadas.
+Palabras ofrecidas No se han podido eliminar las palabras ofrecidas.
+
+***********************************************
+
+
+Nueva entrada Con fecha:Día 18, de September, del año 2020, a la hora 19: 37
+Parece ser que el usuario  No ha acabado de publicar
+Un Post y el sistema ha tenido algun problema al querrer eliminar 
+los datos introducidos.
+ El id del Post a eliminar era 15
+ El Directorio a eliminar era ../photos/pedro/2
+ Ha habido un problema al eliminar imagenes id de las imagenes 15
+Palabras queridas No se han podido eliminar las palabras buscadas.
+Palabras ofrecidas No se han podido eliminar las palabras ofrecidas.
+
+***********************************************
+
+
+Nueva entrada Con fecha:Día 18, de September, del año 2020, a la hora 19: 38
+Parece ser que el usuario  No ha acabado de publicar
+Un Post y el sistema ha tenido algun problema al querrer eliminar 
+los datos introducidos.
+ Ha habido un problema al eliminar imagenes id de las imagenes 16
+Palabras queridas No se han podido eliminar las palabras buscadas.
+Palabras ofrecidas No se han podido eliminar las palabras ofrecidas.
+
+***********************************************
+
+
+Nueva entrada Con fecha:Día 18, de September, del año 2020, a la hora 19: 39
+Parece ser que el usuario  No ha acabado de publicar
+Un Post y el sistema ha tenido algun problema al querrer eliminar 
+los datos introducidos.
+ El id del Post a eliminar era 16
+ El Directorio a eliminar era ../photos/pedro/2
+ Ha habido un problema al eliminar imagenes id de las imagenes 16
+Palabras queridas No se han podido eliminar las palabras buscadas.
+Palabras ofrecidas No se han podido eliminar las palabras ofrecidas.
+
+***********************************************
+
+
+Nueva entrada Con fecha:Día 18, de September, del año 2020, a la hora 19: 39
+Parece ser que el usuario  No ha acabado de publicar
+Un Post y el sistema ha tenido algun problema al querrer eliminar 
+los datos introducidos.
+ El id del Post a eliminar era 16
+ El Directorio a eliminar era ../photos/pedro/2
+ Ha habido un problema al eliminar imagenes id de las imagenes 16
+Palabras queridas No se han podido eliminar las palabras buscadas.
+Palabras ofrecidas No se han podido eliminar las palabras ofrecidas.
+
+***********************************************
+
+
+Nueva entrada Con fecha:Día 18, de September, del año 2020, a la hora 19: 40
+Parece ser que el usuario  No ha acabado de publicar
+Un Post y el sistema ha tenido algun problema al querrer eliminar 
+los datos introducidos.
+ Ha habido un problema al eliminar imagenes id de las imagenes 17
+Palabras queridas No se han podido eliminar las palabras buscadas.
+Palabras ofrecidas No se han podido eliminar las palabras ofrecidas.
+
+***********************************************
+
+
+Nueva entrada Con fecha:Día 18, de September, del año 2020, a la hora 19: 43
+Parece ser que el usuario  No ha acabado de publicar
+Un Post y el sistema ha tenido algun problema al querrer eliminar 
+los datos introducidos.
+ El id del Post a eliminar era 17
+ El Directorio a eliminar era ../photos/pedro/2
+ Ha habido un problema al eliminar imagenes id de las imagenes 17
+Palabras queridas No se han podido eliminar las palabras buscadas.
+Palabras ofrecidas No se han podido eliminar las palabras ofrecidas.
+
+***********************************************
+
+
+Nueva entrada Con fecha:Día 20, de September, del año 2020, a la hora 17: 19
+Parece ser que el usuario  No ha acabado de publicar
+Un Post y el sistema ha tenido algun problema al querrer eliminar 
+los datos introducidos.
+ Ha habido un problema al eliminar imagenes id de las imagenes 18
+Palabras queridas No se han podido eliminar las palabras buscadas.
+Palabras ofrecidas No se han podido eliminar las palabras ofrecidas.
+
+***********************************************
+
+

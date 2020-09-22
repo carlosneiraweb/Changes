@@ -1,18 +1,20 @@
 
-function buscarComentarios(idPost, totalPost){
+function buscarComentarios(idPost, totalComent){
     
     
        $.ajax({
                     data: { idComentariosBuscar : idPost,
-                            totalPost : totalPost
+                            totalComent : totalComent
                            },
                     type: "POST",
                     dataType: 'json',
                     url: "../Controlador/Elementos_AJAX/buscarComentarios.php"
-                }).complete(function( data, textStatus, jqXHR ) {
+                }).done(function( data, textStatus, jqXHR ) {
+                    //console.log(data);
+                    //alert(data.length);
                      cargarComentarios(data);
                         
-                })
+                });
     
     
     

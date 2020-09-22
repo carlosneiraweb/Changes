@@ -56,7 +56,9 @@ session_start();
         <script src="./buscador.js"></script>
         <script src="../Controlador/Elementos_AJAX/comentarios.js"></script>
         <script src="./mostrarComentarios.js"></script>
-        <script src="./subirComentario.js"></script>
+      <!-- <script src="./subirComentario.js"></script>-->
+        <script src="../Controlador/Elementos_AJAX/menuUsuario.js"></script>
+        <script src="./mostrarMenuUsuario.js"></script>
         
     <!--Para navegadores viejos-->
         <!--[if lt IE 9]>
@@ -123,7 +125,7 @@ session_start();
                                     echo '<img src='."../datos_usuario/".$_SESSION['userTMP']->getValue('nick')."/".$_SESSION['userTMP']->getValue('nick').".jpg".' alt="imagen del usuario" title="Este eres tú"/>';
                             echo '</section>';
                         }
-                
+                    
                     if((!isset($_SESSION["userTMP"]))){
                         echo'<input type="button" id="ingresar" name="ingresar" value="Ingresar"/>';
                         echo'<input type="button" id="registrar" name="registrar" value="Registrarse"/>';
@@ -139,6 +141,7 @@ session_start();
                         echo'<input type="button" id="salirSesion" name="salirSesion" value="Salir Sesion"/>';
                         echo'<input type="button" id="menu" name="menu" value="menu"/>';
                         $nick = $_SESSION['userTMP']->getValue('nick');
+                        
                         
                        // echo $nick;
                         //Pasamos una variable a javascript

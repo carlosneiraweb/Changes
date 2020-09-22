@@ -326,6 +326,7 @@ public final function insert(){
             Conne::disconnect($con);
             return $testInsert;   
         } catch (Exception $ex) {
+            $con->rollBack();
             Conne::disconnect($con);
             echo PHP_EOL."El error al introducir los datos login es: ".PHP_EOL.$ex->getMessage().PHP_EOL.
                    "En la linea: ".$ex->getLine().PHP_EOL.
@@ -347,13 +348,13 @@ public final function insert(){
         try{
             
             $sql = "Select idUsuario from ".TBL_USUARIO. " WHERE nick = :nick";
-            
+            //echo 'en clase '.$this->getValue('nick');
                 $st = $con->prepare($sql);
                 $st->bindValue(":nick", $this->getValue('nick'), PDO::PARAM_STR);
                 $st->execute();
                 $row = $st->fetch();
                 $st->closeCursor();
-                if($row){return $row;}
+                if($row){return $row[0];}
                 Conne::disconnect($con);
                 
         } catch (Exception $ex) {
@@ -382,20 +383,27 @@ public final function insert(){
         $con = Conne::connect();
         $tmp = $this->devuelveId();
         
-        $id = (int) $tmp[0];
+        $id = (int) $tmp;
         
         if($var == 'usuario'){
             $sql = " DELETE FROM ".TBL_USUARIO. " WHERE idUsuario = :idUsuario";
-        } elseif($var == 'datos_usuario') {
+        } else if($var == 'datos_usuario') {
             $sql = " DELETE FROM ".TBL_DATOS_USUARIO. " WHERE idDatosUsuario = :idUsuario";
+        } else if($var == 'direccion'){
+            $sql = " DELETE FROM ".TBL_DIRECCION. " WHERE idDireccion = :idUsuario"; 
         }
         
         try{
             $st = $con->prepare($sql);
             $st->bindValue(":idUsuario", $id, PDO::PARAM_INT);
             $st->execute();
+            $result = $st->rowCount();
+            
             $st->closeCursor();
             Conne::disconnect($con);
+            
+            return $result;
+            
         } catch (Exception $ex) {
             Conne::disconnect($con);
             echo $ex->getLine().'<br>';
@@ -505,7 +513,7 @@ public function retornoDireccionUsuario(){
             from direccion where idDireccion = :usuario_idUsuario;";
 
             $stmDireccion = $conDireccion->prepare($sqlBloqueo);
-            $stmDireccion->bindValue(":usuario_idUsuario", $this->devuelveId()[0]);
+            $stmDireccion->bindValue(":usuario_idUsuario", $this->devuelveId());
             $stmDireccion->execute();
             $direccion = $stmDireccion->fetchAll();
            

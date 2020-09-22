@@ -244,7 +244,9 @@ function mostrarFormularioGuardarBusquedas(){
         });
     
         $('#busquedasPersonales').on('click','#buttonSalirBusquedasPersonales', function(){
-            $('#busquedasPersonales').hide(); 
+            $('#buscador').val(" ");
+            $('#busquedasPersonales').hide();
+            $('#contenidoBuscado').empty();
             $('#ocultar').addClass('oculto');
             $('#ocultar').removeClass('mostrar_transparencia');
         });

@@ -408,7 +408,7 @@ final static function eliminarDirectorioRegistro($src){
                 }
             }
 
-            
+                    
                 $test = rmdir($src);
                 return $test;
     } catch (Exception $ex) {

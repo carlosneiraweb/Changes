@@ -16,7 +16,7 @@
         $ciudadComenta = $_SESSION['userTMP']->retornoDireccionUsuario();
         $fechaComentario  = date('Y-m-d');
        
-    
+       
     //echo $nickComenta.$idUsuComenta[0].$imgUsuComenta."  ".$ciudadComenta[0][4].$fechaComentario;
     }
     
@@ -75,7 +75,7 @@
             
             
             $test = $stComentario->execute();
-         
+            
                 echo json_encode($test);
           
              Conne::disconnect($con);

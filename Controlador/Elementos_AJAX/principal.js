@@ -11,7 +11,8 @@ var petPost, objPost, objPostSeleccionado, petPostSeleccionado,
     petVolver, objVolver, PAGESIZE, banderaCambioSeccion = false,
      opcionSwitchVolver, opcionPeticionVolver, peticionVolver,
         tmpLiVolver, numeroEnLiVolver, numLiVolver, inicioVolver,
-        opcionMenu = "", buscador = false, petComent,objComent;
+        opcionMenu = "", buscador = false, petComent,
+        objComent, idPostComentar;
 
 
 var fecha = new Date();
@@ -116,7 +117,8 @@ window.onload=function(){
             });
             
          //Mostramos el formulario para comentarios  
-        $('#cuerpo').on('click','#btnComentar', function(e){
+        $('#cuerpo').on('click','#btnComentar', function(){
+           idPostComentar = $(this).attr('class');
             mostrarFormComentarios();
         });
         
@@ -124,19 +126,19 @@ window.onload=function(){
         
         $('#form_comentario').on('click','#btn_mandar_comentario', function(){
             
-            insertarComentario();
+            insertarComentario(idPostComentar);
         });
 
          //Mostramos comentarios
         $('#cuerpo').on('click','#mostrarTotalComentarios', function(){
             
-            totalPost = ($(this).next().text());
-            totalPost = parseInt(totalPost);
+            totalComent = ($(this).next().text());
+            totalComent = parseInt(totalComent);
             
             idPost = ($(this).attr('class'));
-
-            if(totalPost > 0){
-               buscarComentarios(idPost, totalPost);
+          
+            if(totalComent > 0){
+               buscarComentarios(idPost, totalComent);
             }
  
          });
@@ -145,7 +147,16 @@ window.onload=function(){
         $('#posts').on('click','#finComentarios', function(){
            salirDeComentarios();
         });
-         
+        
+        
+        //Mostramos Menu
+        $("#btns_sesion").on('click','#menu', function(){
+            
+            mostrarMenu();
+            
+        });
+    
+    
 //fin onload    
 };      
 

@@ -549,10 +549,10 @@ function ingresarImagenes(){
     }else{
       
         $pa_queridas = array(
-                $_SESSION['post']['Pa_queridas'][0],
-                $_SESSION['post']['Pa_queridas'][1],
-                $_SESSION['post']['Pa_queridas'][2],
-                $_SESSION['post']['Pa_queridas'][3]
+                $_SESSION['post']['Pa_ofrecidas'][0],
+                $_SESSION['post']['Pa_ofrecidas'][1],
+                $_SESSION['post']['Pa_ofrecidas'][2],
+                $_SESSION['post']['Pa_ofrecidas'][3]
             );
         
         if($_SESSION['contador'] == 1){
@@ -563,7 +563,7 @@ function ingresarImagenes(){
                 //si coincide se le manda email
                 $datosPalabras = array();
                 array_push($datosPalabras, $pa_queridas,$_SESSION['lastId'][0], $_SESSION['post']['seccionSubirPost'],$_SESSION['userTMP']->getValue('nick'));
-               
+                
                 $articulo->buscarUsuariosInteresados($datosPalabras);
             
  
