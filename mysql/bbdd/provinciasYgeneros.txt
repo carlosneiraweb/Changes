@@ -1,0 +1,83 @@
+insert into provincias (nombre) values('No importa');
+insert into provincias (nombre) values('Alava');
+insert into provincias (nombre) values('Albacete');
+insert into provincias (nombre) values('Alicante');
+insert into provincias (nombre) values('Almeria');
+insert into provincias (nombre) values('Asturias');
+insert into provincias (nombre) values('Avila');
+insert into provincias (nombre) values('Badajoz');
+insert into provincias (nombre) values('Barcelona');
+insert into provincias (nombre) values('Burgos');
+insert into provincias (nombre) values('Caceres');
+insert into provincias (nombre) values('Cadiz');
+insert into provincias (nombre) values('Cantabria');
+insert into provincias (nombre) values('Castellon');
+insert into provincias (nombre) values('Ceuta');
+insert into provincias (nombre) values('Ciudad Real');
+insert into provincias (nombre) values('Cordoba');
+insert into provincias (nombre) values('Cuenca');
+insert into provincias (nombre) values('Girona');
+insert into provincias (nombre) values('Las Palmas');
+insert into provincias (nombre) values('Granada');
+insert into provincias (nombre) values('Guadalajara');
+insert into provincias (nombre) values('Guipuzcua');
+insert into provincias (nombre) values('Huelva');
+insert into provincias (nombre) values('Huesca');
+insert into provincias (nombre) values('Illes Balears');
+insert into provincias (nombre) values('Jaen');
+insert into provincias (nombre) values('A Coru�a');
+insert into provincias (nombre) values('La Rioja');
+insert into provincias (nombre) values('Leon');
+insert into provincias (nombre) values('Lleida');
+insert into provincias (nombre) values('Lugo');
+insert into provincias (nombre) values('Madrid');
+insert into provincias (nombre) values('Malaga');
+insert into provincias (nombre) values('Melilla');
+insert into provincias (nombre) values('Murcia');
+insert into provincias (nombre) values('Navarra');
+insert into provincias (nombre) values('Ourense');
+insert into provincias (nombre) values('Palencia');
+insert into provincias (nombre) values('Pontevedra');
+insert into provincias (nombre) values('Salamanca');
+insert into provincias (nombre) values('Segovia');
+insert into provincias (nombre) values('Sevilla');
+insert into provincias (nombre) values('Soria');
+insert into provincias (nombre) values('Tarragona');
+insert into provincias (nombre) values('Santa Cruz de Tenerife');
+insert into provincias (nombre) values('Teruel');
+insert into provincias (nombre) values('Toledo');
+insert into provincias (nombre) values('Valencia');
+insert into provincias (nombre) values('Valladolid');
+insert into provincias (nombre) values('Vizcaya');
+insert into provincias (nombre) values('Zamora');
+insert into provincias (nombre) values('Zaragoza');
+
+insert into genero (genero) values ('hombre');
+insert into genero (genero) values ('mujer');
+insert into genero (genero) values ('otro');
+
+insert into secciones (nombre_seccion) values ('Automocion');
+insert into secciones (nombre_seccion) values ('Ocio');
+insert into secciones (nombre_seccion) values ('Bricolaje');
+insert into secciones (nombre_seccion) values ('Electronica');
+insert into secciones (nombre_seccion) values ('Moda');
+insert into secciones (nombre_seccion) values ('Hogar');
+insert into secciones (nombre_seccion) values ('Cultura');
+
+
+insert into tiempo_cambio (tiempo) values ('No importa');
+insert into tiempo_cambio (tiempo) values ('Por un par de dias');
+insert into tiempo_cambio (tiempo) values ('Por un fin de semana');
+insert into tiempo_cambio (tiempo) values ('Por una semana');
+insert into tiempo_cambio (tiempo) values ('Por una temporada');
+insert into tiempo_cambio (tiempo) values ('Para siempre');
+insert into tiempo_cambio (tiempo) values ('Otros');
+
+
+
+
+
+
+
+
+

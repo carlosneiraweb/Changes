@@ -1,0 +1,1588 @@
+
+
+*{
+	margin:0;
+	padding:0;
+	border: 0;
+}
+
+html{
+	height: 100%;
+}
+
+article, figcaption, figure, fieldset, footer, header, hgroup, nav, section{ display: block;}
+
+
+@font-face {
+    font-family: 'old_school_toonsregular';
+    src: url('../fonts/old_school/old_school_toons-webfont.eot');
+    src: url('../fonts/old_school/old_school_toons-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/old_school/old_school_toons-webfont.woff2') format('woff2'),
+         url('../fonts/old_school/old_school_toons-webfont.woff') format('woff'),
+         url('../fonts/old_school/old_school_toons-webfont.ttf') format('truetype'),
+         url('../fonts/old_school/old_school_toons-webfont.svg#old_school_toonsregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'chapazaregular';
+    src: url('../fonts/chapaza/chapaza-webfont.eot');
+    src: url('../fonts/chapaza/chapaza-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/chapaza/chapaza-webfont.woff2') format('woff2'),
+         url('../fonts/chapaza/chapaza-webfont.woff') format('woff'),
+         url('../fonts/chapaza/chapaza-webfont.ttf') format('truetype'),
+         url('../fonts/chapaza/chapaza-webfont.svg#chapazaregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'berry_rotundaregular';
+    src: url('../fonts/berry_rotunda/berry_rotunda-webfont.eot');
+    src: url('../fonts/berry_rotunda/berry_rotunda-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/berry_rotunda/berry_rotunda-webfont.woff2') format('woff2'),
+         url('../fonts/berry_rotunda/berry_rotunda-webfont.woff') format('woff'),
+         url('../fonts/berry_rotunda/berry_rotunda-webfont.ttf') format('truetype'),
+         url('../fonts/berry_rotunda/berry_rotunda-webfont.svg#berry_rotundaregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+body{
+	font-family: "chapazaregular", Helvetica, Verdana;
+	font-size: 1em;
+	/*max-width: 95%;*/
+	margin: 5px auto;
+	position:relative;       
+}
+
+img{max-width: 100%;}
+
+header,nav,section#buscar_datos,section#contenedor,footer{
+	background-color: #fff;
+	margin: 1em auto;
+	max-width: 95%;
+	padding: .25em;
+        position:relative;
+        
+}
+    
+/**header**/
+figure#logo, section#cabecera{
+	display: inline-block;
+	vertical-align: middle;
+	margin: .2em auto;
+        text-align: center;
+	padding: .3em;
+	width: 35%;	
+	min-height: 150px;
+	
+}
+figure#logo img{max-width: 70%;}
+
+figcaption#titulo{
+		border-bottom: .1em #FF4900 solid;
+		color: #061539;
+		font-size: .85em;
+		font-family: 'chapazaregular',Helvetica, Verdana;	
+		text-align: center;
+                border-bottom: .1em #FF4900 solid;
+		margin: .15em auto;
+		width: 90%;
+}
+
+section#cabecera{ 
+	width: 60%;
+}
+
+section#cabecera h1{
+        max-width: 50%;
+        font-size: 3.2em;
+        text-align: center;
+        margin: .5em auto;
+        
+}
+section#cabecera h3{
+		color: #0C0792;
+		margin: .25em auto;
+		text-align: center;
+}
+
+section#btns_logueo{
+    display: inline-block;
+    text-align: center;
+    margin: .25em auto;
+    padding:.3em;
+    width: 90%;
+}
+
+section#foto_usuario{
+    display: inline-block;
+    vertical-align: top;
+    margin-right: .3em;
+    height: 70px;
+    width: 70px;
+    max-height: 70px;
+    max-width: 70px;
+}
+
+
+section#btns_sesion{
+                width: 60%;
+                margin: .8em auto;
+}
+
+
+/**fin header**/
+
+
+
+ /*Estilos para el menu horizontal*/
+        
+.slider-container{
+	margin: 2em auto;
+	padding: .35em;
+	max-width: 95%;
+        text-align: center;
+}
+
+
+figure#izquierda, figure#derecha{
+	cursor: pointer;
+	font-size: 0.5em;
+	text-align: center;
+	padding: 0;
+	margin: .3em;
+	max-width: 8%;
+	max-height: 8%;
+}
+
+figure#izquierda, figure#derecha{
+	display: inline-block;
+	vertical-align: middle;
+}
+
+ul.slider-wrapper{
+	
+	font-weight: bold;
+	list-style: none;
+	margin: .3em;
+	padding: .5em;
+	position: relative;
+        display: inline-block;
+        text-align: center;
+	width: 65%;
+}
+
+
+
+.slider-wrapper li {
+	display: none;
+	padding: .3em;
+	position: absolute;
+	top: 0;
+	left: 0;
+	max-width: 80%;
+}
+
+
+ul#slider>li>a {
+        max-width: 15%;
+	color: #0C0792;
+	font-family: 'chapazaregular', Helvetica, Verdana;
+	font-size: 2vw;
+	margin-left: .5em;
+	text-decoration: underline;
+	padding: .3em;
+	-ms-transition: all 0.5s ease-in;
+	-moz-transition: all 0.5s ease-in;
+	-o-transition: all 0.5s ease-in;
+	-webkit-transition: all 0.5s ease-in;
+	transition: all 0.5s ease-in;
+       
+	
+}
+
+ul#slider>li>a:link{
+	border-left: 1px solid #FF5917;
+	border-right: 1px solid #FF5917;
+	text-shadow: 2px 2px 2px rgba(000,000,000,0.7);
+}
+
+ul#slider>li>a:visited{}
+ul#slider>li>a:hover{
+	border-left: 1px solid #0C0792;
+	border-right: 1px solid #0C0792;
+	color: #FF5917;
+}
+ul#slider>li>a:active{ 
+	border-top: 1px solid green;
+	border-bottom: 1px solid green;
+	color: black;
+}
+
+li.slide-current{
+	display:block;
+}
+
+
+.separarLetras{
+     letter-spacing: .15em;
+}
+
+
+        /* fin estilos menu horizontal*/
+        
+        
+
+/*********************ESTILOS BUSCADOR************/
+ 
+ 
+ section#buscar_datos{
+    
+    text-align: center;
+    padding:1em;
+ } 
+ 
+ section#buscar_datos h3{text-align:center; color:#0C0792;border-bottom: 1px solid #0C0792;}
+ 
+ section#radiosMenu{
+     width:85%;
+     max-width: 85%;
+     margin: .8em auto;
+ }
+ 
+  section#selectsMenu{
+     width:90%;
+     max-width: 90%;
+     margin: .8em auto;
+ }
+ 
+ section#buscar_datos .buscaSpan{
+    display: inline-block;
+    margin: .5em auto;
+    padding: 1em;
+    text-align: center;
+   
+ }
+ 
+ section#buscar_datos input[type = 'radio']{
+     margin: 1em;
+ }
+
+        
+.enlace{color: #1687ed;}
+
+
+/**fin bucador**/
+
+
+
+
+
+            /**SECTION CONTENEDOR**/
+            /*Elementos donde se muestran los post y distintos formularios*/
+            
+            
+section#contenedor{
+    position:relative;
+	margin: .7em auto;
+	padding: .5em;
+	text-align: center;
+        max-width: 95%;
+        width: 95%;
+}
+
+aside#publi{
+    border: 1px solid blue;
+    margin: 1em auto;
+    height: 200px;
+    width: 95%;
+}
+
+/***Para mostrar el total de elementos encontrados*/
+
+
+section#contenedor h3{
+    font-size: 1.5em;                  
+    text-align: center;
+    text-decoration: underline;
+    width: 90%;
+}
+
+/**case que se aplica a los post y comentarios**/
+
+.cont_post{
+    border-left: 1px solid #1687ed;
+    border-top: 1px solid #1687ed;
+    color: black;
+    margin: 1.3em auto;
+    padding: .3em;
+    width: 95%;
+    box-shadow: 5px 5px 5px rgba(000,000,000,0.7);
+    position: relative;
+}
+
+.cont_post  h2{
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    font-size: 1.1em;
+}
+
+.cont_usuario{
+    display: inline-block;
+    margin: .5em auto;
+    padding: 1.3em;
+    max-width: 80%;
+    
+}
+
+.cont_usuario {
+    width: 80%;
+    max-width: 80%;
+    padding: 0;
+    margin-left: 0;
+    text-align: left;
+    
+}
+.cont_usuario .usuario, .resaltar{
+    display: inline-block;
+    vertical-align: middle;
+}
+.cont_usuario .resaltar {
+    font-size: 1.1em;
+    color: #14375a;
+    margin: .2em;   
+}
+.cont_usuario .resaltar p:first-letter{ 
+    text-transform: uppercase;
+}
+
+section#contenido{
+    
+    margin: .5em auto;
+    max-width: 90%;
+    text-align: center;
+    
+}
+
+section#contenido .lanzar, section#contenido .comentario{
+    width: 65%;
+    margin: 1em auto;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+}
+
+section#contenido .lanzar{
+    width: 35%;
+    max-width: 35%;
+}
+
+.lanzar img{
+    border-radius: 4em;
+    width: 95%;
+    max-width: 95%;
+}
+
+section#contenido .comentario{
+   
+    border: thin solid skyblue;
+    border-radius: 1em;
+    padding: 5px 2px;
+    width: 50%;
+}
+
+.comentario .texto_comentario{
+    width: 90%;
+    padding: .5em;
+}
+
+.cont_post h2{
+    font-family:  "chapazaregular", Verdana, Helvetica;
+    font-size: 1.5em;
+    color: #151c23;
+    text-align: center;
+    margin: .5em auto;
+    max-width: 80%;
+}
+
+
+
+.usuario .tiempo_cambio{
+    width: 40%;
+    max-width: 40%;
+    margin: .5em auto;
+}
+
+
+
+.piePost{
+    min-width: 90%;
+    width: 90%;
+    margin: .5em auto;
+    padding: .5em;
+    text-align: center;
+   
+}
+
+.tiempo_cambio, contBotonComentario, span#mostrarTotalComentarios{margin:1.1em;}
+
+.tiempo_cambio p, .piePost p{display: inline-block;}
+
+.contBotonComentario{
+    position: relative;
+    padding: .3em;
+    margin : .3em;
+}
+.botonSubirComentario{
+    border: 1px solid red;
+}
+
+
+.btnComentar{
+    background-color : white;
+    opacity: .4;
+    filter:alpha(opacity=4);
+    z-index: 10;
+}
+
+.colorRojo{
+      border: 2px solid red;
+      border-bottom-color: red;
+}
+
+.salto{margin: 2em;}
+
+.date{
+    position: absolute;
+    bottom: 0;
+    right: .5em;
+    color:  #134a7c; /* -- #;#FF5917*/
+    font-size: 1.1em;
+    padding-left: .5em;
+    
+}
+
+ /**NAVEGACION**/
+ 
+section#btn_navegacion  h3{text-align: left; font-size: 1vw; margin-left: .5em;}
+section#btn_navegacion{
+   
+    list-style: none;
+    
+}
+
+section#btn_navegacion ul li{
+    border: 1px solid #14375a;
+    display: inline-block;
+    padding: .5em;
+    margin: .5em;
+}
+
+section#btn_navegacion ul li{border-radius:.5em;}
+section#btn_navegacion ul li:hover{border: 1px solid #FF5917; color:#1687ed;}
+
+
+    /*FIN contenedor*/
+
+           
+
+
+/*ESTILOS PARA REGISTRO*/
+
+
+#form_registro_1,#form_registro_2,#form_registro_3, #form_registro_4,#verificarCondiciones,#form_registro_5{
+    max-width: 90%;
+    text-align: center;
+    margin: 1em auto;
+}
+
+#form_registro_1 h4,#form_registro_2 h4,#form_registro_3 h4,#form_registro_4 h4, section#verificarCondiciones h3,section#form_post_1 h4, section#form_post_2 h4, section#form_comentario h4{
+    text-align: left;
+    margin: 1em auto;
+    text-decoration: underline;
+    font-size: 1.3em;
+    font-family: 'old_school_toonsregular',Verdana, Helvetica;
+}
+
+form#registro_1,form#registro_2,form#registro_3,form#registro_4,form#registro_5{
+    
+   width:95%;
+   margin: .5em auto;   
+}
+/*comun a otros elementos**/
+fieldset {
+	background: white;
+	border: thin solid skyblue;
+	border-radius: 1em;
+	color: #0C0792;
+	font-size: .8em;
+	padding: 1em;	
+        max-width: 90%;
+        text-align: center;
+}
+
+.contEtiquetas{
+    width: 80%;
+    margin: .5em auto;
+    text-align: left;
+}
+
+.labelFormulario{  }
+
+.inputsRegistro input[type="text"], input[type="password"],input[type="file"]{
+    max-width: 95%;
+    width:95%;
+    margin: 0em auto;
+}
+
+input[type="file"] {font-size: .8em;}
+
+
+section#btns_registrar{
+    margin: 1em auto;
+    min-width: 230px;
+    width: 50%; 
+}
+
+section#btns_registrar input[type= "submit"]{
+    display: inline;
+    margin: .8em;
+}
+
+section#verificarCondiciones{
+    width: 80%;
+    border: solid 1px #1687ed;
+    padding: 1em;
+    position:absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+    
+}
+
+section#contenedorCondiciones{
+    max-width:95%;
+    width:90%;
+    height: 100%;
+    margin: 1em auto;
+  
+    
+    
+}
+
+section#textAreaCondiciones{
+    overflow: scroll;
+    max-width:95%;
+    max-height:80%;
+    height: 80%;
+    width:90%;
+    margin: 0.5em auto;
+    text-align: left;
+    
+}
+
+
+
+
+section#contenedorBotonAceptarCondiciones{
+    width: 90%;
+    margin : 0.5em auto;
+    padding: .5em;
+    position: relative;
+}
+
+form#formRegistroCondiciones>input[type="submit"]{
+    padding: .5em;
+     margin : 0.5em auto;
+     display: block;
+}
+
+.capaBoton{
+    position: absolute;
+    top : 0;
+    left: 0;
+    bottom: 0;
+    right : 0;
+    background-color : white;
+    opacity: .8;
+    filter:alpha(opacity=8);
+    width : 90%;
+    height : 90%;
+    margin: 0.2em auto;
+}
+
+section#confirmarRegistro{
+    color: #0C0792;
+    font-size: 1.2em;
+    text-align: center;
+    margin: 1em auto;
+    width: 50%;
+    max-width: 50%;
+}
+section#confirmarRegistro h3{
+    color: black;
+    font-size: 1em;
+    margin-top: 1.5em;
+    
+}
+
+section#confirmarRegistro input[type="submit"]{
+    width: 120px;
+}
+
+/*Estilos para mostrar la foto antigua cuando un usuario esta actualizando sus datos*/
+
+section#mostrarFotoAntigua{
+    width:30%;
+    max-width:30%;
+    margin: 1em auto;
+    border-bottom: 1px solid #1687ed;
+}
+
+figure#fotoAntigua img{
+    max-width: 80%;
+    max-height: 80%;
+    border-radius: 1em;
+}
+
+/***fin registro**/
+
+
+/*FORMULARIO SUBIR POST*/
+
+section#form_post_1, section#form_post_2{
+    
+    width: 80%;
+    max-width: 80%;
+    position:relative;
+    margin: 1em auto;
+    z-index: 20;
+}
+
+form#post{
+    width: 80%;
+    max-width: 80%;
+    margin: 1em auto;
+    display: inline-block;
+}
+
+
+
+section#img_ingresadas{
+    margin:.8em auto;
+    padding: .15em;
+    width: 80%;
+    max-width: 80%;
+}
+span#contador{
+    display:inline-block;
+    vertical-align: bottom;
+    font-size: 3em;
+    color: #0C0792;
+    margin: .3em;
+    padding: .15em;
+    width: 5%;
+    max-width: 5%;
+}
+section#cnt_img{
+    border-bottom: 1px solid red;
+    display:inline-block;
+    vertical-align: bottom;
+    width: 85%;
+    max-width: 85%;
+}
+
+section#capturar{
+   display:inline-block;
+    vertical-align: bottom;
+    width: 85%;
+    max-width: 85%; 
+}
+
+.img_usuario_tmp{
+    display:inline-block;
+    vertical-align: middle;
+    margin: .3em auto;
+    padding: .3em;
+    height: 15%;
+    width: 15%;
+    max-width: 15%;
+    min-height: 15%;
+}
+
+
+
+.img_usuario_tmp img{
+    width: 90%;
+    height: 90%;
+    min-width: 90%;
+    min-height: 90%;
+    margin: .3em auto;
+}
+
+.img_usuario_tmp :hover{cursor: pointer;}
+
+.introducir_palabras{
+    border-left: 1px solid #0C0792;
+    border-right: 1px solid #0C0792;
+    padding: .3em;
+    margin: .8em auto;
+    max-width: 300px;
+    min-width: 300px;
+    width: 50%; 
+}
+
+.introducir_palabras input[type="text"]{
+    border-top: none;
+}
+
+.centrar{
+    border-bottom: 1px solid black;
+    display: block;
+    margin: .5em auto;
+    text-align: center;
+    width: 70%;
+ }
+ 
+ form#post_1 fieldset,form#post fieldset{
+     width:75%;
+     max-width: 75%;
+     margin: .5em auto;
+     display:inline-block;
+ }
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+/*Estilo formulario login*/
+section#login_form{
+	border: 2px solid #4F628E;
+	border-radius: 0.8em;
+	-moz-border-radius: 1em; /* Firefox 3.5 */
+        -webkit-border-radius: 1em; /* Google Chrome y Safari */
+        -ms-border-radius: 1em; /*internet explorer*/
+}
+.mostrar_formulario{
+	background-color: white;
+	padding: .3em;
+	margin: auto;
+        height: 380px;
+        width: 295px;
+        max-height: 385px;
+        max-width: 300px;
+	position:absolute;
+	top: 30px;
+	left: 0;
+	right: 0;
+	
+	visibility: visible;
+	z-index: 20;     
+}
+
+.mostrar_formulario h5, section#form_registro h5{
+    color: red;
+    font-size: 1.2em;
+    text-align: center;
+    width: 95%;
+}
+
+.fuenteFormulario{
+	color: #FF5917;
+	font-size: 1.3em;
+	font-family: 'chapazaregular',Helvetica, Verdana;	
+	text-align: center;
+}
+
+
+
+
+form input[type="text"], input[type="email"], input[type="tel"], input[type="password"], section#buscar_datos input[type="text"], section#busquedaPalabrasPersonales input[type='text']{
+	border-bottom: 1px solid black;
+	border-top: 1px solid black;
+	margin: .3em auto;
+	padding: .15em;
+	
+}
+
+
+form input[type="submit"]{
+	background: #FF5917 ;
+	border: thin solid transparent;
+	border-radius: .5em;
+	color: #0C0792;
+	cursor: pointer;
+        display:block;
+	font-size: 1em;
+	margin: .8em auto;
+	min-width: 90px;
+	padding: .5em;
+	width: 100px;
+	
+}
+form input[type="submit"]:hover{
+	background: #0C0792;
+	border: thin solid #f60;
+	border-radius: 0;
+	color: #FF5917;
+	font-weight:900;
+}
+
+       
+        
+ /**FIN REGISTRO**/        
+            
+  
+            
+ 
+            
+       
+
+
+
+
+
+
+
+
+
+
+input[type="button"]{
+	cursor: pointer;
+	color: #0C0792;
+	font-weight: 300;
+	margin: .15em;
+	width: 100px;
+        min-width: 100px;
+	border-top: 1px solid #FF5917;
+	border-bottom: 1px solid #FF5917;
+}
+
+input[type="button"]:hover{
+	color: #FF5917;
+	border-top: 1px solid #0C0792;
+	border-bottom: 1px solid #0C0792;
+}
+
+
+/*Estilos para la pagina de salir de la sesion*/
+section#salir_sesion{
+    background-color: white;
+    height: 260px;
+    width: 340px;
+    margin:auto;
+    position:absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+    padding: .3em;
+}
+
+/*Estilo para formulario agregar busquedas personalizadas*/
+section#busquedaPalabrasPersonales{
+    background-color: white;
+    height: 300px;
+    width: 340px;
+    margin:auto;
+    position:absolute;
+	top: 20px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+    padding: .3em;
+    z-index: 50;
+    border: 1px solid skyblue;
+    border-radius: 1em;
+}
+
+section#contBtnBuscPersonales{
+    width: 90%;
+    max-width: 90%;
+    margin: 1em auto;
+}
+
+
+
+figure#logo_salir_sesion{
+    margin: auto;
+    height: 250px;
+    width: 330px;
+   
+}
+/*fin estilos pagina salir sesion*/
+
+h1, section#salir_sesion h2{
+        color: #e06c19;
+	font-family:'old_school_toonsregular', Helvetica, Verdana;
+	font-size: 3.5em;
+	text-align: center;
+	text-shadow: 5px 5px 5px rgba(000,000,000,0.7);
+        
+}
+/*Modificamos el tamaño */
+section#salir_sesion h2{
+    font-size: 2.5em;
+    color: #FF5917;
+}
+/*Estilos para la pagina que se muestra cuando hay un error*/
+section#error{
+    width: 450px;
+    height: 410px;
+    background-color: white;
+    margin: auto;
+    padding: 1em;
+    position:absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;   
+}
+figure#imagen_error{
+    margin: .3em auto;
+    width: 200px;
+    height: 200px;
+    min-width: 150px; 
+}
+section#mensaje_error{
+    text-align: center;
+    margin: .5em auto;
+}
+section#mensaje_error h2, section#mensaje_error h3{
+    font-family:'chapazaregular', Helvetica, Verdana;
+    font-size: 3em;
+    color: #FF5917;
+}
+
+section#mensaje_error h3{
+    font-size: 1em;
+}
+
+
+/*Fin pagina error*/
+
+
+
+        /*Clases fade aplicada a varios elementos, figure cabecera, enlaces menus*/
+.fade{
+	-ms-transition: all 0.5s ease-in;
+	-moz-transition: all 0.5s ease-in;
+	-o-transition: all 0.5s ease-in;
+	-webkit-transition: all 0.5s ease-in;
+	transition: all 0.5s ease-in;
+	opacity: 1;
+	filter:alpha(opacity=10);
+}
+
+.fade:hover{
+	-ms-transition: all 0.5s ease-out;
+	-moz-transition: all 0.5s ease-out;
+	-o-transition: all 0.5s ease-out;
+	-webkit-transition: all 0.5s ease-out;
+	transition: all 0.5s ease-out;
+	opacity:.5;
+	filter:alpha(opacity=5);
+}
+
+
+
+        /*posicionamos relative el body para centrar los formularios*/
+.mi_body{
+    height: 100%;
+    width: 100%;
+    position:relative;
+}
+/**Estilos para subir Posts*/
+
+/*Estilo para los input de entrada y el contador de palabras*/
+.contenedor{
+    padding:.3em;
+    margin: .8em;
+    width: 90%;
+}
+.contenedor input[type="text"], .contenedor #comentario, #comentarioSubirPost{
+    vertical-align: middle;
+    margin: .3em;
+    width: 75%;
+}
+.contenedor .cnt{
+    font-size: 1.3em;
+    margin: .5em;
+    padding: .3em;
+    vertical-align: middle;
+    width:10%; 
+}
+
+textarea {
+    box-sizing: border-box;
+    border: thin solid skyblue;
+    border-radius: 1em;
+    height: 100px;
+    margin: .8em auto;
+    padding: 5px 2px;
+    resize: none;
+}
+
+.borderojo { 
+	outline: none;
+	border: 1px solid #f00 !important;
+}
+
+
+
+/*Estilos para registro*/
+
+.generalFormularios{
+    background-color: white;
+    font-size: 1.2em;
+    margin: 1em auto;
+    padding: .3em;
+    position:relative;
+    min-width: 290px;
+    width: 80%;
+    z-index: 20;
+}
+
+form#registro{
+    margin: .8em auto;
+    width: 90%;
+}
+
+
+
+
+
+#ocultar{
+    
+    max-width: 100%;
+    max-height: 100%;
+}
+
+
+/*Estilo de border redondeado para todos los elementos de la pagina*/
+section#foto_usuario img, .login_form_tamanyo, .registro_form_tamanyo, #ocultar, figure#imagen_error, section#form_registro, section#form_post, .img_usuario_tmp img, section#mostrarImgSeleccionada, section#mostrarPostSeleccionado, section#verificarCondiciones, section#form_comentario{
+	border-radius: 1em;
+	-moz-border-radius: 1em; /* Firefox 3.5 */
+        -webkit-border-radius: 1em; /* Google Chrome y Safari */
+        -ms-border-radius: 1em; /*internet explorer*/
+}
+
+
+
+
+/*Muestran el fondo del formulario y el formulario*/
+.mostrar_transparencia{
+	background-color: black;
+	opacity: .8;
+	position: absolute;
+	top:0;
+	left: 0;
+        bottom: 0;
+        right:0;
+	height: 100%;
+	width: 100%;
+	visibility: visible;
+	z-index: 12;
+}
+
+
+
+/*Clase para ocultar elementos sin modificar posicion*/
+.ocultar{
+        visibility: hidden;
+	
+}
+/*Para ocultar las flechas*/
+.noOcupar{
+	display:none;
+}
+/*Clases para ocultar los formularios*/
+.oculto{
+	height: 0;
+	max-height: 0;
+	opacity: 0;
+        display: none;
+	width: 0;
+        position: relative;
+	z-index: 10;
+        
+}
+
+
+	/*Clases para validadar formulario*/
+.error{
+	background-color: #BC1010;
+	padding: 6px 12px;
+	border-radius: 4px;
+	color: #fff;
+	font-weight: bold;
+	margin-left: 20px;
+	margin-top: 6px;
+	position: absolute;
+}
+.error:before{
+	content: '';
+	border-top: 8px solid transparent;
+	border-bottom: 8px solid transparent;
+	border-right:  8px solid #BC1010;
+	border-left: 8px solid transparent;
+	left: -16px;
+	position:absolute;
+	top: 5px;
+}
+.errorPHP{
+    color: red !important;
+    /*font-size: 1.1em !important;*/
+    
+}
+
+/*Estilos para el icono de campo obligatorio*/
+.obligatorio{
+    
+    max-width: 4%;
+    width: 4%;
+    
+}
+.obligatorio img{
+    max-width: 60%;
+    
+}
+
+
+footer{
+	background-color: brown;
+
+}
+
+/*************ESTILOS ESLIDER*********************/
+a{
+    color: #00c5b9;
+    text-decoration: none;
+}
+
+ul{
+    list-style-type: none;
+}
+
+/*
+    Encabezado del slider
+*/
+.slider-title{
+    text-align:center;
+    margin:80px 0 40px;
+    font-size: 2.5em;
+}
+
+/*******************************FORMULARIOS MOSTRADOS JQUERY********/
+
+
+/*Menu Usuario*/ 
+/*Coje estilos de la clase mostrar_post*/
+
+section#formPedirDatosActualizar input[type = 'password']{
+    width : 45%;
+    max-width: 45%;
+    margin: .8em auto;
+}
+
+section#contDesbloqueo{
+    width: 80%;
+    max-width: 80%;
+    text-align: center;
+    margin: 1em auto;
+}
+
+
+.desCheck{
+    margin-left: .8em;
+    margin-right: 1em;
+    vertical-align: text-top;
+    width: .5em;
+}
+
+section#salirBloqueo{
+    margin: 2em auto;
+   
+}
+
+.border{border-bottom: 1px solid blue;}
+
+section#contMostrarBloqueados{
+    width: 90%;
+    max-width:90%;
+    margin: 1em auto;
+    border: 1px solid #ed5416;
+    border-radius: 1em;
+        
+}
+
+section#bloqueadosTotal, section#bloqueadosParcial{
+    width: 40%;
+    max-width: 40%;
+    margin: .5em auto;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;   
+}
+
+section#bloqueadosTotal h3, section#bloqueadosParcial h3{
+    font-size: 1em;
+}
+
+
+/**fin menu usuario***/
+
+
+
+/*Formulario para eliminar, actualizar texto de una imagen mientras se sube un Post*/
+section#mostrarImgSeleccionada{
+   margin: 1em auto;
+    width: 35%;
+    z-index: 30;
+    position: relative;
+  
+}
+
+section#mostrarImgSeleccionada .img_usuario_tmp{
+   
+    margin: .3em auto;
+    width: 250px;
+    max-width: 250px;
+    
+}
+
+/**********fin formulario*********/
+
+/**********Formulario mostrar comentarios********/
+
+section#contenedorComentariosPost{
+    width: 90%;
+    max-width: 90%;
+    margin:1em auto;
+}
+
+section#imgUsuarioPublica, section#contDatosPost,section#piePostComentario h2#h2TotalComentarios,section#piePostComentario h3#h3FechaPost, section#mostrarComentarios section#imgUsuarioComenta, section#mostrarComentarios section#contDatosComentario, section#mostrarComentarios section#piePostComentarios h3#FechaComentario{
+    display: inline-block;
+    vertical-align: middle; 
+    
+}
+
+
+section#imgUsuarioPublica, section#contDatosPost, section#imgUsuarioComenta, section#contDatosComentario{
+    width: 40%;
+    max-width: 40%;
+    margin: .5em auto;
+}
+section#imgUsuarioPublica figure#figuPublica, section#imgUsuarioComenta figure#figuComenta{
+    width:90%;
+    max-width: 90%;
+    margin: .5em auto;
+}
+figcaption#figPublica, figcaption#figComenta{
+   text-align: center;
+    font-size: .8em;
+    text-decoration: underline; 
+    border-bottom: 1px solid #1687ed;
+}
+
+figure#figuPublica img, figure#figuComenta img{
+    width:60%;
+    max-width: 60%;
+    border-radius: 1em;
+}
+
+
+section#contDatosPost, section#contDatosComentario{
+    width: 50%;
+    max-width: 50%;
+    margin: .5em auto;
+}
+section#contDatosPost h1#tituloPostComent, section#comentario, section#contDatosComentario h2#h2Comenta, section#verComentario{
+    width:90%;
+    max-width: 90%;
+    margin: .5em auto;
+    text-align: center;
+    font-size: 1.5em;
+}
+section#contDatosPost section#comentario{
+   font-size: 1em;
+}
+
+section#piePostComentario, section#piePostComentarios{
+    width: 90%;
+    max-width: 90%;
+    margin: 1em auto;
+}
+
+section#piePostComentario h2#h2TotalComentarios, section#piePostComentario h3#h3FechaPost, section#piePostComentarios h3#FechaComentario{
+    width:40%;
+    max-width: 40%;
+    margin: .5em;
+    font-size: .8em;
+}
+
+
+
+
+
+
+
+
+
+/**
+    Contenedor del section donde se muestra
+    el post seleccionado al pinchar una
+*/
+section#mostrarPostSeleccionado{
+    
+    margin: 1em auto;
+    width: 35%;
+    z-index: 30;
+    position: absolute;
+    top:0;
+    left: 0;
+    right:0;
+   
+}
+
+section#contPostSeleccionado{
+    background-color: #f9fcff;
+    border: 2px solid #f9fcff;
+    padding: .5em;
+    margin: .5em;
+    max-width: 95%;
+    max-height: 95%;
+    min-height: 95%;
+    border-radius: 1em;
+}
+
+section#contPostSeleccionado h1{
+    color: black;
+    font-size: 1.5em;
+    text-align: center;
+    margin: 1em;
+    text-decoration: underline;
+}
+
+
+.slider-wrapper-IMG{
+   
+    width: 200px;
+    max-width: 200px;
+    height: 200px;
+    max-height: 200px;
+    margin: 1em auto;
+}
+
+.slider-wrapper-IMG .imgSlider{
+
+    min-height: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 1em;
+    display:block;
+}
+
+
+.slider-wrapper-IMG figcaption{
+    
+    width: 85%;
+    min-width: 85%;
+    padding: .5em;
+    background-color: white;
+    border-bottom: 1px solid  #0d88f6;
+}
+
+
+
+
+ul#slider-controls{margin: 1em auto; margin-top: 8em;}
+
+ .slider-wrapper-IMG>li{
+    height: 260px;
+    max-height: 260px;
+    width: 85%;
+    display: none;
+    
+}
+
+/*
+    Silder-controls
+*/
+
+.slider-controls{
+    text-align: center;
+    margin-top: 15px;
+}
+
+.slider-controls li{
+   
+   
+    border-radius: 100%;
+    border: 1px solid #1489f3;
+    display: inline-block;
+    height: auto;
+    width: auto;
+    margin: 0 4px;
+    cursor: pointer;
+    padding: .5em;
+}
+
+.slider-controls li.active{
+    background: #00c5b9;
+}
+
+/*Section donde mostramos las palabras interesadas en el cambio*/
+
+section#buscadas{
+    margin: 1em auto;
+    width: 95%;
+}
+
+section#buscadas h3{
+    font-size: 1.2em;
+    color: #2074c8;
+    text-align: center;
+    text-decoration: underline;
+    padding: .3em;
+}
+
+section#lista{
+    font-size: 1em;
+    margin: .5em auto;
+    text-align: center;
+    color: #050224;
+}
+
+section#lista ol{
+    display: inline-block;
+}
+
+section#salir{
+    margin: .5em auto;
+    width: 125px;
+}
+
+
+
+.usuBloqueado{
+   width:100%;
+   height:100%;
+   position:absolute;
+   top:0;
+   bottom:0;
+   background-color : #fff;
+}
+
+
+
+  /**Formulario para hacer un comentario**/
+  
+  section#form_comentario{
+    margin: 1em auto;
+    width: 60%;
+    z-index: 30;
+    position: absolute;
+    top:0;
+    left: 0;
+    right:0
+  }
+  
+ .mostrar_formulario_comentarios{
+    background-color: #f9fcff;
+    border: 2px solid #f9fcff;
+    padding: .5em;
+    margin: .5em;
+    max-width: 80%;
+    max-height: 50%;
+    border-radius: 1em;
+}
+
+textarea#comentarioPost{
+    width:90%;
+    max-width: 90%;
+    margin: .5em auto;
+}
+
+/**********MOSTRAR POST******************/
+
+
+
+
+
+@media screen and (max-width:800px){
+    
+    figure#logo, section#cabecera{
+        
+        display: block;
+        margin: .5em auto;
+        max-width: 90%;
+        width: 90%;
+    }
+    
+    section#cabecera h1{max-width: 80%;}
+    figure#derecha, figure#arriba, figure#izquierda, figure#abajo{width:5%; max-width:5%;}
+    ul#slider{width:75%;}
+    ul#slider > li > a{font-size: 3vw;}
+    section#contenido .lanzar, section#contenido .comentario{display:block; margin:1em auto;}
+    .piePost{display:block;}
+    .tiempo_cambio, .contBotonComentario{display:block;}
+    section#btn_navegacion  h3{font-size: 2.5vw}
+}
+
+
+/**POST SELECIONADO**/
+@media screen and (max-width:690px){
+    section#mostrarPostSeleccionado{width: 60%;} 
+    section#piePostComentario h2#h2TotalComentarios, section#piePostComentario h3#h3FechaPost{display:block; margin:1.5em;}
+    section#contDesbloqueo span#desTotal, section#contDesbloqueo span#desParcial{
+    width: 90%;
+    max-width: 90%;
+    margin: 1em;
+    display: inline-block;
+    vertical-align: middle;  
+}
+}
+
+@media screen and (max-width:450px){
+    section#mostrarPostSeleccionado{
+        width: 80%;
+    } 
+    .slider-wrapper-IMG {
+        width: 200px;
+        max-width: 200px;
+    }
+}
+
+/**COMENTARIO POST**/
+
+@media screen and (max-width:720px){
+    
+    section#form_comentario{
+        width: 60%;
+        max-width: 60%;
+    }
+    section#comentar input[type = 'text'], textArea#comentarios{
+        width: 90%;
+        max-width: 90%;
+        margin: .5em auto;
+    }
+   
+}
+
+
