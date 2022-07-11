@@ -35,6 +35,8 @@ if(!isset($_SESSION)){
         
         global $mensajeReg;
         global $usuActualiza;
+        global $mandarEmail;
+        $objMandarEmails = new mandarEmails();
         
         
      
@@ -153,87 +155,8 @@ function crearDirectoriosTMP(){
     
     //fin crearDirectoriosTMP()
 }
-    
-    /**
-     * Metodo que cambia el nombre de las carpetas </br>
-     * creadas en el registro cuando el usuario </br>
-     * al actualizar sus datos cambia el nick de usuario </br>
-     * @global string $destino <br/>
-     * Destino donde copiar o crear los directorios
-     * @global type $foto <br/>
-     * Foto que copiar o renombrar nombre
-     * @global $tmpNuevosDatos
-     * El nombre de los nuevos directorios
-     * @global $tmpViejosDatos
-     * El nombre de los directorios antes de cambiar el nick
-     * @global $usuActualiza
-     * Nick del usuario logueado
-     * 
-     */
-    function actualizarCambiandoNickSubiendoFoto(){
-        global $destino;
-        global $foto;
-        global $usuActualiza;
-       
-            crearDirectoriosTMP();
-            
-            Directorios::renombrarDirectoriosActualizar($_SESSION['usuario']['nick'], $usuActualiza);
-            $destino = '../datos_usuario/'.$_SESSION['usuario']['nick'].'/'.basename($_FILES['photoArticulo']['name']);
-               //Subimos la nueva foto
-            Directorios::moverImagen($foto, $destino,"errorFotoActualizar");
-                //Eliminamos la vieja foto 
-            Directorios::eliminarImagen("../datos_usuario/".$_SESSION['usuario']['nick']."/".$_SESSION['actualizo']['nick'].".jpg", "errorFotoActualizar");
-          //  $imagen = substr(basename($_FILES['photoArticulo']['tmp_name']),0,-4);
-            
-    Directorios::renombrarFotoActualiazar("../datos_usuario/".$_SESSION['usuario']['nick']."/".basename($_FILES['photoArticulo']['name']),"../datos_usuario/".$_SESSION['usuario']['nick']."/".$_SESSION['usuario']['nick'].".jpg","errorFotoActualizar"); 
-  
-            //fin actualizarCambiandoNickSubiendoFoto()    
-    }
-
-/**
- * Metodo cambia la foto
- * del usuario cuando este 
- * actualiza cualquier campo 
- * menos el nick 
- */    
-function actualizarSinCambiarNickSubiendoFoto(){
- 
-    global $destino;
-    global $foto;
    
-    crearDirectoriosTMP();
-    $destino = '../datos_usuario/'.$_SESSION['usuario']['nick'].'/'.basename($_FILES['photoArticulo']['name']);
-               //Subimos la nueva foto
-    Directorios::moverImagen($foto, $destino,"errorFotoActualizar");
-                //Eliminamos la vieja foto 
-    Directorios::eliminarImagen("../datos_usuario/".$_SESSION['usuario']['nick']."/".$_SESSION['actualizo']['nick'].".jpg", "errorFotoActualizar");
-                       
-    Directorios::renombrarFotoActualiazar("../datos_usuario/".$_SESSION['usuario']['nick']."/".basename($_FILES['photoArticulo']['name']),"../datos_usuario/".$_SESSION['usuario']['nick']."/".$_SESSION['usuario']['nick'].".jpg","errorFotoActualizar"); 
-    
-    
-    //fin actualizarSinCambiarNickSubiendoFoto
-}
 
-
-/**
- *Este metodo se usa cuando el usuario
- * cambia algun dato como la direccion
- * cambiando o no de nick
- */
-function actualizarCambios(){
-   
-    global $usuActualiza;
-    global $destino;
-    
-    
-        crearDirectoriosTMP();
-        $destino = "../datos_usuario/".$_SESSION['usuario']['nick']."/$usuActualiza.jpg";
-        Directorios::renombrarDirectoriosActualizar($_SESSION['usuario']['nick'], $usuActualiza);
-        Directorios::renombrarFotoActualiazar("../datos_usuario/".$_SESSION['usuario']['nick']."/".$usuActualiza.".jpg", "../datos_usuario/".$_SESSION['usuario']['nick']."/".$_SESSION['usuario']['nick'].".jpg", "errorFotoActualizar");
-       
-        
-//actualizarCambiandoNickPeroNoFoto  
-}
   
 /**
  * Este metodo crea los directorios 
@@ -264,32 +187,26 @@ function registrandoseSinSubirFoto(){
  * para el perfil </br>
  */
 
-function registrandoseSubiendoFoto($user){
+function registrandoseSubiendoFoto(){
     
     global $tmpNuevosDatos;
     global $destino;
     global $foto;
-
+    global $objMandarEmails;
+   
     crearRutasDirectorios($_SESSION["datos"]["id"]);
     crearDirectorios($tmpNuevosDatos);
     Directorios::moverImagen($foto,$destino , $tmpNuevosDatos[3]);
     Directorios::renombrarFotoPerfil($destino, $_SESSION["datos"]["id"]);
-    
-    
+   
+    $objMandarEmails->mandarEmailWelcome();
+  
     
     if(isset($_SESSION["datos"])){unset($_SESSION["datos"]);}
-    
+    if(isset($_SESSION["usuRegistro"])){unset($_SESSION["usuRegistro"]);}
+    if(isset($_SESSION['usuario'])){unset($_SESSION['usuario']);}
     //fin registrandoseSubiendo
 }
-
-
-
-
-
-
-
-
-
 
 
   /**
@@ -310,7 +227,6 @@ function validarCamposRegistro($st, $user,$id){
         
         $testValidoReg = array(null, true);
         global $usuActualiza;
-        global $tmpNuevosDatos;
         global $destino;
         global $foto;
         
@@ -433,7 +349,7 @@ function validarCamposRegistro($st, $user,$id){
                 return $testValidoReg;
                    
             case 'step3':
-                    
+                
                     if(!ValidoForm::validarCodPostal($_SESSION['usuario']['codPostal'])){
                         $testValidoReg[0] =  ERROR_CODIGO_POSTAL;
                         $testValidoReg[1] = false;
@@ -452,18 +368,21 @@ function validarCamposRegistro($st, $user,$id){
                 return $testValidoReg;
                 
             case 'step4':
-            
-            $test =  Directorios::validarFoto();  
+                
+            $test =  Directorios::validarFoto(); 
+               
             if($test != "0"){
                 $testValidoReg[1] =  false;
             }else{
                 $testValidoReg[1] = true;
                 //ingresamos usuario en la bbdd
+               
                 ingresarUsuario();
+                
                 //Recuperamos el nombre del archivo y ruta a la que mover la imagen       
                     $destino = "../datos_usuario/".$_SESSION["datos"]["id"]."/".basename($_FILES['photoArticulo']['name']);
                     $foto = $_FILES['photoArticulo']['tmp_name'];
-                        registrandoseSubiendoFoto($user);
+                    registrandoseSubiendoFoto();
             }
             
             return $testValidoReg;

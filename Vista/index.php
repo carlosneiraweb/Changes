@@ -423,7 +423,7 @@ function processForm(){
             
        
     } else { 
-        
+       
         if($loggedInMember->getValue('activo') == '0'){
             $test = false;
             mostrarOculto();

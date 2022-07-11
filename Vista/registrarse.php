@@ -164,7 +164,7 @@ $_SESSION["paginaError"] = basename($_SERVER['PHP_SELF']);
         processFormRegistro($requiredFields, $paso);
     }elseif(isset($_POST['registroConfirmado']) and $_POST['registroConfirmado'] == "Aceptar") {
        
-        //volverPrincipio();
+        volverPrincipio();
     }
 
   
@@ -426,6 +426,7 @@ function confirmarRegistro(){
             echo "</form>";
     echo "</section>";
          
+    
   
 //Fin confirmar registro    
 }
@@ -440,14 +441,10 @@ function confirmarRegistro(){
      * hacemos la insercion.
      */
     function ingresarUsuario(){
-        global $userReg;
+        
         global $mensajeReg;
-        
-        
-        
-       
-        
-        $userReg = new Usuarios(array(
+
+        $_SESSION["usuRegistro"] = new Usuarios(array(
             "nombre" => $_SESSION['usuario']['nombre'],
             "apellido_1" => $_SESSION['usuario']['apellido_1'],
             "apellido_2" => $_SESSION['usuario']['apellido_2'],
@@ -466,21 +463,19 @@ function confirmarRegistro(){
             "admin" => 0
            
                 ));
-        
             
             if(!isset($_SESSION["userTMP"])){
                 
-                $_SESSION["datos"]["id"] = $userReg->insert();
-                $objMandarEmails = new mandarEmails();
-                $objMandarEmails->mandarEmailWelcome($userReg);
-                        if(isset($_SESSION['usuario'])){unset($_SESSION['usuario']);}
+                $_SESSION["datos"]["id"] = $_SESSION["usuRegistro"]->insert();
+               
+                        
                         if(isset($_SESSION['error'])){unset($_SESSION['error']);}    
                // 
                         unset($mensajeReg);
                        
                 
             }else{
-                      
+                     
                $userReg->actualizoDatosUsuario();
                 abandonarSession();
                   
@@ -584,6 +579,8 @@ function processFormRegistro($requiredFields, $st){
      
      
         case 'step3':
+            
+           
             $resulTestReg = validarCamposRegistro($st, $userReg);
             
                 //Si ha habido algun error volvemos a mostrar el paso del formulario
@@ -597,7 +594,9 @@ function processFormRegistro($requiredFields, $st){
                 break;
             
         case 'step4':
+            
             $resulTestReg = validarCamposRegistro($st, $userReg);
+            
             
             if($resulTestReg[1] == "0"){
                 displayStep4($missingFields);
@@ -605,7 +604,7 @@ function processFormRegistro($requiredFields, $st){
                 //Si el usuario se esta registrando se
                 //le muestra el formulario de las condiciones
                 if(!isset($_SESSION['actualizo'])){
-                    confirmarRegistro($userReg);
+                    confirmarRegistro();
                 }
                 
             }
@@ -613,11 +612,7 @@ function processFormRegistro($requiredFields, $st){
             break;
             
        
-    }
-
-
-     
-    
+    }   
 //fin processForm
 }
    

@@ -86,9 +86,9 @@ public function eliminarDirectoriosUsuario($opc) {
         case "registrar":
             
                 //Se esta registrando y hay un error
-            $fotos = "../photos/".$_SESSION['usuario']['nick'];
-            $datos = "../datos_usuario/".$_SESSION['usuario']['nick'];
-            $videos = "../Videos/".$_SESSION['usuario']['nick'];
+            $fotos = "../photos/".$_SESSION["datos"]["id"];
+            $datos = "../datos_usuario/".$_SESSION["datos"]["id"];
+            $videos = "../Videos/".$_SESSION["datos"]["id"];
             if(isset($_SESSION["userTMP"])){
                 $opc = "EliminarNuevosDirectorios";
             }else{
@@ -194,6 +194,26 @@ private function eliminarNuevoSubdirectorio(){
     
   //fin eliminarNuevoSubdirectorio  
 }
+
+
+/**
+ * Metodo que elimina todas las<br>
+ * variables de sesion cuando un usuario<br>
+ * se estaba registrando o actualizando<br>
+ * y ocurre un error.<br>
+ * 
+ *  */
+public function eliminarVariablesSesionUsuario(){
+   
+    if(isset($_SESSION["datos"])){unset($_SESSION["datos"]);}
+    if(isset($_SESSION["usuRegistro"])){unset($_SESSION["usuRegistro"]);}
+    if(isset($_SESSION['usuario'])){unset($_SESSION['usuario']);}
+    
+ 
+//fin eliminarVariablesSesionUsuario
+}
+
+
 
 /**
     * Metodo que elimina variables de sesion
@@ -334,7 +354,7 @@ public function redirigirPorErrorSistema($opc,$grado,$excep){
  
     
    
-    //echo PHP_EOL."opcion vale ".$opc.PHP_EOL;
+   // echo PHP_EOL."opcion vale ".$opc." y gr4ado vale ".$grado." el id es ".$_SESSION["datos"]["id"].PHP_EOL;
     switch ($opc) {
       
         case $opc == "crearDirectorios_TMP":
@@ -356,64 +376,22 @@ public function redirigirPorErrorSistema($opc,$grado,$excep){
                 die();    
                 break;
               
-            /*
-            
-        case $opc == "actualizarCambiandoFoto":
-            
-            $_SESSION['error'] = ERROR_ACTUALIZAR_USUARIO;
-            $_SESSION["paginaError"] = "registrarse.php";
-            $this->tratarDatosErrores("No se pudo eliminar la vieja imagen del usuario",$grado);
-            //Eliminamos los viejos directorios
-            $this->eliminarDirectoriosUsuario("actualizar");
-            //Eliminamos los posibles nuevos directorios
-            //que creasen en el intento de actualizar
-            $this->eliminarDirectoriosUsuario("registrar");
-            //Restauramos los viejos directorios
-            $this->restaurarAntiguosDirectoriosAlActualizar("restaurarViejosDirectoriosActualizar");
-            
-                die();       
-                break;
-       */
+           
         case $opc == "registrar":
             
             $_SESSION['error'] = ERROR_INGRESAR_USUARIO;
             $_SESSION["paginaError"] = "registrarse.php";
             $this->eliminarDirectoriosUsuario($opc);
-            $this->tratarDatosErrores($opc,$grado,$excep); 
+            $_SESSION["usuRegistro"]->eliminarPorId($_SESSION["datos"]["id"]);
+            $this->tratarDatosErrores($opc,$grado,$excep);
+            $this->eliminarVariablesSesionUsuario();
+            
                 die();
                 break;
          
-        case $opc == "renombrarDirectortiosActualizar":
-            
-            $_SESSION['error'] = ERROR_ACTUALIZAR_USUARIO;
-            $_SESSION["paginaError"] = "registrarse.php";
-            $this->tratarDatosErrores("No se pudo renombrar los directorios cuando el usuario estaba actualizando sus datos cambiando el nick y subiendo foto",$grado,$excep);
-            
-            //Eliminamos los posibles nuevos directorios
-            //que creasen en el intento de actualizar
-            $this->eliminarDirectoriosUsuario("registrar");
-            //Restauramos los viejos directorios
-            $this->restaurarAntiguosDirectoriosAlActualizar("restaurarViejosDirectoriosActualizar");
-            
-            die();    
-                break;
+        
            
-        case $opc == "errorFotoActualizar":
-            
-            $_SESSION['error'] = ERROR_ACTUALIZAR_USUARIO;
-            $_SESSION["paginaError"] = "registrarse.php";
-            $this->tratarDatosErrores("No se pudo renombrar o eliminar la vieja la foto del usuario cuando estaba actualizando su nick",$grado,$excep);
-            //Eliminamos los viejos directorios
-            $this->eliminarDirectoriosUsuario("actualizar");
-            //Eliminamos los posibles nuevos directorios
-            //que creasen en el intento de actualizar
-            $this->eliminarDirectoriosUsuario("registrar");
-            //No eliminamos los viejos pòr que se han renombrado anteriormente
-            //Restauramos los viejos directorios
-            $this->restaurarAntiguosDirectoriosAlActualizar("renombrarFotoActualizar");
-            
-            die();
-                break;
+        
            
         case $opc == "ActualizarUsuarioBBDD":
        
@@ -435,9 +413,7 @@ public function redirigirPorErrorSistema($opc,$grado,$excep){
             $_SESSION["paginaError"] = "registrarse.php";
             $_SESSION['errorArchivos'] = "existo";
             $this->tratarDatosErrores("Error en el gestor bbdd al registrar usuario",$grado,$excep);
-            //Eliminamos los posibles nuevos directorios
-            //que creasen en el intento de actualizar
-            $this->eliminarDirectoriosUsuario("registrar");
+            
             
                 die();
                 break;

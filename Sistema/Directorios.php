@@ -45,7 +45,7 @@ class Directorios {
             //echo  $_FILES['photoArticulo']['error'];
             //echo  $_FILES['photoArticulo']['size'];
             //echo  $_FILES['photoArticulo']['type'];
-            //echo 'test dice '.$test;
+           //echo 'test dice '.$test;
                 
                 //Esta conversion de integer
                 //a string de $test la hacemos para usar 
@@ -202,9 +202,10 @@ class Directorios {
                 }
                 
             }catch(Exception $ex){
+                
                 $excep = $excepciones->recojerExcepciones($ex);
                 $_SESSION['error'] = ERROR_INGRESAR_USUARIO;  
-                if($opc == 'registrar' || $opc == 'actualizar'){
+                if($opc == 'registrar'){
                     
                     $excepciones->redirigirPorErrorSistema($opc,true,$excep);
                 }
@@ -692,17 +693,6 @@ final static function eliminarDirectoriosSistema($src,$opc){
                 $excepciones->redirigirPorErrorSistema("actualizar",true,$excep);
             }else if($opc == "registrar"){
                 $excepciones->redirigirPorErrorSistema("registrar",true,$excep);
-            }else if($opc == "eliminamosViejosDirectoriosActualizar"){
-                $excepciones->redirigirPorErrorSistema("No se pudo eliminar los antiguos directorios al actualizar",false,$excep);
-            }else if($opc == "EliminarNuevosDirectorios"){
-                $excepciones->redirigirPorErrorSistema("No se pudieron eliminar los nuevos directorios introducidos para actualizar",false,$excep);
-            }else if($opc == "EliminarDirectorioTMP"){
-                $excepciones->redirigirPorErrorSistema("No se pudo eliminar los directorios TMP_ACTUALIZAR despues ingresar en la bbdd",false,$excep);
-            }else if($opc == "nuevoSubdirectorioSubirPost"){
-                $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-                $excepciones->redirigirPorErrorSistema("No se pudo eliminar el nuevo subdirectorio al registrar un nuevo post",false,$excep);
-            }else if($opc == "eliminarDirectoriosBajaUsuario"){
-                $excepciones->redirigirPorErrorSistema("No se pudo eliminar los directorios cuando el usuario queria darse de baja",false,$excep);
             }
              
            
@@ -713,49 +703,7 @@ final static function eliminarDirectoriosSistema($src,$opc){
 //eliminarDirectorioRegistro    
 }
 
-/**
- * Cambia el nombre de los directorios
- * que se crearon al registrar el usuario
- * @param $nickNuevo <br/>
- * type String <br/>
- * El nick nuevo al actualizar
- * @param  $nickViejo  <br/>
- * type String <br/>
- * El nick viejo que tenia <br/>
- */
 
-
-public static function renombrarDirectoriosActualizar($nickNuevo, $nickViejo){
-   
-    $excepciones = new MisExcepciones(CONST_ERROR_RENOMBRAR_DIRECTORIOS_ACTUALIZAR[1],CONST_ERROR_RENOMBRAR_DIRECTORIOS_ACTUALIZAR[0]); 
-    try{
-     
-                $test = rename("../datos_usuario/$nickViejo","../datos_usuario/$nickNuevo");
-                    if($test != '1'){
-                        throw new Exception("No se pudo renombrar la carpeta datos_usuario al actualizar",0);
-                    }  
-                     
-                $test = rename("../photos/$nickViejo", "../photos/$nickNuevo");
-                    if($test != '1'){
-                            throw new Exception("No se pudo renombrar la carpeta photos al actualizar",0); 
-                        }
-                         
-                $test  = rename("../Videos/$nickViejo", "../Videos/$nickNuevo");
-                    if($test != '1'){
-                        throw new Exception("No se pudo renombrar la carpeta Videos al actualizar",0); 
-                    }
-                
-      
-    } catch (Exception $ex) {
-           
-            $excep = $excepciones->recojerExcepciones($ex);
-            $excepciones->redirigirPorErrorSistema('renombrarDirectortiosActualizar',true,$excep);
-            
-    }
-
-    
- //fin renombrarDirectoriosActualizar
-}
 
 /**
  * Metodo que actualia el nombre 

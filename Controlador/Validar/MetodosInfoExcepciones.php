@@ -75,7 +75,7 @@ private function convertirStringDatosSesion($opc){
             }
             
     } else{
-        
+            
             $datosSesion = "El usuario ".$_SESSION['userTMP']->getValue('nick').'<br>';
             $datosSesion .=$opc;
             foreach ($_SESSION['post'] as $k => $v){
@@ -113,6 +113,7 @@ private function convertirStringDatosSesion($opc){
 private function insertarErroresBBDD( $opc,$excep,$datosSesion){
     
      $con = Conne::connect();
+     
      
      try {
          
@@ -175,12 +176,14 @@ private function insertarErroresBBDD( $opc,$excep,$datosSesion){
  */
 protected function tratarDatosErrores($opc,$grado,$excep){
     
-    //var_dump($excep);
+    echo "tratar errores";
+    
     $datosSesion = $this->convertirStringDatosSesion($opc);
         //Los insertammos en la bbdd
     $this->insertarErroresBBDD( $opc,$excep,$datosSesion);
     
     if($grado){
+        
         $this->mostrarError();
     }else{
         $this->redirirgirFalloNoCritico();

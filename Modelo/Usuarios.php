@@ -313,6 +313,7 @@ public final function insert(){
             Conne::disconnect($con);
             return $idUsu;
         } catch (Exception $ex) {
+            //echo $ex->getMessage();
             Conne::disconnect($con);
            
             $con->rollBack();
@@ -357,8 +358,37 @@ public final function insert(){
    //fin devuelve id     
     }
 
+/**
+ * Metodo que elimina un usuario por su id<br>
+ * @param id <br>
+ * String con el id del usuario a eliminar
+ */
+ public function eliminarPorId($id){
+    
+    $con = Conne::connect();
+    $sql = " DELETE FROM ".TBL_USUARIO. " WHERE idUsuario = :idUsuario";
+        $id = (int) $id;
+        try{
+            $st = $con->prepare($sql);
+            $st->bindValue(":idUsuario", $id, PDO::PARAM_INT);
+            $st->execute();
 
-  
+            $st->closeCursor();
+            Conne::disconnect($con);
+ 
+        } catch (Exception $ex) {
+            Conne::disconnect($con);
+            echo $ex->getLine().'<br>';
+            echo $ex->getFile().'<br>';
+            die("Query failed: ".$ex->getMessage());
+        }
+     
+     
+  //fin eliminarPorId   
+ }
+    
+ 
+    
    /**
     * Metodo public 
     * Recive un id para eliminar los datos de un usuario.
@@ -378,12 +408,7 @@ public final function insert(){
         
         if($var == 'usuario'){
             $sql = " DELETE FROM ".TBL_USUARIO. " WHERE idUsuario = :idUsuario";
-        }  else if($var == 'datos_usuario') {
-            $sql = " DELETE FROM ".TBL_DATOS_USUARIO. " WHERE idDatosUsuario = :idUsuario";
-        } else if($var == 'direccion'){
-            $sql = " DELETE FROM ".TBL_DIRECCION. " WHERE idDireccion = :idUsuario"; 
-        }
-        
+        }  
         try{
             $st = $con->prepare($sql);
             $st->bindValue(":idUsuario", $id, PDO::PARAM_INT);

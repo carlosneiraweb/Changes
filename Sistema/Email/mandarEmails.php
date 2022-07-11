@@ -16,17 +16,22 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesEr
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Email.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepciones.php');
 
+    if(!isset($_SESSION)){
+    
+        session_start();
 
-
+    }
+    
 
 
 class mandarEmails {
  
 
+
   
  
-final function mandarEmailWelcome(Usuarios $obj){
-    var_dump($obj);
+final function mandarEmailWelcome(){
+    
 
      $excepciones = new MisExcepciones(CONST_ERROR_CONSTRUIR_DARSE_ALTA[1],CONST_ERROR_CONSTRUIR_DARSE_ALTA[0]);
             //Creamos el objeto email con los datos
@@ -34,17 +39,17 @@ final function mandarEmailWelcome(Usuarios $obj){
             //La cabecera y el footer son dos constantes
             try{
                 $cuerpoEmail = '<section id="saludo">
-                        <h4>Enhorabuena '.$obj->getValue("nombre").' por registrarte en <span class="especial">Te Lo Cambio</h4></span>
+                        <h4>Enhorabuena '.$_SESSION["usuRegistro"]->getValue("nombre").' por registrarte en <span class="especial">Te Lo Cambio</h4></span>
                         </section>
                         <p>Ahora podrás cambiar con nuestro usuarios.</p> <br />
-                        <p>Recuerda que tú usuario es: '.$obj->getValue("nick").' </p>
-                        <p>Y tu password es: '.$obj->getValue("password").'</p>';
+                        <p>Recuerda que tú usuario es: '.$_SESSION["usuRegistro"]->getValue("nick").' </p>
+                        <p>Y tu password es: '.$_SESSION["usuRegistro"]->getValue("password").'</p>';
                 ////
                 $emailAcabado = EMAIL_CABECERA.$cuerpoEmail.EMAIL_FOOTER;
-                $emailAcabado = utf8_decode($emailAcabado);
+                //$emailAcabado = utf8_decode($emailAcabado);
                 $email = new Email($emailAcabado);
                 //MANDAMOS EL EMAIL
-                $test = $email->mandarEmail($obj->getValue("email"));
+                $test = $email->mandarEmail($_SESSION["usuRegistro"]->getValue("email"));
                 if(!$test){throw new Exception("No se pudo contruir el email welcome O la direccion de email no existe",0);}
                  
             }catch (Exception $ex){       
