@@ -176,8 +176,7 @@ private function insertarErroresBBDD( $opc,$excep,$datosSesion){
  */
 protected function tratarDatosErrores($opc,$grado,$excep){
     
-    echo "tratar errores";
-    
+    var_dump($excep);
     $datosSesion = $this->convertirStringDatosSesion($opc);
         //Los insertammos en la bbdd
     $this->insertarErroresBBDD( $opc,$excep,$datosSesion);

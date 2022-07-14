@@ -151,11 +151,11 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
 			
                         //Mostramos la foto del usuario una vez se ha logueado
                             //Sin consultar la BBDD
-                          
+                            
                         if(isset($_SESSION["userTMP"]) and $_SESSION["userTMP"] != ""){
                             echo '<section id="foto_usuario">';
                                 echo '<figure id="img_usuario">';
-                                $nickFoto = $_SESSION['userTMP']->getValue('nick');
+                                $nickFoto = $_SESSION['userTMP']->getValue('idUsuario');
                                     echo '<img src='."../datos_usuario/".$nickFoto."/".$nickFoto.".jpg".' alt="imagen del usuario" title="Este eres tú"/>';
                                 echo'</figure>';
                             echo '</section>';
@@ -185,8 +185,6 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
                         //aparezca un boton para poder hacer comentarios
                         //de los posts, o poder guardar busquedas personalizadas.
                         //Declaramos la variable javascript user,
-                        //que es el nick del usuario. Como es dato publico
-                        //no representa ningun riesgo de seguridad.
                         //Esta variable la usaremos  en buscador.js
                         //para almacenar busquedas concretas
                             echo '<script type="text/javascript">';
@@ -358,6 +356,7 @@ echo'<input  type="text" name="nick" id="nick" autofocus placeholder="Escribe t�
 echo'<label '. ValidoForm::validateField("password", $missingFields).' for="password">Introduce tú password</label><span class="obligatorio"><img src="../img/obligado.png" ></span>';
 echo'<input type="password" name="password" id="password" placeholder="Escribe tú password" value="'.$user->getValueEncoded("password").'" ><br/><br/>';
 
+
 //Mostramos un error en el login
 if(!$test){
    
@@ -372,6 +371,8 @@ if(!$test){
                  
             }
 }
+
+ 
 echo'<input type="submit" id="btn_login" name="logeo" value="aceptar" />'; 
 echo'<input type="submit" id="btn_salir" name="salir" value="salir" />'; 
     
@@ -424,14 +425,17 @@ function processForm(){
        
     } else { 
        
-        if($loggedInMember->getValue('activo') == '0'){
+        if($loggedInMember->getValue('bloqueado') == '1'){
             $test = false;
             mostrarOculto();
             displayFormLogeo($missingFields, $userLogin, $test);
         }else{
+            
             $_SESSION["userTMP"] = $loggedInMember;
             
             }
+         
+         
     }
        // var_dump($_SESSION["userTMP"]);
         

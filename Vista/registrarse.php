@@ -26,12 +26,12 @@ function mostrarErrorRegistro(){
     header('Location: mostrar_error.php');
 }
 function volverAnterior(){
-    header('Location: index.php');
-    die();
+    header("Location: index.php");
+   
 }
 function volverPrincipio(){
     header('Location: index.php');
-    die();
+    
 }
 function abandonarSession(){
     header("Location: abandonar_sesion.php"); 
@@ -75,18 +75,12 @@ $_SESSION["paginaError"] = basename($_SERVER['PHP_SELF']);
    <body id="cuerpo">
     
         <?php
-        
-       
-        
-        
-        
+
     //Añadimos el div con la clase oculto
     // echo'<div id="ocultar" class="oculto"> </div>';  
        
-        
-        //Variable global de usuario
         global $userReg;
-        $userReg = new Usuarios(array());
+        $userReg = new Usuarios($data);
         //Variable para recuperar
         //el resultado de la validacion
         //y el posible mensaje de error
@@ -113,26 +107,32 @@ $_SESSION["paginaError"] = basename($_SERVER['PHP_SELF']);
      
     echo'</header>';
  
-     
+         
         // Si no se ha recivido el step
         // Se muestra por primera vez el formulario
         $paso = null;
-            if(!isset($_POST['step'])){
+            if(!isset($_POST['step']) && (!isset($_SESSION['userTMP']))){
                 displayStep5(array());
+            }elseif(!isset($_POST['step']) && (isset($_SESSION['userTMP']))){
+                displayStep1(array()); 
             }
             
-    //Variable donde cargaremos el paso
-            //de cada una de las partes del formulario
+               
            
+    //COntrolamos que no se le muestra a un usuario 
+    //que se haga logueado y este actualizando sus datos
+    //y haya un error
     
+   
+        if(isset($_POST['aceptaCondicionesReg']) and $_POST['aceptaCondicionesReg'] == "Acepto"){
             
-    if(isset($_POST['aceptaCondicionesReg']) and $_POST['aceptaCondicionesReg'] == "Acepto"){
-        displayStep1(array());
-    }elseif(isset($_POST['noAceptaCondicionesReg']) and $_POST['noAceptaCondicionesReg'] == "Salir"){
-        //El usuario no acepta las condiciones
-        //Eliminado todos los directorios creados
-        if(isset($_SESSION['usuario'])){unset($_SESSION['usuario']);}
-        volverPrincipio();
+            displayStep1(array());
+            
+        }elseif(isset($_POST['noAceptaCondicionesReg']) and $_POST['noAceptaCondicionesReg'] == "Salir"){
+            //El usuario no acepta las condiciones
+            //Eliminado todos los directorios creados
+            if(isset($_SESSION['usuario'])){unset($_SESSION['usuario']);}
+            volverPrincipio();
         
     }elseif(isset($_POST['primeroReg']) and $_POST['primeroReg'] == "Siguiente"){
         $requiredFields = array('nick', 'password', 'email');
@@ -236,17 +236,17 @@ function displayStep2($missingFields){
     
     echo '<section class="contEtiquetas">';
     echo'<label '.ValidoForm::validateField("nombre", $missingFields). ' for="nombre">Nombre:</label> <span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
-    echo'<input type="text" name="nombre" id="nombre" autofocus  placeholder="Escribe tú nombre" maxlength= "25" value=';if(isset($_SESSION['usuario']['nombre'])&& (!isset($_SESSION['actualizo']))){echo $_SESSION['usuario']['nombre'];} if(isset($_SESSION['actualizo']['nombre'])){echo $_SESSION['actualizo']['nombre'];}echo ">";
+    echo'<input type="text" name="nombre" maxlength= "25" id="nombre" autofocus  placeholder="Escribe tú nombre" maxlength= "25" value=';if(isset($_SESSION['usuario']['nombre'])&& (!isset($_SESSION['actualizo']))){echo $_SESSION['usuario']['nombre'];} if(isset($_SESSION['actualizo']['nombre'])){echo $_SESSION['actualizo']['nombre'];}echo ">";
     echo'</section>';
     
     echo '<section class="contEtiquetas">';
     echo'<label for="apellido_1">Primer Apellido:</label>';
-    echo'<input type="text" name="apellido_1" id="apellido_1" placeholder="Escribe tú apellido"  maxlength= "25" value=';if(isset($_SESSION['usuario']['apellido_1'])&& (!isset($_SESSION['actualizo']))){echo $_SESSION['usuario']['apellido_1'];} if(isset($_SESSION['actualizo']['primerApellido'])){ echo $_SESSION['actualizo']['primerApellido'];}echo ">";
+    echo'<input type="text" name="apellido_1" maxlength= "25" id="apellido_1" placeholder="Escribe tú apellido"  maxlength= "25" value=';if(isset($_SESSION['usuario']['apellido_1'])&& (!isset($_SESSION['actualizo']))){echo $_SESSION['usuario']['apellido_1'];} if(isset($_SESSION['actualizo']['primerApellido'])){ echo $_SESSION['actualizo']['primerApellido'];}echo ">";
     echo'</section>';
     
     echo '<section class="contEtiquetas">';
     echo'<label for="apellido_2">Segundo Apellido:</label>';
-    echo'<input type="text" name="apellido_2" id="apellido_2" placeholder="Escribe tú segundo apellido" maxlength= "25" value= ';if(isset($_SESSION['usuario']['apellido_2'])&& (!isset($_SESSION['actualizo']))){echo $_SESSION['usuario']['apellido_2'];} if(isset($_SESSION['actualizo']['segundoApellido'])){echo $_SESSION['actualizo']['segundoApellido'];}echo ">";        
+    echo'<input type="text" name="apellido_2" maxlength= "25" id="apellido_2" placeholder="Escribe tú segundo apellido" maxlength= "25" value= ';if(isset($_SESSION['usuario']['apellido_2'])&& (!isset($_SESSION['actualizo']))){echo $_SESSION['usuario']['apellido_2'];} if(isset($_SESSION['actualizo']['segundoApellido'])){echo $_SESSION['actualizo']['segundoApellido'];}echo ">";        
     echo'</section>';
     
     echo '<section class="contEtiquetas">';
@@ -294,17 +294,17 @@ function displayStep3($missingFields){
     
     echo '<section class="contEtiquetas">';
     echo'<label for="calle">Nombre de la calle o vía:</label>';
-    echo'<input type="text" name="calle" id="calle" placeholder="Escribe el nombre de la calle"  value= ';if(isset($_SESSION['usuario']['calle'])&& (!isset($_SESSION['actualizo']))){echo $_SESSION['usuario']['calle'];} if(isset($_SESSION['actualizo']['calle'])){echo $_SESSION['actualizo']['calle'];}echo ">";     
+    echo'<input type="text" name="calle" maxlength= "25" id="calle" placeholder="Escribe el nombre de la calle"  value= ';if(isset($_SESSION['usuario']['calle'])&& (!isset($_SESSION['actualizo']))){echo $_SESSION['usuario']['calle'];} if(isset($_SESSION['actualizo']['calle'])){echo $_SESSION['actualizo']['calle'];}echo ">";     
     echo'</section>';
     
     echo '<section class="contEtiquetas">';
     echo'<label for="numeroPortal">Número del portal:</label>';
-    echo'<input type="text" name="numeroPortal" id="numeroPortal" placeholder="Escribe el número del portal" maxlength= "10" value= ';if(isset($_SESSION['usuario']['numeroPortal'])&& (!isset($_SESSION['actualizo']))){echo $_SESSION['usuario']['numeroPortal'];} if(isset($_SESSION['actualizo']['portal'])){echo $_SESSION['actualizo']['portal'];} echo ">";     
+    echo'<input type="text" name="numeroPortal"  id="numeroPortal" placeholder="Escribe el número del portal" maxlength= "10" value= ';if(isset($_SESSION['usuario']['numeroPortal'])&& (!isset($_SESSION['actualizo']))){echo $_SESSION['usuario']['numeroPortal'];} if(isset($_SESSION['actualizo']['portal'])){echo $_SESSION['actualizo']['portal'];} echo ">";     
     echo'</section>';
     
     echo '<section class="contEtiquetas">';
     echo'<label for="ptr">Puerta:</label>';
-    echo'<input type="text" name="ptr" id="ptr" placeholder="Escribe el número de la puerta"  maxlength= "10" value= ';if(isset($_SESSION['usuario']['ptr'])&& (!isset($_SESSION['actualizo']))){echo $_SESSION['usuario']['ptr'];}if(isset($_SESSION['actualizo']['puerta'])){echo $_SESSION['actualizo']['puerta'];} echo ">";     
+    echo'<input type="text" name="ptr" id="ptr"  placeholder="Escribe el número de la puerta"  maxlength= "10" value= ';if(isset($_SESSION['usuario']['ptr'])&& (!isset($_SESSION['actualizo']))){echo $_SESSION['usuario']['ptr'];}if(isset($_SESSION['actualizo']['puerta'])){echo $_SESSION['actualizo']['puerta'];} echo ">";     
     echo'</section>';
     
     echo '<section class="contEtiquetas">';
@@ -376,7 +376,7 @@ function displayStep4($missingFields){
     echo "<figure id='fotoAntigua'>";
         //Utilizamos la variable de SESSION del Login para
         //Mostrar su antigua imagen
-         echo '<img src='."../datos_usuario/".$_SESSION["userTMP"]->getValue('nick')."/".$_SESSION["userTMP"]->getValue('nick').".jpg".' alt="imagen del usuario antigua" title="Esta es tú antigua imagen."/>';
+         echo '<img src='."../datos_usuario/".$_SESSION["userTMP"]->getValue("idUsuario")."/".$_SESSION["userTMP"]->getValue('idUsuario').".jpg".' alt="imagen del usuario antigua" title="Esta es tú antigua imagen."/>';
          echo "<figcaption>Tú antigua imagen.</figcaption>";
     echo "</figure>";
     echo"</section>";
@@ -443,6 +443,7 @@ function confirmarRegistro(){
     function ingresarUsuario(){
         
         global $mensajeReg;
+        
 
         $_SESSION["usuRegistro"] = new Usuarios(array(
             "nombre" => $_SESSION['usuario']['nombre'],
@@ -470,14 +471,14 @@ function confirmarRegistro(){
                
                         
                         if(isset($_SESSION['error'])){unset($_SESSION['error']);}    
-               // 
+                        if(isset($_POST["step"])){unset($_POST["step"]);}
                         unset($mensajeReg);
                        
                 
             }else{
                      
-               $userReg->actualizoDatosUsuario();
-                abandonarSession();
+               $_SESSION["usuRegistro"]->actualizoDatosUsuario();
+               
                   
             }
            
@@ -491,8 +492,8 @@ function processFormRegistro($requiredFields, $st){
     
     //Array para almacenar los campos no rellenados y obligatorios
         global $missingFields;
-        global $userReg;
         global $resulTestReg;
+        global $userReg;
         $missingFields = array();   
         
         //Segun el paso vamos rellenando la variable de session  de usuario

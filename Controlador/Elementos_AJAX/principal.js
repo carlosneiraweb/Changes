@@ -65,11 +65,11 @@ window.onload=function(){
         
 //Esta llamada a JSON solo se realiza en la primera carga del script
     //Despues se iran mostrando los posts a traves de los botones 
-       /*
+       
         if(inicio === 0 && PPS === true){
             cargarPeticion("PPS", "opcion=PPS&inicio="+inicio); //Cargar Post
         }
-    */
+   
     /*      METODO QUE LANZA EL SLIDER CON EL 
      *      CONTENIDO DEL POST SELECCIONADO POR
      *      EL USUARIO AL HACER CLICK SOBRE LA IMAGEN

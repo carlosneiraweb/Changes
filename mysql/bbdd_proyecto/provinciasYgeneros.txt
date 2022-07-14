@@ -1,0 +1,83 @@
+insert into provincias (nombreProvincia) values('Alava');
+insert into provincias (nombreProvincia) values('Albacete');
+insert into provincias (nombreProvincia) values('Alicante');
+insert into provincias (nombreProvincia) values('Almeria');
+insert into provincias (nombreProvincia) values('Asturias');
+insert into provincias (nombreProvincia) values('Avila');
+insert into provincias (nombreProvincia) values('Badajoz');
+insert into provincias (nombreProvincia) values('Barcelona');
+insert into provincias (nombreProvincia) values('Burgos');
+insert into provincias (nombreProvincia) values('Caceres');
+insert into provincias (nombreProvincia) values('Cadiz');
+insert into provincias (nombreProvincia) values('Cantabria');
+insert into provincias (nombreProvincia) values('Castellon');
+insert into provincias (nombreProvincia) values('Ceuta');
+insert into provincias (nombreProvincia) values('Ciudad Real');
+insert into provincias (nombreProvincia) values('Cordoba');
+insert into provincias (nombreProvincia) values('Cuenca');
+insert into provincias (nombreProvincia) values('Girona');
+insert into provincias (nombreProvincia) values('Las Palmas');
+insert into provincias (nombreProvincia) values('Granada');
+insert into provincias (nombreProvincia) values('Guadalajara');
+insert into provincias (nombreProvincia) values('Guipuzcua');
+insert into provincias (nombreProvincia) values('Huelva');
+insert into provincias (nombreProvincia) values('Huesca');
+insert into provincias (nombreProvincia) values('Illes Balears');
+insert into provincias (nombreProvincia) values('Jaen');
+insert into provincias (nombreProvincia) values('A Coru�a');
+insert into provincias (nombreProvincia) values('La Rioja');
+insert into provincias (nombreProvincia) values('Leon');
+insert into provincias (nombreProvincia) values('Lleida');
+insert into provincias (nombreProvincia) values('Lugo');
+insert into provincias (nombreProvincia) values('Madrid');
+insert into provincias (nombreProvincia) values('Malaga');
+insert into provincias (nombreProvincia) values('Melilla');
+insert into provincias (nombreProvincia) values('Murcia');
+insert into provincias (nombreProvincia) values('Navarra');
+insert into provincias (nombreProvincia) values('Ourense');
+insert into provincias (nombreProvincia) values('Palencia');
+insert into provincias (nombreProvincia) values('Pontevedra');
+insert into provincias (nombreProvincia) values('Salamanca');
+insert into provincias (nombreProvincia) values('Segovia');
+insert into provincias (nombreProvincia) values('Sevilla');
+insert into provincias (nombreProvincia) values('Soria');
+insert into provincias (nombreProvincia) values('Tarragona');
+insert into provincias (nombreProvincia) values('Santa Cruz de Tenerife');
+insert into provincias (nombreProvincia) values('Teruel');
+insert into provincias (nombreProvincia) values('Toledo');
+insert into provincias (nombreProvincia) values('Valencia');
+insert into provincias (nombreProvincia) values('Valladolid');
+insert into provincias (nombreProvincia) values('Vizcaya');
+insert into provincias (nombreProvincia) values('Zamora');
+insert into provincias (nombreProvincia) values('Zaragoza');
+
+insert into genero (genero) values ('hombre');
+insert into genero (genero) values ('mujer');
+insert into genero (genero) values ('otro');
+
+insert into secciones (nombreSeccion) values ('Automocion');
+insert into secciones (nombreSeccion) values ('Ocio');
+insert into secciones (nombreSeccion) values ('Bricolaje');
+insert into secciones (nombreSeccion) values ('Electronica');
+insert into secciones (nombreSeccion) values ('Moda');
+insert into secciones (nombreSeccion) values ('Hogar');
+insert into secciones (nombreSeccion) values ('Cultura');
+
+
+insert into tiempo_cambio (tiempo) values ('No importa');
+insert into tiempo_cambio (tiempo) values ('Por un par de dias');
+insert into tiempo_cambio (tiempo) values ('Por un fin de semana');
+insert into tiempo_cambio (tiempo) values ('Por una semana');
+insert into tiempo_cambio (tiempo) values ('Por una temporada');
+insert into tiempo_cambio (tiempo) values ('Para siempre');
+insert into tiempo_cambio (tiempo) values ('Otros');
+
+
+
+
+
+
+
+
+
+

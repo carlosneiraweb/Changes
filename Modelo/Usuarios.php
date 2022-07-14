@@ -44,7 +44,9 @@ class Usuarios extends DataObj{
             "password" => "",
             "password_2" => "",
             "admin" => "",
-            "activo"=>""
+            "activo"=>"",
+            "idUsuario" =>"",
+            "bloqueado" =>""
         );
     
 
@@ -245,7 +247,8 @@ public final function insert(){
             password,
             email,
             fecha,
-            admin
+            admin,
+            bloqueado
             
                    
             ) VALUES (
@@ -253,7 +256,8 @@ public final function insert(){
             :password,
             :email,
             :fecha,
-            :admin
+            :admin,
+            :bloqueado
             
             );";
            
@@ -264,6 +268,7 @@ public final function insert(){
             $st->bindValue(":email", $this->data["email"], PDO::PARAM_STR);
             $st->bindValue(":fecha", $date, PDO::PARAM_STR);
             $st->bindValue(":admin", '0', PDO::PARAM_STR);
+            $st->bindValue(":bloqueado", '0', PDO::PARAM_STR);
             
             
             
@@ -595,7 +600,7 @@ public function actualizoDatosUsuario(){
     
     try{
 
-        $nickViejo = $_SESSION["userTMP"]->getValue('nick');
+        
         $idUsuViejo = $_SESSION["userTMP"]->devuelveId();  
         
         $sqlActualiarUsuario = " Update ".TBL_USUARIO." set nick = :nick, password = :password, email = :email
@@ -605,15 +610,7 @@ public function actualizoDatosUsuario(){
         $stmActualizarUsuario->bindValue(":password",System::generoHash($this->getValue('password')) , PDO::PARAM_STR );
         $stmActualizarUsuario->bindValue(":email", $this->getValue('email'), PDO::PARAM_STR );
         $stmActualizarUsuario->bindValue(":idUsuario", $idUsuViejo, PDO::PARAM_INT);
-        
-        $sqlActualizarTblImagenes = "Update " .TBL_IMAGENES. " set nickUsuario = :nickUsuarioActualizado "
-        . " where  nickUsuario = :nickUsuario and idImagen > :idImagen;"; //el limit se pone por el safe_mysql
-        $stmActualizarTblImagenes = $con->prepare($sqlActualizarTblImagenes);
-        $stmActualizarTblImagenes->bindValue(":nickUsuarioActualizado",$this->getValue('nick'), PDO::PARAM_STR);
-        $stmActualizarTblImagenes->bindValue(":nickUsuario",$nickViejo, PDO::PARAM_STR);
-        $stmActualizarTblImagenes->bindValue(":idImagen", 0, PDO::PARAM_INT );
-        //echo "sql ".$sqlActualizarTblImagenes;
-                
+                  
             $sqlActualiarDatos = "Update ".TBL_DATOS_USUARIO." SET "
         . "nombre = :nombre, apellido_1= :apellido_1, apellido_2 = :apellido_2,"
         . " telefono = :telefono, genero = :genero "
@@ -647,32 +644,29 @@ public function actualizoDatosUsuario(){
                 
         $con->beginTransaction();   
         
-                $stmActualizarTblImagenes->execute();
-                $stmActualizarUsuario->execute();
-               
-                $stmActualizarDatos->execute();
-                $stmActualizarDireccion->execute(); 
+            $stmActualizarUsuario->execute();
+            $stmActualizarDatos->execute();
+            $stmActualizarDireccion->execute(); 
            
        $con->commit();
 
         Conne::disconnect($con);
-        //Si todo ha ido bien eliminamos el directorio
-        //temporal en la carpeta TMP_ACTUALIZAR
-        Directorios::eliminarDirectoriosSistema("../Sistema/TMP_ACTUALIZAR/".$_SESSION['actualizo']['nick'], "EliminarDirectorioTMP");
+       
         
       
        
     }catch (Exception $ex){
-        
+       
        $con->rollBack();
        $excep = $excepciones->recojerExcepciones($ex);
         //Mandamos eliminar y restaurar las antiguas carpetas 
         //Que tenia el usuario
-        $excepciones->redirigirPorErrorSistema("ActualizarUsuarioBBDD",true,$excep);              
+       $excepciones->redirigirPorErrorSistema("ActualizarUsuarioBBDD",true,$excep);              
         
     
     }finally {
         Conne::disconnect($con);
+        
     }
     
     

@@ -69,19 +69,7 @@ public function eliminarDirectoriosUsuario($opc) {
     
     switch ($opc) {
         
-        case "actualizar":
-
-             //Esta actualizando datos
-            $fotos = "../photos/".$usuViejo;
-            $datos = "../datos_usuario/".$usuViejo;
-            $videos = "../Videos/".$usuViejo;
-            //renombrarActualizar
-                if(isset($_SESSION["userTMP"])){
-                $opc = "eliminamosViejosDirectoriosActualizar";
-            }else{
-                $opc = "registrar";
-            }
-            break;
+        
           
         case "registrar":
             
@@ -97,23 +85,10 @@ public function eliminarDirectoriosUsuario($opc) {
            
             break;
         
-        case "actualizarTMP":
-            
-                $fotos = "../Sistema/TMP_ACTUALIZAR/photos/".$usuViejo;
-                $datos = "../Sistema/TMP_ACTUALIZAR/datos_usuario/".$usuViejo;
-                $videos = "../Sistema/TMP_ACTUALIZAR/Videos/".$usuViejo;
-            
-                     break;
-
         
-        case "renombrarActualizar":
-            $fotos = "../photos/".$usuViejo;
-            $datos = "../datos_usuario/".$usuViejo;
-            $videos = "../Videos/".$usuViejo;
-            $opc ="eliminamosViejosDirectoriosActualizar";
            
             
-            break;
+          
             
         default:
             
@@ -150,37 +125,7 @@ public function eliminarDirectoriosUsuario($opc) {
 //fin eliminarDirectoriosUsuario   
 }
 
-   
-/**
- * Este metodo primero intenta eliminar los directorios <br />
- * que se han cambiado de nombre o actualizado cuando un <br />
- * usuario se esta actualiando los datos y hay un error. <br />
- * Despues intenta restaurar la copia de los directorios <br />
- * que se ha hecho antes de intentar hacer una modificacion. <br />
- * @param type String 
- * name $opc 
- * Description : Opcion para tratar el error 
- */ 
-public static function restaurarAntiguosDirectoriosAlActualizar($opc) {
-    
-    
-    // Restauramos la copia de los archivos
-    //que se han hecho antes de hacer cualquier 
-    //modificacion
-    
-    if(isset($_SESSION["userTMP"])){
-        $usuarioLogeado = $_SESSION["userTMP"]->getValue('nick');
-    }
-   
-   
-        Directorios::copiarDirectorios("../Sistema/TMP_ACTUALIZAR/".$usuarioLogeado."/photos/", "../photos/".$usuarioLogeado,$opc);
-        Directorios::copiarDirectorios("../Sistema/TMP_ACTUALIZAR/".$usuarioLogeado."/datos_usuario/", "../datos_usuario/".$usuarioLogeado,$opc);
-        Directorios::copiarDirectorios("../Sistema/TMP_ACTUALIZAR/".$usuarioLogeado."/Videos/", "../Videos/".$usuarioLogeado,$opc);
 
-        
-
-//fin restaurarAntiguosDirectoriosAlActualizar    
-}
 
 /**
  * Metodo que elimin a el subdirectorio
@@ -357,25 +302,7 @@ public function redirigirPorErrorSistema($opc,$grado,$excep){
    // echo PHP_EOL."opcion vale ".$opc." y gr4ado vale ".$grado." el id es ".$_SESSION["datos"]["id"].PHP_EOL;
     switch ($opc) {
       
-        case $opc == "crearDirectorios_TMP":
-           
-                //Recuperamos los mensajes de error
-            $_SESSION['error'] = ERROR_ACTUALIZAR_USUARIO;
-            $_SESSION["paginaError"] = "registrarse.php";
-            
-            $this->tratarDatosErrores("Error al crear directorios TMP",$grado,$excep);  
-                die();    
-                break;
-           
-        case $opc == "copiarDirectorios_a_TMP_actualizar":
-            
-            $_SESSION['error'] = ERROR_ACTUALIZAR_USUARIO;
-            $_SESSION["paginaError"] = "registrarse.php";
-            
-            $this->tratarDatosErrores("Error al copiar los directorios personales del usuario a la carpeta TMP cuando se estaba actualizando",$grado,$excep);  
-                die();    
-                break;
-              
+      
            
         case $opc == "registrar":
             
@@ -388,26 +315,8 @@ public function redirigirPorErrorSistema($opc,$grado,$excep){
             
                 die();
                 break;
-         
-        
-           
-        
-           
-        case $opc == "ActualizarUsuarioBBDD":
-       
-            $_SESSION['error'] = ERROR_ACTUALIZAR_USUARIO;
-            $_SESSION["paginaError"] = "registrarse.php";
-            $this->tratarDatosErrores("Error en el gestor bbdd al actualizar usuario",$grado,$excep);
-            //Eliminamos los posibles nuevos directorios
-            //que creasen en el intento de actualizar
-            $this->eliminarDirectoriosUsuario("registrar");
-            //Restauramos los viejos directorios
-            $this->restaurarAntiguosDirectoriosAlActualizar("renombrarFotoActualizar");
-            
-                die();
-                break;
-           
-        case $opc == "RegistrarUsuarioBBDD":
+
+         case $opc == "RegistrarUsuarioBBDD":
             
             $_SESSION['error'] = ERROR_REGISTRAR_USUARIO;
             $_SESSION["paginaError"] = "registrarse.php";
@@ -417,7 +326,26 @@ public function redirigirPorErrorSistema($opc,$grado,$excep){
             
                 die();
                 break;
-        
+           
+        case $opc == "ActualizarUsuarioBBDD":
+       
+            $_SESSION['error'] = ERROR_ACTUALIZAR_USUARIO;
+            $_SESSION["paginaError"] = "registrarse.php";
+            $this->tratarDatosErrores("Error en el gestor bbdd al actualizar usuario",$grado,$excep);
+            
+                die();
+                break;
+            
+         case $opc == "actualizar":
+            
+            $_SESSION['error'] = ERROR_ACTUALIZAR_USUARIO;
+            $_SESSION["paginaError"] = "registrarse.php";
+            $this->tratarDatosErrores("No se pudo renombrar o eliminar la vieja la foto del usuario cuando estaba actualizando su nick",$grado,$excep);    
+         
+                die();
+                break;
+            
+       
         case $opc == "ProblemaEmail":
             
             $grado = false;
@@ -428,7 +356,8 @@ public function redirigirPorErrorSistema($opc,$grado,$excep){
         
         default:
             
-             $this->tratarDatosErrores($opc,$grado,$excep);
+             $this->tratarDatosErrores($opc,false,$excep);
+            die();
             break;
     } 
     
