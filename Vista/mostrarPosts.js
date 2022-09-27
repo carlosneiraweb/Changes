@@ -52,10 +52,10 @@ function cargarPost(objPost){
     
     for(var i = 0; i < objPost.length; i++){
         if(i !=0){
-            
+         //alert(objPost[i].idPost);   
             //Saltamos elPost
             //El usuario esta bloqueado totalmente
-        //if(objPost[i].coment == 2){continue;} 
+        if(objPost[i].total == '1'){continue;} 
         $("#posts").append($('<section>',{
                 class : " cont_post",
                 id : objPost[i].idPost
@@ -76,7 +76,7 @@ function cargarPost(objPost){
             }).append($('<figure>',{
                 class : 'lanzar'
             }).append($('<img>',{
-                src : "../photos/"+objPost[i].nick+"/"+objPost[i].ruta+".jpg",
+                src : "../photos/"+objPost[i].directorio+".jpg",
                 alt : "Foto del articulo a cambiar"
             }))).append($('<section>',{
                 class : 'comentario'
@@ -128,12 +128,12 @@ function cargarPost(objPost){
                 
                     //Si el usario ha sido bloqueado parcialmente
                     //eliminamos el boton de comentar con JAVASCRIPT
-                    if(objPost[i].coment == 1){   
+                    if(objPost[i].parcial == '1'){   
                         //$("."+objPost[i].idPost).hide();//.attr('disabled',true);  
                         $("#btnComentar").hide();
                     };
                     
-                    if(objPost[i].coment == 2){
+                    if(objPost[i].parcial == '1'){
                         
                         $("#"+objPost[i].idPost).empty();
                         $("#"+objPost[i].idPost).prepend($('<section>',{

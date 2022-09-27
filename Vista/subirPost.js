@@ -146,11 +146,11 @@ function cargarPeticionSubirPost(tipo, parametros){
 * Cargamos las secciones de los artículos
 * */   
 function cargarSecciones(objSeccion){
-    //alert(objSeccion[0].nombre_seccion);
+    //alert(objSeccion[0].nombreSeccion);
     for(var i = 0; i < objSeccion.length; i++){
         var objTmpSeccion = objSeccion[i];
             $('#seccionSubirPost').append($('<option>',{
-            text : objTmpSeccion.nombre_seccion
+            text : objTmpSeccion.nombreSeccion
         }));
       
     }  

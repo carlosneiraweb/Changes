@@ -453,8 +453,8 @@ function ingresarPost(){
     
         $articulo = new Post(array(
             "idUsuarioPost" => $_SESSION['userTMP']->getValue('nick'),
-            "secciones_idsecciones" => $_SESSION['post']['seccionSubirPost'],
-            "tiempo_cambio_idTiempoCambio" => $_SESSION['post']['tiempoCambioSubirPost'],
+            "idSecciones" => $_SESSION['post']['seccionSubirPost'],
+            "tiempoCambioIdTiempoCambio" => $_SESSION['post']['tiempoCambioSubirPost'],
             "titulo" => $_SESSION['post']['tituloSubirPost'],
             "comentario" => $_SESSION['post']['comentarioSubirPost'],
             "precio" => $_SESSION['post']['precioSubirPost'],

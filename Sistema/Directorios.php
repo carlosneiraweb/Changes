@@ -234,7 +234,7 @@ class Directorios {
           * Tenemos que usar THROWABLE para lanzar una excepcion.</br>
           */
             
-final static function crearSubdirectorio($usuario,$opc){
+final static function crearSubdirectorio($usuario, $opc){
         
         $excepciones =  new MisExcepciones(CONST_ERROR_CREAR_SUBDIRECTORIO_POST[1], CONST_ERROR_CREAR_SUBDIRECTORIO_POST[0]);  
         

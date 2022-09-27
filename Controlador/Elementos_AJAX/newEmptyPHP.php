@@ -1,5 +1,7 @@
 <?php
 
+
+
 header('Content-type: application/json; charset=utf-8');
 header('Cache-Control: no-cache, must-revalidate');
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
@@ -61,13 +63,11 @@ try {
         $usuario = $_GET['usuario'];
     }
 
-  
+
 
     if ($opc == "PPS") {
 
-        
-      
-        
+
         $sql = "SELECT SQL_CALC_FOUND_ROWS idPost FROM " . TBL_POST . "  ORDER BY idPost DESC LIMIT :startRow, :numRows";
         //$sql = "SELECT idPost FROM post ORDER BY fechaPost  DESC";
         $stmBus = $conPost->prepare($sql);
@@ -84,30 +84,31 @@ try {
 
         $rs = array();
         array_push($rs, $row);
-        
-       
+
+
         foreach ($v as $id) {
-            
+
+
             $sqlPost = "select p.idPost, u.nick, u.idUsuario as idUsu,
-                    prov.nombreProvincia AS provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, 
-                    p.titulo,  img.directorio, p.comentario, tc.tiempo as tiempoCambio                   
-                        from post p
-                        inner join usuario AS u on u.idUsuario= p.idUsuarioPost
-                        inner join direccion AS dire on dire.idDireccion = u.idUsuario
-                        inner join provincias AS  prov on prov.nombreProvincia = dire.provincia
-                        inner join imagenes AS img on img.postIdPost = :idPost 
-                        inner join tiempo_cambio AS tc on tc.idTiempoCambio = p.tiempoCambioIdTiempoCambio
-                        where p.idPost = :idPost limit 1";
-       
+                    prov.nombre AS provincia, DATE_FORMAT(p.fechaPost,'%d-%m-%Y')as fecha, 
+                    p.titulo, img.nickUsuario, img.ruta, p.comentario, tc.tiempo as tiempoCambio                   
+from post p
+inner join " . TBL_USUARIO . " AS u on u.idUsuario= p.idUsuarioPost
+inner join " . TBL_DIRECCION . " AS dire on dire.idDireccion = u.idUsuario
+inner join " . TBL_PROVINCIAS . " AS  prov on prov.nombre = dire.provincia
+inner join " . TBL_IMAGENES . " AS img on img.post_idPost = :idPost 
+inner join " . TBL_TIEMPO_CAMBIO . " AS tc on tc.idTiempoCambio = p.tiempo_cambio_idTiempoCambio
+where p.idPost = :idPost limit 1";
+            //echo $sqlPost;      
+
             $stm3Bus = $conPost->prepare($sqlPost);
             $stm3Bus->bindValue(":idPost", $id[0], PDO::PARAM_INT);
             $stm3Bus->execute();
             $tmp = $stm3Bus->fetch();
-            $stm3Bus->closeCursor();
-           
+            // $stm3Bus->closeCursor();
 
             $sqlTotal = "Select IFNULL(COUNT(idComentariosPosts),0) as comentarios "
-                    . " FROM " . TBL_COMENTARIO . " where postIdPost = :idPost";
+                    . " FROM " . TBL_COMENTARIO . " where post_idPost = :idPost";
             //echo $sqlTotal;
 
             $stm3To = $conPost->prepare($sqlTotal);
@@ -118,52 +119,45 @@ try {
             $x = $tmp3To[0];
             //var_dump($x);
             array_push($tmp, $x);
-            
+
+
             //inicio=0&opcion=PPS
             //entrar con usuario bloqueado
             //OJO AL PAGESIZE
             //Solo en caso el usuario se logee
-            
             if (isset($_SESSION['userTMP'])) {
-                $usuBloqueados = $usuBloqueo->devuelveUsuariosBloqueadosTotal($tmp[2]);
+                $usuBloqueados = $usuBloqueo->devuelveUsuariosBloqueados($tmp[2]);
+
+                //var_dump($usuBloqueados);
+                $totalUsuarioBloqueado = count($usuBloqueados);
                 //  Si el usuario que ha colgado el Post ha bloqueado 
                 // algun usuario se verifica que no sea el que esta logueado
                 //Se le impide ver este Post
-                if($usuBloqueados != null){
-                    $t = count($usuBloqueados);
-                        for($i = 0; $i < $t; $i++){
-                            if($usuLogeado == $usuBloqueados[$i][0]){
-                                $to['total'] = 1;
-                                
-                                    continue;
-                            }
+
+                if ($totalUsuarioBloqueado > 0) {
+                    for ($i = 0; $i < $totalUsuarioBloqueado; $i++) {
+                        if (($usuLogeado == $usuBloqueados[$i][0]) and ($usuBloqueados[$i]['bloqueadoTotal'] == 1)) {
+                            $tmp['coment'] = 2;
+                        } else if (($usuLogeado == $usuBloqueados[$i][0]) and ($usuBloqueados[$i]['bloqueadoParcial'] == 1)) {
+                            //Agregamos un testigo para cuando se 
+                            //muestre en JAVASCRIPT el POST
+                            //Se inavilite el boton de comentar
+                            $tmp['coment'] = 1;
                         }
-                    array_push($tmp,$to);     
-                }        
-                
-                $usuBloqueados = $usuBloqueo->devuelveUsuariosBloqueadosParcial($tmp[2]);
-                
-                if($usuBloqueados != null){
-                    $t = count($usuBloqueados);
-                        for($i = 0; $i < $t; $i++){
-                            if($usuLogeado == $usuBloqueados[$i][0]){
-                                $to['parcial'] = 1;
-                                
-                                    continue;
-                            }
-                        }
-                }      
-                
-                array_push($tmp,$to);
-                
+                    }
+
+                    array_push($rs, $tmp);
+                } else {
+
+                    array_push($rs, $tmp);
+                }
+            } else {
+                array_push($rs, $tmp);
             }
-            
-            array_push($rs,$tmp);
         }
 
+
         echo json_encode($rs);
-        
-         
     } else if ($opc == "SLD") {
         //Nos quedamos con la parte necesaria para sacar de la tabla imagenes el id del post
         //Ejemplo '../photos/joseMartin/50000/5.jpg'
@@ -213,3 +207,4 @@ try {
 }
     
     
+

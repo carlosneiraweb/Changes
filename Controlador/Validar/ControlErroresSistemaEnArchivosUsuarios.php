@@ -140,7 +140,7 @@ function comprobarEmailNuevo($user){
     global $foto;
     global $objMandarEmails;
      
-     
+   
     crearRutasDirectorios($_SESSION["datos"]["id"]);
     crearDirectorios($tmpNuevosDatos);
     
@@ -351,10 +351,11 @@ function validarCamposRegistro($st, $user,$id){
                 
             
             if($test != "0" && $test != "4"){
+                echo $test;
                 //SI hay algun problema validar foto
                 $testValidoReg[1] =  false;
                 $_SESSION['paginaError'] = 'registrarse.php';
-                mostrarErrorRegistro();  
+                ///mostrarErrorRegistro();  
             }else{
                 //Si todo ha ido bien
                 $testValidoReg[1] = true;

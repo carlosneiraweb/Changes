@@ -27,8 +27,8 @@ class Post extends DataObj{
     protected $data = array(
         
         "idUsuarioPost" => "",
-        "secciones_idsecciones" => "",
-        "tiempo_cambio_idTiempoCambio" => "",
+        "idSecciones" => "",
+        "tiempoCambioIdTiempoCambio" => "",
         "titulo" => "",
         "comentario" => "",
         "precio" => "",
@@ -337,8 +337,8 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
     
         $sql = "UPDATE ".TBL_POST. " SET "
                . "idUsuarioPost = (SELECT idUsuario FROM ".TBL_USUARIO. " WHERE nick = :nick), "
-               . "secciones_idsecciones = (SELECT idSecciones FROM ".TBL_SECCIONES. " WHERE nombre_seccion = :secciones_idsecciones), "
-               . "tiempo_cambio_idTiempoCambio = (SELECT idTiempoCambio FROM ".TBL_TIEMPO_CAMBIO. " WHERE tiempo = :tiempo_cambio_idTiempoCambio), "
+               . "seccionesIdsecciones = (SELECT idSecciones FROM ".TBL_SECCIONES. " WHERE nombreSeccion = :seccionesIdsecciones), "
+               . "tiempoCambioIdTiempoCambio = (SELECT idTiempoCambio FROM ".TBL_TIEMPO_CAMBIO. " WHERE tiempo = :tiempoCambioIdTiempoCambio), "
                . "titulo = :titulo, "
                . "comentario = :comentario, "
                . "precio = :precio, "
@@ -350,8 +350,8 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
         
             $stm = $con->prepare($sql);
             $stm->bindValue(":nick", $this->data["idUsuarioPost"], PDO::PARAM_STR);
-            $stm->bindValue(":secciones_idsecciones", $this->data["secciones_idsecciones"], PDO::PARAM_STR);
-            $stm->bindValue(":tiempo_cambio_idTiempoCambio", $this->data["tiempo_cambio_idTiempoCambio"], PDO::PARAM_STR);
+            $stm->bindValue(":seccionesIdsecciones", $this->data["seccionesIdsecciones"], PDO::PARAM_STR);
+            $stm->bindValue(":tiempoCambioIdTiempoCambio", $this->data["tiempoCambioIdTiempoCambio"], PDO::PARAM_STR);
             $stm->bindValue(":titulo", $this->data["titulo"], PDO::PARAM_STR);
             $stm->bindValue(":comentario", $this->data["comentario"], PDO::PARAM_STR);
             $stm->bindValue(":precio", $this->data["precio"], PDO::PARAM_STR);
@@ -398,9 +398,9 @@ private  function insertarPalabrasQueridas(){
                     //Pasamos en bucle insertandolas si no son null
                     for($i=0; $i < 4; $i++){  
                         if($buscadas[$i] == null){$buscadas[$i] = "";} //Nos aseguramos 4 palabras
-                            $st3 = "Insert into ".TBL_PBS_QUERIDAS." (idPost_queridas, palabrasBuscadas) values (:idPost_queridas, :palabra)";
+                            $st3 = "Insert into ".TBL_PBS_QUERIDAS." (idPostQueridas, palabrasBuscadas) values (:idPostQueridas, :palabra)";
                             $st3 = $con->prepare($st3);
-                            $st3->bindValue(":idPost_queridas", $_SESSION['lastId'][0], PDO::PARAM_INT);
+                            $st3->bindValue(":idPostQueridas", $_SESSION['lastId'][0], PDO::PARAM_INT);
                             $st3->bindValue(":palabra", $buscadas[$i], PDO::PARAM_STR);
                             $st3->execute();
                     }       
@@ -442,9 +442,9 @@ private function insertarPalabrasOfrecidas(){
                 
                 for($i = 0; $i < 4; $i++){
                      if($ofrecidas[$i] == null){$ofrecidas[$i] = "";} //Nos aseguramos 4 palabras
-                    $st3 = "Insert into ".TBL_PBS_OFRECIDAS." (idPost_ofrecidas, palabrasOfrecidas) values (:idPost_ofrecidas, :palabra)";
+                    $st3 = "Insert into ".TBL_PBS_OFRECIDAS." (idPostOfrecidas, palabrasOfrecidas) values (:idPostOfrecidas, :palabra)";
                     $st3 = $con->prepare($st3);
-                    $st3->bindValue(":idPost_ofrecidas", $_SESSION['lastId'][0], PDO::PARAM_INT);
+                    $st3->bindValue(":idPostOfrecidas", $_SESSION['lastId'][0], PDO::PARAM_INT);
                     $st3->bindValue(":palabra", $ofrecidas[$i], PDO::PARAM_STR);
                     $st3->execute();
                     
@@ -476,7 +476,7 @@ private function insertarPalabrasOfrecidas(){
 
 private function insertarImagenDemo(){
     
-    $url = $_SESSION['nuevoSubdirectorio'][1].'/demo';
+    $url = $_SESSION['nuevoSubdirectorio'][0]."/".$_SESSION['nuevoSubdirectorio'][1].'/demo';
     
     $excepciones = new MisExcepciones(CONST_ERROR_BBDD_INGRESAR_IMG_DEMO_SUBIR_POST[1], CONST_ERROR_BBDD_INGRESAR_IMG_DEMO_SUBIR_POST[0]);
     
@@ -486,11 +486,10 @@ private function insertarImagenDemo(){
         
              //Insertamos en la tabla imagenes la ruta de la imagen demo
             
-            $st4 = "Insert into ".TBL_IMAGENES." (post_idPost, nickUsuario, ruta) values (:idPost, :nickUsuario, :ruta)";
+            $st4 = "Insert into ".TBL_IMAGENES." (postIdPost,directorio) values (:idPost, :directorio)";
             $st4 = $con->prepare($st4);
             $st4->bindValue(":idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
-            $st4->bindParam(':nickUsuario', $_SESSION['userTMP']->getValue('nick'),PDO::PARAM_STR);
-            $st4->bindValue(":ruta", $url, PDO::PARAM_STR);
+            $st4->bindValue(":directorio", $url, PDO::PARAM_STR);
              
             $st4->execute();
            
@@ -525,8 +524,8 @@ public function insertPost(){
             $sql = " INSERT INTO ".TBL_POST. "(
                    
                    idUsuarioPost,
-                   secciones_idsecciones,
-                   tiempo_cambio_idTiempoCambio,
+                   seccionesIdsecciones,
+                   tiempoCambioIdTiempoCambio,
                    titulo,
                    comentario,
                    precio,
@@ -534,8 +533,8 @@ public function insertPost(){
                    
                    ) VALUES (
                    (SELECT idUsuario FROM ".TBL_USUARIO. " WHERE nick = :nick),
-                   (SELECT idSecciones FROM ".TBL_SECCIONES. " WHERE nombre_seccion = :secciones_idsecciones),
-                   (SELECT idTiempoCambio FROM ".TBL_TIEMPO_CAMBIO. " WHERE tiempo = :tiempo_cambio_idTiempoCambio),
+                   (SELECT idSecciones FROM ".TBL_SECCIONES. " WHERE nombreSeccion = :seccionesIdsecciones),
+                   (SELECT idTiempoCambio FROM ".TBL_TIEMPO_CAMBIO. " WHERE tiempo = :tiempoCambioIdTiempoCambio),
                    :titulo,
                    :comentario,
                    :precio,
@@ -548,8 +547,8 @@ public function insertPost(){
             $date = date('Y-m-d');
             $st = $con->prepare($sql);
             $st->bindValue(":nick", $this->data["idUsuarioPost"], PDO::PARAM_STR);
-            $st->bindValue(":secciones_idsecciones", $this->data["secciones_idsecciones"], PDO::PARAM_STR);
-            $st->bindValue(":tiempo_cambio_idTiempoCambio", $this->data["tiempo_cambio_idTiempoCambio"], PDO::PARAM_STR);
+            $st->bindValue(":seccionesIdsecciones", $this->data["idSecciones"], PDO::PARAM_STR);
+            $st->bindValue(":tiempoCambioIdTiempoCambio", $this->data["tiempoCambioIdTiempoCambio"], PDO::PARAM_STR);
             $st->bindValue(":titulo", $this->data["titulo"], PDO::PARAM_STR);
             $st->bindValue(":comentario", $this->data["comentario"], PDO::PARAM_STR);
             $st->bindValue(":precio", $this->data["precio"], PDO::PARAM_STR);

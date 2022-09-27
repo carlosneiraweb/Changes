@@ -37,12 +37,12 @@ if(!isset($_SESSION))
 function crearSubdirectorio(){
    
    /**/
-   $nickUsu = $_SESSION['userTMP']->getValue('nick');
+   $id = $_SESSION['userTMP']->getValue('idUsuario');
    //[0] nombre usuario
-   $_SESSION['nuevoSubdirectorio'][0] = $nickUsu;
+   $_SESSION['nuevoSubdirectorio'][0] = $id;
    //[1] numero subdirectorio ejemplo "1"
-   $_SESSION['nuevoSubdirectorio'][1] = Directorios::crearSubdirectorio('../photos/'.$nickUsu,"crearSubdirectorio");
-  // echo 'responde '."../photos/".$_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1];
+   $_SESSION['nuevoSubdirectorio'][1] = Directorios::crearSubdirectorio('../photos/'.$id,"crearSubdirectorio");
+  //echo 'responde '."../photos/".$_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1];
    Directorios::copiarFoto("../photos/demo.jpg","../photos/".$_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1]."/demo.jpg", "copiarDemoSubirPost");    
    
 //fin crearSubdirectorio    

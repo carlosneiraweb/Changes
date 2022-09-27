@@ -484,23 +484,23 @@ public final function insert(){
  * @param type idUsuario
  * @return type array de ids de usuarios
  */
-public final function devuelveUsuariosBloqueados($id){
+public final function devuelveUsuariosBloqueadosTotal($id){
     
    
     $conBloqueo = Conne::connect();
-       
+   
+    
         try{
 
-            $sqlBloqueo = "Select idUsuarioBloqueado, bloqueadoTotal, bloqueadoParcial
-            from usuarios_bloqueados where usuario_idUsuario = :usuario_idUsuario;";
-
-            $stmBloqueo = $conBloqueo->prepare($sqlBloqueo);
-            $stmBloqueo->bindValue(":usuario_idUsuario",$id, PDO::PARAM_STR);
-            $stmBloqueo->execute();
-            $usuBloqueados = $stmBloqueo->fetchAll();
+            $sqlBloqueoTotal = "Select idUsuarioBloqueado 
+            from ".TBL_BLOQUEADOS_TOTAL." where usuarioidUsuario = :usuarioIdUsuario;";
            
-             
-            $stmBloqueo->closeCursor();
+            $stmBloqueoTotal = $conBloqueo->prepare($sqlBloqueoTotal);
+            $stmBloqueoTotal->bindValue(":usuarioIdUsuario",$id, PDO::PARAM_INT);
+            $stmBloqueoTotal->execute();
+            $usuBloqueados = $stmBloqueoTotal->fetchAll();
+            $stmBloqueoTotal->closeCursor();
+            
             Conne::disconnect($conBloqueo);
             
             return $usuBloqueados;
@@ -515,7 +515,46 @@ public final function devuelveUsuariosBloqueados($id){
  // devuelveUsuariosBloqueados()  
 }
     
- 
+/**
+ * Metodo que recive el id del usuario logeado
+ * y devuelve los posibles usuarios bloqueados
+ * @param type idUsuario
+ * @return type array de ids de usuarios
+ */
+public final function devuelveUsuariosBloqueadosParcial($id){
+    
+   
+    $conBloqueo = Conne::connect();
+    
+    
+        try{
+
+            
+            $sqlBloqueoParcial = "Select idUsuarioBloqueado 
+            from ".TBL_BLOQUEADOS_PARCIAL."  where usuarioIdUsuario = :usuarioIdUsuario;";
+
+            $stmBloqueoParcial = $conBloqueo->prepare($sqlBloqueoParcial);
+            $stmBloqueoParcial->bindValue(":usuarioIdUsuario",$id, PDO::PARAM_INT);
+            $stmBloqueoParcial->execute();
+            $usuBloqueados = $stmBloqueoParcial->fetchAll();
+            $stmBloqueoParcial->closeCursor();
+            
+           
+            Conne::disconnect($conBloqueo);
+            
+            return $usuBloqueados;
+        } catch (Exception $ex) {
+            Conne::disconnect($conBloqueo);
+            echo $ex->getCode();
+            echo '<br>';
+            echo $ex->getLine().'<br>';
+            echo $ex->getFile().'<br>';
+        }
+
+ // devuelveUsuariosBloqueados()  
+}
+    
+
 
 /**
  * Metodo que devuelve la direcion 
