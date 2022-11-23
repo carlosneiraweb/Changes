@@ -15,46 +15,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MetodosInfo
                                     
 class MisExcepciones extends MetodosInfoExcepciones{
 
-   private $misExcepciones = Array();
-    
-    public function __construct($mensaje,$codigo) {
-        $this->misExcepciones[0] = $mensaje;
-        $this->misExcepciones[1] = $codigo;
-        
-    }
-    
-    function __destruct() {
-        
-    }
-
-   /**
-     * Metodo que recoje las excepciones </br>
-     * originales de PHP </br>
-     * Es pasado por referencia </br>
-     * @param type Objeto tipo Exception</br>
-     * 
-     * @return type Array()
-     */
-    public function recojerExcepciones(&$ex){
-        
-        $excepciones = array();
-        $excepciones[0] = $ex->getMessage();
-        $excepciones[1] = $ex->getCode();
-        $excepciones[2] = $ex->getFile();
-        $excepciones[3] = $ex->getLine();
-        $excepciones[4] = $ex->getTraceAsString();
-        array_push($excepciones, $this->misExcepciones);
-        //var_dump($excepciones);
-        //echo PHP_EOL;
-        unset($ex);
-        return $excepciones;
-        
-        
-        //fin recojerExcepciones
-        
-    } 
-    
-
+   
 /**
  * Metodo que elimina los directorios creados
  * al registrarse un usuario o actualizar los
@@ -128,7 +89,7 @@ public function eliminarDirectoriosUsuario($opc) {
 
 
 /**
- * Metodo que elimin a el subdirectorio
+ * Metodo que elimina el subdirectorio
  * creado al intentar registrar un post
  * y algo sale mal
  */
@@ -191,7 +152,7 @@ public function eliminarVariablesSesionPostAcabado(){
             unset($_SESSION['error']);
         }
         
-     if(isset($_SESSION['post'])){unset($_SESSION['post']);}
+    if(isset($_SESSION['post'])){unset($_SESSION['post']);}
      
     /*
      * Se eliminara en el metodo
@@ -293,7 +254,7 @@ public function eliminarDatosErrorAlSubirPost($error,$grado,$excep){
  */
 
 
-public function redirigirPorErrorSistema($opc,$grado,$excep){
+public function redirigirPorErrorSistema($opc,$grado){
 
    $_SESSION['errorArchivos'] = "existo";
  
@@ -310,7 +271,7 @@ public function redirigirPorErrorSistema($opc,$grado,$excep){
             $_SESSION["paginaError"] = "registrarse.php";
             $this->eliminarDirectoriosUsuario($opc);
             $_SESSION["usuRegistro"]->eliminarPorId($_SESSION["datos"]["id"]);
-            $this->tratarDatosErrores($opc,$grado,$excep);
+            $this->tratarDatosErrores($opc,$grado);
             $this->eliminarVariablesSesionUsuario();
             
                 die();
@@ -321,7 +282,7 @@ public function redirigirPorErrorSistema($opc,$grado,$excep){
             $_SESSION['error'] = ERROR_REGISTRAR_USUARIO;
             $_SESSION["paginaError"] = "registrarse.php";
             $_SESSION['errorArchivos'] = "existo";
-            $this->tratarDatosErrores("Error en el gestor bbdd al registrar usuario",$grado,$excep);
+            $this->tratarDatosErrores("Error en el gestor bbdd al registrar usuario",$grado);
             
             
                 die();

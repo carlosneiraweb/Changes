@@ -56,7 +56,7 @@ if(!isset($_SESSION)){
  function crearDirectorios($dir){
              
             //Creamos los directorios del registro
-        //echo 'crear Directorios '.$dir[1].' '.$dir[3];  
+        
         Directorios::crearDirectorio($dir[0],$dir[3]);
         Directorios::crearDirectorio($dir[1],$dir[3]);
         Directorios::crearDirectorio($dir[2],$dir[3]);
@@ -76,7 +76,7 @@ if(!isset($_SESSION)){
     
        
         global $tmpNuevosDatos;
-       
+        
         
         //Este array contiene la ruta para crear los directorios 
         //que se necesitan en el sistema al registrarse
@@ -103,7 +103,7 @@ if(!isset($_SESSION)){
  * y <br/>
  * $_SESSION['usuario']['email'] son los datos que el usuario <br/>
  * va introduciendo en el formulario <br/>
- * @param @nombre usuario <br/>
+ * @param $user <br/>
  *  @tipo objeto usuario <br/>
  */
 function comprobarEmailNuevo($user){
@@ -142,6 +142,7 @@ function comprobarEmailNuevo($user){
      
    
     crearRutasDirectorios($_SESSION["datos"]["id"]);
+    
     crearDirectorios($tmpNuevosDatos);
     
         if($var == "0"){
@@ -153,7 +154,7 @@ function comprobarEmailNuevo($user){
         Directorios::renombrarFotoPerfil($destino, $_SESSION["datos"]["id"]); 
         
              $objMandarEmails->mandarEmailWelcome();
-             
+           
              
     if(isset($_SESSION["datos"])){unset($_SESSION["datos"]);}
     if(isset($_SESSION["usuRegistro"])){unset($_SESSION["usuRegistro"]);}
@@ -201,9 +202,9 @@ function modificarDirectoriosUsuario(){
      * 
      * @return boolean
      */
-function validarCamposRegistro($st, $user,$id){
+function validarCamposRegistro($st, $user){
         
-        $testValidoReg = array(null, true);
+        $testValidoReg = array(null, 1);
         global $destino;
         global $foto;
         global $usuActualiza;
@@ -230,7 +231,7 @@ function validarCamposRegistro($st, $user,$id){
                                                  
                                
                                 $testValidoReg[0] = ERROR_NOMBRE_USUARIO_EXISTE;
-                                $testValidoReg[1] =  false;
+                                $testValidoReg[1] =  0;
                                 
                                 
                             }
@@ -249,7 +250,7 @@ function validarCamposRegistro($st, $user,$id){
                                 if($_SESSION["userTMP"]->getByUserName($_SESSION['usuario']['nick'])){
                                     
                                         $testValidoReg[0] = ERROR_NOMBRE_USUARIO_EXISTE;
-                                        $testValidoReg[1] =  false;
+                                        $testValidoReg[1] =  0;
                                         
                                 }
                       
@@ -258,17 +259,17 @@ function validarCamposRegistro($st, $user,$id){
                     
                     if(!ValidoForm::validarPassword($_SESSION['usuario']['password'])){
                         $testValidoReg[0] =  ERROR_PASSWORD_INCORRECTO;
-                        $testValidoReg[1] = false;
+                        $testValidoReg[1] = 0;
                            
                     }
                     if(ValidoForm::validarIgualdadPasswords($_SESSION['usuario']['password'], $_POST['passReg2'])){
                         $testValidoReg[0] =  ERROR_IGUALDAD_PASSWORD;
-                        $testValidoReg[1] = false;
+                        $testValidoReg[1] = 0;
                            
                     }
                     if(!ValidoForm::validarEmail($_SESSION['usuario']['email'])){
                         $testValidoReg[0] = ERROR_EMAIL_INCORRECTO;
-                        $testValidoReg[1] = false;
+                        $testValidoReg[1] = 0;
                     //           
                     }
                     
@@ -279,7 +280,7 @@ function validarCamposRegistro($st, $user,$id){
                         if(!isset($_SESSION["userTMP"])){
                             
                             $testValidoReg[0] = ERROR_EMAIL_EXISTE;
-                            $testValidoReg[1] = false;
+                            $testValidoReg[1] = 0;
                             
                         }elseif(isset($_SESSION["userTMP"])){ 
                             
@@ -288,7 +289,7 @@ function validarCamposRegistro($st, $user,$id){
                             if(comprobarEmailNuevo($user)){
                                 
                                 $testValidoReg[0] = ERROR_EMAIL_EXISTE;
-                                $testValidoReg[1] = false;  
+                                $testValidoReg[1] = 0;  
                             }
                             
                         }
@@ -303,7 +304,7 @@ function validarCamposRegistro($st, $user,$id){
                     ValidoForm::campoVacio($_POST['email']) == 0 
                 ){ 
                     $testValidoReg[0] = ERROR;
-                    $testValidoReg[1] =  false;
+                    $testValidoReg[1] =  0;
                 }
                 
                 return $testValidoReg;     
@@ -312,7 +313,7 @@ function validarCamposRegistro($st, $user,$id){
                 
                     if(!ValidoForm::validaTelefono($_SESSION['usuario']['telefono'])){
                         $testValidoReg[0] =  ERROR_TELEFONO_INCORRECTO;
-                        $testValidoReg[1] = false;
+                        $testValidoReg[1] = 0;
                          
                     }
                
@@ -321,7 +322,7 @@ function validarCamposRegistro($st, $user,$id){
                         ValidoForm::campoVacio($_POST['telefono']) == 0 
                         ){ 
                         $testValidoReg[0] = ERROR;
-                        $testValidoReg[1] =  false;
+                        $testValidoReg[1] =  0;
                     }
              
                 return $testValidoReg;
@@ -330,7 +331,7 @@ function validarCamposRegistro($st, $user,$id){
                 
                     if(!ValidoForm::validarCodPostal($_SESSION['usuario']['codPostal'])){
                         $testValidoReg[0] =  ERROR_CODIGO_POSTAL;
-                        $testValidoReg[1] = false;
+                        $testValidoReg[1] = 0;
     
                     }
                     
@@ -339,7 +340,7 @@ function validarCamposRegistro($st, $user,$id){
                         ValidoForm::campoVacio($_POST['codPostal']) == 0 
                         ){ 
                         $testValidoReg[0] = ERROR;
-                        $testValidoReg[1] =  false;
+                        $testValidoReg[1] =  0;
                     }
              
                         
@@ -350,12 +351,13 @@ function validarCamposRegistro($st, $user,$id){
             $test =  Directorios::validarFoto(); 
                 
             
-            if($test != "0" && $test != "4"){
-                echo $test;
+            if($test !== 0 && $test !== 4){
+                
                 //SI hay algun problema validar foto
-                $testValidoReg[1] =  false;
+                $testValidoReg[1] =  0;
                 $_SESSION['paginaError'] = 'registrarse.php';
-                ///mostrarErrorRegistro();  
+                mostrarErrorRegistro();  
+                
             }else{
                 //Si todo ha ido bien
                 $testValidoReg[1] = true;
@@ -372,7 +374,7 @@ function validarCamposRegistro($st, $user,$id){
                     //Creamos los direcotios para el usuario 
                     //Y subimos la foto de perfil
                     $destino = "../datos_usuario/".$_SESSION['datos']['id'].'/'.$_SESSION['datos']['id'].'.jpg';
-                        crearDirectoriosRegistro($test);
+                    crearDirectoriosRegistro($test);
                 
                 //Si se ha logeado esta actualizando sus datos       
                 }else{

@@ -61,7 +61,7 @@ if (isset($_POST['opcion'])){
        $result = $gsent->fetchAll();
       
         echo json_encode($result);
-        Conne::disconnect($conCargarElementos);
+        Conne::disconnect($con);
     
      
     }catch(Exception $ex){

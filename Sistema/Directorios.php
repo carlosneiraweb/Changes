@@ -47,53 +47,47 @@ class Directorios {
             //echo  $_FILES['photoArticulo']['type'];
            //echo 'test dice '.$test;
                 
-                //Esta conversion de integer
-                //a string de $test la hacemos para usar 
-                // el simbolo === en ControlErroresSistemaEnArchivos
-                //no es necesario
+                
             if($test !== 4){
                
                 if($size > '3145728'){
-                    $test  = '1';
+                    $test  = 1;
                    
                 }
                 if(($tipo != "jpeg") and ($tipo != "jpg") and ($tipo != "image/jpeg")){
-                    $test = '10';
+                    $test = 10;
                 }
-                
-                if($test === 3){$test = '3';}
-                
-         
+
             }
-            if($test === 4){$test = '4';}
+            
                 switch ($test){
  
-                    case '0':
+                    case 0:
                         $_SESSION['error'] = null;
                         //Todo ha ido bien
                             break;
-                    case '1':
+                    case 1:
                         //Se ha sobrepasado el tamaño
                         //indicado en php.ini
-                        $_SESSION['error'] =ERROR_TAMAÑO_FOTO;
+                        $_SESSION['error'] = ERROR_TAMAÑO_FOTO;
                             break;
-                    case '2':
+                    case 2:
                         //Se ha sobrepasado el tamaño
                         //indicado en el formulario
-                        $_SESSION['error'] =ERROR_TAMAÑO_FOTO;
+                        $_SESSION['error'] = ERROR_TAMAÑO_FOTO;
                             break;
-                    case '3':
+                    case 3:
                         //El archivo ha subido parcialmente
                         $_SESSION['error'] = ERROR_INSERTAR_FOTO;
                             break;
                        
-                    case '4':
+                    case 4:
                        //No se ha subido ningun archivo
                         $_SESSION['error'] = ERROR_FOTO_NO_ELIGIDA;
                             break;
                         
                    
-                    case '10':
+                    case 10:
                          $_SESSION['error'] = ERROR_FORMATO_FOTO;
                             break;    
                     
@@ -193,26 +187,33 @@ class Directorios {
          */
         final static function crearDirectorio($ruta,$opc){
             //echo $ruta;
-            $excepciones = new MisExcepciones(CONST_ERROR_CREAR_DIRECTORIO[1],CONST_ERROR_CREAR_DIRECTORIO[0]);
+            
             
             try{
                 //Comprobamos que los directorios ya no existan
-                if(file_exists($ruta) || (!mkdir($ruta))){
+                if(file_exists($ruta) || (!mkdir("llllll"))){
                     
                     throw new Exception("Error al crear los directorio registro",0);
                     
                 }
-                
+              
             }catch(Exception $ex){
+                $excepciones = new MisExcepciones(CONST_ERROR_CREAR_DIRECTORIO[1],CONST_ERROR_CREAR_DIRECTORIO[0],$ex);
+                /*
+                echo $ex->getMessage();
                 
                 $excep = $excepciones->recojerExcepciones($ex);
                 $_SESSION['error'] = ERROR_INGRESAR_USUARIO;  
+                 
+                 */
                 if($opc == 'registrar'){
                     
-                    $excepciones->redirigirPorErrorSistema($opc,true,$excep);
+                   $excepciones->redirigirPorErrorSistema($opc,true);
                 }
+                 
+                
         }
-
+       
         //fin de crear directorio 
         }
         

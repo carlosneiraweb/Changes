@@ -12,6 +12,8 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/System.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
 
 
+
+
  if(!isset($_SESSION)) 
     { 
         session_start(); 

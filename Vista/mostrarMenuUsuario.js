@@ -131,7 +131,7 @@ function mostrarMenu(){
         class : 'border'
     })).append($('<p>',{
         id: 'pedirPassword',
-        text : 'Debes introducir tú viejo password'
+        text : 'Debes introducir tú actual password'
     })).append($('<input>',{
         type: 'password',
         id: 'passActualizar'

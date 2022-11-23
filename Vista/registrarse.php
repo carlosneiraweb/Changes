@@ -26,6 +26,8 @@ function mostrarErrorRegistro(){
     header('Location: mostrar_error.php');
 }
 function volverAnterior(){
+    if(isset($_SESSION['usuario'])){unset($_SESSION['usuario']);}
+    if(isset($resulTestReg)){unset($resulTestReg);}
     header("Location: index.php");
    
 }
@@ -80,13 +82,13 @@ $_SESSION["paginaError"] = basename($_SERVER['PHP_SELF']);
     // echo'<div id="ocultar" class="oculto"> </div>';  
        
         global $userReg;
-        $userReg = new Usuarios($data);
+        $userReg = new Usuarios(array());
         //Variable para recuperar
         //el resultado de la validacion
         //y el posible mensaje de error
         global $resulTestReg;
-        global $controlErrores;
-        $controlErrores = new MisExcepciones(null,null);
+        $resulTestReg = array();
+        
         
       
         
@@ -111,9 +113,11 @@ $_SESSION["paginaError"] = basename($_SERVER['PHP_SELF']);
         // Si no se ha recivido el step
         // Se muestra por primera vez el formulario
         $paso = null;
+            //se va a registrar
             if(!isset($_POST['step']) && (!isset($_SESSION['userTMP']))){
                 displayStep5(array());
             }elseif(!isset($_POST['step']) && (isset($_SESSION['userTMP']))){
+                //va actualizar sus datos
                 displayStep1(array()); 
             }
             
@@ -130,7 +134,7 @@ $_SESSION["paginaError"] = basename($_SERVER['PHP_SELF']);
             
         }elseif(isset($_POST['noAceptaCondicionesReg']) and $_POST['noAceptaCondicionesReg'] == "Salir"){
             //El usuario no acepta las condiciones
-            //Eliminado todos los directorios creados
+            
             if(isset($_SESSION['usuario'])){unset($_SESSION['usuario']);}
             volverPrincipio();
         
@@ -212,11 +216,11 @@ function displayStep1($missingFields){
     //En caso de error 
         //se muestra en el formulario
         
-    if($resulTestReg[0] != ""){
-            echo $resulTestReg[0];
+        if(isset($resulTestReg[0]) && $resulTestReg[0] != ""){
+                echo $resulTestReg[0];        
         }        
-        
-    echo'</section>';
+
+            echo'</section>';
  //fin displayStep1
 }
 
@@ -271,10 +275,10 @@ function displayStep2($missingFields){
             echo "</form>";
          //En caso de error 
         //se muestra en el formulario
-         if($resulTestReg[0] != ""){
-            echo $resulTestReg[0];
-        }    
-        echo'</fieldset>';  
+        if(isset($resulTestReg[0]) && $resulTestReg[0] != ""){
+            echo $resulTestReg[0];        
+        }     
+            echo'</fieldset>';  
         
     echo'</section>';
  //fin  displayStep2()   
@@ -345,10 +349,11 @@ function displayStep3($missingFields){
         echo'</fieldset>';
      //En caso de error 
         //se muestra en el formulario   
-     if($resulTestReg[0] != ""){
-            echo $resulTestReg[0];
-        }      
-    echo'</section>';
+        if(isset($resulTestReg[0]) && $resulTestReg[0] != ""){
+                echo $resulTestReg[0];        
+        } 
+        
+            echo'</section>';
  //fin  displayStep3()   
 }
 
@@ -395,10 +400,11 @@ function displayStep4($missingFields){
     
      //En caso de error 
         //se muestra en el formulario    
-    if($resulTestReg[0] != ""){
-            echo $resulTestReg[0];
-    }       
-    echo'</section>';
+        if(isset($resulTestReg[0]) && $resulTestReg[0] != ""){
+                echo $resulTestReg[0];        
+        }         
+    
+            echo'</section>';
     
   
 //fin displayStep4    
@@ -464,12 +470,13 @@ function confirmarRegistro(){
             "admin" => 0
            
                 ));
-            
+               
+        
             if(!isset($_SESSION["userTMP"])){
                 
                 $_SESSION["datos"]["id"] = $_SESSION["usuRegistro"]->insert();
                
-                        
+                    
                         if(isset($_SESSION['error'])){unset($_SESSION['error']);}    
                         if(isset($_POST["step"])){unset($_POST["step"]);}
                         unset($mensajeReg);
@@ -555,11 +562,11 @@ function processFormRegistro($requiredFields, $st){
         case 'step1':
             
             $resulTestReg = validarCamposRegistro($st, $userReg);
-            
+           
                 //Si ha habido algun error volvemos a mostrar el paso del formulario
                 //con los campos que ha rellenado el usuario
                 //Si todo es correcto mostramos el siguiente paso
-                if($missingFields || ($resulTestReg[1] == 0)){
+                if($missingFields || ($resulTestReg[1] === 0)){
                     displayStep1($missingFields);
                 } else{
                     displayStep2(array());
@@ -571,7 +578,7 @@ function processFormRegistro($requiredFields, $st){
             
                 //Si ha habido algun error volvemos a mostrar el paso del formulario
                 //  correcto y un mensaje con los campos correspondientes
-                if($missingFields || ($resulTestReg[1] == 0)){
+                if($missingFields || ($resulTestReg[1] === 0)){
                     displayStep2($missingFields);
                 } else{
                     displayStep3(array());
@@ -586,7 +593,7 @@ function processFormRegistro($requiredFields, $st){
             
                 //Si ha habido algun error volvemos a mostrar el paso del formulario
                 //  correcto y un mensaje con los campos correspondientes
-                if($missingFields || ($resulTestReg[1] == 0)){
+                if($missingFields || ($resulTestReg[1] === 0)){
                     displayStep3($missingFields);
                 } else{
                     displayStep4(array());

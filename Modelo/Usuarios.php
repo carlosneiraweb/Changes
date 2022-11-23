@@ -236,7 +236,7 @@ public static function getUserName($nick){
 public final function insert(){
     $con = Conne::connect();
     $idUsu;
-    $excepciones = new MisExcepciones(CONST_ERROR_BBDD_REGISTRAR_USUARIO[1],CONST_ERROR_BBDD_REGISTRAR_USUARIO[0]);
+    
     
     
         try{
@@ -319,11 +319,12 @@ public final function insert(){
             return $idUsu;
         } catch (Exception $ex) {
             //echo $ex->getMessage();
+            $excepciones = new MisExcepciones(CONST_ERROR_BBDD_REGISTRAR_USUARIO[1],CONST_ERROR_BBDD_REGISTRAR_USUARIO[0],$ex);
             Conne::disconnect($con);
            
             $con->rollBack();
-            $excep = $excepciones->recojerExcepciones($ex);
-            $excepciones->redirigirPorErrorSistema("RegistrarUsuarioBBDD",true,$excep);
+            
+            $excepciones->redirigirPorErrorSistema("RegistrarUsuarioBBDD",true);
            
         }
         
@@ -698,6 +699,7 @@ public function actualizoDatosUsuario(){
        
        $con->rollBack();
        $excep = $excepciones->recojerExcepciones($ex);
+       
         //Mandamos eliminar y restaurar las antiguas carpetas 
         //Que tenia el usuario
        $excepciones->redirigirPorErrorSistema("ActualizarUsuarioBBDD",true,$excep);              
