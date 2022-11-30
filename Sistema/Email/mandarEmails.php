@@ -33,7 +33,7 @@ class mandarEmails {
 final function mandarEmailWelcome(){
     
 
-     $excepciones = new MisExcepciones(CONST_ERROR_CONSTRUIR_DARSE_ALTA[1],CONST_ERROR_CONSTRUIR_DARSE_ALTA[0]);
+     
             //Creamos el objeto email con los datos
             //Que necesitamos de $user para el cuerpo del email
             //La cabecera y el footer son dos constantes
@@ -54,8 +54,8 @@ final function mandarEmailWelcome(){
                  
             }catch (Exception $ex){       
                 
-                $excep = $excepciones->recojerExcepciones($ex);
-                $excepciones->redirigirPorErrorSistema("ProblemaEmail",false,$excep);
+                $excepciones = new MisExcepciones(CONST_ERROR_CONSTRUIR_DARSE_ALTA[1],CONST_ERROR_CONSTRUIR_DARSE_ALTA[0],$ex);
+                $excepciones->redirigirPorErrorSistema("ProblemaEmail",false);
             }finally{
                 unset($obj);
                 unset($email);
@@ -71,7 +71,7 @@ final function mandarEmailWelcome(){
   */
   final function mandarEmailPalabrasBuscadas($datosPost,$usuInteresados,$correo,$provinciaUsuPublica,$ruta){
 
-      $excepciones = new MisExcepciones(CONST_ERROR_CONSTRUIR_PALABRAS_BUSCADAS[1],CONST_ERROR_CONSTRUIR_PALABRAS_BUSCADAS[0]);
+      
     // echo "/Changes/photos/".$ruta[0].'/'.$ruta[1].".jpg";
        //Creamos el objeto email con los datos
             //Que necesitamos de $user para el cuerpo del email
@@ -119,8 +119,8 @@ final function mandarEmailWelcome(){
                    
             }catch (Exception $ex){
                 
-                $excep = $excepciones->recojerExcepciones($ex);
-                $excepciones->redirigirPorErrorSistema('ProblemaEmail',false,$excep);
+                $excepciones = new MisExcepciones(CONST_ERROR_CONSTRUIR_PALABRAS_BUSCADAS[1],CONST_ERROR_CONSTRUIR_PALABRAS_BUSCADAS[0],$ex);
+                $excepciones->redirigirPorErrorSistema('ProblemaEmail',false);
                 
             } finally {
                 unset($email);
@@ -136,7 +136,7 @@ final function mandarEmailWelcome(){
     
 final function mandarEmailBajaUsuario($nick,$mail){
     
-          $excepciones = new MisExcepciones(CONST_ERROR_CONSTRUIR_DARSE_BAJA[1],CONST_ERROR_CONSTRUIR_DARSE_BAJA[0]);   
+          
          // echo $nick.' '.$mail;
         try {
 
@@ -161,8 +161,9 @@ final function mandarEmailBajaUsuario($nick,$mail){
 
            
         } catch (Exception $ex) {
-             $excep = $excepciones->recojerExcepciones($ex);
-             $excepciones->redirigirPorErrorSistema("ProblemaEmail",false,$excep);
+             
+            $excepciones = new MisExcepciones(CONST_ERROR_CONSTRUIR_DARSE_BAJA[1],CONST_ERROR_CONSTRUIR_DARSE_BAJA[0],$ex);   
+             $excepciones->redirigirPorErrorSistema("ProblemaEmail",false);
         }finally{
               unset($email);
         }

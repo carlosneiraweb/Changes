@@ -53,7 +53,7 @@ $conActualizar = Conne::connect();
         case 'comprobar':
             
             $idUsuComprobar = $_SESSION["userTMP"]->devuelveId();
-            $sqlComprobar = "Select password, email from usuario "
+            $sqlComprobar = "Select password, email from ".TBL_USUARIO
                     . " where idUsuario = :idUsuario;";
             
             $stmComprobar = $conActualizar->prepare($sqlComprobar);
@@ -64,7 +64,7 @@ $conActualizar = Conne::connect();
             
             //$hash = sodium_crypto_pwhash_str_verify($rsComprobar[0],$pass);
             //Comparamos password
-            $hash = System::comparaHash($comprobar, $pass);
+            $hash = System::comparaHash($pass, $comprobar);
             
             //comparamos correos
             if (strcmp($rsComprobar[1], $correo) === 0){
@@ -84,10 +84,10 @@ $conActualizar = Conne::connect();
 
         $sqlActualizo = "SELECT usu.nick as nick, usu.email as correo, 
 	dir.calle as calle, dir.numeroPortal as portal, dir.ptr as puerta, dir.codigoPostal as codigoPostal, dir.ciudad as ciudad, dir.provincia as provincia, dir.pais as pais,
-    dat.nombre as nombre, dat.apellido_1 as primerApellido, dat.apellido_2 as segundoApellido, dat.telefono as tlf, dat.genero as gn
-from usuario as usu 
-inner join direccion as dir on dir.idDireccion = usu.idUsuario
-inner join datos_usuario as dat on dat.idDatosUsuario = usu.idUsuario
+    dat.nombre as nombre, dat.apellido_1 as primerApellido, dat.apellido_2 as segundoApellido, dat.telefono as tlf, dat.genero as gn, usu.password, usu.idUsuario
+from ".TBL_USUARIO." as usu 
+inner join ".TBL_DIRECCION." as dir on dir.idDireccion = usu.idUsuario
+inner join ".TBL_DATOS_USUARIO. " as dat on dat.idDatosUsuario = usu.idUsuario
 where usu.idUsuario = :idUsuario;";
         
         $stmActualizo = $conActualizar->prepare($sqlActualizo);
@@ -96,27 +96,29 @@ where usu.idUsuario = :idUsuario;";
         $tmpAct = $stmActualizo->fetchAll();
         //var_dump($tmpAct);
         
-      
-            $_SESSION['actualizo']['nick'] = $tmpAct[0][0];
-            $_SESSION['actualizo']['correo'] = $tmpAct[0][1];
-            $_SESSION['actualizo']['calle'] = $tmpAct[0][2];
-            $_SESSION['actualizo']['portal'] = $tmpAct[0][3];
-            $_SESSION['actualizo']['puerta'] = $tmpAct[0][4];
-            $_SESSION['actualizo']['codigoPostal'] = $tmpAct[0][5]; 
-            $_SESSION['actualizo']['ciudad'] = $tmpAct[0][6]; 
-            $_SESSION['actualizo']['provincia'] = $tmpAct[0][7]; 
-            $_SESSION['actualizo']['pais'] = $tmpAct[0][8];
-            $_SESSION['actualizo']['nombre'] = $tmpAct[0][9];
-            $_SESSION['actualizo']['primerApellido'] = $tmpAct[0][10];
-            $_SESSION['actualizo']['segundoApellido'] = $tmpAct[0][11];
-            $_SESSION['actualizo']['tlf'] = $tmpAct[0][12];
-            $_SESSION['actualizo']['gn'] = $tmpAct[0][13];
-//            
-//            echo PHP_EOL;
-//            echo 'actualio';
-//            var_dump($_SESSION['actualizo']);
-       
-        if($_SESSION['actualizo']['nick'] != ""){
+        $_SESSION["actualizo"] = new Usuarios(array(
+            "nombre" => $tmpAct[0][9],
+            "apellido_1" => $tmpAct[0][10],
+            "apellido_2" => $tmpAct[0][11],
+            "calle" => $tmpAct[0][2],
+            "numeroPortal" => $tmpAct[0][3],
+            "ptr" => $tmpAct[0][4],
+            "ciudad" => $tmpAct[0][6],
+            "codigoPostal" => $tmpAct[0][5],
+            "provincia" => $tmpAct[0][7],
+            "telefono" => $tmpAct[0][12],
+            "pais" => $tmpAct[0][8],
+            "genero" => $tmpAct[0][13],
+            "email" => $tmpAct[0][1],
+            "nick" => $tmpAct[0][0],
+            "password" => $tmpAct[0][14],
+            "idUsuario" => $tmpAct[0][15],
+            "admin" => 0
+           
+                ));
+               
+               
+        if($_SESSION['actualizo']->getValue('nick') != ""){
            $test = array('respuesta'=> 'OK');
           
         }else{

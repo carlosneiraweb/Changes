@@ -54,7 +54,7 @@ do {
  * como de un formulario.
  * Si es correcto devuelve true sino false
  */
- final static function comparaHash($hash, $pass){
+ final static function comparaHash( $pass, $hash){
      
     try {
         

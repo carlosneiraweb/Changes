@@ -122,10 +122,6 @@ class Directorios {
           * opcion en caso de error <br/>
          */
         final static  function moverImagen($nombreFoto, $nuevoDirectorio, $opc){
-          
-            //echo "nombre foto".$nombreFoto."  nuevo directorio=>".$nuevoDirectorio."   "."opcion=>".$opc;
-            
-            $excepciones = new MisExcepciones(CONST_ERROR_MOVER_IMAGEN[1],CONST_ERROR_MOVER_IMAGEN[0]);      
             
             if($opc == "subirImagenPost"){
                 $mensaje = "No se pudo mover la imagen al subir un post";
@@ -133,37 +129,32 @@ class Directorios {
                 $mensaje = "No se pudo mover la imagen al registrarse.";
             }else if($opc == "actualizar" ){
                 $mensaje = "No se pudo mover la imagen al actualizar.";
-            }else{
-                $mensaje = "No se pudo mover la foto al actualizar usuario";
             }
             
-            
             try{
-                
-                
+
                 if(!move_uploaded_file($nombreFoto, $nuevoDirectorio)){
                     
                   throw new Exception($mensaje, 0);  
                 }
-             //
+           
 
             } catch (Exception $ex) {
                    
-                
-                $excep = $excepciones->recojerExcepciones($ex);
+                $excepciones = new MisExcepciones(CONST_ERROR_MOVER_IMAGEN[1],CONST_ERROR_MOVER_IMAGEN[0],$ex);      
                 
                    
                     //En caso error se llama al metodo redirigirPorErrorTrabajosEnArchivosRegistro
                     //De la clase mis excepciones con la opcion adecuada
                     if($opc == "actualizar"){
-                        $excepciones->redirigirPorErrorSistema($opc,true,$excep);    
+                        //$excepciones->redirigirPorErrorSistema($opc,true);    
                     }
                     if($opc == "registrar"){
-                        $excepciones->redirigirPorErrorSistema($opc,true,$excep);  
+                        $excepciones->redirigirPorErrorSistema($opc,true);  
                     }
                     if($opc == "subirImagenPost"){
                          $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-                        $excepciones->eliminarDatosErrorAlSubirPost("errorPost",true,$excep);
+                        $excepciones->eliminarDatosErrorAlSubirPost("errorPost",true);
                     }
                  
                  
@@ -191,7 +182,7 @@ class Directorios {
             
             try{
                 //Comprobamos que los directorios ya no existan
-                if(file_exists($ruta) || (!mkdir("llllll"))){
+                if(file_exists($ruta) || (!mkdir($ruta))){
                     
                     throw new Exception("Error al crear los directorio registro",0);
                     
@@ -199,13 +190,10 @@ class Directorios {
               
             }catch(Exception $ex){
                 $excepciones = new MisExcepciones(CONST_ERROR_CREAR_DIRECTORIO[1],CONST_ERROR_CREAR_DIRECTORIO[0],$ex);
-                /*
-                echo $ex->getMessage();
                 
-                $excep = $excepciones->recojerExcepciones($ex);
                 $_SESSION['error'] = ERROR_INGRESAR_USUARIO;  
                  
-                 */
+                
                 if($opc == 'registrar'){
                     
                    $excepciones->redirigirPorErrorSistema($opc,true);
@@ -331,7 +319,7 @@ final static function crearSubdirectorio($usuario, $opc){
             
         final static function copiarFoto($imagen, $destino,$opc){
            
-        $excepciones = new MisExcepciones(CONST_COPIAR_ARCHIVO[1], CONST_COPIAR_ARCHIVO[0]);   
+        
         if($opc == "registrar"){ 
             $mensaje = "No se pudo copiar imagen al registrarse un usuario";   
         }else{
@@ -344,12 +332,13 @@ final static function crearSubdirectorio($usuario, $opc){
             } catch (Exception  $ex) {
               
                 $_SESSION['error'] = ERROR_INGRESAR_USUARIO;
-                $excep = $excepciones->recojerExcepciones($ex);
+                $excepciones = new MisExcepciones(CONST_COPIAR_ARCHIVO[1], CONST_COPIAR_ARCHIVO[0],$ex);   
+                
                 if($opc == "registrar"){
-                    $excepciones->redirigirPorErrorSistema($opc,true,$excep);
+                    $excepciones->redirigirPorErrorSistema($opc,true);
                 }else if($opc == "copiarDemoSubirPost"){
                    
-                   $excepciones->eliminarDatosErrorAlSubirPost("errorPost",true,$excep);
+                   $excepciones->eliminarDatosErrorAlSubirPost("errorPost",true);
                 }
             }
             
@@ -519,7 +508,7 @@ public function eliminarImagenDemoSubirPost(){
         
 public static function renombrarFotoPerfil($nombreViejo, $nombreNuevo){
     
-    $excepciones = new MisExcepciones(CONST_ERROR_RENOMBRAR_IMG_REGISTRARSE[1], CONST_ERROR_RENOMBRAR_IMG_REGISTRARSE[0]);    
+    
     try{
         
         //Si el metodo recive un nombre nuevo se le asigna ese nombre. Esto ocurre
@@ -545,9 +534,9 @@ public static function renombrarFotoPerfil($nombreViejo, $nombreNuevo){
             }
  
     } catch (Exception $ex) {
-        $excep =  $excepciones->recojerExcepciones($ex);
+        $excepciones = new MisExcepciones(CONST_ERROR_RENOMBRAR_IMG_REGISTRARSE[1], CONST_ERROR_RENOMBRAR_IMG_REGISTRARSE[0],$ex);    
         $_SESSION['error'] = ERROR_INGRESAR_USUARIO;
-        $excepciones->redirigirPorErrorSistema("registrar",true,$excep);
+        $excepciones->redirigirPorErrorSistema("registrar",true);
     }
     
     
@@ -609,21 +598,21 @@ public static function renombrarFotoPerfil($nombreViejo, $nombreNuevo){
      */ 
     final static function eliminarImagen($ruta, $opc){
         //echo $ruta;
-        $excepciones =  new MisExcepciones(CONST_ERROR_ELIMINAR_ARCHIVO[1], CONST_ERROR_ELIMINAR_ARCHIVO[0]);    
+       
         try{
      
                 if(!unlink($ruta)){throw new Exception("No se pudo eliminar la imagen",0);}
             
         } catch (Exception $ex) {
-            $excep = $excepciones->recojerExcepciones($ex);
+             $excepciones =  new MisExcepciones(CONST_ERROR_ELIMINAR_ARCHIVO[1], CONST_ERROR_ELIMINAR_ARCHIVO[0],$ex);    
             if($opc == 'actualizar'){
-                $excepciones->redirigirPorErrorSistema("actualizar",true,$excep);
+                $excepciones->redirigirPorErrorSistema("actualizar",true);
             }else if($opc == "eliminarImgDemoSubirPost"){
                 $_SESSION["error"]= ERROR_INSERTAR_ARTICULO;
-                $excepciones->eliminarDatosErrorAlSubirPost("errorPost",true,$excep);   
+                $excepciones->eliminarDatosErrorAlSubirPost("errorPost",true);   
             }else if($opc == "eliminarImagenSubiendoPost"){
                 $_SESSION["error"]= ERROR_INSERTAR_ARTICULO;
-                $excepciones->redirigirPorErrorSistema("eliminarImagenSubiendoPost", true,$excep );
+                $excepciones->redirigirPorErrorSistema("eliminarImagenSubiendoPost", true);
                 
             }
            
@@ -725,7 +714,7 @@ final static function eliminarDirectoriosSistema($src,$opc){
  */
 public static function renombrarFotoActualiazar($viejoNombre,$nuevoNombre){
     
-    $excepciones =   new MisExcepciones(CONST_ERROR_RENOMBRAR_FOTO_ACTUALIZARSE[1], CONST_ERROR_RENOMBRAR_FOTO_ACTUALIZARSE[0]);
+   
     try {
 
         if(!rename($viejoNombre, $nuevoNombre)){
@@ -734,9 +723,9 @@ public static function renombrarFotoActualiazar($viejoNombre,$nuevoNombre){
            
    
     } catch (Exception $ex) {
-        
-        $excep = $excepciones->recojerExcepciones($ex);
-        $excepciones->redirigirPorErrorSistema("actualizar",true,$excep);
+         
+        $excepciones =   new MisExcepciones(CONST_ERROR_RENOMBRAR_FOTO_ACTUALIZARSE[1], CONST_ERROR_RENOMBRAR_FOTO_ACTUALIZARSE[0],$ex);
+        $excepciones->redirigirPorErrorSistema("actualizar",true);
         
     }
 

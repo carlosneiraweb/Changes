@@ -66,33 +66,39 @@ private function convertirStringDatosSesion($opc){
     
     if(isset($_SESSION['actualizo'])){    
         
-                $datosSesion = "Datos antes de la actualizacion <br>";
-                $datosSesion .= $opc;
+                
+                $datosSesion = $opc.PHP_EOL;
+                $datosSesion .= "Datos antes de la actualizacion ".PHP_EOL;
                // var_dump($_SESSION['actualizo']);
             foreach ( $_SESSION['actualizo'] as $k => $v){
             
                 $datosSesion .= $k. " => ".$v;
+                $datosSesion .= PHP_EOL;
             }
-         
-            $datosSesion .= "Datos introducidos por el usuario al actualizar. <br>";
+            $datosSesion.= PHP_EOL;
+            $datosSesion .= "Datos introducidos por el usuario al actualizar.".PHP_EOL;
             
             foreach ($_SESSION['usuario'] as $k => $v){
                 
                 $datosSesion .=  $k. " => ".$v;
+                $datosSesion .= PHP_EOL;
             }
             
     }else if(isset($_SESSION['usuario'])){      
             
-            $datosSesion = "Datos introducidos por el usuario al registrar. <br>";
-            $datosSesion .= $opc;
+        $datosSesion = $opc;
+        $datosSesion .= "Datos introducidos por el usuario al registrar.".PP_EOL;
+            
             foreach ($_SESSION['usuario'] as $k => $v){
                 
                 $datosSesion .=  $k. " => ".$v;
+                $datosSesion .= PHP_EOL;
             }
             
     } else{
             
-            $datosSesion = "El usuario ".$_SESSION['userTMP']->getValue('nick').'<br>';
+            $datosSesion = "El usuario ".$_SESSION['userTMP']->getValue('nick');
+            $datosSesion .= PHP_EOL;
             $datosSesion .=$opc;
             foreach ($_SESSION['post'] as $k => $v){
                 
@@ -100,6 +106,7 @@ private function convertirStringDatosSesion($opc){
                         
                         foreach ($v as $x => $y){
                             $datosSesion .= $x. "=>" .$y;
+                            $datosSesion .= PHP_EOL;
                         }
                     }
                     continue;

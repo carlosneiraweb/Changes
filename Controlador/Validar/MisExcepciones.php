@@ -3,7 +3,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Directorios.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MetodosInfoExcepciones.php');
-
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
 /**
  * Description of MisExcepciones
  * Clase que sobreescribe Exception
@@ -101,23 +101,6 @@ private function eliminarNuevoSubdirectorio(){
   //fin eliminarNuevoSubdirectorio  
 }
 
-
-/**
- * Metodo que elimina todas las<br>
- * variables de sesion cuando un usuario<br>
- * se estaba registrando o actualizando<br>
- * y ocurre un error.<br>
- * 
- *  */
-public function eliminarVariablesSesionUsuario(){
-   
-    if(isset($_SESSION["datos"])){unset($_SESSION["datos"]);}
-    if(isset($_SESSION["usuRegistro"])){unset($_SESSION["usuRegistro"]);}
-    if(isset($_SESSION['usuario'])){unset($_SESSION['usuario']);}
-    
- 
-//fin eliminarVariablesSesionUsuario
-}
 
 
 
@@ -283,26 +266,27 @@ public function redirigirPorErrorSistema($opc,$grado){
             $_SESSION["paginaError"] = "registrarse.php";
             $_SESSION['errorArchivos'] = "existo";
             $this->tratarDatosErrores("Error en el gestor bbdd al registrar usuario",$grado);
+            $this->eliminarVariablesSesionUsuario();
             
             
                 die();
                 break;
            
         case $opc == "ActualizarUsuarioBBDD":
-       
-            $_SESSION['error'] = ERROR_ACTUALIZAR_USUARIO;
+            
+            $_SESSION['error'] = ERROR_ACTUALIZAR_USUARIO; //No hace falta por el rollBlack de mysql
             $_SESSION["paginaError"] = "registrarse.php";
-            $this->tratarDatosErrores("Error en el gestor bbdd al actualizar usuario",$grado,$excep);
+            $this->tratarDatosErrores("Error en el gestor bbdd al actualizar usuario",$grado);
             
                 die();
                 break;
             
          case $opc == "actualizar":
             
-            $_SESSION['error'] = ERROR_ACTUALIZAR_USUARIO;
+            $_SESSION['error'] = ERROR_ACTUALIZAR_USUARIO; //Sirve de bandera en caso de error
             $_SESSION["paginaError"] = "registrarse.php";
-            $this->tratarDatosErrores("No se pudo renombrar o eliminar la vieja la foto del usuario cuando estaba actualizando su nick",$grado,$excep);    
-         
+            $this->tratarDatosErrores("No se pudo renombrar o eliminar la vieja la foto del usuario cuando estaba actualizando su nick",$grado);    
+            $_SESSION['actualizo']->actualizoDatosUsuario();
                 die();
                 break;
             
@@ -310,14 +294,14 @@ public function redirigirPorErrorSistema($opc,$grado){
         case $opc == "ProblemaEmail":
             
             $grado = false;
-            $this->tratarDatosErrores($opc,$grado,$excep);
+            $this->tratarDatosErrores($opc,$grado);
             
                 die();
                 break;
         
         default:
             
-             $this->tratarDatosErrores($opc,false,$excep);
+             $this->tratarDatosErrores($opc,false);
             die();
             break;
     } 

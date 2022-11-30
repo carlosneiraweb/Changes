@@ -189,7 +189,7 @@ public static function getUserName($nick){
         $hash =  Usuarios::recuperarHash($this->data["nick"]);
        //Comprobamos que la contraseña encriptada de la bbdd sea
        //igual a la introducida por el usuario en el formulario
-        if (System::comparaHash($hash, $this->data["password"])) {
+        if (System::comparaHash( $this->data["password"],$hash)) {
            
             $con = Conne::connect();
                 if($opc){
@@ -349,9 +349,9 @@ public final function insert(){
                 $st->bindValue(":nick", $this->getValue('nick'), PDO::PARAM_STR);
                 $st->execute();
                 $row = $st->fetch();
-                $st->closeCursor();
-               
+                
                 if($row){return $row[0];}
+                $st->closeCursor();
                 
                 Conne::disconnect($con);
                 
@@ -630,24 +630,34 @@ public function devuelveEmailPorId($id){
 /**
  * Metodo que actualia los datos 
  * de un  usuario
- * @param type $obj usuario
- * @return boolean
+ *
  */
 public function actualizoDatosUsuario(){
      
     $con = Conne::connect();
-    $excepciones = new MisExcepciones(CONST_ERROR_BBDD_ACTUALIZAR_USUARIO[1],CONST_ERROR_BBDD_ACTUALIZAR_USUARIO[0]);
+    
     
     try{
 
+        $idUsuViejo =  $_SESSION['actualizo']->getValue("idUsuario");
         
-        $idUsuViejo = $_SESSION["userTMP"]->devuelveId();  
+        //Comprobamos que el usuario no ha cambiado el password
+        //Si lo ha cambiado tenemos que generar un hash nuevo
+        
+           
+        if($_SESSION['error'] == ERROR_ACTUALIZAR_USUARIO){
+            $password = $_SESSION['actualizo']->getValue('password');
+        }else{
+            $password = System::generoHash($_SESSION["usuRegistro"]->getValue('password'));
+        }
         
         $sqlActualiarUsuario = " Update ".TBL_USUARIO." set nick = :nick, password = :password, email = :email
             where idUsuario = :idUsuario;";
         $stmActualizarUsuario =   $con->prepare($sqlActualiarUsuario);  
         $stmActualizarUsuario->bindValue(":nick", $this->getValue('nick'), PDO::PARAM_STR);
-        $stmActualizarUsuario->bindValue(":password",System::generoHash($this->getValue('password')) , PDO::PARAM_STR );
+        
+        $stmActualizarUsuario->bindValue(":password",$password, PDO::PARAM_STR );
+        
         $stmActualizarUsuario->bindValue(":email", $this->getValue('email'), PDO::PARAM_STR );
         $stmActualizarUsuario->bindValue(":idUsuario", $idUsuViejo, PDO::PARAM_INT);
                   
@@ -687,23 +697,18 @@ public function actualizoDatosUsuario(){
             $stmActualizarUsuario->execute();
             $stmActualizarDatos->execute();
             $stmActualizarDireccion->execute(); 
-           
+            
        $con->commit();
 
         Conne::disconnect($con);
-       
-        
-      
+ 
        
     }catch (Exception $ex){
-       
+      
        $con->rollBack();
-       $excep = $excepciones->recojerExcepciones($ex);
-       
-        //Mandamos eliminar y restaurar las antiguas carpetas 
-        //Que tenia el usuario
-       $excepciones->redirigirPorErrorSistema("ActualizarUsuarioBBDD",true,$excep);              
-        
+        $excepciones = new MisExcepciones(CONST_ERROR_BBDD_ACTUALIZAR_USUARIO[1],CONST_ERROR_BBDD_ACTUALIZAR_USUARIO[0],$ex);
+        $excepciones->redirigirPorErrorSistema("ActualizarUsuarioBBDD",true);              
+
     
     }finally {
         Conne::disconnect($con);

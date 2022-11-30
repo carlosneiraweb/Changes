@@ -108,7 +108,7 @@ if(!isset($_SESSION)){
  */
 function comprobarEmailNuevo($user){
    
-    if($_SESSION['actualizo']['correo'] != $_SESSION['usuario']['email']){
+    if($_SESSION['actualizo']->getValue('email') != $_SESSION['usuario']['email']){
                                 
         if($user->getByEmailAddress($_SESSION['usuario']['email'])){
             return 1;
@@ -176,13 +176,18 @@ function modificarDirectoriosUsuario(){
     global $destino;
     global $foto;
 
+    //Solo si el usuario ha subido una imagen
+    //en el formulario
+    if($foto != ""){
         Directorios::eliminarImagen($destino, "actualizar");
         Directorios::moverImagen($foto, $destino , "actualizar");
         Directorios::renombrarFotoActualiazar($destino, $destino,"actualizar");
-
+    }
     if(isset($_SESSION["datos"])){unset($_SESSION["datos"]);}
     if(isset($_SESSION["usuRegistro"])){unset($_SESSION["usuRegistro"]);}
     if(isset($_SESSION['usuario'])){unset($_SESSION['usuario']);}
+    if(isset($_SESSION['actualizo'])){unset($_SESSION['actualizo']);}
+    $foto = "";
     
          abandonarSession();
     //fin crearDirectoriosRegistro
@@ -367,11 +372,12 @@ function validarCamposRegistro($st, $user){
                     
                 
                 $foto = $_FILES['photoArticulo']['tmp_name']; 
+               
                 //Si el usuario no se ha logeado
                 //entonces se esta registrando    
                 if(!isset($_SESSION["userTMP"])){  
                     //SI todo ha ido bien 
-                    //Creamos los direcotios para el usuario 
+                    //Creamos los directorios para el usuario 
                     //Y subimos la foto de perfil
                     $destino = "../datos_usuario/".$_SESSION['datos']['id'].'/'.$_SESSION['datos']['id'].'.jpg';
                     crearDirectoriosRegistro($test);

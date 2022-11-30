@@ -55,6 +55,24 @@ abstract class DataObj {
             die(" Field not found");
         }
     }
+    
+    /**
+     * metodo public
+     * Acepta un valor de campo y setea su valor.
+     * Este metodo puede ser usado qn cualquier 
+     * clase que extienda DataObj
+     * @param $field <br>
+     * Campo a cambiar valor. <br>
+     * @param $dato <br>
+     * Valor a setear en el campo del array <br>
+     * 
+     */
+    public function setValue($field, $dato){
+        
+        if(array_key_exists($field, $this->data)){
+            $this->data[$field] = $dato;
+        } 
+    }
 
     /**
      * Metodo public
