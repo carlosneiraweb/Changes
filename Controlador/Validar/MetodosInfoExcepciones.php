@@ -45,8 +45,8 @@ class MetodosInfoExcepciones {
     }
     
     private function redirirgirFalloNoCritico(){
-        $url = $_SESSION["paginaError"];
-         header("Location: $url");
+        //$url = $_SESSION["paginaError"];
+         header("Location: index.php");
     }
     
 
@@ -87,7 +87,7 @@ private function convertirStringDatosSesion($opc){
     }else if(isset($_SESSION['usuario'])){      
             
         $datosSesion = $opc;
-        $datosSesion .= "Datos introducidos por el usuario al registrar.".PP_EOL;
+        $datosSesion .= "Datos introducidos por el usuario al registrar.".PHP_EOL;
             
             foreach ($_SESSION['usuario'] as $k => $v){
                 
@@ -180,6 +180,9 @@ private function insertarErroresBBDD( $opc,$datosSesion){
          echo PHP_EOL;
          echo "linea ".$exc->getLine();
          
+     }finally{
+         if(isset($_SESSION["datos"])){unset($_SESSION["datos"]);}
+         if(isset($_SESSION["usuRegistro"])){unset($_SESSION["usuRegistro"]);}
      }
      
     

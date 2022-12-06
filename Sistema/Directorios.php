@@ -140,14 +140,14 @@ class Directorios {
            
 
             } catch (Exception $ex) {
-                   
+                  
                 $excepciones = new MisExcepciones(CONST_ERROR_MOVER_IMAGEN[1],CONST_ERROR_MOVER_IMAGEN[0],$ex);      
                 
                    
                     //En caso error se llama al metodo redirigirPorErrorTrabajosEnArchivosRegistro
                     //De la clase mis excepciones con la opcion adecuada
                     if($opc == "actualizar"){
-                        //$excepciones->redirigirPorErrorSistema($opc,true);    
+                        $excepciones->redirigirPorErrorSistema($opc,true);    
                     }
                     if($opc == "registrar"){
                         $excepciones->redirigirPorErrorSistema($opc,true);  
@@ -172,14 +172,9 @@ class Directorios {
          * Ruta donde crear el directorio </br>
          * @param $opc type String </br>
          * Opcion para tratar posibles errores </br>
-         * @return  $test type Boolean </br>
-         * 
-         * 
          */
         final static function crearDirectorio($ruta,$opc){
-            //echo $ruta;
-            
-            
+
             try{
                 //Comprobamos que los directorios ya no existan
                 if(file_exists($ruta) || (!mkdir($ruta))){
@@ -189,15 +184,12 @@ class Directorios {
                 }
               
             }catch(Exception $ex){
+                
                 $excepciones = new MisExcepciones(CONST_ERROR_CREAR_DIRECTORIO[1],CONST_ERROR_CREAR_DIRECTORIO[0],$ex);
                 
-                $_SESSION['error'] = ERROR_INGRESAR_USUARIO;  
-                 
-                
-                if($opc == 'registrar'){
-                    
-                   $excepciones->redirigirPorErrorSistema($opc,true);
-                }
+                    if($opc == 'registrar'){
+                       $excepciones->redirigirPorErrorSistema($opc,true);
+                    }
                  
                 
         }
@@ -330,8 +322,7 @@ final static function crearSubdirectorio($usuario, $opc){
                if(!copy($imagen, $destino)){throw new Exception($mensaje,0);}
                
             } catch (Exception  $ex) {
-              
-                $_SESSION['error'] = ERROR_INGRESAR_USUARIO;
+            
                 $excepciones = new MisExcepciones(CONST_COPIAR_ARCHIVO[1], CONST_COPIAR_ARCHIVO[0],$ex);   
                 
                 if($opc == "registrar"){
@@ -487,62 +478,7 @@ public function eliminarImagenDemoSubirPost(){
             
         //fin renombrarImagenes
         }
-        
-/**
- * 
- * Este metodo elimina de la ruta de la imagen </br>
- * que sube el usuario y la cambia por su usuario </br>
- * Ejemplo: </br>
- * /Sistema/tmp/1254.jpg </br>
- * Cambia el 1254.jpg por el nombre del usuario </br>
- * y la ruta donde queremos que se guarde </br>
- * /photos/jose/jose.jpg </br>
- * 
- * @param $nombreViejo </br>
- * type  String </br>
- * Es la ruta tal como es subida la foto la servidor </br>
- * @param  $nombreNuevo  </br>
- * type String </br>
- * Es el nombre del usuario </br>
- */        
-        
-public static function renombrarFotoPerfil($nombreViejo, $nombreNuevo){
-    
-    
-    try{
-        
-        //Si el metodo recive un nombre nuevo se le asigna ese nombre. Esto ocurre
-                    //cuando se registra un usuario y sube una foto de perfil
-        $nombreRenombrado = $nombreNuevo;
-            //datos_usuario/admin/indice.jpg
-        //basename nos devuelve la ultima parte de la direccion del archivo
-        //localhost/fotos/indice.jpg
-        //quedando en => indice.jpg
-        $original = basename($nombreViejo); 
-        
-        //OJO TRUE NOS DEVUELVE LA PARTE DE LA DERECHA DE LA COINCIDENDIA EN EL STRING
-        $tmp = strstr($nombreViejo, $original, true);
-            //En este paso nos quedamos con la parte del directorio
-            //datos_usuario/admin/
-            //echo 'Nombre temporal '.$tmp.'<br>';
-            $newNombre = $tmp.$nombreRenombrado.'.jpg';
-            //Le asignamos el nuevo nombre a la parte del directorio substraida antes
-            //datos_usuario/aaaaa/aaaaa.jpg
-            //echo 'Nombre nuevo es: '.$nuevoNombre.'<br>';
-            if(!rename($nombreViejo, $newNombre)){
-                throw new Exception("Error al renombrar la imagen del usuario al registrarse",0);
-            }
- 
-    } catch (Exception $ex) {
-        $excepciones = new MisExcepciones(CONST_ERROR_RENOMBRAR_IMG_REGISTRARSE[1], CONST_ERROR_RENOMBRAR_IMG_REGISTRARSE[0],$ex);    
-        $_SESSION['error'] = ERROR_INGRESAR_USUARIO;
-        $excepciones->redirigirPorErrorSistema("registrar",true);
-    }
-    
-    
-    
-//fin renombrarFotoPerfil    
-}
+
     
     /**
      * Metodo que cuenta el numero de archivos de un </br>
@@ -623,10 +559,12 @@ public static function renombrarFotoPerfil($nombreViejo, $nombreNuevo){
 }
 
 /**
- * Metodo que elimina los directorios creados <br />
- * cuando hay un error al registrarse o cualquier otro motivo.<br />
- * Si la bbdd no hace el insert correcto ente metodo <br />
- * elimina las carpetas creadas en datos_usuario y photos<br />
+ * Metodo que elimina los directorios creados <br>
+ * cuando hay un error al registrarse o cualquier otro motivo.<br>
+ * Una vez ingresado el usuario en la bbdd el sitema<br />
+ * intenta crear los directorios al usuario.<br>
+ * Si esto no es posible intenta eliminar
+ * las carpetas creadas en datos_usuario, photos y Videos<br />
  * Recive una ruta con el directorio a eliminar.<br />
  *  glob() busca todos los nombres de ruta que coinciden con pattern<br />
  * @param $src <br />
@@ -635,9 +573,7 @@ public static function renombrarFotoPerfil($nombreViejo, $nombreNuevo){
  */
 
 final static function eliminarDirectoriosSistema($src,$opc){
-    
-    $excepciones = new  MisExcepciones(CONST_ERROR_ELIMINAR_DIRECTORIO[1],CONST_ERROR_ELIMINAR_DIRECTORIO[0]);
-    
+   
         try{
             
             //Nos aseguramos recive rutas de directorios
@@ -674,15 +610,7 @@ final static function eliminarDirectoriosSistema($src,$opc){
         
     
         } catch (Exception $ex) {
-            
-            $excep = $excepciones->recojerExcepciones($ex);
-          
-            if($opc == "actualizar"){
-                $excepciones->redirigirPorErrorSistema("actualizar",true,$excep);
-            }else if($opc == "registrar"){
-                $excepciones->redirigirPorErrorSistema("registrar",true,$excep);
-            }
-             
+            echo $ex->getMessage();
            
         }
         
@@ -693,44 +621,6 @@ final static function eliminarDirectoriosSistema($src,$opc){
 
 
 
-/**
- * Metodo que actualia el nombre 
- * de la foto de perfil del usuario
- * al actualizar.
- * <br>
- * 
- * Ejemplo: <br>
- *  "../datos_usuario/$nombreViejoDirectorio/$nombreViejoFoto.jpg"
- * <br>
- * @param $viejoNombre 
- * El nombre del viejo directorio
- * Nombre de usuario tenia antes de actualizar <br>
- * @param $nuevoNombre <br>
- * type String <br>
- * Nombre del usuario actualizado <br>
- * <br>
- * @param  $opc <br>
- * Cadena para mensaje en caso de error
- */
-public static function renombrarFotoActualiazar($viejoNombre,$nuevoNombre){
-    
-   
-    try {
-
-        if(!rename($viejoNombre, $nuevoNombre)){
-            throw new Exception("No se pudo renombrar la foto al actualizar",0);
-        }
-           
-   
-    } catch (Exception $ex) {
-         
-        $excepciones =   new MisExcepciones(CONST_ERROR_RENOMBRAR_FOTO_ACTUALIZARSE[1], CONST_ERROR_RENOMBRAR_FOTO_ACTUALIZARSE[0],$ex);
-        $excepciones->redirigirPorErrorSistema("actualizar",true);
-        
-    }
-
-//fin renombrarFotoActualiazar()    
-}
 
 /**
  * Metodo que copia directorios con su contenido. </br>

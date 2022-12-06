@@ -28,17 +28,21 @@ function mostrarErrorRegistro(){
 }
 
 function volverAnterior(){
+    global $resulTestReg;
     if(isset($_SESSION['usuario'])){unset($_SESSION['usuario']);}
     if(isset($resulTestReg)){unset($resulTestReg);}
     if(isset($_SESSION['actualizo'])){unset($_SESSION['actualizo']);}
+    if(isset($_SESSION["usuRegistro"])){unset($_SESSION["usuRegistro"]);}
     header("Location: index.php");
    
 }
 function volverPrincipio(){
+    if(isset($_SESSION['usuario'])){unset($_SESSION['usuario']);}
     header('Location: index.php');
     
 }
 function abandonarSession(){
+    
     header("Location: abandonar_sesion.php"); 
 }
 
@@ -137,8 +141,6 @@ $_SESSION["paginaError"] = basename($_SERVER['PHP_SELF']);
             
         }elseif(isset($_POST['noAceptaCondicionesReg']) and $_POST['noAceptaCondicionesReg'] == "Salir"){
             //El usuario no acepta las condiciones
-            
-            if(isset($_SESSION['usuario'])){unset($_SESSION['usuario']);}
             volverPrincipio();
         
     }elseif(isset($_POST['primeroReg']) and $_POST['primeroReg'] == "Siguiente"){
@@ -189,8 +191,8 @@ function displayStep1($missingFields){
        
     echo '<section class="contEtiquetas">';
     echo'<label '.ValidoForm::validateField("nick", $missingFields).' for="nick" class="labelFormulario">Introduce nombre de usuario:</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
-                                                                                                                                                    
-    echo'<input type="text" name="nick" id="nick" autofocus placeholder="Tú nombre usuario maximo 25 caracteres" maxlength="25" value=';if(!isset($_SESSION['usuario']['nick'])&& (isset($_SESSION['actualizo']))){echo $_SESSION['actualizo']->getValue('nick');}else{ if(isset($_SESSION['actualizo'])&& (isset($_SESSION['usuario']['nick']))){echo $_SESSION['usuario']['nick'];}}echo ">";      
+                                                                                                                                      
+    echo'<input type="text" name="nick" id="nick" autofocus placeholder="Tú nombre usuario maximo 25 caracteres" maxlength="25" value=';if(isset($_SESSION['usuario']['nick'])){echo $_SESSION['usuario']['nick'];}else{if(isset($_SESSION['actualizo']) && (!isset($_SESSION['usuario']['nick']))){echo $_SESSION['actualizo']->getValue('nick');}}echo ">";      
     echo'</section>';
     
     echo '<section class="contEtiquetas">';
@@ -205,8 +207,8 @@ function displayStep1($missingFields){
 
     echo '<section class="contEtiquetas">';
     echo'<label '.ValidoForm::validateField("email", $missingFields).' for="email">Email:</label> <span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
-                                                                                                    
-    echo'<input type="text" name="email" id="email" placeholder="info@developerji.com" maxlength="45" value=';if(!isset($_SESSION['usuario']['email'])&& (isset($_SESSION['actualizo']))){echo $_SESSION['actualizo']->getValue('email');} else { if(isset($_SESSION['actualizo']) && (isset($_SESSION['usuario']['email']))){ echo $_SESSION['usuario']['email'];}}echo ">";
+                                                                                                          
+    echo'<input type="text" name="email" id="email" placeholder="info@developerji.com" maxlength="45" value=';if(isset($_SESSION['usuario']['email'])){echo $_SESSION['usuario']['email'];} else {if(isset($_SESSION['actualizo']) && (!isset($_SESSION['usuario']['email']))){ echo $_SESSION['actualizo']->getValue('email');}}echo ">";
    
     
     echo '<section id="btns_registrar">';
@@ -245,24 +247,24 @@ function displayStep2($missingFields){
     
     echo '<section class="contEtiquetas">';
     echo'<label '.ValidoForm::validateField("nombre", $missingFields). ' for="nombre">Nombre:</label> <span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';                                                                                                                                      
-    echo'<input type="text" name="nombre" maxlength= "25" id="nombre" autofocus  placeholder="Escribe tú nombre" maxlength= "25" value=';if(!isset($_SESSION['usuario']['nombre'])&& (isset($_SESSION['actualizo']))){echo $_SESSION['actualizo']->getValue('nombre');}else{ if(isset($_SESSION['actualizo']) &&  (isset($_SESSION['usuario']['nombre']))){echo $_SESSION['usuario']['nombre'];}}echo ">";
+    echo'<input type="text" name="nombre" maxlength= "25" id="nombre" autofocus  placeholder="Escribe tú nombre" maxlength= "25" value=';if(isset($_SESSION['usuario']['nombre'])){echo $_SESSION['usuario']['nombre'];}else{if(isset($_SESSION['actualizo']) && (!isset($_SESSION['usuario']['nombre']))){echo $_SESSION['actualizo']->getValue('nombre');}}echo ">";
     echo'</section>';
     
     echo '<section class="contEtiquetas">';
     echo'<label for="apellido_1">Primer Apellido:</label>';
-                                                                                 
-    echo'<input type="text" name="apellido_1" maxlength= "25" id="apellido_1" placeholder="Escribe tú apellido"  maxlength= "25" value=';if(!isset($_SESSION['usuario']['apellido_1'])&& (isset($_SESSION['actualizo']))){echo $_SESSION['actualizo']->getValue('apellido_1');}else{ if(isset($_SESSION['actualizo']) && (isset($_SESSION['usuario']['apellido_1']))){ echo $_SESSION['usuario']["apellido_1"];}}echo ">";
+                                                                                                                                    
+    echo'<input type="text" name="apellido_1" maxlength= "25" id="apellido_1" placeholder="Escribe tú apellido"  maxlength= "25" value=';if(isset($_SESSION['usuario']['apellido_1'])){echo $_SESSION['usuario']['apellido_1'];}else{if(isset($_SESSION['actualizo']) && (!isset($_SESSION['usuario']['apellido_1']))){ echo $_SESSION['actualizo']->getValue("apellido_1");}}echo ">";
     echo'</section>';
     
     echo '<section class="contEtiquetas">';
-    echo'<label for="apellido_2">Segundo Apellido:</label>';                                                                                  
-    echo'<input type="text" name="apellido_2" maxlength= "25" id="apellido_2" placeholder="Escribe tú segundo apellido" maxlength= "25" value= ';if(!isset($_SESSION['usuario']['apellido_2'])&& (isset($_SESSION['actualizo']))){echo $_SESSION['actualizo']->getValue("apellido_2");}else{ if(isset($_SESSION['actualizo']) && (isset($_SESSION['usuario']['apellido_2']))){echo $_SESSION['usuario']["apellido_2"];}} echo ">";        
+    echo'<label for="apellido_2">Segundo Apellido:</label>';                                                                                             
+    echo'<input type="text" name="apellido_2" maxlength= "25" id="apellido_2" placeholder="Escribe tú segundo apellido" maxlength= "25" value= ';if(isset($_SESSION['usuario']['apellido_2'])){echo $_SESSION['usuario']["apellido_2"];}else{ if(isset($_SESSION['actualizo']) && (!isset($_SESSION['usuario']['apellido_2']))){echo $_SESSION['actualizo']->getValue("apellido_2");}} echo ">";        
     echo'</section>';
     
     echo '<section class="contEtiquetas">';
     echo'<label '.ValidoForm::validateField("telefono", $missingFields). ' for="telefono">Teléfono:</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
-                                                                                                                         
-    echo'<input type="text" name="telefono" id="telefono" placeholder="Teléfono contacto" maxlength="9" value=';if(!isset($_SESSION['usuario']['telefono'])&& (isset($_SESSION['actualizo']))){ echo $_SESSION['actualizo']->getValue('telefono');} else { if(isset($_SESSION['actualizo']) && (isset($_SESSION['usuario']['telefono']))){echo $_SESSION['usuario']["telefono"];}}echo ">";
+                                                                                                             
+    echo'<input type="text" name="telefono" id="telefono" placeholder="Teléfono contacto" maxlength="9" value=';if(isset($_SESSION['usuario']['telefono'])){ echo $_SESSION['usuario']['telefono'];}else{if(isset($_SESSION['actualizo']) && (!isset($_SESSION['usuario']['telefono']))){echo $_SESSION['actualizo']->getValue('telefono');}}echo ">";
     echo'</section>'; 
     
     echo '<section class="contEtiquetas">';
@@ -304,30 +306,32 @@ function displayStep3($missingFields){
     echo"<input type='hidden' name='step' value='step3'>";
     
     echo '<section class="contEtiquetas">';
-    echo'<label for="calle">Nombre de la calle o vía:</label>';                                                                                                                        
-    echo'<input type="text" name="calle" maxlength= "25" id="calle" placeholder="Escribe el nombre de la calle"  value= ';if(!isset($_SESSION['usuario']['calle'])&& (isset($_SESSION['actualizo']))){echo $_SESSION['actualizo']->getValue('calle');}else{ if(isset($_SESSION['actualizo']) && (isset($_SESSION['usuario']['calle']))){echo $_SESSION['usuario']["calle"];}}echo ">";     
+    echo'<label for="calle">Nombre de la calle o vía:</label>';                                                                                                        
+    echo'<input type="text" name="calle" maxlength= "25" id="calle" placeholder="Escribe el nombre de la calle"  value= ';if(isset($_SESSION['usuario']['calle'])){echo $_SESSION['usuario']['calle'];}else{if(isset($_SESSION['actualizo']) && (!isset($_SESSION['usuario']['calle']))){echo $_SESSION['actualizo']->getValue("calle");}}echo ">";     
     echo'</section>';
     
     echo '<section class="contEtiquetas">';
-    echo'<label for="numeroPortal">Número del portal:</label>';                                                   
-    echo'<input type="text" name="numeroPortal"  id="numeroPortal" placeholder="Escribe el número del portal" maxlength= "10" value= ';if(!isset($_SESSION['usuario']['numeroPortal'])&& (isset($_SESSION['actualizo']))){echo $_SESSION['actualizo']->getValue('numeroPortal');}else{ if(isset($_SESSION['actualizo']) && (isset($_SESSION['usuario']['numeroPortal']))){echo $_SESSION['usuario']["numeroPortal"];}} echo ">";     
+    echo'<label for="numeroPortal">Número del portal:</label>';                                                                       
+    echo'<input type="text" name="numeroPortal"  id="numeroPortal" placeholder="Escribe el número del portal" maxlength= "10" value= ';if(isset($_SESSION['usuario']['numeroPortal'])){echo $_SESSION['usuario']['numeroPortal'];}else{if(isset($_SESSION['actualizo']) && (!isset($_SESSION['usuario']['numeroPortal']))){echo $_SESSION['actualizo']->getValue("numeroPortal");}} echo ">";     
     echo'</section>';
     
     echo '<section class="contEtiquetas">';
     echo'<label for="ptr">Puerta:</label>';
                                                                                                                      
-    echo'<input type="text" name="ptr" id="ptr"  placeholder="Escribe el número de la puerta"  maxlength= "10" value= ';if(!isset($_SESSION['usuario']['ptr'])&& (isset($_SESSION['actualizo']))){echo $_SESSION['actualizo']->getValue('ptr');}else{if(isset($_SESSION['actualizo']) && (isset($_SESSION['usuario']['ptr']))){echo $_SESSION['usuario']["ptr"];}}echo ">";     
+    echo'<input type="text" name="ptr" id="ptr"  placeholder="Escribe el número de la puerta"  maxlength= "10" value= ';if(isset($_SESSION['usuario']['ptr'])){echo $_SESSION['usuario']['ptr'];}else{if(isset($_SESSION['actualizo']) && (!isset($_SESSION['usuario']['ptr']))){echo $_SESSION['actualizo']->getValue('ptr');}}echo ">";     
     echo'</section>';
     
     echo '<section class="contEtiquetas">';                                                                                                                                               
-    echo'<label '.ValidoForm::validateField("ciudad", $missingFields).'for="ciudad">Ciudad:</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';                                                                                               
-    echo'<input type="text" name="ciudad" id="ciudad" placeholder="Nombre de tu Localidad" maxlength= "25" value= ';if(!isset($_SESSION['usuario']['ciudad'])&& (isset($_SESSION['actualizo']))){echo $_SESSION['actualizo']->getValue('ciudad');}else{ if(isset($_SESSION['actualizo']) && (isset($_SESSION['usuario']['ciudad']))){echo $_SESSION['usuario']["ciudad"];}}echo ">";     
+    echo'<label '.ValidoForm::validateField("ciudad", $missingFields).'for="ciudad">Ciudad:</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>'; 
+    
+                                                                                                                       
+    echo'<input type="text" name="ciudad" id="ciudad" placeholder="Nombre de tu Localidad" maxlength= "25" value= ';if(isset($_SESSION['usuario']['ciudad'])){echo $_SESSION['usuario']['ciudad'];}else{if(isset($_SESSION['actualizo']) && (!isset($_SESSION['usuario']['ciudad']))){echo $_SESSION['actualizo']->getValue("ciudad");}}echo ">";     
     echo '</section>';
     
     echo '<section class="contEtiquetas">';
     echo'<label '.ValidoForm::validateField("codPostal", $missingFields).'for="codPostal">Código Postal:</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
-                                                                                                                                                                                      
-    echo'<input type="text" name="codPostal" id="codPostal" placeholder="Escribe el número del código postal"  maxlength="5" value= ';if(!isset($_SESSION['usuario']['codigoPostal'])&& (isset($_SESSION['actualizo']))){echo $_SESSION['actualizo']->getValue('codigoPostal');}else{ if(isset($_SESSION['actualizo']) &&( isset($_SESSION['usuario']['codigoPostal']))){echo $_SESSION['usuario']["codigoPostal"];}}echo ">";     
+                                                                                                                                     ////if(isset($_SESSION['usuario']['nombre'])){echo $_SESSION['usuario']['nombre'];}else{if(isset($_SESSION['actualizo']) && (!isset($_SESSION['usuario']['nombre']))){echo $_SESSION['actualizo']->getValue('nombre');}}echo ">";                                          
+    echo'<input type="text" name="codPostal" id="codPostal" placeholder="Escribe el número del código postal"  maxlength="5" value= ';if(isset($_SESSION['usuario']['codPostal'])){echo $_SESSION['usuario']['codPostal'];}else{if(isset($_SESSION['actualizo']) && ( !isset($_SESSION['usuario']['codPostal']))){echo $_SESSION['actualizo']->getValue("codigoPostal");}}echo ">";     
     echo'</section>';
     
     echo '<section class="contEtiquetas">';
@@ -344,8 +348,8 @@ function displayStep3($missingFields){
     
     echo '<section class="contEtiquetas">';
     echo'<label for="pais">Pais:</label>'; 
-                                                                                                //;if(!isset($_SESSION['usuario']['ciudad'])&& (!isset($_SESSION['actualizo']))){echo $_SESSION['actualizo']->getValue('ciudad');}else{ if(isset($_SESSION['actualizo']) && (isset($_SESSION['usuario']['ciudad']))){echo $_SESSION['usuario']["ciudad"];}}echo ">"; 
-    echo'<input type="text" name="pais" id="pais" placeholder="España"  maxlength= "25" value= '; if(!isset($_SESSION['usuario']['pais']) && (isset($_SESSION['actualizo']))){echo $_SESSION['actualizo']->getValue('pais');}else{ if(isset($_SESSION['actualizo']) && (isset($_SESSION['usuario']['pais']))){echo $_SESSION['usuario']["pais"];}} echo '>';		
+                                                                                              
+    echo'<input type="text" name="pais" id="pais" placeholder="España"  maxlength= "25" value= '; if(isset($_SESSION['usuario']['pais'])){echo $_SESSION['usuario']['pais'];}else{if(isset($_SESSION['actualizo']) && (!isset($_SESSION['usuario']['pais']))){echo $_SESSION['actualizo']->getValue('pais');}} echo '>';		
     echo'</section>';
      
     echo '<section id="btns_registrar">';
@@ -493,7 +497,7 @@ function confirmarRegistro(){
                        
                 
             }else{
-                     
+                 
                $_SESSION["usuRegistro"]->actualizoDatosUsuario();
                
                   

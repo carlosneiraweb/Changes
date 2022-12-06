@@ -47,12 +47,17 @@ abstract class DataObj {
      * @return type
      */
     public function getValue($field){
+        try{
         
         if(array_key_exists($field, $this->data)){
             return $this->data[$field];
         } else{
             echo $field;
             die(" Field not found");
+        }
+            
+        } catch (Exception $ex) {
+            echo "el campo pasado no existe en el objeto";
         }
     }
     
@@ -69,9 +74,15 @@ abstract class DataObj {
      */
     public function setValue($field, $dato){
         
-        if(array_key_exists($field, $this->data)){
+        try{
+            if(array_key_exists($field, $this->data)){
             $this->data[$field] = $dato;
         } 
+        } catch (Exception $ex) {
+            echo "el campo pasado no existe en el objeto";
+
+        }
+        
     }
 
     /**

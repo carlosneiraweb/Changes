@@ -29,10 +29,12 @@
         echo '<h2>Te lo cambio</h2>';
             echo'<figure id="logo_salir_sesion">';
 		echo'<img src="../img/logo.png" alt="Logo del portal"/>';
-                if(isset($_SESSION['actualizo'])){
-                    echo "<h2>Tús datos se han actualizado correctamente</h2>";
+                if(isset($_SESSION["resultActualizacion"]) ){
                     
+                    echo "<h2>Tús datos se han actualizado correctamente</h2>";
+                        
                 }else{
+                    
                     echo'<figcaption id="titulo">Acabas de abandonar tu sesión<br>'.
                        '<strong>Gracias por participar.</strong></figcaption>';
                 }
@@ -47,13 +49,14 @@
     
     try{
     
-        echo '<script type="text/javascript">';
-         echo 'volverInicio();';
-        echo '</script>';
-                //Destruimos todas variables de sesion
+         //Destruimos todas variables de sesion
             $_SESSION = array();
             session_unset();
             session_destroy();
+        echo '<script type="text/javascript">';
+        echo 'volverInicio();';
+        echo '</script>';
+               
     }catch(Exception $e){
        echo 'abandonar sesion => '.$e->getCode();
     }    

@@ -114,7 +114,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
     //Variable user para instanciar 
     //objetos usuario
     $userLogin;
-  
+    
     if(isset($_POST["logeo"]) and $_POST["logeo"] == "aceptar"){
        
         processForm();
@@ -175,7 +175,8 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
             echo '<section id="btns_sesion">';
           
                     if(isset($_SESSION["userTMP"]) and $_SESSION["userTMP"] != ""){
-                        echo'<input type="button" id="salirSesion" name="salirSesion" value="Salir Sesion"/>';
+                       
+                        echo'<input type="button" id="salirSesion" name="salirSesion" value="salirSesion"/>';
                         echo'<input type="button" id="menu" name="menu" value="menu"/>';
                         echo'<input type="button" id="publicar" name="publicar" value="Publicar"/>';
                         $nick = $_SESSION['userTMP']->getValue('nick');

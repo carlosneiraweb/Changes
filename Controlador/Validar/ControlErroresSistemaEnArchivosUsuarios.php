@@ -56,7 +56,7 @@ if(!isset($_SESSION)){
  function crearDirectorios($dir){
              
             //Creamos los directorios del registro
-        
+           
         Directorios::crearDirectorio($dir[0],$dir[3]);
         Directorios::crearDirectorio($dir[1],$dir[3]);
         Directorios::crearDirectorio($dir[2],$dir[3]);
@@ -126,9 +126,8 @@ function comprobarEmailNuevo($user){
 /**
  * Este metodo crea los directorios </br>
  * necesarios cuando un usuario </br>
- * se registra y sube una foto </br>
- * para el perfil </br>
- * @param Boolean  $var <br>
+ * se registra. </br>
+ * @param   $var <br>
  * Parametro para saber si el usuario sube <br>
  * una foto o le ponemos una por default.
  */
@@ -150,8 +149,7 @@ function comprobarEmailNuevo($user){
         }else{
             Directorios::copiarFoto("../datos_usuario/desconocido.jpg", $destino, $tmpNuevosDatos[3]);
         }
-        
-        Directorios::renombrarFotoPerfil($destino, $_SESSION["datos"]["id"]); 
+       
         
              $objMandarEmails->mandarEmailWelcome();
            
@@ -181,15 +179,13 @@ function modificarDirectoriosUsuario(){
     if($foto != ""){
         Directorios::eliminarImagen($destino, "actualizar");
         Directorios::moverImagen($foto, $destino , "actualizar");
-        Directorios::renombrarFotoActualiazar($destino, $destino,"actualizar");
+        
     }
-    if(isset($_SESSION["datos"])){unset($_SESSION["datos"]);}
-    if(isset($_SESSION["usuRegistro"])){unset($_SESSION["usuRegistro"]);}
-    if(isset($_SESSION['usuario'])){unset($_SESSION['usuario']);}
-    if(isset($_SESSION['actualizo'])){unset($_SESSION['actualizo']);}
+    
     $foto = "";
     
-         abandonarSession();
+        $_SESSION["resultActualizacion"] = ["ok"];
+        abandonarSession();
     //fin crearDirectoriosRegistro
 }
 
@@ -366,24 +362,24 @@ function validarCamposRegistro($st, $user){
             }else{
                 //Si todo ha ido bien
                 $testValidoReg[1] = true;
-                //ingresamos usuario en la bbdd
-                
-                    ingresarUsuario();
-                    
-                
+
                 $foto = $_FILES['photoArticulo']['tmp_name']; 
-               
+                ingresarUsuario();
                 //Si el usuario no se ha logeado
                 //entonces se esta registrando    
                 if(!isset($_SESSION["userTMP"])){  
-                    //SI todo ha ido bien 
-                    //Creamos los directorios para el usuario 
-                    //Y subimos la foto de perfil
-                    $destino = "../datos_usuario/".$_SESSION['datos']['id'].'/'.$_SESSION['datos']['id'].'.jpg';
-                    crearDirectoriosRegistro($test);
+                  
+                    //ingresamos usuario en la bbdd
+                    
+                        //SI todo ha ido bien 
+                        //Creamos los directorios para el usuario 
+                        //Y subimos la foto de perfil
+                        $destino = "../datos_usuario/".$_SESSION['datos']['id'].'/'.$_SESSION['datos']['id'].'.jpg';
+                        crearDirectoriosRegistro($test);
                 
                 //Si se ha logeado esta actualizando sus datos       
                 }else{
+                    
                     $id = $_SESSION["userTMP"]->getValue('idUsuario');
                     $destino = "../datos_usuario/$id/$id.jpg";
                         modificarDirectoriosUsuario();

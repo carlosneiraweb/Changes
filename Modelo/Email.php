@@ -15,9 +15,6 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-//require 'Exception.php';
-//require 'PHPMailer.php';
-//require 'SMTP.php';
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesBbdd.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesEmail.php');
@@ -38,22 +35,28 @@ class Email {
      */
     public function __construct($emailAcabado) {
           $this->email = $emailAcabado;
-          
-         
+    
     }
     
-    public function mandarEmail($destino){
+    function __destruct() {
         
-        
-  
+    }
 
-         	
+    
+    /**
+     * 
+     * @param type String <br>
+     * @name $$destino <br>
+     * @return Objeto $mail PHPMailer
+     */
+    public function &mandarEmail($destino){
+ 	
         try{
             $mail = new PHPMailer(true); //creo un objeto de tipo PHPMailer
             $mail->IsSMTP(); //protocolo SMTP
             $mail->SMTPAuth = true;//autenticaci�n en el SMTP
             $mail->SMTPSecure =  EMAIL_SMTPSECURE;//SSL security socket layer
-            
+            //$mail->SMTPDebug = 2;
             
             $mail->Host = EMAIL_HOST;//servidor de SMTP 
             $mail->Port = EMAIL_PORT_EMAIL;//puerto seguro del servidor SMTP de gmail
@@ -80,22 +83,18 @@ class Email {
             $mail->WordWrap = 50; //No. de columnas
             $mail->MsgHTML($this->email);//Se indica que el cuerpo del correo tendr� formato html
             //$mail->AddAttachment($destino); //accedemos al archivo que se subio al servidor y lo adjuntamos
-
-            $test = $mail->Send(); //enviamos el correo por PHPMailer
-                    return $test;
-                
+            return $mail;
+            //$mail->Send(); //enviamos el correo por PHPMailer
            
+             
         }  catch (Exception $ex){
             
-            /*
-             * Si hay alguna excepcion aqui
-             * Saltara en el metodo que 
-             * lo llame
-             * Importante!!!!
-             */
+          // echo $mail->ErrorInfo;
+          // echo $ex->errorMessage();
             
-        }    
-        
+        }  catch (\Exception $e) { //The leading slash means the Global PHP Exception class will be caught
+           // echo $e->getMessage(); //Boring error messages from anything else!
+}
     }
     
 //fin clase    

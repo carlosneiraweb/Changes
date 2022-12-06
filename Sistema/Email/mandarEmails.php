@@ -8,6 +8,8 @@
  */
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+
+
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesBbdd.php');
@@ -49,16 +51,22 @@ final function mandarEmailWelcome(){
                 //$emailAcabado = utf8_decode($emailAcabado);
                 $email = new Email($emailAcabado);
                 //MANDAMOS EL EMAIL
-                $test = $email->mandarEmail($_SESSION["usuRegistro"]->getValue("email"));
-                if(!$test){throw new Exception("No se pudo contruir el email welcome O la direccion de email no existe",0);}
-                 
-            }catch (Exception $ex){       
+                
+                $correo = $email->mandarEmail($_SESSION["usuRegistro"]->getValue("email"));
+                $test =  $correo->send();
+                
+                if(!$test){throw new Exception("No se pudo contruir el email welcome o la direccion de email no existe",0);}
+                
+            }catch (Exception $ex){    
                 
                 $excepciones = new MisExcepciones(CONST_ERROR_CONSTRUIR_DARSE_ALTA[1],CONST_ERROR_CONSTRUIR_DARSE_ALTA[0],$ex);
                 $excepciones->redirigirPorErrorSistema("ProblemaEmail",false);
+            
+                
+            }catch (\Exception $e) { //The leading slash means the Global PHP Exception class will be caught
+                //echo $e->getMessage(); //Boring error messages from anything else!
             }finally{
-                unset($obj);
-                unset($email);
+                unset($correo);
             }                        
                            
    //FIN  mandarEmailWelcome 
@@ -113,8 +121,8 @@ final function mandarEmailWelcome(){
                 
                 //MANDAMOS EL EMAIL
                
-               $test = $email->mandarEmail($correo);
-               //$test = false;
+               $correoPalabras = $email->mandarEmail($correo);
+               $test = $correoPalabras->send();
                if(!$test){throw new Exception("NO se pudo construir email palabras buscadas",0);}
                    
             }catch (Exception $ex){
@@ -123,7 +131,7 @@ final function mandarEmailWelcome(){
                 $excepciones->redirigirPorErrorSistema('ProblemaEmail',false);
                 
             } finally {
-                unset($email);
+                unset($correoPalabras);
                      
             }                        
                             
@@ -153,9 +161,9 @@ final function mandarEmailBajaUsuario($nick,$mail){
 
 
                 $email = new Email($emailAcabado);
-
+                $correoBaja = $email->mandarEmail($mail);
                     //MANDAMOS EL EMAIL
-               $test = $email->mandarEmail($mail);
+               $test = $correoBaja->send();
                 
                 if(!$test){throw new Exception("No se pudo mandar email de baja usuario",0);}
 
@@ -164,8 +172,10 @@ final function mandarEmailBajaUsuario($nick,$mail){
              
             $excepciones = new MisExcepciones(CONST_ERROR_CONSTRUIR_DARSE_BAJA[1],CONST_ERROR_CONSTRUIR_DARSE_BAJA[0],$ex);   
              $excepciones->redirigirPorErrorSistema("ProblemaEmail",false);
+        
+             
         }finally{
-              unset($email);
+              unset($correoBaja);
         }
 
 

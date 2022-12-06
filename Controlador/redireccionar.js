@@ -35,8 +35,11 @@ $(document).ready(function(){
    function recargarPagina(){
        location.reload();
    }
-   
+  
    function salirDeSesion(){
+       
+       //Eliminamos variable de sesion actualizo
+      // sessionStorage.removeItem('actualizo');
        location.href = "abandonar_sesion.php";
    }
    

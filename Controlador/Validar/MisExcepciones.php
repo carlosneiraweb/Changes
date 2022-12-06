@@ -60,6 +60,7 @@ public function eliminarDirectoriosUsuario($opc) {
     
 
             try {
+                
                 Directorios::eliminarDirectoriosSistema($fotos,$opc);
             } catch (Exception $exc) {
                 echo $exc->getCode();
@@ -100,6 +101,7 @@ private function eliminarNuevoSubdirectorio(){
     
   //fin eliminarNuevoSubdirectorio  
 }
+
 
 
 
@@ -253,9 +255,9 @@ public function redirigirPorErrorSistema($opc,$grado){
             $_SESSION['error'] = ERROR_INGRESAR_USUARIO;
             $_SESSION["paginaError"] = "registrarse.php";
             $this->eliminarDirectoriosUsuario($opc);
-            $_SESSION["usuRegistro"]->eliminarPorId($_SESSION["datos"]["id"]);
+            $_SESSION["usuRegistro"]->eliminarPorId($_SESSION["datos"]["id"]); //POr si ha quedado algun registro
             $this->tratarDatosErrores($opc,$grado);
-            $this->eliminarVariablesSesionUsuario();
+            
             
                 die();
                 break;
@@ -271,7 +273,8 @@ public function redirigirPorErrorSistema($opc,$grado){
             
                 die();
                 break;
-           
+            
+        
         case $opc == "ActualizarUsuarioBBDD":
             
             $_SESSION['error'] = ERROR_ACTUALIZAR_USUARIO; //No hace falta por el rollBlack de mysql
@@ -287,10 +290,11 @@ public function redirigirPorErrorSistema($opc,$grado){
             $_SESSION["paginaError"] = "registrarse.php";
             $this->tratarDatosErrores("No se pudo renombrar o eliminar la vieja la foto del usuario cuando estaba actualizando su nick",$grado);    
             $_SESSION['actualizo']->actualizoDatosUsuario();
+                
                 die();
                 break;
             
-       
+        
         case $opc == "ProblemaEmail":
             
             $grado = false;

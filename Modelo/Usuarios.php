@@ -635,8 +635,7 @@ public function devuelveEmailPorId($id){
 public function actualizoDatosUsuario(){
      
     $con = Conne::connect();
-    
-    
+ 
     try{
 
         $idUsuViejo =  $_SESSION['actualizo']->getValue("idUsuario");
@@ -705,7 +704,7 @@ public function actualizoDatosUsuario(){
        
     }catch (Exception $ex){
       
-       $con->rollBack();
+        $con->rollBack();
         $excepciones = new MisExcepciones(CONST_ERROR_BBDD_ACTUALIZAR_USUARIO[1],CONST_ERROR_BBDD_ACTUALIZAR_USUARIO[0],$ex);
         $excepciones->redirigirPorErrorSistema("ActualizarUsuarioBBDD",true);              
 
