@@ -1,13 +1,7 @@
 
 <?php
 
-/**
- * 
- * Description of System
- * Esta clase se encarga de todos los metodos
- * relacionados con el Systema
- * 
- */
+ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesSistema.php');
 
 /**
  * @author Carlos Neira Sanchez
@@ -18,7 +12,7 @@
  */
 class System {
     
-    
+     
 /**
  * Este metodo devuelve un hash calculando
  * el coste computacional. Sin un coste
@@ -54,7 +48,7 @@ do {
  * como de un formulario.
  * Si es correcto devuelve true sino false
  */
- final static function comparaHash( $pass, $hash){
+public final static function comparaHash( $pass, $hash){
      
     try {
         
@@ -67,13 +61,35 @@ do {
     }
 //comparaHash     
  }   
-    
-    
-    
+
+ 
+ 
+ /**
+  * Metodo que desencripta informacion
+  */
+ 
+ public final static function desencriptar($valor){
+     
+     return openssl_decrypt($valor, METHOD, CLAVE, false, IV);
+     
+ } 
+ 
+ 
+ 
+ /**
+  * Metodo que encripta informacion
+  */
+ 
+ public final static function encriptar($valor){
+     
+     return openssl_encrypt ($valor, METHOD, CLAVE, false, IV);
+     
+ } 
+ 
 /**
  * No implementado
  */   
-public function calculoMemoria(){
+protected function calculoMemoria(){
   $a = exec("vmstat -n 1 2");
      
     $nofin = true;

@@ -8,6 +8,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepcio
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Directorios.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ValidoForm.php'); 
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/mandarEmails.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/System.php'); 
 
 //require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Vista/registrarse.php');
 /**
@@ -26,7 +27,7 @@ if(!isset($_SESSION)){
 }
 
 
-//session_start();
+
 
   if(!isset($_SESSION["paginaError"])){
             $_SESSION["paginaError"] = "registrarse.php";
@@ -46,7 +47,24 @@ if(!isset($_SESSION)){
         if(isset($_SESSION["userTMP"])){          
             $usuActualiza = $_SESSION["userTMP"]->getValue('nick');
         }
-       
+
+/**
+ * 
+ * @use recupera el hash del email del usuario<br>
+ * para mandarlo en el correo
+ */      
+function mandarEmailValidacion(){
+    
+    global $objMandarEmails;
+ 
+    $email= $_SESSION["usuRegistro"]->getValue('email');
+    $emailEncriptado = System::encriptar($email);
+    
+    $objMandarEmails->comprobarEmail($emailEncriptado);
+    
+//mandarEmailValidacion    
+}        
+        
 /**
  * @param $dir <br/>
  * Array con la ruta donde crear los directorios <br/>
@@ -137,7 +155,7 @@ function comprobarEmailNuevo($user){
     global $tmpNuevosDatos;
     global $destino;
     global $foto;
-    global $objMandarEmails;
+   
      
    
     crearRutasDirectorios($_SESSION["datos"]["id"]);
@@ -151,12 +169,14 @@ function comprobarEmailNuevo($user){
         }
        
         
-             $objMandarEmails->mandarEmailWelcome();
+        mandarEmailValidacion($_SESSION["usuRegistro"]->getValue('password'));
            
-             
+    /*         
     if(isset($_SESSION["datos"])){unset($_SESSION["datos"]);}
     if(isset($_SESSION["usuRegistro"])){unset($_SESSION["usuRegistro"]);}
     if(isset($_SESSION['usuario'])){unset($_SESSION['usuario']);}
+    */
+      
   //fin crearDirectoriosRegistro  
     
  }   
@@ -209,6 +229,7 @@ function validarCamposRegistro($st, $user){
         global $destino;
         global $foto;
         global $usuActualiza;
+        
         
         
         
@@ -364,6 +385,7 @@ function validarCamposRegistro($st, $user){
                 $testValidoReg[1] = true;
 
                 $foto = $_FILES['photoArticulo']['tmp_name']; 
+              
                 ingresarUsuario();
                 //Si el usuario no se ha logeado
                 //entonces se esta registrando    

@@ -28,6 +28,7 @@ define("TBL_PALABRAS_EMAIL", "palabras_email");
 define("TBL_INSERTAR_ERROR", "Errores");
 define("TBL_BLOQUEADOS_TOTAL", "usuarios_bloqueados_total");
 define("TBL_BLOQUEADOS_PARCIAL", "usuarios_bloqueados_parcial");
+define("TBL_ADMIN", "administradores");
 define("PAGE_SIZE", 1);
 define("LIMIT_RETURN_SEARCH", 25);
 

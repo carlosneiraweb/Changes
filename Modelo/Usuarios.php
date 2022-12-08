@@ -129,7 +129,7 @@ public static function getUserName($nick){
             $st ->bindValue(":nick", $nick, PDO::PARAM_STR);
             $st ->execute();
             $row = $st->fetchAll();
-            if($row){return $row[0][1];}
+            if($row){return $row;}
             $st->closeCursor();
             Conne::disconnect($con);
         } catch (Exception $ex) {
@@ -180,8 +180,9 @@ public static function getUserName($nick){
      * False Para validar el nick, password y email, para asegurarse
      * que no existe un usuario con esos datos en el registro.
      * 
-     * @return \Member
-     */
+     * @return type Object Usuario
+     *     
+     *  */
    public function authenticate($opc){
        
       
@@ -247,7 +248,6 @@ public final function insert(){
             password,
             email,
             fecha,
-            admin,
             bloqueado
             
                    
@@ -256,7 +256,6 @@ public final function insert(){
             :password,
             :email,
             :fecha,
-            :admin,
             :bloqueado
             
             );";
@@ -267,8 +266,7 @@ public final function insert(){
             $st->bindValue(":password",  System::generoHash($this->data["password"]) , PDO::PARAM_STR);
             $st->bindValue(":email", $this->data["email"], PDO::PARAM_STR);
             $st->bindValue(":fecha", $date, PDO::PARAM_STR);
-            $st->bindValue(":admin", '0', PDO::PARAM_STR);
-            $st->bindValue(":bloqueado", '0', PDO::PARAM_STR);
+            $st->bindValue(":bloqueado", '1', PDO::PARAM_STR);
             
             
             
@@ -456,7 +454,7 @@ public final function insert(){
             $stHash->bindValue(":nick", $nick, PDO::PARAM_STR);
             $stHash->execute();
             $rowHash = $stHash->fetch();
-            
+
             $stHash->closeCursor();
             Conne::disconnect($conHash);
             

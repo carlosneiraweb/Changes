@@ -58,7 +58,8 @@ public function eliminarDirectoriosUsuario($opc) {
             break;
     }
     
-
+        if(isset($_SESSION["datos"]["id"])&& $_SESSION["datos"]["id"] != ""){
+            
             try {
                 
                 Directorios::eliminarDirectoriosSistema($fotos,$opc);
@@ -83,7 +84,7 @@ public function eliminarDirectoriosUsuario($opc) {
                 echo $ex->getMessage();
                 
             }
-
+        }
 //fin eliminarDirectoriosUsuario   
 }
 
@@ -251,7 +252,7 @@ public function redirigirPorErrorSistema($opc,$grado){
       
            
         case $opc == "registrar":
-            
+           
             $_SESSION['error'] = ERROR_INGRESAR_USUARIO;
             $_SESSION["paginaError"] = "registrarse.php";
             $this->eliminarDirectoriosUsuario($opc);
@@ -268,7 +269,6 @@ public function redirigirPorErrorSistema($opc,$grado){
             $_SESSION["paginaError"] = "registrarse.php";
             $_SESSION['errorArchivos'] = "existo";
             $this->tratarDatosErrores("Error en el gestor bbdd al registrar usuario",$grado);
-            $this->eliminarVariablesSesionUsuario();
             
             
                 die();
@@ -303,6 +303,14 @@ public function redirigirPorErrorSistema($opc,$grado){
                 die();
                 break;
         
+        case $opc == "mandarEmailActivacion":   
+            
+            $grado = true;
+            $this->tratarDatosErrores($opc, $grado);
+            
+                die();
+                break;
+            
         default:
             
              $this->tratarDatosErrores($opc,false);

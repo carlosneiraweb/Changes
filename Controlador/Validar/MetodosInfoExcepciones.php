@@ -40,13 +40,14 @@ class MetodosInfoExcepciones {
     }
 
     private function mostrarError(){
-        header('Location: mostrar_error.php');
+            header(MOSTRAR_PAGINA_ERROR);
+            
             
     }
     
     private function redirirgirFalloNoCritico(){
         //$url = $_SESSION["paginaError"];
-         header("Location: index.php");
+         header(MOSTRAR_PAGINA_INDEX);
     }
     
 
@@ -62,9 +63,17 @@ class MetodosInfoExcepciones {
 private function convertirStringDatosSesion($opc){
     
     $datosSesion;
-    
-    
-    if(isset($_SESSION['actualizo'])){    
+   
+    if(isset($_SESSION['emailNoActivado'])){
+        
+        $datosSesion= $opc.PHP_EOL;
+        $datosSesion .= "No se pudo desbloquear usuario en validarEmail.php";
+        echo PHP_EOL;
+        $datosSesion .= "El email del usuario es ".$_SESSION['emailNoActivado'];
+        
+            unset($_SESSION['emailNoActivado']);
+        
+    }else if(isset($_SESSION['actualizo'])){    
         
                 
                 $datosSesion = $opc.PHP_EOL;
@@ -95,7 +104,7 @@ private function convertirStringDatosSesion($opc){
                 $datosSesion .= PHP_EOL;
             }
             
-    } else{
+    } else if(isset($_SESSION['userTMP'])){
             
             $datosSesion = "El usuario ".$_SESSION['userTMP']->getValue('nick');
             $datosSesion .= PHP_EOL;
@@ -114,7 +123,9 @@ private function convertirStringDatosSesion($opc){
                     
             }
             
-    }       
+    } else{
+        //$datosSesion = "No dispongo de datos";
+    }      
     
     if(isset($_SESSION['post'])){
             unset($_SESSION['post']);
@@ -153,7 +164,11 @@ private function insertarErroresBBDD( $opc,$datosSesion){
             $stError->bindValue(":usuario", $_SESSION["userTMP"]->getValue('nick'), PDO::PARAM_STR); 
         }else{
             //O si el usuario se esta registrado
-               $stError->bindValue(":usuario", $_SESSION['usuario']['nick'], PDO::PARAM_STR); 
+               if(isset($_SESSION['usuario'])){
+                    $stError->bindValue(":usuario", $_SESSION['usuario']['nick'], PDO::PARAM_STR); 
+               }else{
+                    $stError->bindValue(":usuario", "desconocido", PDO::PARAM_STR);   
+               }
         }
         
         $stError->bindValue(":fechaError", $date, PDO::PARAM_STR);
@@ -211,7 +226,7 @@ protected function tratarDatosErrores($opc,$grado){
     
     if($grado){
         
-        $this->mostrarError();
+        //$this->mostrarError();
     }else{
         $this->redirirgirFalloNoCritico();
     }

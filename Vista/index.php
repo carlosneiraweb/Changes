@@ -1,7 +1,5 @@
 <?php 
-/**RAMA DICIEMBRE 2021**/
 
-//**********************************//
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/ComentarioPost.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ValidoForm.php');
@@ -429,6 +427,7 @@ function processForm(){
     } else { 
        
         if($loggedInMember->getValue('bloqueado') == '1'){
+            
             $test = false;
             mostrarOculto();
             displayFormLogeo($missingFields, $userLogin, $test);

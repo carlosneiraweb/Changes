@@ -29,6 +29,10 @@
         echo '<h2>Te lo cambio</h2>';
             echo'<figure id="logo_salir_sesion">';
 		echo'<img src="../img/logo.png" alt="Logo del portal"/>';
+                //Esta variable de sesion se crea 
+                //en modificarDirectoriosUsuario()
+                //del archivo ControlSistemaUsuario
+                //si todo ha ido bien
                 if(isset($_SESSION["resultActualizacion"]) ){
                     
                     echo "<h2>Tús datos se han actualizado correctamente</h2>";

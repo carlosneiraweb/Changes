@@ -24,7 +24,7 @@ if(!isset($_SESSION)){
 
 function mostrarErrorRegistro(){
     
-    header('Location: mostrar_error.php');
+    header(MOSTRAR_PAGINA_ERROR);
 }
 
 function volverAnterior(){
@@ -33,17 +33,17 @@ function volverAnterior(){
     if(isset($resulTestReg)){unset($resulTestReg);}
     if(isset($_SESSION['actualizo'])){unset($_SESSION['actualizo']);}
     if(isset($_SESSION["usuRegistro"])){unset($_SESSION["usuRegistro"]);}
-    header("Location: index.php");
+    header(MOSTRAR_PAGINA_INDEX);
    
 }
 function volverPrincipio(){
     if(isset($_SESSION['usuario'])){unset($_SESSION['usuario']);}
-    header('Location: index.php');
+    header(MOSTRAR_PAGINA_INDEX);
     
 }
 function abandonarSession(){
     
-    header("Location: abandonar_sesion.php"); 
+    header(MOSTRAR_PAGINA_SALIR_SESION); 
 }
 
 
@@ -438,6 +438,7 @@ function confirmarRegistro(){
     echo '<section id="confirmarRegistro">';
         echo '<h2>Has sido registrado correctamente</h2>';
         echo '<h3>Ahora podras logearte con tu usuario y contraseña</h3>';
+        echo '<h3>Solo tienes que confirmar tú correo en el email que te hemos enviado</h3>';
             echo "<section id='form_registro_5' class='inputsREgistro'>";
                 echo'<form name="registro" action="registrarse.php" method="POST" id="registro">';
                     echo '<section id="btns_registrar">';
@@ -481,11 +482,11 @@ function confirmarRegistro(){
             "email" => $_SESSION['usuario']['email'],
             "nick" => $_SESSION['usuario']['nick'],
             "password" => $_SESSION['usuario']['password'],
-            "admin" => 0
+            "bloqueado" => 0
            
                 ));
                
-        
+               
             if(!isset($_SESSION["userTMP"])){
                 
                 $_SESSION["datos"]["id"] = $_SESSION["usuRegistro"]->insert();
@@ -626,7 +627,7 @@ function processFormRegistro($requiredFields, $st){
                 //Si el usuario se esta registrando se
                 //le muestra el formulario de las condiciones
                 if(!isset($_SESSION['actualizo'])){
-                    confirmarRegistro();
+                   confirmarRegistro();
                 }
                 
             }

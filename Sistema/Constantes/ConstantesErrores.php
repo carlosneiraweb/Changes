@@ -74,7 +74,8 @@ define("CONST_ERROR_BBDD_ACTUALIZAR_PBS_OFRECIDAS",array(37,"Hubo un error al ac
 define("CONST_ERROR_BBDD_DEVOLVER_ID_PALABRAS_AL_ACTUALIZAR",array(38,"Hubo un error en la bbdd al devolver el id de las palabras buscadas/ofrecidas al actualizar un post"));
 //error al cambiar nombre img que sube el usuario al registrarse
 define("CONST_ERROR_RENOMBRAR_IMG_REGISTRARSE",array(39,"Hubo un error al renombrar la img del usuario cuando se registraba"));
-
+//Error al desbloquear un usuario
+define("CONST_ERROR_DESBLOQUEO_USUARIO",array(40,'Hemos tenido un problema al desbloquear un usuario'));
 
 
 

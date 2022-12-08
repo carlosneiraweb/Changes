@@ -30,7 +30,55 @@ class mandarEmails {
  
 
 
-  
+ final function comprobarEmail($emailUsu){
+     
+    
+     try{
+         
+        
+        
+        $cuerpoEmail = '<section id=comprobarEmail>' .
+                        
+                        '<fieldset>'.
+                        '<legend>Enlace activar cuenta</legend>'.
+                        '<h4> Solo te queda pulsar en el enlace para validar tú email.</h4>'.
+                
+                        "<a link href='http://37.221.239.142:8080/Changes/Controlador/Elementos_AJAX/validarEmail.php?email=$emailUsu' >Aqui</a>".
+                            
+
+                        '</fieldset>'
+                        .'</section> ';
+                
+        $emailAcabado = EMAIL_CABECERA.$cuerpoEmail.EMAIL_FOOTER;
+                //$emailAcabado = utf8_decode($emailAcabado);
+        $email = new Email($emailAcabado);
+                //MANDAMOS EL EMAIL
+            
+        $correo = $email->mandarEmail($_SESSION["usuRegistro"]->getValue("email"));
+        $test = $correo->send();       
+                
+         if(!$test){throw new Exception("No se pudo contruir el email para activar al usuario",0);}
+                    
+         
+         
+     } catch (Exception $ex) {
+         
+        $excepciones = new MisExcepciones(CONST_ERROR_CONSTRUIR_DARSE_ALTA[1],CONST_ERROR_CONSTRUIR_DARSE_ALTA[0],$ex);
+        $excepciones->redirigirPorErrorSistema("ProblemaEmail",true);
+
+    }catch (\Exception $e) { //The leading slash means the Global PHP Exception class will be caught
+                //echo $e->getMessage(); //Boring error messages from anything else!
+    }finally{
+        unset($correo);
+    }  
+     
+     
+     
+     
+     
+    //fin comprobarEmail
+     
+ } 
  
 final function mandarEmailWelcome(){
     
