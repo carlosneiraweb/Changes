@@ -226,7 +226,7 @@ protected function tratarDatosErrores($opc,$grado){
     
     if($grado){
         
-        //$this->mostrarError();
+        $this->mostrarError();
     }else{
         $this->redirirgirFalloNoCritico();
     }

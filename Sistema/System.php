@@ -2,6 +2,11 @@
 <?php
 
  require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesSistema.php');
+ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesBbdd.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepcionesUsuario.php');
 
 /**
  * @author Carlos Neira Sanchez
@@ -10,10 +15,15 @@
  * @nameAndExt System.php
  * @fecha 04-oct-2016
  */
+
+
 class System {
     
-     
-/**
+  private static $method = 'aes-256-cbc';
+  private static $clave  = 'Una cadena, muy, muy larga para mejorar la encriptacion';
+  
+
+     /**
  * Este metodo devuelve un hash calculando
  * el coste computacional. Sin un coste
  * demasiado elevado en este.
@@ -25,10 +35,10 @@ class System {
  * @return type
  */    
 final static function generoHash ($pass){
-     
+    
 $timeTarget = 0.05; // 50 milisegundos 
 $coste = 8;
-$hash;
+
 do {
     $coste++;
     $inicio = microtime(true);
@@ -62,27 +72,83 @@ public final static function comparaHash( $pass, $hash){
 //comparaHash     
  }   
 
+/**
+     * Metodo que recupera el Hash del usuario de la bbdd
+     * Devuelve el hash si es posible o false 
+     * en caso negativo.
+     * Recive el nick del usuario.
+     * @param type nick de usuario
+     *  @return type columna de la tabla el Hash
+     */
+    final public static function recuperarHash($nick){
+        
+        $conHash = Conne::connect();
+        $sqlHash = null;
+            //Recuperamos el Hash del usuario "Contraseña encriptada"
+        
+        try{
+            $sqlHash = "Select password FROM ".TBL_USUARIO. " WHERE nick = :nick; ";
+            $stHash = $conHash->prepare($sqlHash);
+            $stHash->bindValue(":nick", $nick, PDO::PARAM_STR);
+            $stHash->execute();
+            $rowHash = $stHash->fetch();
+
+            $stHash->closeCursor();
+            Conne::disconnect($conHash);
+            
+            if ($rowHash[0]) {
+                return $rowHash[0];
+            }else{
+                return 0;
+            }
+            
+               
+        } catch (Exception $ex) {
+            echo $ex->getCode();
+            echo '<br>';
+            echo $ex->getLine().'<br>';
+            echo $ex->getFile().'<br>';
+           Conne::disconnect($conHash);
+          
+        }
+        
+    //fin recuperarHash    
+    }
+
+   
+
  
- 
+ private function generarIV(){
+     return base64_encode(openssl_random_pseudo_bytes(openssl_cipher_iv_length(self::$method)));
+ }
+    
  /**
   * Metodo que desencripta informacion
   */
  
- public final static function desencriptar($valor){
+ public static function desencriptar($valor){
+    
      
-     return openssl_decrypt($valor, METHOD, CLAVE, false, IV);
+     //$clave  = 'Una cadena, muy, muy larga para mejorar la encriptacion';
+//Metodo de encriptaciÃ³n
+    //$method = 'aes-256-cbc';
+    $iv = self::generarIV();
+    return openssl_decrypt($valor,self::$method, self::$clave, false, $iv);
      
  } 
  
- 
- 
+
  /**
   * Metodo que encripta informacion
   */
  
- public final static function encriptar($valor){
-     
-     return openssl_encrypt ($valor, METHOD, CLAVE, false, IV);
+ public static  function encriptar($valor){
+
+    // $clave  = 'Una cadena, muy, muy larga para mejorar la encriptacion';
+    //Metodo de encriptaciÃ³n
+   // $method = 'aes-256-cbc';
+    $iv = base64_decode("C9fBxl1EWtYTL1/M8jfstw==");
+    return openssl_encrypt ($valor, self::$method, self::$clave,false, $iv);
      
  } 
  

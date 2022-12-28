@@ -16,7 +16,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesBb
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesEmail.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesErrores.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Email.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepciones.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepcionesUsuario.php');
 
     if(!isset($_SESSION)){
     
@@ -30,7 +30,7 @@ class mandarEmails {
  
 
 
- final function comprobarEmail($emailUsu){
+ final function comprobarEmail($emailUsu,$id){
      
     
      try{
@@ -43,7 +43,7 @@ class mandarEmails {
                         '<legend>Enlace activar cuenta</legend>'.
                         '<h4> Solo te queda pulsar en el enlace para validar tú email.</h4>'.
                 
-                        "<a link href='http://37.221.239.142:8080/Changes/Controlador/Elementos_AJAX/validarEmail.php?email=$emailUsu' >Aqui</a>".
+                        "<a link href='http://37.221.239.142:8080/Changes/Controlador/Elementos_AJAX/validarEmail.php?email=$emailUsu&id=$id' >Aqui</a>".
                             
 
                         '</fieldset>'

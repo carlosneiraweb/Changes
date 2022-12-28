@@ -12,7 +12,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/mandarEmails.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/System.php'); 
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepciones.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepcionesUsuario.php');
 
 
 
@@ -187,7 +187,7 @@ public static function getUserName($nick){
        
       
        //Mandamos recuperar la contraseña encriptada de la bbddd del usuario
-        $hash =  Usuarios::recuperarHash($this->data["nick"]);
+        $hash =  System::recuperarHash($this->data["nick"]);
        //Comprobamos que la contraseña encriptada de la bbdd sea
        //igual a la introducida por el usuario en el formulario
         if (System::comparaHash( $this->data["password"],$hash)) {
@@ -434,49 +434,7 @@ public final function insert(){
     }           
        
    
-    /**
-     * Metodo que recupera el Hash del usuario de la bbdd
-     * Devuelve el hash si es posible o false 
-     * en caso negativo.
-     * Recive el nick del usuario.
-     * @param type nick de usuario
-     *  @return type columna de la tabla el Hash
-     */
-    final public static function recuperarHash($nick){
-        
-        $conHash = Conne::connect();
-        $sqlHash = null;
-            //Recuperamos el Hash del usuario "Contraseña encriptada"
-        
-        try{
-            $sqlHash = "Select password FROM ".TBL_USUARIO. " WHERE nick = :nick; ";
-            $stHash = $conHash->prepare($sqlHash);
-            $stHash->bindValue(":nick", $nick, PDO::PARAM_STR);
-            $stHash->execute();
-            $rowHash = $stHash->fetch();
-
-            $stHash->closeCursor();
-            Conne::disconnect($conHash);
-            
-            if ($rowHash[0]) {
-                return $rowHash[0];
-            }else{
-                return 0;
-            }
-            
-               
-        } catch (Exception $ex) {
-            echo $ex->getCode();
-            echo '<br>';
-            echo $ex->getLine().'<br>';
-            echo $ex->getFile().'<br>';
-           Conne::disconnect($conHash);
-          
-        }
-        
-    //fin recuperarHash    
-    }
-
+    
 /**
  * Metodo que recive el id del usuario logeado
  * y devuelve los posibles usuarios bloqueados

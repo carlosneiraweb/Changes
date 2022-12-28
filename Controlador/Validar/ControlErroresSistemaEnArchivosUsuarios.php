@@ -4,7 +4,7 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepciones.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepcionesUsuario.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Directorios.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ValidoForm.php'); 
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/mandarEmails.php');
@@ -58,9 +58,10 @@ function mandarEmailValidacion(){
     global $objMandarEmails;
  
     $email= $_SESSION["usuRegistro"]->getValue('email');
+    $id = $_SESSION["datos"]["id"];
     $emailEncriptado = System::encriptar($email);
     
-    $objMandarEmails->comprobarEmail($emailEncriptado);
+    $objMandarEmails->comprobarEmail($emailEncriptado,$id);
     
 //mandarEmailValidacion    
 }        

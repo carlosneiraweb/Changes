@@ -21,7 +21,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesEm
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/PHPMailer.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/SMTP.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/Exception.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepciones.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepcionesUsuario.php');
 
 
 class Email {

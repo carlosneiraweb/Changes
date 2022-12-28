@@ -4,7 +4,7 @@
  require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
  require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ValidoForm.php');
  require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ControlErroresSistemaEnArchivosUsuarios.php');
- require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepciones.php');
+ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepcionesUsuario.php');
  require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Directorios.php');
  require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesBbdd.php');
  require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesErrores.php');
@@ -33,6 +33,7 @@ function volverAnterior(){
     if(isset($resulTestReg)){unset($resulTestReg);}
     if(isset($_SESSION['actualizo'])){unset($_SESSION['actualizo']);}
     if(isset($_SESSION["usuRegistro"])){unset($_SESSION["usuRegistro"]);}
+    if(isset($_SESSION["datos"])){unset($_SESSION["datos"]);}
     header(MOSTRAR_PAGINA_INDEX);
    
 }
@@ -482,7 +483,7 @@ function confirmarRegistro(){
             "email" => $_SESSION['usuario']['email'],
             "nick" => $_SESSION['usuario']['nick'],
             "password" => $_SESSION['usuario']['password'],
-            "bloqueado" => 0
+            "bloqueado" => '0'
            
                 ));
                
