@@ -9,6 +9,7 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesBbdd.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesSistema.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/mandarEmails.php');
@@ -34,27 +35,26 @@ if (isset($_POST['email'])) {
         $email=$_GET['email'];
 }
 
+$id = base64_decode($id);
+$email = base64_decode($email);
 
-
+   
 try{
  
    global $test;
     
     $con = Conne::connect(); 
-    //echo 'email encriptado '.$email."</br>";
-    $emailDeco = System::desencriptar($email);
-    //echo 'email des '.$emailDeco;
-    
+   
     
     $sqlValiEmail = "Update ".TBL_USUARIO. " SET bloqueado = :bloqueado WHERE email= :email AND idUsuario = :idUsuario";
     $stmValiEmail = $con->prepare($sqlValiEmail);
     $stmValiEmail->bindValue(":bloqueado", '0', PDO::PARAM_STMT);
-    $stmValiEmail->bindValue(":email", $emailDeco, PDO::PARAM_STMT);
+    $stmValiEmail->bindValue(":email", $email, PDO::PARAM_STMT);
     $stmValiEmail->bindValue(":idUsuario", $id, PDO::PARAM_INT);
     $test = $stmValiEmail->execute();
-    
+   
     if($test){
-       // header(MOSTRAR_PAGINA_INDEX);
+        header(MOSTRAR_PAGINA_INDEX);
     }
     
 } catch (Exception $ex) {

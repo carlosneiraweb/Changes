@@ -19,9 +19,8 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepcio
 
 class System {
     
-  private static $method = 'aes-256-cbc';
-  private static $clave  = 'Una cadena, muy, muy larga para mejorar la encriptacion';
-  
+ 
+ 
 
      /**
  * Este metodo devuelve un hash calculando
@@ -115,43 +114,8 @@ public final static function comparaHash( $pass, $hash){
     //fin recuperarHash    
     }
 
-   
-
- 
- private function generarIV(){
-     return base64_encode(openssl_random_pseudo_bytes(openssl_cipher_iv_length(self::$method)));
- }
     
- /**
-  * Metodo que desencripta informacion
-  */
- 
- public static function desencriptar($valor){
     
-     
-     //$clave  = 'Una cadena, muy, muy larga para mejorar la encriptacion';
-//Metodo de encriptaciÃ³n
-    //$method = 'aes-256-cbc';
-    $iv = self::generarIV();
-    return openssl_decrypt($valor,self::$method, self::$clave, false, $iv);
-     
- } 
- 
-
- /**
-  * Metodo que encripta informacion
-  */
- 
- public static  function encriptar($valor){
-
-    // $clave  = 'Una cadena, muy, muy larga para mejorar la encriptacion';
-    //Metodo de encriptaciÃ³n
-   // $method = 'aes-256-cbc';
-    $iv = base64_decode("C9fBxl1EWtYTL1/M8jfstw==");
-    return openssl_encrypt ($valor, self::$method, self::$clave,false, $iv);
-     
- } 
- 
 /**
  * No implementado
  */   

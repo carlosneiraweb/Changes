@@ -35,7 +35,7 @@ class mandarEmails {
     
      try{
          
-        
+     
         
         $cuerpoEmail = '<section id=comprobarEmail>' .
                         

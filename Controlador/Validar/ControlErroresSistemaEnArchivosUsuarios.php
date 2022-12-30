@@ -8,7 +8,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepcio
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Directorios.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ValidoForm.php'); 
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/mandarEmails.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/System.php'); 
+
 
 //require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Vista/registrarse.php');
 /**
@@ -57,11 +57,10 @@ function mandarEmailValidacion(){
     
     global $objMandarEmails;
  
-    $email= $_SESSION["usuRegistro"]->getValue('email');
-    $id = $_SESSION["datos"]["id"];
-    $emailEncriptado = System::encriptar($email);
+    $emailEncript= base64_encode($_SESSION["usuRegistro"]->getValue('email'));
+    $idEncript = base64_encode($_SESSION["datos"]["id"]);
     
-    $objMandarEmails->comprobarEmail($emailEncriptado,$id);
+    $objMandarEmails->comprobarEmail($emailEncript,$idEncript);
     
 //mandarEmailValidacion    
 }        
@@ -81,6 +80,7 @@ function mandarEmailValidacion(){
         Directorios::crearDirectorio($dir[2],$dir[3]);
         
         
+
    //fin crearDirectorios                                     
     }
    
