@@ -311,6 +311,14 @@ public function redirigirPorErrorSistema($opc,$grado){
                 die();
                 break;
             
+        case $opc == "desbloquearUsuario":
+            $_SESSION['error'] = ERROR_DESBLOQUEAR_USUARIO;
+            $grado = true;
+            $this->tratarDatosErrores($opc, $grado);
+            
+                die();
+                break;
+            
         default:
             
              $this->tratarDatosErrores($opc,false);

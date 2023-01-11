@@ -1,8 +1,8 @@
 
 <?php
 
- require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesSistema.php');
- require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesSistema.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesBbdd.php');
@@ -19,7 +19,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepcio
 
 class System {
     
- 
+    
  
 
      /**
@@ -114,6 +114,9 @@ public final static function comparaHash( $pass, $hash){
     //fin recuperarHash    
     }
 
+  
+    
+    
     
     
 /**
@@ -184,10 +187,9 @@ final static function ipVisitante (){
     }
     
 } //Fin optener ip real     
-     
     
-    
-    
+
+
     
 //fin System    
 }

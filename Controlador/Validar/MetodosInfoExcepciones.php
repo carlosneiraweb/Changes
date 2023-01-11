@@ -69,7 +69,7 @@ private function convertirStringDatosSesion($opc){
         $datosSesion= $opc.PHP_EOL;
         $datosSesion .= "No se pudo desbloquear usuario en validarEmail.php";
         echo PHP_EOL;
-        $datosSesion .= "El email del usuario es ".$_SESSION['emailNoActivado'];
+        $datosSesion .= "El nick del usuario es ".$_SESSION['emailNoActivado'];
         
             unset($_SESSION['emailNoActivado']);
         
@@ -130,7 +130,7 @@ private function convertirStringDatosSesion($opc){
     if(isset($_SESSION['post'])){
             unset($_SESSION['post']);
     }
-    
+    var_dump($datosSesion);
     return $datosSesion;
 }    
     

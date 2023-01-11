@@ -428,4 +428,18 @@ DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_520_ci;
 
 
+
+
+CREATE TABLE IF NOT EXISTS `Desbloquear` (
+  `idDesbloquear` INT NOT NULL,
+  `nick` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `correo` VARCHAR(255) NOT NULL,
+  `fecha` DATE NOT NULL,
+  PRIMARY KEY (`idDesbloquear`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_unicode_520_ci;
+
+
+
 -- Dump completed on 2022-01-31 18:26:32COLLATE

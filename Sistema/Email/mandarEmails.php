@@ -30,20 +30,20 @@ class mandarEmails {
  
 
 
- final function comprobarEmail($emailUsu,$id){
+ final function comprobarEmail($hash,$nick){
      
-    
+   
      try{
          
-     
-        
+      
+      $url =  "http://37.221.239.142:8080/Changes/Controlador/Elementos_AJAX/validarEmail.php?actv=$hash&nick=$nick";
         $cuerpoEmail = '<section id=comprobarEmail>' .
                         
                         '<fieldset>'.
                         '<legend>Enlace activar cuenta</legend>'.
-                        '<h4> Solo te queda pulsar en el enlace para validar tú email.</h4>'.
+                        "<h4> $nick solo te queda pulsar en el enlace para validar tú email.</h4>".
                 
-                        "<a link href='http://37.221.239.142:8080/Changes/Controlador/Elementos_AJAX/validarEmail.php?email=$emailUsu&id=$id' >Aqui</a>".
+                        "<a link href='$url' >Aqui</a>".
                             
 
                         '</fieldset>'
@@ -55,6 +55,7 @@ class mandarEmails {
                 //MANDAMOS EL EMAIL
             
         $correo = $email->mandarEmail($_SESSION["usuRegistro"]->getValue("email"));
+        
         $test = $correo->send();       
                 
          if(!$test){throw new Exception("No se pudo contruir el email para activar al usuario",0);}

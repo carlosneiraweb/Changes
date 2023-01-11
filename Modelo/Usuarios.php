@@ -285,8 +285,8 @@ public final function insert(){
                             "( :idDatosUsuario, :genero, :nombre, :apellido_1, :apellido_2, :telefono);";
                     
                         $stDatosUsuario = $con->prepare($sqlDatosUsuario);
-                        $stDatosUsuario->bindParam("idDatosUsuario", $idUsu, PDO::PARAM_INT);
-                        $stDatosUsuario->bindParam(":genero", $this->data["genero"], PDO::PARAM_STR);                      
+                        $stDatosUsuario->bindValue("idDatosUsuario", $idUsu, PDO::PARAM_INT);
+                        $stDatosUsuario->bindValue(":genero", $this->data["genero"], PDO::PARAM_STR);                      
                         $stDatosUsuario->bindValue(":nombre", $this->data["nombre"], PDO::PARAM_STR);
                         $stDatosUsuario->bindValue(":apellido_1", $this->data["apellido_1"], PDO::PARAM_STR);
                         $stDatosUsuario->bindValue(":apellido_2", $this->data["apellido_2"], PDO::PARAM_STR);
@@ -300,7 +300,7 @@ public final function insert(){
                                     
                              
                         $stDireccion = $con->prepare($sqlDireccion);
-                        $stDireccion->bindParam(":idDireccion", $idUsu, PDO::PARAM_INT);
+                        $stDireccion->bindValue(":idDireccion", $idUsu, PDO::PARAM_INT);
                         $stDireccion->bindValue(":calle", $this->data["calle"], PDO::PARAM_STR);
                         $stDireccion->bindValue(":numeroPortal", $this->data["numeroPortal"], PDO::PARAM_STR);
                         $stDireccion->bindValue(":ptr", $this->data["ptr"], PDO::PARAM_STR);
@@ -310,6 +310,23 @@ public final function insert(){
                         $stDireccion->bindValue(":pais", $this->data["pais"], PDO::PARAM_STR);
                 $stDireccion->execute();             
 
+                
+                /**
+                 * Destruimos cuando mandamos
+                 * email para activar cuenta
+                 */
+                
+                $_SESSION["hash" ] = System::generoHash($this->data["email"]);
+                $sqlDesbloquear = "INSERT INTO ".TBL_DESBLOQUEAR. " (idDesbloquear,nick,correo,fecha) ".
+                        " VALUES ".
+                        " (:idDesbloquear,:nick, :correoDesbloquear, :fechaDesbloquear);";
+                $stDesbloquear = $con->prepare($sqlDesbloquear);
+                $stDesbloquear->bindValue(":idDesbloquear", $idUsu, PDO::PARAM_INT);
+                $stDesbloquear->bindValue(":nick", $this->data["nick"], PDO::PARAM_STR);
+                $stDesbloquear->bindValue(":correoDesbloquear", $_SESSION["hash"] , PDO::PARAM_STR);
+                $stDesbloquear->bindValue(":fechaDesbloquear", $date, PDO::PARAM_STR);
+                $stDesbloquear->execute();
+                
                 
             
             $con->commit();

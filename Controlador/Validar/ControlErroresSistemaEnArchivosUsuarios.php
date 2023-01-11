@@ -47,23 +47,7 @@ if(!isset($_SESSION)){
         if(isset($_SESSION["userTMP"])){          
             $usuActualiza = $_SESSION["userTMP"]->getValue('nick');
         }
-
-/**
- * 
- * @use recupera el hash del email del usuario<br>
- * para mandarlo en el correo
- */      
-function mandarEmailValidacion(){
-    
-    global $objMandarEmails;
- 
-    $emailEncript= base64_encode($_SESSION["usuRegistro"]->getValue('email'));
-    $idEncript = base64_encode($_SESSION["datos"]["id"]);
-    
-    $objMandarEmails->comprobarEmail($emailEncript,$idEncript);
-    
-//mandarEmailValidacion    
-}        
+     
         
 /**
  * @param $dir <br/>
@@ -148,7 +132,9 @@ function comprobarEmailNuevo($user){
  * se registra. </br>
  * @param   $var <br>
  * Parametro para saber si el usuario sube <br>
- * una foto o le ponemos una por default.
+ * una foto o le ponemos una por default. <br/>
+ * Tambien manda email para activar cuenta.
+ * 
  */
 
  function crearDirectoriosRegistro($var){
@@ -156,6 +142,7 @@ function comprobarEmailNuevo($user){
     global $tmpNuevosDatos;
     global $destino;
     global $foto;
+    global $objMandarEmails;
    
      
    
@@ -170,7 +157,9 @@ function comprobarEmailNuevo($user){
         }
        
         
-        mandarEmailValidacion($_SESSION["usuRegistro"]->getValue('password'));
+        $objMandarEmails->comprobarEmail($_SESSION["hash"],$_SESSION['usuario']['nick']);
+       
+        if(isset($_SESSION["hash"])){unset ($_SESSION["hash"]);}
            
     /*         
     if(isset($_SESSION["datos"])){unset($_SESSION["datos"]);}

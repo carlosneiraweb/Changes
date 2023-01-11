@@ -76,6 +76,8 @@ define("CONST_ERROR_BBDD_DEVOLVER_ID_PALABRAS_AL_ACTUALIZAR",array(38,"Hubo un e
 define("CONST_ERROR_RENOMBRAR_IMG_REGISTRARSE",array(39,"Hubo un error al renombrar la img del usuario cuando se registraba"));
 //Error al desbloquear un usuario
 define("CONST_ERROR_DESBLOQUEO_USUARIO",array(40,'Hemos tenido un problema al desbloquear un usuario'));
+//Error al Desbloquear Tabla Desbloquear un usuario
+define("CONST_ERROR_ELIMINAR_TABLA_DESBLOQUEAR",array(41,"No se ha podido eliminar un usuario de la tabla Desbloqueo"));
 
 
 
@@ -112,7 +114,7 @@ define("TXT_ERROR_VALIDACION", "../Errores/ErroresValidacion.txt");
 define("TXT_ERROR_ELIMINAR_POST", "../Errores/ErroresEliminarPost.txt");
 define("ERROR_MANDAR_EMAIL","<h5>Lo sentimos pero por alguna razon no se te ha mandado un email</h5>");
 define("ERROR_ACTUALIZAR_POST","<h5>Hemos tenido un problema al actualizar tú Post</h5><h4>Debes ingresarlo otra vez</h4><h3>Lo sentimos de verdad</h3>");
-
+define("ERROR_DESBLOQUEAR_USUARIO","<h5>Por algún motivo no hemos podido desbloquearte</h5><h4>Ponte en contacto con nosotros por email</h4>");
 
 
 
