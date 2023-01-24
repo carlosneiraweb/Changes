@@ -49,14 +49,16 @@ if(isset($_POST['ruta'])){
             $ruta = $_GET['ruta'];
         }
     }
-    
+ 
+   // echo $idPost." ".$ruta;
+            
     
  switch ($opcImgSubirPost) {
         case "ImagenNueva":
-            $sqlImgSubirPost = "Select nickUsuario as nick, ruta  as ruta  from ".TBL_IMAGENES." WHERE post_idPost = '".$idPost."'";
+            $sqlImgSubirPost = "Select directorio  as ruta  from ".TBL_IMAGENES." WHERE postIdPost = '".$idPost."'";
             break;
         case "ImagenEliminarNueva":
-            $sqlImgSubirPost = "SELECT nickUsuario as nick, ruta as ruta, texto as texto from ".TBL_IMAGENES." WHERE post_idPost = '".$idPost."' and ruta = '".$ruta."'";
+            $sqlImgSubirPost = "SELECT directorio as ruta, texto as texto from ".TBL_IMAGENES." WHERE postIdPost = '".$idPost."' and directorio = '".$ruta."'";
             break;
     }   
         $stImgSubirPost = $conImgSubirPost->query($sqlImgSubirPost);

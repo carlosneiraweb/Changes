@@ -27,7 +27,7 @@ class Post extends DataObj{
     protected $data = array(
         
         "idUsuarioPost" => "",
-        "idSecciones" => "",
+        "seccionesIdsecciones" => "",
         "tiempoCambioIdTiempoCambio" => "",
         "titulo" => "",
         "comentario" => "",
@@ -51,7 +51,7 @@ class Post extends DataObj{
     */ 
     public function buscarUsuariosInteresados($datosPost){
         
-    $excepciones = new MisExcepciones(CONST_ERROR_BBDD_BUSCAR_USUARIOS_EMAIL[1], CONST_ERROR_BBDD_BUSCAR_USUARIOS_EMAIL[0]);
+    
         try {
            
             $con = Conne::connect();
@@ -137,6 +137,7 @@ class Post extends DataObj{
             Conne::disconnect($con);
             //Seguimos al usuario permitirle seguir en la web
             //no es un fallo critico
+           $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_BUSCAR_USUARIOS_EMAIL[1], CONST_ERROR_BBDD_BUSCAR_USUARIOS_EMAIL[0],$ex);
            $excepciones->redirigirPorErrorSistema("Hubo un error al buscar en la tabla palabras email", false);
          
             
@@ -158,16 +159,16 @@ class Post extends DataObj{
      * @return array
      */
 
-public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaIdPost, $idPostPalabra){
+public function devuelvoIdPalabras($tabla, $columnaIdImagen, $columnaIdPost, $idPostPalabra){
    // echo 'tabla '.$tabla. ' columnaIdImagen '.$columnaIdImagen. ' palabra '.$palabras.' columnaIdPOST '.$columnaIdPost. ' IDpOSTpALABRA '.$idPostPalabra.'<br>';    
-        $excepciones = new MisExcepciones(CONST_ERROR_BBDD_DEVOLVER_ID_PALABRAS_AL_ACTUALIZAR[1],CONST_ERROR_BBDD_DEVOLVER_ID_PALABRAS_AL_ACTUALIZAR[0]);
+       
     
     try {
            
             $con = Conne::connect();
 
                             
-            $stm = "Select $columnaIdImagen, $palabras from $tabla where ".$columnaIdPost." = :idImagen;";
+            $stm = "Select $columnaIdImagen from $tabla where ".$columnaIdPost." = :idImagen;";
                             //echo "idPab ".$stm.'<br>';
             $stm = $con->prepare($stm);
             $stm->bindValue(":idImagen", $idPostPalabra, PDO::PARAM_INT);
@@ -178,12 +179,16 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
            
             return $misPalabras;   
     } catch (Exception $ex) {
+        
             Conne::disconnect($con);
-            $_SESSION['error'] = ERROR_ACTUALIZAR_POST;
-            $excep = $excepciones->recojerExcepciones($ex);
-            $excepciones->eliminarDatosErrorAlSubirPost("errorPost", true,$excep);
+            if(isset($_SESSION['atras'])){
+                $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
+            }else{
+                $_SESSION['error'] = ERROR_ACTUALIZAR_POST;
+            }
            
-            
+                $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_DEVOLVER_ID_PALABRAS_AL_ACTUALIZAR[1],CONST_ERROR_BBDD_DEVOLVER_ID_PALABRAS_AL_ACTUALIZAR[0],$ex);
+                $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
     }
         
      
@@ -204,7 +209,7 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
     
     private function actualizarPalabrasBuscadas($idPostPalabras){
         
-        $excepciones = new MisExcepciones(CONST_ERROR_BBDD_ACTUALIZAR_PBS_QUERIDAS[1],CONST_ERROR_BBDD_ACTUALIZAR_PBS_QUERIDAS[0]);
+        
        
         
         $idPostPa;
@@ -219,22 +224,20 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
             $con = Conne::connect();
          
             //Solicitamos el id de las palabras a modificar       
-            $buscadas =  Post::devuelvoIdPalabras("busquedas_pbs_buscadas","palabrasBuscadas", "idPbsBuscada", "idPost_queridas", $idPostPa);
+            $buscadas =  $this->devuelvoIdPalabras("busquedas_pbs_buscadas", "idPbsBuscada", "idPostQueridas", $idPostPa);
             
             //Las palabras nuevas para modificar ls antiguas
             $nuevasPalabras = $this->getValue('Pa_queridas');
             
             
                 for($i = 0; $i < 4; $i++){
-               
-                    
-                            
-                            $palabraNueva = $buscadas[$i]['idPbsBuscada'];
-                            $stm = " UPDATE ".TBL_PBS_QUERIDAS. " SET palabrasBuscadas = ". "'$nuevasPalabras[$i]'"." WHERE idPbsBuscada = "."$palabraNueva"." and idPost_queridas = ".$idPostPa.";";
+
+                            $stm = " UPDATE ".TBL_PBS_QUERIDAS. " SET palabrasBuscadas = :palabrasBuscadas WHERE idPbsBuscada = :idPbsBuscada and idPostQueridas = :idPostQueridas;";
+                            //echo $stm;
                             $stm = $con->prepare($stm);
-                            $stm->bindValue(":idPost_queridas", $idPostPa, PDO::PARAM_INT);
+                            $stm->bindValue(":idPostQueridas", $idPostPa, PDO::PARAM_INT);
                             $stm->bindValue(":palabrasBuscadas", $nuevasPalabras[$i], PDO::PARAM_STR);
-                            $stm->bindValue(":idPbsBuscada", $buscadas[$i], PDO::PARAM_INT);
+                            $stm->bindValue(":idPbsBuscada", $buscadas[$i]['idPbsBuscada'], PDO::PARAM_INT);
                             $stm->execute();
                          
                            
@@ -245,11 +248,17 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
                 Conne::disconnect($con);  
               
         }catch (Exception $ex) {
-           
-            Conne::disconnect($con);
-            $_SESSION['error'] = ERROR_ACTUALIZAR_POST;
-            $excep = $excepciones->recojerExcepciones($ex);
-            $excepciones->eliminarDatosErrorAlSubirPost("errorPost", true,$excep);
+            
+            Conne::disconnect($con); 
+            
+            if(isset($_SESSION['atras'])){
+                $_SESSION['error'] =  ERROR_INSERTAR_ARTICULO;
+            }else if(!isset($_SESSION['error'])){
+                $_SESSION['error'] =  ERROR_ACTUALIZAR_POST;
+            }
+            
+            $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_ACTUALIZAR_PBS_QUERIDAS[1],CONST_ERROR_BBDD_ACTUALIZAR_PBS_QUERIDAS[0],$ex);
+            $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
             
             
         }
@@ -271,7 +280,7 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
      */
     private function actualizarPalarasOfrecidas($idPostPalabras){
        
-        $excepciones = new MisExcepciones(CONST_ERROR_BBDD_ACTUALIZAR_PBS_OFRECIDAS[1],CONST_ERROR_BBDD_ACTUALIZAR_PBS_OFRECIDAS[0]);
+        
         
             if(isset($_SESSION['lastId'][0])){
                 $idPostOfre = $_SESSION['lastId'][0];
@@ -280,7 +289,10 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
             }
        
         //El id de las viejas palabras
-            $ofrecidas = Post::devuelvoIdPalabras("busquedas_pbs_ofrecidas","palabrasOfrecidas", "idPbsOfrecida", "idPost_ofrecidas", $idPostOfre);
+            
+            $ofrecidas = $this->devuelvoIdPalabras("busquedas_pbs_ofrecidas", "idPbsOfrecida", "idPostOfrecidas", $idPostOfre);
+            
+
             //Las palabras nuevas para modificar ls antiguas
             $nuevasOfrecidas = $this->getValue('Pa_ofrecidas');  
             
@@ -290,14 +302,12 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
                   
                    
                         for($i = 0; $i < 4; $i++){
-                            
-                            
-                            $palabraNueva = $ofrecidas[$i]['idPbsOfrecida'];
-                                $stm = " UPDATE ".TBL_PBS_OFRECIDAS. " SET palabrasOfrecidas =". "'$nuevasOfrecidas[$i]'"." WHERE idPbsOfrecida = "."$palabraNueva"." and idPost_ofrecidas = ".$idPostOfre.";";
+
+                                $stm = " UPDATE ".TBL_PBS_OFRECIDAS. " SET palabrasOfrecidas = :palabrasOfrecidas  WHERE idPbsOfrecida = :idPbsOfrecida and idPostOfrecidas = :idPostOfrecidas;";
                                 $stm = $con->prepare($stm);
-                                $stm->bindValue(":idPost_ofrecidas", $idPostOfre, PDO::PARAM_INT);
+                                $stm->bindValue(":idPostOfrecidas", $idPostOfre, PDO::PARAM_INT);
                                 $stm->bindValue(":palabrasOfrecidas", $nuevasOfrecidas[$i], PDO::PARAM_STR);
-                                $stm->bindValue(":idPbsOfrecida", $ofrecidas[$i], PDO::PARAM_INT);
+                                $stm->bindValue(":idPbsOfrecida", $ofrecidas[$i]['idPbsOfrecida'], PDO::PARAM_INT);
                                 $stm->execute();
                                 //$stm->rowCount();
                                 
@@ -309,11 +319,17 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
             Conne::disconnect($con); 
            
         } catch (Exception $ex) {
-           
-            Conne::disconnect($con);
-            $_SESSION['error'] = ERROR_ACTUALIZAR_POST;
-            $excep = $excepciones->recojerExcepciones($ex);
-            $excepciones->eliminarDatosErrorAlSubirPost('errorPost', true,$excep);
+        
+            Conne::disconnect($con); 
+            
+            if(isset($_SESSION['atras'])){
+                $_SESSION['error'] =  ERROR_INSERTAR_ARTICULO;
+            }else if(!isset($_SESSION['error'])){
+                $_SESSION['error'] =  ERROR_ACTUALIZAR_POST;
+            }
+            
+            $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_ACTUALIZAR_PBS_OFRECIDAS[1],CONST_ERROR_BBDD_ACTUALIZAR_PBS_OFRECIDAS[0],$ex);
+            $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
              
         }
      //insertarPalarasOfrecidas      
@@ -329,8 +345,8 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
    
     public function actualizarPost(){
     
-    $excepciones = new MisExcepciones(CONST_ERROR_BBDD_ACTUALIZAR_POST[1],CONST_ERROR_BBDD_ACTUALIZAR_POST[0]);
-    if(isset($_SESSION['errorArchivos'])){unset($_SESSION['errorArchivos']);}
+    
+    //if(isset($_SESSION['errorArchivos'])){unset($_SESSION['errorArchivos']);}
     
     try{
     $con = Conne::connect();
@@ -372,10 +388,16 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
         Conne::disconnect($con);  
            
     }catch(Exception $ex){
-        $_SESSION['error'] = ERROR_ACTUALIZAR_POST;
+        
         Conne::disconnect($con);
-        $excep = $excepciones->recojerExcepciones($ex);
-        $excepciones->eliminarDatosErrorAlSubirPost("errorPost",true,$excep);
+        
+        if(isset($_SESSION['atras'])){
+            $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
+        }else{
+            $_SESSION['error'] = ERROR_ACTUALIZAR_POST;
+        }
+        $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_ACTUALIZAR_POST[1],CONST_ERROR_BBDD_ACTUALIZAR_POST[0],$ex);
+        $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost",true);
     }
 //fin actualizar articulo    
 }
@@ -387,7 +409,7 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen,$palabras, $columnaI
  */
 private  function insertarPalabrasQueridas(){
     
-    $excepciones =  new MisExcepciones(CONST_ERROR_BBDD_INGRESAR_PALABRAS_QUERIDAS[1], CONST_ERROR_BBDD_INGRESAR_PALABRAS_QUERIDAS[0]);
+    
     
             //Creamos un array con las palabras buscadas
             $buscadas = $this->getValue("Pa_queridas");
@@ -409,9 +431,11 @@ private  function insertarPalabrasQueridas(){
             
                
             }catch(Exception $ex){
-                Conne::disconnect($con);
-               $excep = $excepciones->recojerExcepciones($ex);
-               $excepciones->eliminarDatosErrorAlSubirPost("errorPost", true, $excep);
+               
+               Conne::disconnect($con);
+               $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
+               $excepciones =  new MisExcepcionesPost(CONST_ERROR_BBDD_INGRESAR_PALABRAS_QUERIDAS[1], CONST_ERROR_BBDD_INGRESAR_PALABRAS_QUERIDAS[0],$ex);
+               $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
                 
             }
 //fin insertarPalabrasQueridas    
@@ -426,7 +450,7 @@ private  function insertarPalabrasQueridas(){
 
 private function insertarPalabrasOfrecidas(){
     
-    $excepciones = new MisExcepciones(CONST_ERROR_BBDD_INGRESAR_PALABRAS_OFRECIDAS[1], CONST_ERROR_BBDD_INGRESAR_PALABRAS_OFRECIDAS[0]); 
+    
      //Creamos un array con las palabras buscadas
             $ofrecidas = $this->getValue("Pa_ofrecidas");
             
@@ -455,14 +479,14 @@ private function insertarPalabrasOfrecidas(){
                 Conne::disconnect($con);
                 
             } catch (Exception $ex) {
+                
                 Conne::disconnect($con);
-                $excep = $excepciones->recojerExcepciones($ex);
-                $excepciones->eliminarDatosErrorAlSubirPost("errorPost", true, $excep);
                 
-                
-     
-            }
+                $_SESSION['error'] = ERROR_INGRESAR_USUARIO;
+                $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_INGRESAR_PALABRAS_OFRECIDAS[1], CONST_ERROR_BBDD_INGRESAR_PALABRAS_OFRECIDAS[0],$ex); 
+                $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
 
+            }
 
 //fin insertarPalabrasOfrecidas    
 }
@@ -478,7 +502,7 @@ private function insertarImagenDemo(){
     
     $url = $_SESSION['nuevoSubdirectorio'][0]."/".$_SESSION['nuevoSubdirectorio'][1].'/demo';
     
-    $excepciones = new MisExcepciones(CONST_ERROR_BBDD_INGRESAR_IMG_DEMO_SUBIR_POST[1], CONST_ERROR_BBDD_INGRESAR_IMG_DEMO_SUBIR_POST[0]);
+    
     
     try {
         
@@ -496,12 +520,12 @@ private function insertarImagenDemo(){
         Conne::disconnect($con);
             
     } catch (Exception $ex) {
+        
         Conne::disconnect($con);
-        $excep = $excepciones->recojerExcepciones($ex);
-        $excepciones->eliminarDatosErrorAlSubirPost("errorPost", true, $excep);
-         
-        
-        
+        $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
+        $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_INGRESAR_IMG_DEMO_SUBIR_POST[1], CONST_ERROR_BBDD_INGRESAR_IMG_DEMO_SUBIR_POST[0],$ex);
+        $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
+   
     }
 
 //insertarImagenDemo    
@@ -514,8 +538,8 @@ private function insertarImagenDemo(){
  */
 public function insertPost(){
        
-    $excepciones = new MisExcepciones(CONST_ERROR_BBDD_REGISTRAR_POST[1],CONST_ERROR_BBDD_REGISTRAR_POST[0]);
-    if(isset($_SESSION['errorArchivos'])){unset($_SESSION['errorArchivos']);}  
+    
+    //if(isset($_SESSION['errorArchivos'])){unset($_SESSION['errorArchivos']);}  
     
     try{
         $con = Conne::connect();
@@ -547,7 +571,7 @@ public function insertPost(){
             $date = date('Y-m-d');
             $st = $con->prepare($sql);
             $st->bindValue(":nick", $this->data["idUsuarioPost"], PDO::PARAM_STR);
-            $st->bindValue(":seccionesIdsecciones", $this->data["idSecciones"], PDO::PARAM_STR);
+            $st->bindValue(":seccionesIdsecciones", $this->data["seccionesIdsecciones"], PDO::PARAM_STR);
             $st->bindValue(":tiempoCambioIdTiempoCambio", $this->data["tiempoCambioIdTiempoCambio"], PDO::PARAM_STR);
             $st->bindValue(":titulo", $this->data["titulo"], PDO::PARAM_STR);
             $st->bindValue(":comentario", $this->data["comentario"], PDO::PARAM_STR);
@@ -575,18 +599,17 @@ public function insertPost(){
            
         }catch(Exception $ex){
           
-            $excep = $excepciones->recojerExcepciones($ex);
-
             $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-            Conne::disconnect($con);
-            $excepciones->eliminarDatosErrorAlSubirPost("errorPost", true, $excep);
+            $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_REGISTRAR_POST[1],CONST_ERROR_BBDD_REGISTRAR_POST[0],$ex);
+            $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
             $con->rollBack();
            
              
+        } finally {
+            Conne::disconnect($con);
         }
          
-
-//fin inserArticulo    
+   
 //fin inserArticulo    
 }    
 
@@ -606,7 +629,7 @@ public function insertPost(){
 
 public function eliminarImg(){
     
-    $excepciones = new MisExcepciones(CONST_ERROR_BBDD_ELIMINAR_IMG_POST[1], CONST_ERROR_BBDD_ELIMINAR_IMG_POST[0]);
+    
         //Si es la primera imagen que borra el usuario se instancia
         //Para guardar en el array su ruta
         if(!isset($_SESSION['imgTMP']['imagenesBorradas'])){
@@ -681,9 +704,13 @@ public function eliminarImg(){
         Conne::disconnect($con);
 
     } catch (Exception $ex) {
-        Conne::disconnect($con);
+        
+        $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_ELIMINAR_IMG_POST[1], CONST_ERROR_BBDD_ELIMINAR_IMG_POST[0],$ex);
         $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
         $excepciones->eliminarDatosErrorAlSubirPost("errorPost",true);
+        
+    }finally{
+        Conne::disconnect($con);
     }  
      
 //fin eliminarImg    
@@ -697,7 +724,7 @@ public function eliminarImg(){
  */
  public function actualizarTexto(){
   
-    $excepciones = new MisExcepciones(CONST_ERROR_BBDD_ACTUALIZAR_TEXT_IMG_SUBIR_POST[1],CONST_ERROR_BBDD_ACTUALIZAR_TEXT_IMG_SUBIR_POST[0]);
+    
         
     $tmp =  explode('/',$this->getValue('idImagen'));
     $url = $tmp[1].'/'.$tmp[2];
@@ -720,10 +747,13 @@ public function eliminarImg(){
             Conne::disconnect($con);
         
         }catch(Exception $ex){
+            
             $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-            Conne::disconnect($con);
-            $excepciones->eliminarDatosErrorAlSubirPost("No se pudo actualizar el texto de la img al subir post",true);
+            $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_ACTUALIZAR_TEXT_IMG_SUBIR_POST[1],CONST_ERROR_BBDD_ACTUALIZAR_TEXT_IMG_SUBIR_POST[0],$ex);
+            $excepciones->eliminarDatosErrorAlSubirPost("errorPost",true);
 
+        }finally{
+            Conne::disconnect($con);
         }
     
 //fin actualizarTexto    
@@ -754,14 +784,19 @@ static function eliminarImagenesPost($imgId) {
         $columnas = $stm->rowCount();
         
         if($columnas == 0){
-            throw new MisExcepciones(CONST_ERROR_BBDD_BORRAR_IMG_ELIMINANDO_UN_POST[1],CONST_ERROR_BBDD_BORRAR_IMG_ELIMINANDO_UN_POST[0]);
+            throw new Excepciones("Error al eliminar las imagenes de un Post");
         }
         
         Conne::disconnect($con);
          
-    }catch(MisExcepciones $ex){
-       Conne::disconnect($con);
-       $ex->redirigirPorErrorSistema("Hubo un fallo en la bbdd al intentar eliminar las imagenes de un post");
+    }catch(Excepciones $ex){
+        
+       $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_BORRAR_IMG_ELIMINANDO_UN_POST[1],CONST_ERROR_BBDD_BORRAR_IMG_ELIMINANDO_UN_POST[0],$ex);
+       $_SESSION['error'] = ERROR_ARCHIVOS;
+       $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost",true);
+       
+    }finally{
+       Conne::disconnect($con); 
     }
 //fin eliminarImagenesPostAlSubir    
 }
@@ -775,9 +810,9 @@ static function eliminarImagenesPost($imgId) {
  */
 
 
-static function eliminarPostId($id,$opc){
+static function eliminarPostId($id){
 
-    $excepciones = new MisExcepciones(CONST_ERROR_ELIMINAR_POST_AL_REGISTRARLO[1], CONST_ERROR_ELIMINAR_POST_AL_REGISTRARLO[0]);
+    
     
     try{
         
@@ -797,10 +832,10 @@ static function eliminarPostId($id,$opc){
     }catch(Exception $ex){
         
         Conne::disconnect($con);
-        if($opc == "errorPost"){
-            $excep = $excepciones->recojerExcepciones($ex);
-            $excepciones->redirigirPorErrorSistema("Hubo un error al tratar de eliminar el post de la bbdd cuando hubo un fallo al registrarlo",true,$excep);
-        }
+            
+            $excepciones = new MisExcepcionesPost(CONST_ERROR_ELIMINAR_POST_AL_REGISTRARLO[1], CONST_ERROR_ELIMINAR_POST_AL_REGISTRARLO[0],$ex);
+            $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("",true);
+        
     }
 //fin eliminarImagenesPostAlSubir     
         
@@ -808,25 +843,7 @@ static function eliminarPostId($id,$opc){
 }
 
 
-/**
- * Metodo que elimina todos las <br/>
- * palabras no necesarias para <br/>
- * insertar la ruta en la tabla imagenes <br/>
- * @return string<br/>
- * Retorna url lista para insertar en la bbdd <br/>
- * Ejemplo : 8/3 <br/>
- * donde 8 es el directorio donde se almacena la imagen<br/>
- * donde 3 es el numero de la imagen
- */
-private function prepararRuta(){
- 
-            $tmp = substr($_SESSION['idImgadenIngresar'], 10);
-            $tmp = strstr($tmp,'.',true);// $tmp => /admin/1/2
-            $tmp = explode("/",$tmp);
-            return $tmp[1].'/'.$tmp[2];
-    
-   //fin preparaUrl 
-}
+
 
 /**
  * Metodo que inserta las imagenes
@@ -835,22 +852,22 @@ private function prepararRuta(){
  */
   public function insertarFotos(){
    
-      $excepciones = new MisExcepciones(CONST_ERROR_BBDD_AL_SUBIR_UNA_IMG_SUBIENDO_POST[1],CONST_ERROR_BBDD_AL_SUBIR_UNA_IMG_SUBIENDO_POST[0]);
-      $_SESSION['idImgadenIngresar'] = $this->getValue('idImagen'); // ../photos/jose/2/1.jpg
       
-  
+       $_SESSION['idImgadenIngresar'] = $this->getValue('idImagen'); // ../photos/2/1.jpg
+       $_SESSION['contador'] = $_SESSION['contador'] + 1;
+       $tmp = $_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1]."/".$_SESSION['contador'];
+      
+      
     try{
-        $con = Conne::connect();
         
-        $sql = "INSERT INTO ".TBL_IMAGENES." (post_idPost, nickUsuario, ruta, texto) VALUES ( :post_idPost, :nickUsuario, :ruta, :texto)";
-        //Metodo que limpia la url
-        $tmp = $this->prepararRuta($_SESSION['idImgadenIngresar']);
+        $con = Conne::connect();
+
+        $sql = "INSERT INTO ".TBL_IMAGENES." (postIdPost, directorio, texto) VALUES ( :postIdPost, :directorio, :texto)";
         
         $st = $con->prepare($sql);
         
-        $st->bindValue(":post_idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
-        $st->bindValue(":nickUsuario", $_SESSION['nuevoSubdirectorio'][0],PDO::PARAM_STR );
-        $st->bindValue(":ruta",$tmp, PDO::PARAM_STR);
+        $st->bindValue(":postIdPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
+        $st->bindValue(":directorio",$tmp, PDO::PARAM_STR);
         //En caso el usuario no escriba una descripcion de la imagen
         if($this->data['figcaption'] == null){
             $st->bindValue(":texto", " ", PDO::PARAM_STR);  
@@ -863,38 +880,34 @@ private function prepararRuta(){
        
        
         //Si la foto se ha subido con exito el contador de imagenes se incrementa en 1
-            if($test){
-                $_SESSION['contador'] = $_SESSION['contador'] + 1;
-            }else{
-                throw new MisExcepciones(CONST_ERROR_BBDD_AL_SUBIR_UNA_IMG_SUBIENDO_POST[1], CONST_ERROR_BBDD_AL_SUBIR_UNA_IMG_SUBIENDO_POST[0]);
+            if(!$test){
+                throw new Exception();
             }
         //                    IMPORTANTE
         //Cuando insertamos una imagen eliminamos de la tabla imagenes
         // la imagen demo que subimos.Unicamente hacemos eso si contador == 1
         if(isset($_SESSION['contador']) and $_SESSION['contador'] == 1){
-            $sql = "DELETE FROM ".TBL_IMAGENES." WHERE post_idPost = :post_idPost and ruta = :url";
+            $sql = "DELETE FROM ".TBL_IMAGENES." WHERE postIdPost = :postIdPost and directorio = :directorio";
            
                 $st = $con->prepare($sql);
-                $st->bindValue(":post_idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);       
-                $st->bindValue(":url",$_SESSION['nuevoSubdirectorio'][1]."/demo", PDO::PARAM_STR);
-       
+                $st->bindValue(":postIdPost", $_SESSION['lastId'][0], PDO::PARAM_INT);       
+                $st->bindValue(":directorio",$_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1]."/demo", PDO::PARAM_STR);
+               // echo 'eliminar demo bbdd '.$_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1]."/demo";
                  $test = $st->execute() ? true : false;
                  
-                 if(!$test){throw new MisExcepciones(CONST_ERROR_BBDD_AL_SUBIR_UNA_IMG_SUBIENDO_POST[1], CONST_ERROR_BBDD_AL_SUBIR_UNA_IMG_SUBIENDO_POST[0]);}
+                 if(!$test){throw new Exception();}
         }
         
         
         Conne::disconnect($con);
         return $test;
-    } catch (MisExcepciones $excepciones) {
+    
+    }catch(Exception $ex){
+       
         Conne::disconnect($con);
         $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-        $excepciones->eliminarDatosErrorAlSubirPost("errorPost", true);
-        
-    }catch(Exception $e){
-        Conne::disconnect($con);
-        $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-        $excepciones->eliminarDatosErrorAlSubirPost("errorPost", true);
+        $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_AL_SUBIR_UNA_IMG_SUBIENDO_POST[1],CONST_ERROR_BBDD_AL_SUBIR_UNA_IMG_SUBIENDO_POST[0],$ex); 
+        $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
         
     }
     

@@ -81,7 +81,7 @@ function comprobarUsuario($id,$opcion){
     
     global $conBloqueo;
     global $usuBloquea;
-    $excepciones = new MisExcepciones(CONST_ERROR_BBDD_CONSULTAR_USUARIOS_BLOQUEADOS[1],CONST_ERROR_BBDD_CONSULTAR_USUARIOS_BLOQUEADOS[0]); 
+    $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_CONSULTAR_USUARIOS_BLOQUEADOS[1],CONST_ERROR_BBDD_CONSULTAR_USUARIOS_BLOQUEADOS[0]); 
    
 
                 $sqlComprobarUsu = "select idUsuarioBloqueado from ".TBL_USUARIOS_BLOQUEADOS.

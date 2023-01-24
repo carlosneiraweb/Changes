@@ -65,7 +65,7 @@ function eliminarTablaDesbloquear($id){
         $_SESSION['emailNoActivado'] = $id;//se elimina en metodosInfoExcepciones
 
         //echo $ex->getMessage();
-        $excepciones = new MisExcepciones(CONST_ERROR_DESBLOQUEO_USUARIO[1],CONST_ERROR_DESBLOQUEO_USUARIO[0],$ex);
+        $excepciones = new MisExcepcionesUsuario(CONST_ERROR_DESBLOQUEO_USUARIO[1],CONST_ERROR_DESBLOQUEO_USUARIO[0],$ex);
         $excepciones->redirigirPorErrorSistema("desbloquearUsuario",true);
     }
     
@@ -105,7 +105,7 @@ function desbloquearUsuario($id){
         $_SESSION['emailNoActivado'] = $id;//se elimina en metodosInfoExcepciones
 
         //echo $ex->getMessage();
-        $excepciones = new MisExcepciones(CONST_ERROR_DESBLOQUEO_USUARIO[1],CONST_ERROR_DESBLOQUEO_USUARIO[0],$ex);
+        $excepciones = new MisExcepcionesUsuario(CONST_ERROR_DESBLOQUEO_USUARIO[1],CONST_ERROR_DESBLOQUEO_USUARIO[0],$ex);
         $excepciones->redirigirPorErrorSistema("desbloquearUsuario",true);
     }    
     
@@ -159,7 +159,7 @@ try{
         $_SESSION['emailNoActivado'] = $nick;//se elimina en metodosInfoExcepciones
 
         //echo $ex->getMessage();
-        $excepciones = new MisExcepciones(CONST_ERROR_DESBLOQUEO_USUARIO[1],CONST_ERROR_DESBLOQUEO_USUARIO[0],$ex);
+        $excepciones = new MisExcepcionesUsuario(CONST_ERROR_DESBLOQUEO_USUARIO[1],CONST_ERROR_DESBLOQUEO_USUARIO[0],$ex);
         $excepciones->redirigirPorErrorSistema("desbloquearUsuario",true);
 
 } 

@@ -39,12 +39,11 @@ $_SESSION["paginaError"] = basename($_SERVER['PHP_SELF']);
 
 global $articulo;
 $articulo = new Post(array());
-global $excepciones;
-$excepciones = new MisExcepciones(null,null);
 global $pa_queridas;
+global $excepciones;
+$exc = new Exception();
+$excepciones = new MisExcepcionesPost(null,null, $exc);
 
-
- 
 ?>
 <!DOCTYPE html>
 <!--
@@ -109,7 +108,7 @@ global $pa_queridas;
     echo '</section>';
         
         
-            
+       
     
     
     
@@ -154,6 +153,7 @@ global $pa_queridas;
         
         
         header('Location:'. "index.php");
+        
     } elseif(isset($_POST['segundoSubirPost']) and $_POST['segundoSubirPost'] == "Enviar" ){    
         //El usario  quiere subir una foto al post
         $requiredFields = array();
@@ -161,7 +161,7 @@ global $pa_queridas;
         
     } elseif(isset($_POST['segundoSubirPost']) and $_POST['segundoSubirPost'] == "Atras"){
         //Esto significa que el usuario ha dado un paso atras en el formulario
-        //Lo que hacemos es actualizar los datos, no volver a registrarlo
+        //Lo que hacemos es actualizar los datos, no volver a registrar el post
         //Para ello instanciamos una variable de session para que lo tenga en cuenta
         //Al ingresar en la bbdd
         $_SESSION['atras'] = 'atras';
@@ -187,7 +187,7 @@ global $pa_queridas;
                 volverAnterior();
            
         
-        //Parte del formulario agregado con JQUERY 
+        //Parte del formulario agregado con JQUERY subirPost.js
         //Se utiliza para cuando un usuario quiere
         //borrar o modificar una imagen al subir un Post
         
@@ -208,7 +208,7 @@ global $pa_queridas;
            echo 'var PT = true;';
         echo '</script>';
         
-        
+         
                 //Aqui escojemos el valor del campo textarea comentarioPost
                 //Lo hacemos asi por que este tipo campo no tiene el 
                 //atributo value()
@@ -345,7 +345,7 @@ global $pa_queridas;
         
 
 function displayStep2($missingFields){
-    
+    /*
     //Solo en caso de que se produzca un error
             if(!isset($_SESSION['contador'])){
                 $_SESSION['contador'] = 0; 
@@ -354,7 +354,7 @@ function displayStep2($missingFields){
             if(isset($_SESSION['png'])){
                 unset($_SESSION['png']);
             }
-            
+     */       
     global $mensaje; 
   
     
@@ -453,7 +453,7 @@ function ingresarPost(){
     
         $articulo = new Post(array(
             "idUsuarioPost" => $_SESSION['userTMP']->getValue('nick'),
-            "idSecciones" => $_SESSION['post']['seccionSubirPost'],
+            "seccionesIdsecciones" => $_SESSION['post']['seccionSubirPost'],
             "tiempoCambioIdTiempoCambio" => $_SESSION['post']['tiempoCambioSubirPost'],
             "titulo" => $_SESSION['post']['tituloSubirPost'],
             "comentario" => $_SESSION['post']['comentarioSubirPost'],
@@ -529,16 +529,11 @@ function ingresarImagenes(){
    
     global $articulo;
            
-    if(isset($_SESSION['png'])){
-        unset($_SESSION['png']);
-    }
     $articulo = new Post(array(
        "figcaption" => $_SESSION['post']['figcaption'],
        "idImagen" => $_SESSION['idImagen']
     ));
    
-   
-    //echo ' en ingresar idImagen '.$_SESSION['idImagen'].'<br>';  
    $articulo->insertarFotos();
 
     
@@ -681,6 +676,7 @@ function processForm($requiredFields, $st){
                         //busquedas personales
                         //si coincide se le manda email
                         $pa_queridas = array(
+                            
                         $_SESSION['post']['Pa_ofrecidas'][0],
                         $_SESSION['post']['Pa_ofrecidas'][1],
                         $_SESSION['post']['Pa_ofrecidas'][2],
@@ -688,11 +684,11 @@ function processForm($requiredFields, $st){
                     );
 
                         $datosPost = array();
-                                array_push($datosPost, $pa_queridas, $_SESSION['post']['seccionSubirPost'],$_SESSION['userTMP']->getValue('nick'),$_SESSION['lastId'][0]);
+                        array_push($datosPost, $pa_queridas, $_SESSION['post']['seccionSubirPost'],$_SESSION['userTMP']->getValue('nick'),$_SESSION['lastId'][0]);
                        // var_dump($datosPost);
                         //Para una mejor busqueda hemos creado
                         //el campo de la tabla como full text
-                        $articulo->buscarUsuariosInteresados($datosPost);
+                        //$articulo->buscarUsuariosInteresados($datosPost);
                     }
                 }
                 displayStep2(array());

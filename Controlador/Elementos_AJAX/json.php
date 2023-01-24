@@ -123,7 +123,7 @@ try {
             //entrar con usuario bloqueado
             //OJO AL PAGESIZE
             //Solo en caso el usuario se logee
-            
+            /*
             if (isset($_SESSION['userTMP'])) {
                 $usuBloqueados = $usuBloqueo->devuelveUsuariosBloqueadosTotal($tmp[2]);
                 //  Si el usuario que ha colgado el Post ha bloqueado 
@@ -157,7 +157,7 @@ try {
                 array_push($tmp,$to);
                 
             }
-            
+            */
             array_push($rs,$tmp);
         }
 

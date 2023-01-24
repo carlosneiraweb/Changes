@@ -18,7 +18,7 @@ var objSeccion, petSeccion, objTiempoCambio, petTiempoCambio,
 
 window.onload=function(){
    
-   
+  
     //Section donde se cargaran las imagenes que el usuario valla subiendo
     imgCargar = document.getElementById('cnt_img');
 
@@ -34,7 +34,7 @@ window.onload=function(){
         
        
    
-     //Esta variable se instancia en subir_posts.php
+     //Esta variable se instancia en ControlErroresSistemaENArchivosPost.php
      //Cada vez que subimos una foto nueva en el post
      //Estan se van mostrando en el formulario
      //Para ir recuperandolas de la bbdd necesitamos el idPost
@@ -194,12 +194,13 @@ function mandarId(id){
  * @param {type} objLastImg
  * @returns {undefined} */
 function cargarUltimaImagen(objLastImg){
-      // alert('ddddd'+objLastImg[0].ruta);
+      // alert(objLastImg[0].ruta);
         var sep = '<section id="capturar" class="contenedor_imagenes" >';
         for (var i= 0 ; i < objLastImg.length; i++){
             var demo = objLastImg[i].ruta;
+            
             demo = demo.substr(-4,4);
-         
+         //   alert("demo "+demo);
             //Evitamos cualquier posible error
             //alert(objLastImg[i].ruta);
                 if(demo === "demo"){ 
@@ -211,7 +212,7 @@ function cargarUltimaImagen(objLastImg){
                     //Al pinchar sobre este figure se nos abrira un nuevo 
                     //formulario por si debemos modificar o borrar
                     sep += "<figure class='img_usuario_tmp'>";
-                    sep += '<img src="../photos/'+objLastImg[i].nick+'/'+objLastImg[i].ruta+'.jpg" id="'+objLastImg[i].ruta+'" alt="imagen subida por el usuario" title="Pinchame para ver la información.">';
+                    sep += '<img src="../photos/'+objLastImg[i].ruta+'.jpg" id="'+objLastImg[i].ruta+'" alt="imagen subida por el usuario" title="Pinchame para ver la información.">';
                     sep += '</figure>';
                 }
                                
@@ -224,7 +225,7 @@ function cargarUltimaImagen(objLastImg){
          * Por si desea eliminar o actualizar
          */
        
-         $('#cuerpo').on('click','.img_usuario_tmp', function(e){
+        $('#cuerpo').on('click','.img_usuario_tmp', function(e){
             var id = $(this).children('img').attr('id');
             //Atributo id campo de bbdd => carlos/54/1,  
             //De esta forma si el usuario elimina la imagen 
@@ -233,7 +234,7 @@ function cargarUltimaImagen(objLastImg){
 
             mandarId(id);
             
-    });
+        });
 
     
 //  cargarUltimaImagen  

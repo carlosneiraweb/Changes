@@ -96,7 +96,7 @@ try {
             
         try{
             
-            $excepciones = new MisExcepciones(CONST_ERROR_BBDD_DAR_BAJA_USUARIO_PARCIAL[1],CONST_ERROR_BBDD_DAR_BAJA_USUARIO_PARCIAL[0]); 
+            $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_DAR_BAJA_USUARIO_PARCIAL[1],CONST_ERROR_BBDD_DAR_BAJA_USUARIO_PARCIAL[0]); 
             global $conMenu;
             $idUsu = $_SESSION["userTMP"]->devuelveId();
                 

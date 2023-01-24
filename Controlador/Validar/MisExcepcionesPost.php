@@ -9,122 +9,62 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MetodosInfo
  * @author carlos
  */
 class MisExcepcionesPost extends MetodosInfoExcepciones{
-    
-     public function __construct($message,$code,$previous = null) {
-        parent::__construct($message, $code, $previous);
-        
-   }
-  
-    
-    
-    
-    
- /**
+
+
+
+
+
+/**
     * Metodo que elimina variables de sesion
     * cuando un usuario ha acabado de subir 
     * un post
     */
 
 public function eliminarVariablesSesionPostAcabado(){
- 
-    
-   
-    if(isset($_SESSION['imgTMP'])){
-            unset($_SESSION['imgTMP']);
-        }
-        
-    if(isset($_SESSION['atras'])){
-            unset($_SESSION['atras']);
-        }
-    
-    if(isset($_SESSION['contador'])){
-            unset($_SESSION['contador']);
-        }   
-      
-    if(isset($_SESSION['error'])){
-            unset($_SESSION['error']);
-        }       
-           
-    
-             
+
+    if(isset($_SESSION['imgTMP'])){unset($_SESSION['imgTMP']);}
+    if(isset($_SESSION['atras'])){unset($_SESSION['atras']);}
+    if(isset($_SESSION['contador'])){unset($_SESSION['contador']);}
+    if(isset($_SESSION['png'])){unset($_SESSION['png']);}
+    if(isset($_SESSION['imgTMP']['imagenesBorradas'])){unset($_SESSION['imgTMP']['imagenesBorradas']);}
+    if(isset($_SESSION['error'])){unset($_SESSION['error']);}
+    if(isset($_SESSION['post'])){unset($_SESSION['post']);}
+
     //fin eliminarVariablesSesionPostAcabado()         
     }
 
 
     /**
-     * Este metodo manda a EliminarPost de la clase Post,
-     * cuando un usuario quiere subir un post 
-     * y a mitad de proceso se sale y no
-     * acaba publicandolo
+     * Este metodo manda a EliminarPost de la clase Post,<br/>
+     * cuando un usuario quiere subir un post <br/>
+     * y a mitad de proceso se sale y no<br/>
+     * acaba publicandolo<br/>
+     * Tambien se usa en caso de error.<br/>
+     * @param name $opc<br/>
+     * type boolean <br/>
+     * Se usa para cortar la secuencia
+     * 
      */
 
  public function eliminarPostAlPublicar(){
     
-   //SubDirectorio que se creo para ir subiendo los post
-     //../photos/carlos/10
-   $usuario =  $_SESSION['userTMP']->getValue('nick');
+        
+            $tmp=  $_SESSION['nuevoSubdirectorio'];//de fotos
+           
+            $eliminarPost = "../photos/$tmp[0]/$tmp[1]";
+            
+            $idPost = $_SESSION['lastId'][0];
+            //En caso de que no se pueda crear el subdirectorio
+            if($eliminarPost !== "../photos/$tmp[0]/"){
+                Directorios::eliminarDirectoriosSistema($eliminarPost,"SubirPost");
+            }
+                Post::eliminarPostId($idPost);
+        
    
-   $tmp=  $_SESSION['nuevoSubdirectorio'];//de fotos
-   $errores = array("usuario" => $usuario,
-                    "postId"=> "",
-                    "subDirectorio" => "",
-                    "urlImagenes" => "",
-                    "paQueridas" => "",
-                    "paOfrecidas" => "");
-   //$tmpSubdirectorio = preg_split("~[\\\/]~", $tmp);
-   //El id del post a eliminar
-    $idPost = $_SESSION['lastId'][0]; 
-    
-        if($idPost !== null){
-
-            try{
-                $testPostId = Post::eliminarPostId($idPost);
-                    //echo "eliminar post ".$testPostId.'<br>';
-                if(!$testPostId){
-                    $errores[1] = $idPost;
-                }
-            } catch (Exception $ex){}
-
-
-            try{
-                $testDir = Directorios::eliminarDirectoriosSistema($tmp);
-                
-                if(!$testDir){
-                    $errores[2]= $tmp;
-                }
-            }catch (Exception $ex){}
-
-            try {
-                $testImgPost = Post::eliminarImagenesPost($idPost);
-             
-                if(!$testImgPost){
-                    $errores[3] = $idPost;
-                }
-            } catch (Exception $exc) {}
-
-            try {
-                $testElimQueri = Post::eliminarPalabrasQueridas($idPost);
-               
-                if(!$testElimQueri){
-                    $errores[4] = "No se han podido eliminar las palabras buscadas.";
-                }
-
-            } catch (Exception $exc) {}
-
-            try {
-                 $testElimOfre = Post::eliminarPalabrasOfrecidas($idPost);
-                  
-                if(!$testElimOfre){
-                    $errores[5] =  "No se han podido eliminar las palabras ofrecidas.";
-                }   
-
-            } catch (Exception $exc) {}
-
-       }
-      
-   //Escribimos el error en el archivo
-   Directorios::errorEliminarPost($errores);
+        
+        //fin  eliminarPostAlPublicar
 }
+
 
     
  /**
@@ -134,17 +74,43 @@ public function eliminarVariablesSesionPostAcabado(){
      * elimina todas las variables de sesion
      */
    
-public  function redirigirPorErrorTrabajosEnArchivosSubirPost(){
+public  function redirigirPorErrorTrabajosEnArchivosSubirPost($opc,$grado){
       
+   
+
+        //$_SESSION['errorArchivos'] = "existo";
         
-        $this->eliminarPostAlPublicar();
-        $this->eliminarVariablesSesionPostAcabado();
-        $_SESSION["paginaError"] = "index.php";
-        $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-        $_SESSION['errorArchivos'] = "existo";
-        mostrarError();
-        exit();
-    
+        //Para mostrar el error al usuario en mostrar_error.php
+        $_SESSION['mostrarError'] = $_SESSION['error'];
+        $_SESSION["paginaError"] = "subir_posts.php";
+        
+        switch ($opc) {
+            
+            case 'errorPost':
+                
+               
+                $this->tratarDatosErrores($opc, $grado);
+                $this->eliminarPostAlPublicar();
+                $this->eliminarVariablesSesionPostAcabado();
+
+                    
+                    break;
+                
+            case "errorPostEliminarBBDD":
+
+                $this->tratarDatosErrores($opc, $grado);
+                $this->eliminarVariablesSesionPostAcabado();
+                
+                    
+                    break;
+                
+            default:
+                
+                 $this->tratarDatosErrores($opc, $grado);
+                
+                die();
+                break;
+        }
      
 //fin redirigirPorErrorTrabajosEnArchivosSubirPost()
 }    

@@ -78,9 +78,12 @@ define("CONST_ERROR_RENOMBRAR_IMG_REGISTRARSE",array(39,"Hubo un error al renomb
 define("CONST_ERROR_DESBLOQUEO_USUARIO",array(40,'Hemos tenido un problema al desbloquear un usuario'));
 //Error al Desbloquear Tabla Desbloquear un usuario
 define("CONST_ERROR_ELIMINAR_TABLA_DESBLOQUEAR",array(41,"No se ha podido eliminar un usuario de la tabla Desbloqueo"));
-
-
-
+//Error eliminar directorios al publicar un post y haber un error
+define( "CONST_ERROR_ELIMINAR_DIR_PUBLICAR_POST",array(42,"No se pudieron eliminar los directorios al haber un error al publicar un post"));
+//Error eliminar imagen demo al subir un post
+define("CONST_ERROR_ELIMINAR_IMG_DEMO_POST", array(43,"No se pudo eliminar la imagen demo cuando un usuario subua imagenmes"));
+//Error al eliminar una imagen quye esta subiendo un usuario al Post
+define("CONST_ERROR_ELIMINAR_IMG_SUBIR_POST",array(44,"No se pudo eliminar la img subida por el usuario al post"));
 
 
 
@@ -106,14 +109,14 @@ define("ERROR_FOTO_NO_ELIGIDA", '<h5>Parece que no has seleccionado una imagen.<
 define("ERROR_ELIMINAR_FOTO", '<h5>Hemos tenido un problema al eliminar la foto</h5>');
 define("ERROR_INSERTAR_FOTO", '<h5>Hemos tenido un problema al insertar tu foto.</h5>');
 define("ERROR_FOTO_GENERAL", "<h5>Lo sentimos hemos tenido un problema al subir la foto.</h5>");
-define("ERROR_INSERTAR_ARTICULO", "<h5>No hemos podido insertar tú anuncio.</h5>");
+define("ERROR_INSERTAR_ARTICULO", "<h5>No hemos podido insertar tú anuncio.</h5><h4>Intentalo otra vez</h4>");
 define("ERROR_INGRESAR_USUARIO", "<h5>Hemos tenido un problema al ingresarte.</h5>");
 define("ERROR_REGISTRAR_USUARIO", "<h5>Hemos tenido un problema al tratar de registrarte.</h5>");
 define("ERROR_ACTUALIZAR_USUARIO", "<h5>Hemos tenido un problema al actualizarte.</h5><h6>Puedes volver a intentarlo o  ponerte en contacto con nosotros.</h6>");
 define("TXT_ERROR_VALIDACION", "../Errores/ErroresValidacion.txt");
 define("TXT_ERROR_ELIMINAR_POST", "../Errores/ErroresEliminarPost.txt");
 define("ERROR_MANDAR_EMAIL","<h5>Lo sentimos pero por alguna razon no se te ha mandado un email</h5>");
-define("ERROR_ACTUALIZAR_POST","<h5>Hemos tenido un problema al actualizar tú Post</h5><h4>Debes ingresarlo otra vez</h4><h3>Lo sentimos de verdad</h3>");
+define("ERROR_ACTUALIZAR_POST","<h5>Hemos tenido un problema al actualizar tú Post</h5><h4>Debes ingresarlo otra vez</h4>");
 define("ERROR_DESBLOQUEAR_USUARIO","<h5>Por algún motivo no hemos podido desbloquearte</h5><h4>Ponte en contacto con nosotros por email</h4>");
 
 

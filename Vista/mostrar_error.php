@@ -35,14 +35,17 @@
     
       
         
-       //Mostramos el error que se ha producido 
-       //y reseteamos la variable
+       //Mostramos el error que se ha producido en el registro
+       //o actualizacion y reseteamos la variable
         if(isset($_SESSION['error']) and $_SESSION['error'] != null){
-            echo "<h3>".$_SESSION['error']."</h3>";
+            echo $_SESSION['error'];
             
-                $_SESSION['error'] = 'error';
+            $_SESSION['error'] = 'error';
                 
-                
+          //Para mostrar error al usuario al trabajar con Post      
+        }else if(isset($_SESSION['mostrarError'])){
+            echo $_SESSION['mostrarError'];
+            unset($_SESSION['mostrarError']);
         }
         $ex = $_SESSION['paginaError'];
         echo '<script type="text/javascript">';

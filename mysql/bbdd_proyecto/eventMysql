@@ -1,0 +1,9 @@
+drop event eliminar;
+
+
+CREATE DEFINER=`root`@`localhost` EVENT `eliminar`  
+ON SCHEDULE EVERY 1 MINUTE STARTS '2022-01-11 20:32:00'  
+ON COMPLETION PRESERVE DO 
+DELETE FROM Desbloquear 
+WHERE idDesbloquear in (select idDesbloquear WHERE fecha < curdate())
+

@@ -13,7 +13,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
  */
 
                                     
-class MisExcepciones extends MetodosInfoExcepciones{
+class MisExcepcionesUsuario extends MetodosInfoExcepciones{
 
    
 /**
@@ -111,7 +111,7 @@ private function eliminarNuevoSubdirectorio(){
     * Metodo que elimina variables de sesion
     * cuando un usuario ha acabado de subir 
     * un post
-    */
+    
 
 public function eliminarVariablesSesionPostAcabado(){
  
@@ -139,7 +139,7 @@ public function eliminarVariablesSesionPostAcabado(){
         }
         
     if(isset($_SESSION['post'])){unset($_SESSION['post']);}
-     
+     */
     /*
      * Se eliminara en el metodo
      * convertir datosToString de la clase 
@@ -149,12 +149,10 @@ public function eliminarVariablesSesionPostAcabado(){
     if(isset($_SESSION['post'])){
             unset($_SESSION['post']);
     }
-     * 
-     */
+    
     //fin eliminarVariablesSesionPostAcabado()         
     }
-
-
+*/
     /**
      * Este metodo manda a EliminarPost de la clase Post,
      * cuando un usuario quiere subir un post 

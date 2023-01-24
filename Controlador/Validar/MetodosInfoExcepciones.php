@@ -22,6 +22,8 @@ class MetodosInfoExcepciones {
     
     protected $misExcepciones = Array();
     
+    
+    
     public function __construct($mensaje,$codigo,&$ex) {
         $this->misExcepciones[0] = $mensaje;
         $this->misExcepciones[1] = $codigo;
@@ -117,20 +119,19 @@ private function convertirStringDatosSesion($opc){
                             $datosSesion .= $x. "=>" .$y;
                             $datosSesion .= PHP_EOL;
                         }
+                        continue;
                     }
-                    continue;
+                    
                 $datosSesion .=  $k. " => ".$v;
                     
             }
             
-    } else{
-        //$datosSesion = "No dispongo de datos";
+    } else {
+         
+        $datosSesion = "No dispongo datos";
     }      
     
-    if(isset($_SESSION['post'])){
-            unset($_SESSION['post']);
-    }
-    var_dump($datosSesion);
+    
     return $datosSesion;
 }    
     
@@ -228,6 +229,7 @@ protected function tratarDatosErrores($opc,$grado){
         
         $this->mostrarError();
     }else{
+        
         $this->redirirgirFalloNoCritico();
     }
     

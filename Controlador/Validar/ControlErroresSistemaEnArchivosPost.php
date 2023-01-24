@@ -26,7 +26,7 @@ if(!isset($_SESSION))
  *  Este metodo Crea un subdirectorio para almacenar las imagenes </br>
  *   IMPORTANTE CONOCER EL CONTENIDO DE 'nuevoSubdirectorio' </br>
  *   Es la usada para mover, copiar, eliminar he ingresar en la bbdd </br>
- *   Su contenido es del tipo nombreUsuario/totalSubdirectorios </br>
+ *   Su contenido es del tipo nombreUsuario/totalSubdirectorios => 1/1</br>
  *               
  *  Agregamos una foto demo por </br>
  *  si el usuario no quiere subir ninguna imagen </br>
@@ -41,8 +41,8 @@ function crearSubdirectorio(){
    //[0] nombre usuario
    $_SESSION['nuevoSubdirectorio'][0] = $id;
    //[1] numero subdirectorio ejemplo "1"
-   $_SESSION['nuevoSubdirectorio'][1] = Directorios::crearSubdirectorio('../photos/'.$id,"crearSubdirectorio");
-  //echo 'responde '."../photos/".$_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1];
+   $_SESSION['nuevoSubdirectorio'][1] = Directorios::crearSubdirectorio('../photos/'.$id);
+   // echo 'responde '."../photos/".$_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1];
    Directorios::copiarFoto("../photos/demo.jpg","../photos/".$_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1]."/demo.jpg", "copiarDemoSubirPost");    
    
 //fin crearSubdirectorio    
@@ -90,15 +90,13 @@ function validarCamposSubirPost($st){
         //ha subido correctamente o que no nos devuelve la constante 4
         //que signfica que no se ha elegido un archivo
             if($testSubirArchivo === 0){
-                
-            
-                //Si la foto es correcta entonces eliminamos la imagen default 
+
+                  //Si la foto es correcta entonces eliminamos la imagen default 
                     //que subimos solo ocurre la primera vez
                     if(isset($_SESSION['contador']) && $_SESSION['contador'] == "0"){
                         Directorios::eliminarImagen('../photos/'.$_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1]."/demo.jpg", "eliminarImgDemoSubirPost");
                     }
                     
-                
                 //Movemos la imagen que ha subido el usuario
                 //Al directorio correcto
                 
@@ -126,7 +124,8 @@ function validarCamposSubirPost($st){
                                     
                     }   
            
-            
+                        
+                    
         }else if($testSubirArchivo === '4' || $testSubirArchivo === '10' || $testSubirArchivo === '1' || $testSubirArchivo === '3'){
             //Si hay algun error al validar la imagen 
             //redirigimos a la pagina mostrarError

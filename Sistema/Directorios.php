@@ -133,28 +133,21 @@ class Directorios {
             
             try{
 
-                if(!move_uploaded_file($nombreFoto, $nuevoDirectorio)){
-                    
-                  throw new Exception($mensaje, 0);  
-                }
-           
+                if(!move_uploaded_file($nombreFoto, $nuevoDirectorio)){throw new Exception($mensaje, 0);}  
 
             } catch (Exception $ex) {
-                  
-                $excepciones = new MisExcepciones(CONST_ERROR_MOVER_IMAGEN[1],CONST_ERROR_MOVER_IMAGEN[0],$ex);      
-                
-                   
+
                     //En caso error se llama al metodo redirigirPorErrorTrabajosEnArchivosRegistro
                     //De la clase mis excepciones con la opcion adecuada
-                    if($opc == "actualizar"){
+                    if($opc == "actualizar" || $opc == "registrar"){
+                        $excepciones = new MisExcepcionesUsuario(CONST_ERROR_MOVER_IMAGEN[1],CONST_ERROR_MOVER_IMAGEN[0],$ex);      
                         $excepciones->redirigirPorErrorSistema($opc,true);    
                     }
-                    if($opc == "registrar"){
-                        $excepciones->redirigirPorErrorSistema($opc,true);  
-                    }
+                    
                     if($opc == "subirImagenPost"){
-                         $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-                        $excepciones->eliminarDatosErrorAlSubirPost("errorPost",true);
+                        $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
+                        $excepciones = new MisExcepcionesPost(CONST_ERROR_MOVER_IMAGEN[1],CONST_ERROR_MOVER_IMAGEN[0],$ex);
+                        $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost",true);
                     }
                  
                  
@@ -185,7 +178,7 @@ class Directorios {
               
             }catch(Exception $ex){
                 
-                $excepciones = new MisExcepciones(CONST_ERROR_CREAR_DIRECTORIO[1],CONST_ERROR_CREAR_DIRECTORIO[0],$ex);
+                $excepciones = new MisExcepcionesUsuario(CONST_ERROR_CREAR_DIRECTORIO[1],CONST_ERROR_CREAR_DIRECTORIO[0],$ex);
                 
                     if($opc == 'registrar'){
                        $excepciones->redirigirPorErrorSistema($opc,true);
@@ -208,34 +201,35 @@ class Directorios {
           * habría un error al asignar uno nuevo.</br>
           * @param $usuario  </br>
           * type String</br>
-          * Nombre del usuario </br>
+          * Id del usuario </br>
           * 
           * IMPORTANTE
           * Como PHP trata los errores diferente a las Excepciones</br>
           * Tenemos que usar THROWABLE para lanzar una excepcion.</br>
           */
             
-final static function crearSubdirectorio($usuario, $opc){
+final static function crearSubdirectorio($usuario){
         
-        $excepciones =  new MisExcepciones(CONST_ERROR_CREAR_SUBDIRECTORIO_POST[1], CONST_ERROR_CREAR_SUBDIRECTORIO_POST[0]);  
+        
         
         try{
             
             $dir = $usuario;
             $count = 0;
-            $nuevoDirectorio;
             $test = true; //Bandera para saber cuando se crea el subdirectorio
             //Para saber que se ha borrado un directorio
             //y se asigna a otro post
             $testSalir = true;
            
             if(!is_dir($dir)){
-                throw new Exception("El directorio pasado para crear el subdirectorio no existe",0);
+                
+               throw new Exception("El directorio pasado para crear el subdirectorio no existe",0);
             }
             
             $handle = opendir($dir);
              
                 if(!$handle){
+                    
                     throw new Exception("Al crear el subdirectorio el manejador no pudo abrir el directorio",0);
                     
                 }
@@ -245,7 +239,7 @@ final static function crearSubdirectorio($usuario, $opc){
                 while($file = readdir($handle)){
                     //Limpia la cache al poder
                     //ser usado el directorio por el mismo script
-                   // clearstatcache(); 
+                    clearstatcache(); 
                                     
                     if($file != "." && $file != ".." ){
                          $count++;
@@ -266,7 +260,7 @@ final static function crearSubdirectorio($usuario, $opc){
             if ($testSalir) {
             
             $nuevo = $count + 1;
-            
+           
             $test = mkdir($usuario.'/'.$nuevo) ? true : false; 
             $nuevoDirectorio = $nuevo; 
             
@@ -274,8 +268,8 @@ final static function crearSubdirectorio($usuario, $opc){
             
            
             if(!$test){           
-                 
-                 throw new Exception("No se pudo crear el nuevo subdirectorio con mkdir",0);
+                
+                throw new Exception("No se pudo crear el nuevo subdirectorio con mkdir",0);
                  
             }
         
@@ -283,11 +277,11 @@ final static function crearSubdirectorio($usuario, $opc){
             return $nuevoDirectorio;
             
             
-        }catch(Exception $ex){
+        }catch(Exception $ex){ 
             
-            $excep = $excepciones->recojerExcepciones($ex);
-            $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-            $excepciones->eliminarDatosErrorAlSubirPost("errorPost",true,$excep);
+            $_SESSION['error'] =   ERROR_ARCHIVOS;
+            $excepciones =  new MisExcepcionesPost(CONST_ERROR_CREAR_SUBDIRECTORIO_POST[1], CONST_ERROR_CREAR_SUBDIRECTORIO_POST[0],$ex);  
+            $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost",true);
             
             
         }
@@ -322,15 +316,18 @@ final static function crearSubdirectorio($usuario, $opc){
                if(!copy($imagen, $destino)){throw new Exception($mensaje,0);}
                
             } catch (Exception  $ex) {
-            
-                $excepciones = new MisExcepciones(CONST_COPIAR_ARCHIVO[1], CONST_COPIAR_ARCHIVO[0],$ex);   
                 
                 if($opc == "registrar"){
+                    $excepciones = new MisExcepcionesUsuario(CONST_COPIAR_ARCHIVO[1], CONST_COPIAR_ARCHIVO[0],$ex);   
                     $excepciones->redirigirPorErrorSistema($opc,true);
-                }else if($opc == "copiarDemoSubirPost"){
-                   
-                   $excepciones->eliminarDatosErrorAlSubirPost("errorPost",true);
+                }else{
+                    $_SESSION['error'] = ERROR_ARCHIVOS;
+                    $excepciones = new MisExcepcionesPost(CONST_COPIAR_ARCHIVO[1],CONST_COPIAR_ARCHIVO[0],$ex);
+                    $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost",true);
                 }
+                   
+                   
+                
             }
             
           
@@ -389,7 +386,7 @@ public function eliminarImagenDemoSubirPost(){
         */
         public static function renombrarFotoSubirPost($nombreViejo, $opc){
 
-             $excepciones = new MisExcepciones(CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST[1],CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST[0]);
+             
             
             if($opc === 0){
             
@@ -426,9 +423,10 @@ public function eliminarImagenDemoSubirPost(){
             
                 
                 }catch(Exception $ex){
-                    $excep = $excepciones->recojerExcepciones($ex);
+                    $excepciones = new MisExcepcionesPost(CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST[1],CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST[0],$ex);
+                    
                     $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-                    $excepciones->eliminarDatosErrorAlSubirPost("errorPost",true, $excep);
+                    $excepciones->eliminarDatosErrorAlSubirPost("errorPost",true);
                 }
 
             }else if($opc === 1){
@@ -465,9 +463,10 @@ public function eliminarImagenDemoSubirPost(){
                 return $newNombre;
                 
             } catch (Exception $ex) {
+                
                 $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-                $excep = $excepciones->recojerExcepciones($ex);
-                $excepciones->eliminarDatosErrorAlSubirPost("errorPost",true,$excep);
+                $excepciones = new MisExcepcionesPost(CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST[1],CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST[0],$ex);
+                $excepciones->eliminarDatosErrorAlSubirPost("errorPost",true);
                 
             }
                 
@@ -490,13 +489,13 @@ public function eliminarImagenDemoSubirPost(){
      */
     final static function contarArchivos($ruta){
         
-        $excepciones = new MisExcepciones(CONST_ERROR_CONTAR_ARCHIVOS[1],CONST_ERROR_CONTAR_ARCHIVOS[0]);
+        
         $count = 0;
-        $dir =  $ruta;
+       
     
     try{
         
-        if(!($handle = opendir($dir))){throw new Exception('Hubo un error al contar los directorios.',0);}
+        if(!$handle = opendir($rutagggggg)){throw new Exception('Hubo un error al contar los directorios.',0);}
 
                     while($file = readdir($handle)){
                         if($file != "." && $file != ".."){
@@ -508,8 +507,10 @@ public function eliminarImagenDemoSubirPost(){
         
         
     } catch (Exception $ex) {
-        $excep = $excepciones->recojerExcepciones($ex);
-        $excepciones->eliminarDatosErrorAlSubirPost("Hubo un problema al contar los archivos",true,$excep);
+        
+        $_SESSION["error"]= ERROR_INSERTAR_ARTICULO;
+        $excepciones = new MisExcepcionesPost(CONST_ERROR_CONTAR_ARCHIVOS[1],CONST_ERROR_CONTAR_ARCHIVOS[0],$ex);
+        $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost",true);
     }
    
     //fin contarArchivos    
@@ -540,21 +541,26 @@ public function eliminarImagenDemoSubirPost(){
                 if(!unlink($ruta)){throw new Exception("No se pudo eliminar la imagen",0);}
             
         } catch (Exception $ex) {
-             $excepciones =  new MisExcepciones(CONST_ERROR_ELIMINAR_ARCHIVO[1], CONST_ERROR_ELIMINAR_ARCHIVO[0],$ex);    
+             
             if($opc == 'actualizar'){
-                $excepciones->redirigirPorErrorSistema("actualizar",true);
-            }else if($opc == "eliminarImgDemoSubirPost"){
-                $_SESSION["error"]= ERROR_INSERTAR_ARTICULO;
-                $excepciones->eliminarDatosErrorAlSubirPost("errorPost",true);   
-            }else if($opc == "eliminarImagenSubiendoPost"){
-                $_SESSION["error"]= ERROR_INSERTAR_ARTICULO;
-                $excepciones->redirigirPorErrorSistema("eliminarImagenSubiendoPost", true);
                 
+                $excepciones =  new MisExcepcionesUsuario(CONST_ERROR_ELIMINAR_ARCHIVO[1], CONST_ERROR_ELIMINAR_ARCHIVO[0],$ex);    
+                $excepciones->redirigirPorErrorSistema("actualizar",true);
+                
+            }else if($opc == "eliminarImgDemoSubirPost"){
+                
+                $_SESSION["error"]= ERROR_INSERTAR_ARTICULO;
+                $excepciones = new MisExcepcionesPost(CONST_ERROR_ELIMINAR_IMG_DEMO_POST[1],CONST_ERROR_ELIMINAR_IMG_DEMO_POST[0],$ex);
+                $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);  
+                        
+            }else if($opc == "eliminarImagenSubiendoPost"){
+                
+                $_SESSION["error"]= ERROR_INSERTAR_ARTICULO;
+                $excepciones = new MisExcepcionesPost(CONST_ERROR_ELIMINAR_IMG_SUBIR_POST[1],CONST_ERROR_ELIMINAR_IMG_SUBIR_POST[0],$ex);
+                $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true); 
             }
-           
-            
-        }
     
+        }
 //fin eliminar imagen    
 }
 
@@ -579,10 +585,7 @@ final static function eliminarDirectoriosSistema($src,$opc){
             //Nos aseguramos recive rutas de directorios
    
         if(is_dir($src)){
-       
-            
-          
-        
+
                 foreach(glob($src . "/*") as $archivos_carpeta)
                 {   
                     if (is_dir($archivos_carpeta))
@@ -601,17 +604,20 @@ final static function eliminarDirectoriosSistema($src,$opc){
                             
                             throw new Exception("NO se pudo eliminar el directorio",0);
                             
-                        }
-
-                                
-                                
-                        }
+                        }      
                     }
-        
+        }
     
         } catch (Exception $ex) {
-            echo $ex->getMessage();
-           
+            
+            if($opc == "SubirPost"){
+                
+                $excepciones =  new MisExcepcionesPost(CONST_ERROR_ELIMINAR_DIR_PUBLICAR_POST[1], CONST_ERROR_ELIMINAR_DIR_PUBLICAR_POST[0],$ex);  
+                $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("",true);
+            }else{
+                $excepciones = new MisExcepcionesUsuario(CONST_ERROR_ELIMINAR_DIRECTORIO[1],CONST_ERROR_ELIMINAR_DIRECTORIO[0],$ex);
+                $excepciones->redirigirPorErrorSistema("",true);
+            }
         }
         
         
@@ -640,7 +646,7 @@ final static function eliminarDirectoriosSistema($src,$opc){
 
 public static function copiarDirectorios($src,$dst,$opc) {
     
-    $excepciones = new MisExcepciones(CONST_ERROR_CREAR_DIRECTORIO[1], CONST_ERROR_CREAR_DIRECTORIO[0]);
+    $excepciones = new MisExcepcionesUsuario(CONST_ERROR_CREAR_DIRECTORIO[1], CONST_ERROR_CREAR_DIRECTORIO[0]);
     try{
                 //Comprobamois que existe el directorio
                 if(!is_dir($src)){throw new Exception("El directorio pasado donde copiar los directorios a TMP no existe",0);}               
@@ -667,7 +673,7 @@ public static function copiarDirectorios($src,$dst,$opc) {
                                     $test =  copy($src . '/' . $file,$dst . '/' . $file);
                                     
                                         if(!$test){
-                                            throw new MisExcepciones(CONST_COPIAR_ARCHIVO[1], CONST_COPIAR_ARCHIVO[0]);
+                                            throw new MisExcepcionesUsuario(CONST_COPIAR_ARCHIVO[1], CONST_COPIAR_ARCHIVO[0]);
                                         
                                         }
                                 } 
@@ -712,7 +718,7 @@ public static function copiarDirectorios($src,$dst,$opc) {
  */
 public static function crearDirectorioPadreTMP($dir){
    
-    $excepciones =  new MisExcepciones(CONST_ERROR_CREAR_DIRECTORIO_PADRE_TMP[1], CONST_ERROR_CREAR_DIRECTORIO_PADRE_TMP[0]);
+    $excepciones =  new MisExcepcionesUsuario(CONST_ERROR_CREAR_DIRECTORIO_PADRE_TMP[1], CONST_ERROR_CREAR_DIRECTORIO_PADRE_TMP[0]);
     try {
        
             $test = mkdir($dir);

@@ -64,7 +64,7 @@ class mandarEmails {
          
      } catch (Exception $ex) {
          
-        $excepciones = new MisExcepciones(CONST_ERROR_CONSTRUIR_DARSE_ALTA[1],CONST_ERROR_CONSTRUIR_DARSE_ALTA[0],$ex);
+        $excepciones = new MisExcepcionesUsuario(CONST_ERROR_CONSTRUIR_DARSE_ALTA[1],CONST_ERROR_CONSTRUIR_DARSE_ALTA[0],$ex);
         $excepciones->redirigirPorErrorSistema("ProblemaEmail",true);
 
     }catch (\Exception $e) { //The leading slash means the Global PHP Exception class will be caught
@@ -108,7 +108,7 @@ final function mandarEmailWelcome(){
                 
             }catch (Exception $ex){    
                 
-                $excepciones = new MisExcepciones(CONST_ERROR_CONSTRUIR_DARSE_ALTA[1],CONST_ERROR_CONSTRUIR_DARSE_ALTA[0],$ex);
+                $excepciones = new MisExcepcionesUsuario(CONST_ERROR_CONSTRUIR_DARSE_ALTA[1],CONST_ERROR_CONSTRUIR_DARSE_ALTA[0],$ex);
                 $excepciones->redirigirPorErrorSistema("ProblemaEmail",false);
             
                 
@@ -176,7 +176,7 @@ final function mandarEmailWelcome(){
                    
             }catch (Exception $ex){
                 
-                $excepciones = new MisExcepciones(CONST_ERROR_CONSTRUIR_PALABRAS_BUSCADAS[1],CONST_ERROR_CONSTRUIR_PALABRAS_BUSCADAS[0],$ex);
+                $excepciones = new MisExcepcionesUsuario(CONST_ERROR_CONSTRUIR_PALABRAS_BUSCADAS[1],CONST_ERROR_CONSTRUIR_PALABRAS_BUSCADAS[0],$ex);
                 $excepciones->redirigirPorErrorSistema('ProblemaEmail',false);
                 
             } finally {
@@ -219,7 +219,7 @@ final function mandarEmailBajaUsuario($nick,$mail){
            
         } catch (Exception $ex) {
              
-            $excepciones = new MisExcepciones(CONST_ERROR_CONSTRUIR_DARSE_BAJA[1],CONST_ERROR_CONSTRUIR_DARSE_BAJA[0],$ex);   
+            $excepciones = new MisExcepcionesUsuario(CONST_ERROR_CONSTRUIR_DARSE_BAJA[1],CONST_ERROR_CONSTRUIR_DARSE_BAJA[0],$ex);   
              $excepciones->redirigirPorErrorSistema("ProblemaEmail",false);
         
              

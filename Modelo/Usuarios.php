@@ -334,7 +334,7 @@ public final function insert(){
             return $idUsu;
         } catch (Exception $ex) {
             //echo $ex->getMessage();
-            $excepciones = new MisExcepciones(CONST_ERROR_BBDD_REGISTRAR_USUARIO[1],CONST_ERROR_BBDD_REGISTRAR_USUARIO[0],$ex);
+            $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_REGISTRAR_USUARIO[1],CONST_ERROR_BBDD_REGISTRAR_USUARIO[0],$ex);
             Conne::disconnect($con);
            
             $con->rollBack();
@@ -678,7 +678,7 @@ public function actualizoDatosUsuario(){
     }catch (Exception $ex){
       
         $con->rollBack();
-        $excepciones = new MisExcepciones(CONST_ERROR_BBDD_ACTUALIZAR_USUARIO[1],CONST_ERROR_BBDD_ACTUALIZAR_USUARIO[0],$ex);
+        $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_ACTUALIZAR_USUARIO[1],CONST_ERROR_BBDD_ACTUALIZAR_USUARIO[0],$ex);
         $excepciones->redirigirPorErrorSistema("ActualizarUsuarioBBDD",true);              
 
     
