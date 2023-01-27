@@ -37,6 +37,12 @@ abstract class DataObj {
         }
     }
    
+    /**
+     * Metodo destructor
+     */
+    public function __destruct() {
+        
+    }
    
     /**
      * metodo public

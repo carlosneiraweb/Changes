@@ -203,9 +203,6 @@ class Directorios {
           * type String</br>
           * Id del usuario </br>
           * 
-          * IMPORTANTE
-          * Como PHP trata los errores diferente a las Excepciones</br>
-          * Tenemos que usar THROWABLE para lanzar una excepcion.</br>
           */
             
 final static function crearSubdirectorio($usuario){
@@ -363,7 +360,7 @@ public function eliminarImagenDemoSubirPost(){
         *   Si ocurre esto es que el usuario al subir imagenes para un Post a </br>
         *   eliminado una imagen o varias. Entonces lo que sucede es que accedemos </br>
         *   a un array con el nombre de la imagen borrada dentro de la variable </br>
-        *   " $_SESSION['imgTMP']['imagenesBorradas'] " instanciada en la clase Post. </br>
+        *   " $_SESSION['imgTMP']['imagenesBorradas'] " instanciada en la clase Post linea 660. </br>
         *   Lo que hacemos es ir recuperando su nombre y vamos asignando ese nombre  </br>
         *   a las fotos que el usuario va subiendo. </br>
         * 
@@ -394,39 +391,33 @@ public function eliminarImagenDemoSubirPost(){
                 
                 try{
                     
-                //Extraemos del array de imagenes borradas el ultimo elemento   
-                $ultimaImagenBorrada = array_pop($_SESSION['imgTMP']['imagenesBorradas']);
-                    
+                //Extraemos del array de imagenes borradas el ultimo elemento 
+                
+                $ultimaImagenBorrada = $_SESSION['imgTMP']['imagenesBorradas'][0];
+                
                 //Nos quedamos con el numero de la imagen, tipo admin/2/4 => 4 
                 //este numero es el que interesa, y que es el nombre de la imagen + .jpg
                 //explode nos devuelve un array de strings
                 //como limitados el caracter pasado
                 $tmp = explode('/', $ultimaImagenBorrada );
+                
                 $newNombre = '../photos/'.$tmp[0].'/'.$tmp[1].'/'.$tmp[2].'.jpg';
                 
                 $test = rename($nombreViejo, $newNombre) ? true : false; 
 
                 if(!$test){throw new Exception("Error al renombrar una imgen cuando el usuario elimino alguna",0);}
 
-                //Controlamos que el array de Imagenes borradas aun contenga imagenes.
-                    //Si hemos ingresado el primer elemento, destruimos la variable de
-                    //Sesion para que el programa vuelva a funcionar 
-                    //como si el usuario no hubiera borrado ninguna imagen
-                //echo 'imgTmp en Directorios '.$_SESSION['imgTMP']['imagenesBorradas'][0].'<br>';
-                
-                    if(count($_SESSION['imgTMP']['imagenesBorradas']) == 0){    
-                        unset($_SESSION['imgTMP']);
-                    }
-
+                   
+                  
                         //Devolvemos el nuevo nombre para ser ingresado si el usuario sube una nueva imagen
                         return $newNombre;
             
                 
                 }catch(Exception $ex){
-                    $excepciones = new MisExcepcionesPost(CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST[1],CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST[0],$ex);
                     
                     $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-                    $excepciones->eliminarDatosErrorAlSubirPost("errorPost",true);
+                    $excepciones = new MisExcepcionesPost(CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST[1],CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST[0],$ex);
+                    $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost",true);
                 }
 
             }else if($opc === 1){
@@ -466,7 +457,7 @@ public function eliminarImagenDemoSubirPost(){
                 
                 $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
                 $excepciones = new MisExcepcionesPost(CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST[1],CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST[0],$ex);
-                $excepciones->eliminarDatosErrorAlSubirPost("errorPost",true);
+                $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost",true);
                 
             }
                 
@@ -495,7 +486,7 @@ public function eliminarImagenDemoSubirPost(){
     
     try{
         
-        if(!$handle = opendir($rutagggggg)){throw new Exception('Hubo un error al contar los directorios.',0);}
+        if(!$handle = opendir($ruta)){throw new Exception('Hubo un error al contar los directorios.',0);}
 
                     while($file = readdir($handle)){
                         if($file != "." && $file != ".."){
@@ -623,233 +614,6 @@ final static function eliminarDirectoriosSistema($src,$opc){
         
 
 //eliminarDirectorioRegistro    
-}
-
-
-
-
-/**
- * Metodo que copia directorios con su contenido. </br>
- * Si se produce un error al copiar los directorios </br>
- * del usuario al actualizar, elimina los directorios </br>
- * que se hayan creado en el directorio TMP_ACTUALIZAR. </br>
- * @param  $src 
- * type String
- *  directorio que copiar
- * @param  $dst 
- * type String
- *  Directorio destino
- * @param opc
- * type String
- * Opcion en caso de error
- */
-
-public static function copiarDirectorios($src,$dst,$opc) {
-    
-    $excepciones = new MisExcepcionesUsuario(CONST_ERROR_CREAR_DIRECTORIO[1], CONST_ERROR_CREAR_DIRECTORIO[0]);
-    try{
-                //Comprobamois que existe el directorio
-                if(!is_dir($src)){throw new Exception("El directorio pasado donde copiar los directorios a TMP no existe",0);}               
-                             
-                //Comprobamos que ya no exista
-                if(!is_dir($dst)){
-                    //Comprobamos que se puede abrir
-                    if(!$dir = opendir($src)){throw new Exception("No se pudo abrir el directorio a copiar TMP",0);}
-                    //Comprobamos que se pueden copiar 
-                    if(!mkdir($dst)){
-                        throw  new Exception("NO se pudo copiar el directorio en la carpeta TMP",0);
-            
-                    }else{
-                        
-                        while(false !== ( $file = readdir($dir)) ) { 
-                            if (( $file != '.' ) && ( $file != '..' )) { 
-                                if ( is_dir($src . '/' . $file) ) { 
-                                    
-                                    self::copiarDirectorios($src . '/' . $file,$dst . '/' . $file, $opc); 
-   
-                                } 
-                                else { 
-                                   
-                                    $test =  copy($src . '/' . $file,$dst . '/' . $file);
-                                    
-                                        if(!$test){
-                                            throw new MisExcepcionesUsuario(CONST_COPIAR_ARCHIVO[1], CONST_COPIAR_ARCHIVO[0]);
-                                        
-                                        }
-                                } 
-                            } 
-                        } 
-                        closedir($dir); 
-                    }
-
-                }else{           
-                    throw new Exception("Ya existia el directorio pasado asado en la carpeta TMP",0);                         
-                }
-
-    } catch (Exception $ex){ 
-         $excep = $excepciones->recojerExcepciones($ex);
-        if($opc == "actualizar" ){        
-            $excepciones->redirigirPorErrorSistema("actualizar",true,$excep); 
-        }
-        if($opc == "copiarDirectorios_a_TMP_actualizar"){
-            $excepciones->redirigirPorErrorSistema($opc,true,$excep);
-        }
-        if($opc == "RestaurarArchivosTMP"){    
-            $excepciones->redirigirPorErrorSistema("Error al restaurar los directorios del usuario que estaban en la carpeta TMP",true,$excep); 
-        }
-        if($opc == "renombrarFotoActualizar"){
-            $excepciones->redirigirPorErrorSistema("restaurarAntiguosDirectorios",true,$excep);
-        }
-        if($opc == "restaurarViejosDirectoriosActualizar"){
-            $excepciones->redirigirPorErrorSistema("No se pudo restaurar los directorios que tenia el usuario",true,$excep);
-        }
-        
-          
-    }
-//fin copiarDirectoros    
-} 
-
-/**
- * Este metodo crea el directorio padre <br /> 
- * donde se guardaran la copias de los directorios <br /> 
- * con los datos del usuario. <br /> 
- * @param String $dir 
- * @Description Nick del usuario ya registrado
- */
-public static function crearDirectorioPadreTMP($dir){
-   
-    $excepciones =  new MisExcepcionesUsuario(CONST_ERROR_CREAR_DIRECTORIO_PADRE_TMP[1], CONST_ERROR_CREAR_DIRECTORIO_PADRE_TMP[0]);
-    try {
-       
-            $test = mkdir($dir);
-            
-            if(!$test){
-                throw new Exception("Hubo un problema al crear los directorios TMP al actualizar. Posiblememnte ya existia",0);
-            }
-
-    } catch (Exception $ex) {
-        $excep = $excepciones->recojerExcepciones($ex);
-        $excepciones->redirigirPorErrorSistema("crearDirectorios_TMP",true,$excep);
-    }
-
-
-
-    //FIN crearDirectorioPadreTMP
-}
-
-
-
-
-/**
- * Metodo que recive los datos introducidos 
- * por el usuario en caso de error para poder
- * Ademas de los los datos de los fallos, tanto
- * de la bbdd y de los archivos creados
- */
-final public function escribirErrorValidacion(DataObj $obj, $mensaje,$repEliminarDatosUsuario, $repEliminarPhotos, $repEliminarVideos){
-    $test = 1;
-    
- 
-    try{
-         $cuerpoMensaje = '
-            ******************************************************
-            Nueva entrada Con fecha:'. FECHA_DIA. ' Ha habido un problema de registro de un usuario.'.PHP_EOL.'
-            El error es: '.$mensaje. ''.PHP_EOL.'
-            La IP del visitante es: '.System::ipVisitante().'
-            Los datos intruducidos por el usuario son: '.PHP_EOL.'
-            
-            nombre =  '.$obj->getValue("nombre").''.PHP_EOL.'
-            1º Apellido: = '.$obj->getValue("apellido_1").''.PHP_EOL.'
-            2º Apellido = '.$obj->getValue("apellido_2").''.PHP_EOL.'
-            calle = '.$obj->getValue("calle").''.PHP_EOL.'
-            numero del Portal = '.$obj->getValue("numeroPortal").''.PHP_EOL.'
-            puerta = '.$obj->getValue("ptr").''.PHP_EOL.'
-            ciudad = '.$obj->getValue("ciudad").''.PHP_EOL.'
-            codigo Postal = '.$obj->getValue("codigoPostal").''.PHP_EOL.'
-            provincia = '.$obj->getValue("provincia").''.PHP_EOL.'
-            telefono = '.$obj->getValue("telefono").''.PHP_EOL.'
-            pais = '.$obj->getValue("pais").''.PHP_EOL.'
-            genero = '.$obj->getValue("genero").''.PHP_EOL.'
-            email = '.$obj->getValue("email").''.PHP_EOL.'
-            nick = '.$obj->getValue("nick").''.PHP_EOL.'
-            password = '.$obj->getValue("password").''.PHP_EOL.'
-            pais = '.$obj->getValue("pais"). ''.PHP_EOL;
-            if (!$repEliminarDatosUsuario || !$repEliminarPhotos){
-               $cuerpoMensaje .= "Ha habido un fallo al eliminar los directorios datos_usuario y photos de este usuario. El error dice: ".PHP_EOL;
-                    if($repEliminarDatosUsuario){
-                        $cuerpoMensaje .= "Ha sido eliminada la carpeta datos_usuario.".PHP_EOL;         
-                    }else{
-                        $cuerpoMensaje .= "No ha sido eliminada la carpeta datos_usuario.".PHP_EOL;      
-                    }
-                    if($repEliminarPhotos){
-                        $cuerpoMensaje .= "Ha sido eliminada la carpeta Photos de este usuario.".PHP_EOL;         
-                    }
-                    if($repEliminarVideos){
-                        $cuerpoMensaje .= "Ha sido eliminada la carpeta En Videos de este usuario.".PHP_EOL;         
-                    
-                    }else{
-                        $cuerpoMensaje .= "No ha sido eliminada la carpeta Photos de este usuario.".PHP_EOL;      
-                    }
-            } else{
-                
-              $cuerpoMensaje .= "Los directorios de Datos_usuario y Photos se han elimanado.".PHP_EOL; 
-            }
-            
-        if(!($archivo = fopen(TXT_ERROR_VALIDACION, 'a'))) die("No se puede abrir el archivo");
-           $testEscribir =  fwrite($archivo, $cuerpoMensaje. PHP_EOL);
-           $testCerrar =  fclose($archivo);
-           if((!$testEscribir) || (!$testCerrar)){
-                $test = false;
-           }
-           
-           return $test;
-    }catch(Exception $ex){
-        
-        echo "Error al abrir y escribir en el archivo.".$ex->getCode();
-        echo "Error al abrir y escribir en el archivo.".$ex->getMessage();
-        echo "Error al abrir y escribir en el archivo.".$ex->getLine();
-    }
-    
-    
-    
-//escribirErrorValidacion   
-}
-
-
-/**
- * Metodo que escribe el error al intentar 
- * eliminar un post 
- * @param type array()
- * @return type boolean
- */
-
- public function errorEliminarPost($datos) {
-    
-        $mensaje = "Nueva entrada Con fecha:". FECHA_DIA.PHP_EOL; 
-        $mensaje .= "Parece ser que el usuario ".$datos[0]. " No ha acabado de publicar".PHP_EOL;
-        $mensaje.= "Un Post y el sistema ha tenido algun problema al querrer eliminar ".PHP_EOL;
-        $mensaje .= "los datos introducidos.".PHP_EOL;
-        
-        
-        if($datos[1] != null){$mensaje.= " El id del Post a eliminar era ".$datos[1].PHP_EOL;}
-        if($datos[2] != null){$mensaje.= " El Directorio a eliminar era ".$datos[2].PHP_EOL;}
-        if($datos[3] != null){$mensaje.= " Ha habido un problema al eliminar imagenes id de las imagenes ".$datos[3].PHP_EOL;}
-        if($datos[4] != null){$mensaje .= "Palabras queridas ".$datos[4].PHP_EOL;}
-        if($datos[5] != null){$mensaje .= "Palabras ofrecidas ".$datos[5].PHP_EOL;}
-        $mensaje .= PHP_EOL;
-        $mensaje .= "***********************************************".PHP_EOL;
-        $mensaje .= PHP_EOL;
-    
- 
-    
-    
-    
-    if(!($archivo = fopen(TXT_ERROR_ELIMINAR_POST, 'a'))) die("No se puede abrir el archivo");
-           $test =  fwrite($archivo, $mensaje. PHP_EOL);
-           $test =  fclose($archivo); 
-           return $test;
-    
-//fin errorEliminarPost    
 }
 
 

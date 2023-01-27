@@ -93,7 +93,7 @@ public  function redirigirPorErrorTrabajosEnArchivosSubirPost($opc,$grado){
                 $this->eliminarPostAlPublicar();
                 $this->eliminarVariablesSesionPostAcabado();
 
-                    
+                    die();
                     break;
                 
             case "errorPostEliminarBBDD":
@@ -101,7 +101,7 @@ public  function redirigirPorErrorTrabajosEnArchivosSubirPost($opc,$grado){
                 $this->tratarDatosErrores($opc, $grado);
                 $this->eliminarVariablesSesionPostAcabado();
                 
-                    
+                    die();
                     break;
                 
             default:

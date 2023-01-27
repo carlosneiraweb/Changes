@@ -194,7 +194,7 @@ function mandarId(id){
  * @param {type} objLastImg
  * @returns {undefined} */
 function cargarUltimaImagen(objLastImg){
-      // alert(objLastImg[0].ruta);
+      // alert("ddddd"+objLastImg[0].ruta);
         var sep = '<section id="capturar" class="contenedor_imagenes" >';
         for (var i= 0 ; i < objLastImg.length; i++){
             var demo = objLastImg[i].ruta;
@@ -251,7 +251,7 @@ function cargarUltimaImagen(objLastImg){
  * */
 function cargarImgEliminar(objImgEliminar){
    
-       //alert('objEliminar    '+"../photos/"+objImgEliminar[0].nick+'/'+objImgEliminar[0].ruta+".jpg");
+       //alert('objEliminar    '+"../photos/"+objImgEliminar[0].ruta+".jpg"+"id "+objImgEliminar[0].idPost);
     //Mostramos la capa opca de fondo
     //$("#ocultar").removeClass('oculto').addClass('mostrar_transparencia');
     $("#form_post").addClass('noOcupar');
@@ -279,13 +279,18 @@ function cargarImgEliminar(objImgEliminar){
         }))
         .append($('<input>',{
             type : "hidden",
+            name : "idImagen",
+            value : objImgEliminar[0].idImagen
+        }))
+        .append($('<input>',{
+            type : "hidden",
             name : "ruta",
-            value : objImgEliminar[0].nick+'/'+objImgEliminar[0].ruta
+            value : objImgEliminar[0].ruta
         }))
         .append($('<figure>',{
             class : "img_usuario_tmp"
         }).append($('<img>',{
-            src : "../photos/"+objImgEliminar[0].nick+'/'+objImgEliminar[0].ruta+".jpg",
+            src : "../photos/"+objImgEliminar[0].ruta+".jpg",
             alt : "Imagen subida por el usuario.",
             title : "Puedes modificar la descripción y eliminar la imagen."
         })))

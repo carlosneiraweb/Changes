@@ -9,8 +9,9 @@
  */
 
 
- require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesBbdd.php');
+require_once($_SERVER['DOCUMENT_ROOT']."/Changes/Sistema/Constantes/ConstantesErrores.php");
     
   
 
@@ -50,28 +51,43 @@ if(isset($_POST['ruta'])){
         }
     }
  
-   // echo $idPost." ".$ruta;
+ // echo $idPost." ".$ruta." ".$opcImgSubirPost;
             
-    
+ 
+  
  switch ($opcImgSubirPost) {
         case "ImagenNueva":
             $sqlImgSubirPost = "Select directorio  as ruta  from ".TBL_IMAGENES." WHERE postIdPost = '".$idPost."'";
             break;
         case "ImagenEliminarNueva":
-            $sqlImgSubirPost = "SELECT directorio as ruta, texto as texto from ".TBL_IMAGENES." WHERE postIdPost = '".$idPost."' and directorio = '".$ruta."'";
+            $sqlImgSubirPost = "SELECT directorio as ruta, texto as texto, idImagen as idImagen from ".TBL_IMAGENES." WHERE postIdPost = '".$idPost."' and directorio = '".$ruta."'";
+        
             break;
     }   
         $stImgSubirPost = $conImgSubirPost->query($sqlImgSubirPost);
         $resultImgSubirPost = $stImgSubirPost->fetchAll();
-        $datosImgSubirPost = $resultImgSubirPost; 
-        echo json_encode($datosImgSubirPost);
-        $stImgSubirPost->closeCursor();
-        Conne::disconnect($conImgSubirPost);
+       
+        if($resultImgSubirPost == null){throw new Exception();}
+        
+        echo json_encode($resultImgSubirPost);
+        
+        
+            $stImgSubirPost->closeCursor();
+            Conne::disconnect($conImgSubirPost);
     
       
-    }catch(PDOException $ex){
+    }catch(Exception $ex){
+        
         Conne::disconnect($conImgSubirPost);
-        die($ex->getMessage());
+        $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
+        
+        if($opcImgSubirPost == "ImagenEliminarNueva"){
+            $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_ELIMINAR_IMG_POST[1],CONST_ERROR_ELIMINAR_IMG_SUBIR_POST[0],$ex);
+            $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost",true);
+        }else{
+            $excepciones = new MisExcepcionesPost(CONST_ERROR_MOSTRAR_IMG_SELECCIONADA[1],CONST_ERROR_MOSTRAR_IMG_SELECCIONADA[0],$ex);
+            $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost",true);
+        }
     }
     
     

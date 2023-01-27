@@ -41,11 +41,11 @@ class Post extends DataObj{
     );
     
     
-    
+    ///////FALTA MODIFICAR EXCEPCIONES
     
    /**
-    * Si hay coincidencia mandaremos email
-    * al usuario 
+    * Recibe array con las palabras
+    * Si hay coincidencia mandaremos email al usuario
     * que este interesado en las palabras que se acaban de publicar
     * @param type array palabras buscadas
     */ 
@@ -150,12 +150,12 @@ class Post extends DataObj{
     
     
 
-       /**
-    * 
-     * Metodo que devuelve un array con
-     * el id de las palabras buscada o ofrecidas.
-     * Se utiliza para actualizar las
-     * palabras que un usuario quiere cambiar
+   /**
+     * 
+     * Metodo que devuelve un array con <br/>
+     * el id de las palabras buscada o ofrecidas. <br/>
+     * Se utiliza para actualizar las <br/>
+     * palabras que un usuario quiere cambiar <br/>
      * @return array
      */
 
@@ -177,10 +177,15 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen, $columnaIdPost, $id
                           
             Conne::disconnect($con);  
            
+            
             return $misPalabras;   
+   
+            
+            
     } catch (Exception $ex) {
         
             Conne::disconnect($con);
+            
             if(isset($_SESSION['atras'])){
                 $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
             }else{
@@ -200,8 +205,7 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen, $columnaIdPost, $id
    /**
      * Metodo que actualiza las palabras </br>
      * que un usuario busca en un post.</br>
-     * Son privados por que solo se usan en esta clase, </br>
-     *Este metodo llama a devuelvoIdPalabras. </br> 
+     * Este metodo llama a devuelvoIdPalabras. </br> 
      * Metodo comun para actualizarPalarasOfrecidas y  </br>
      * actualizarPalabrasBuscadas. Se le pasa la tabla, columna y el id </br>
      * del post.
@@ -213,6 +217,7 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen, $columnaIdPost, $id
        
         
         $idPostPa;
+        
             if(isset($_SESSION['lastId'][0])){
                 $idPostPa = $_SESSION['lastId'][0];
             }else{
@@ -231,14 +236,16 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen, $columnaIdPost, $id
             
             
                 for($i = 0; $i < 4; $i++){
-
-                            $stm = " UPDATE ".TBL_PBS_QUERIDAS. " SET palabrasBuscadas = :palabrasBuscadas WHERE idPbsBuscada = :idPbsBuscada and idPostQueridas = :idPostQueridas;";
-                            //echo $stm;
-                            $stm = $con->prepare($stm);
-                            $stm->bindValue(":idPostQueridas", $idPostPa, PDO::PARAM_INT);
-                            $stm->bindValue(":palabrasBuscadas", $nuevasPalabras[$i], PDO::PARAM_STR);
-                            $stm->bindValue(":idPbsBuscada", $buscadas[$i]['idPbsBuscada'], PDO::PARAM_INT);
-                            $stm->execute();
+                    
+                    if($nuevasPalabras[$i] == null){$nuevasPalabras[$i] = "";} //Nos aseguramos 4 palabras      
+                        
+                        $stm = " UPDATE ".TBL_PBS_QUERIDAS. " SET palabrasBuscadas = :palabrasBuscadas WHERE idPbsBuscada = :idPbsBuscada and idPostQueridas = :idPostQueridas;";
+                                //echo $stm;
+                        $stm = $con->prepare($stm);
+                        $stm->bindValue(":idPostQueridas", $idPostPa, PDO::PARAM_INT);
+                        $stm->bindValue(":palabrasBuscadas", $nuevasPalabras[$i], PDO::PARAM_STR);
+                        $stm->bindValue(":idPbsBuscada", $buscadas[$i]['idPbsBuscada'], PDO::PARAM_INT);
+                        $stm->execute();
                          
                            
                             //$actualizo = $stm->rowCount();
@@ -270,7 +277,7 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen, $columnaIdPost, $id
     
     /**
      * Metodo privado para actualiza las palabras </br>
-     * que el usuario ingresa un post y modifica alguna descripcion</br>
+     * que el usuario ingresa un post </br>
      * para definir su articulo.</br>
      * Este metodo llama a devuelvoIdPalabras.</br>
      * Metodo comun para actualizarPalarasOfrecidas y  </br>
@@ -291,18 +298,19 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen, $columnaIdPost, $id
         //El id de las viejas palabras
             
             $ofrecidas = $this->devuelvoIdPalabras("busquedas_pbs_ofrecidas", "idPbsOfrecida", "idPostOfrecidas", $idPostOfre);
-            
 
-            //Las palabras nuevas para modificar ls antiguas
-            $nuevasOfrecidas = $this->getValue('Pa_ofrecidas');  
-            
                 try {
-                             
+                    
                     $con = Conne::connect();
                   
-                   
+                    
+                    //Las palabras nuevas para modificar ls antiguas
+                    $nuevasOfrecidas = $this->getValue('Pa_ofrecidas');  
+                    
                         for($i = 0; $i < 4; $i++){
-
+                                
+                            if($nuevasOfrecidas[$i] == null){$nuevasOfrecidas[$i] = "";} //Nos aseguramos 4 palabras
+                                
                                 $stm = " UPDATE ".TBL_PBS_OFRECIDAS. " SET palabrasOfrecidas = :palabrasOfrecidas  WHERE idPbsOfrecida = :idPbsOfrecida and idPostOfrecidas = :idPostOfrecidas;";
                                 $stm = $con->prepare($stm);
                                 $stm->bindValue(":idPostOfrecidas", $idPostOfre, PDO::PARAM_INT);
@@ -312,10 +320,7 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen, $columnaIdPost, $id
                                 //$stm->rowCount();
                                 
                         }
-              
-          
-              
-           
+
             Conne::disconnect($con); 
            
         } catch (Exception $ex) {
@@ -403,8 +408,9 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen, $columnaIdPost, $id
 }
 
 /**
- * Metodo que inserta las palabras 
- * por las que el usuario quiere cambiar
+ * Metodo que inserta las palabras <br/>
+ * por las que el usuario quiere cambiar <br/>
+ * su item.
  * 
  */
 private  function insertarPalabrasQueridas(){
@@ -443,7 +449,7 @@ private  function insertarPalabrasQueridas(){
 
 
 /**
- * Metodo que inserta las palabras
+ * Metodo que inserta las palabras <br/>
  * por las que el usuario quiere cambiar
  * 
  */
@@ -452,7 +458,7 @@ private function insertarPalabrasOfrecidas(){
     
     
      //Creamos un array con las palabras buscadas
-            $ofrecidas = $this->getValue("Pa_ofrecidas");
+           
             
             try {
                 
@@ -491,55 +497,16 @@ private function insertarPalabrasOfrecidas(){
 //fin insertarPalabrasOfrecidas    
 }
 
-/**
- * Metodo que inserta la imagen 
- * demo cuando un usuario esta
- * subiendo un post en la BBDD
- * 
- */
-
-private function insertarImagenDemo(){
-    
-    $url = $_SESSION['nuevoSubdirectorio'][0]."/".$_SESSION['nuevoSubdirectorio'][1].'/demo';
-    
-    
-    
-    try {
-        
-        $con = Conne::connect();
-        
-             //Insertamos en la tabla imagenes la ruta de la imagen demo
-            
-            $st4 = "Insert into ".TBL_IMAGENES." (postIdPost,directorio) values (:idPost, :directorio)";
-            $st4 = $con->prepare($st4);
-            $st4->bindValue(":idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
-            $st4->bindValue(":directorio", $url, PDO::PARAM_STR);
-             
-            $st4->execute();
-           
-        Conne::disconnect($con);
-            
-    } catch (Exception $ex) {
-        
-        Conne::disconnect($con);
-        $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-        $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_INGRESAR_IMG_DEMO_SUBIR_POST[1], CONST_ERROR_BBDD_INGRESAR_IMG_DEMO_SUBIR_POST[0],$ex);
-        $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
-   
-    }
-
-//insertarImagenDemo    
-}
-
 
 /**
- * Metodo que inserta un articulo en un post
+ * Metodo que inserta un articulo en un post.<br/>
  * @return type boolean
  */
 public function insertPost(){
        
     
-    //if(isset($_SESSION['errorArchivos'])){unset($_SESSION['errorArchivos']);}  
+            
+//if(isset($_SESSION['errorArchivos'])){unset($_SESSION['errorArchivos']);}  
     
     try{
         $con = Conne::connect();
@@ -591,8 +558,9 @@ public function insertPost(){
             $this->insertarPalabrasQueridas();
                        
             $this->insertarPalabrasOfrecidas();
-                       
-            $this->insertarImagenDemo();
+              
+            //Metodo static clase Imagenes
+            Imagenes::insertarImagenDemo();
 
             Conne::disconnect($con);
            
@@ -600,9 +568,10 @@ public function insertPost(){
         }catch(Exception $ex){
           
             $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
+            $con->rollBack();
             $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_REGISTRAR_POST[1],CONST_ERROR_BBDD_REGISTRAR_POST[0],$ex);
             $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
-            $con->rollBack();
+            
            
              
         } finally {
@@ -614,205 +583,14 @@ public function insertPost(){
 }    
 
 
-
-
-/***
- * Metodo que elimina una imagen 
- * y cometario de la bbdd y del sistema
- * que el usuario quiera cuando se esta
- * publicando un Posts.
- * Se instancia la variable $_SESSION['imgTMP']
- * para que si el usuario quiere subir otra foto 
- * sele asigne ese nombre
- * @return type boolean
- */
-
-public function eliminarImg(){
-    
-    
-        //Si es la primera imagen que borra el usuario se instancia
-        //Para guardar en el array su ruta
-        if(!isset($_SESSION['imgTMP']['imagenesBorradas'])){
-            $_SESSION['imgTMP']['imagenesBorradas'][0] = null;    
-        } 
-        $idImagen = $this->getValue('idImagen');
-       
-        
-        $tmp = explode('/',$idImagen);
-        $nick = $tmp[0];//nick usuario ha puesto el post
-        $ruta = $tmp[1].'/'.$tmp[2];//ruta de la imagen directorio/numero imagen
-        
-    try{
-        
-        
-        $con = Conne::connect();
-        $sql = "DELETE FROM ".TBL_IMAGENES." WHERE post_idPost = :post_idPost and ruta = :url";
-        //echo 'Sql eliminarImagen: '.$sql.'<br>';
-        $st = $con->prepare($sql);
-        $st->bindValue(":post_idPost", $_SESSION['lastId'][0], PDO::PARAM_INT); 
-        //Iniciamos una variable de sesion para asignarle a la siguiente 
-            //imagen ingresada el nombre de la eliminada.
-            //Creamos un array de arrays por si el usuario quiere
-            // eliminar varias imagenes a la vez
-        
-        for($i = 0; $i< 5; $i++ ){
-            
-            if (empty($_SESSION['imgTMP']['imagenesBorradas'][$i])){
-              $_SESSION['imgTMP']['imagenesBorradas'][$i] = $this->getValue('idImagen');
-                           break;
-            }
-        }
-       
-         //echo 'en Post eliminar: '.var_dump($_SESSION['imgTMP']['imagenesBorradas']).'<br>';
-        
-        $st->bindValue(":url", $ruta, PDO::PARAM_STR);
-        // echo 'lastId: '.$_SESSION['lastId'][0].' : '. 'idImagen: '.$this->getValue('idImagen').'<br>';
-        $st->execute();
-        $columnas = $st->rowCount();
-        
-        //En caso de ser todo correcto eliminamos la imagen 
-        //del sistema y restamos 1 al contador de imagenes
-        if($columnas){
-            Directorios::eliminarImagen("../photos/".$nick.'/'.$ruta.".jpg", "eliminarImagenSubiendoPost");
-           
-                
-                $_SESSION['contador'] = $_SESSION['contador'] - 1;
-                //echo 'Hemos eliminado de la bbdd y del sistema, restamos contador <br>';
-            
-            
-            //Si el contador vuelve a 0, volvemos a copiar la foto demo
-            //Evitamos que en cada momento el que el usuario no tenga una  imagen en el Post
-            if(isset($_SESSION['contador']) and $_SESSION['contador'] == 0){
-                Directorios::copiarFoto("../photos/demo.jpg",'../photos/'.$_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1]."/demo.jpg","copiarDemoSubirPost");
-            //                    IMPORTANTE
-            //  Volvemos a ingresar en la bbdd la ruta de la imagen /demo
-            // para poder mostrar siempre una imagen
-            $sql = "INSERT INTO ".TBL_IMAGENES." (post_idPost, nickUsuario, ruta) VALUES ( :post_idPost, :nickUsuario, :ruta)";
-       
-                $st = $con->prepare($sql);
-        
-            $st->bindValue(":post_idPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
-            $st->bindValue(":nickUsuario", $nick, PDO::PARAM_STR);
-            $st->bindValue(":ruta", $_SESSION['nuevoSubdirectorio'][1].'/demo', PDO::PARAM_STR);  
-                
-                $st->execute();
-            }
-
-           
-        }
-        
-        Conne::disconnect($con);
-
-    } catch (Exception $ex) {
-        
-        $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_ELIMINAR_IMG_POST[1], CONST_ERROR_BBDD_ELIMINAR_IMG_POST[0],$ex);
-        $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-        $excepciones->eliminarDatosErrorAlSubirPost("errorPost",true);
-        
-    }finally{
-        Conne::disconnect($con);
-    }  
-     
-//fin eliminarImg    
-}
-
 /**
- * Metodo que actualiza el texto
- * introducido en una imagen cuando 
- * se inserta una imagen en un post
- * @return type boolean
- */
- public function actualizarTexto(){
-  
-    
-        
-    $tmp =  explode('/',$this->getValue('idImagen'));
-    $url = $tmp[1].'/'.$tmp[2];
-
-    
-    try{
-      
-        $con = Conne::connect();
-            $sql = "UPDATE ".TBL_IMAGENES. " SET ".
-                    "texto = :descripcion ".
-                    " WHERE post_idPost = :idPost and ruta = :ruta ";
-            //echo "sql actualizarTexto ".$sql.'<br>';
-
-            $stm = $con->prepare($sql);
-            $stm->bindValue(":descripcion", $this->getValue('figcaption'), PDO::PARAM_STR );
-            $stm->bindValue(":idPost", $_SESSION['lastId'][0] , PDO::PARAM_INT);
-            $stm->bindValue(":ruta", $url, PDO::PARAM_STR);
-            $stm->execute();
-
-            Conne::disconnect($con);
-        
-        }catch(Exception $ex){
-            
-            $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-            $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_ACTUALIZAR_TEXT_IMG_SUBIR_POST[1],CONST_ERROR_BBDD_ACTUALIZAR_TEXT_IMG_SUBIR_POST[0],$ex);
-            $excepciones->eliminarDatosErrorAlSubirPost("errorPost",true);
-
-        }finally{
-            Conne::disconnect($con);
-        }
-    
-//fin actualizarTexto    
-}
-
-/**
- * Este metodo recibe el id del 
- * post y se eliminan todas las imagenes
- * @param type $imgId
- * @return type
- */
-
-static function eliminarImagenesPost($imgId) {
-  
-    
-    try{
-        
-        
-        $con = Conne::connect();
-        $sql = "DELETE  from ".TBL_IMAGENES.
-                " where post_idPost = :post_idPost";
-                
-        //echo "sql actualizarTexto ".$sql.'<br>';
-        
-        $stm = $con->prepare($sql);
-        $stm->bindValue(":post_idPost", $imgId, PDO::PARAM_INT);
-        $stm->execute();
-        $columnas = $stm->rowCount();
-        
-        if($columnas == 0){
-            throw new Excepciones("Error al eliminar las imagenes de un Post");
-        }
-        
-        Conne::disconnect($con);
-         
-    }catch(Excepciones $ex){
-        
-       $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_BORRAR_IMG_ELIMINANDO_UN_POST[1],CONST_ERROR_BBDD_BORRAR_IMG_ELIMINANDO_UN_POST[0],$ex);
-       $_SESSION['error'] = ERROR_ARCHIVOS;
-       $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost",true);
-       
-    }finally{
-       Conne::disconnect($con); 
-    }
-//fin eliminarImagenesPostAlSubir    
-}
-
-/**
- * Metodo static
- * Recive el id del post a eliminar
+ * Metodo static <br/>
+ * Recive el id del post a eliminar <br/>
  * @param type $id
- * Retorna el numero de columnas 
- * @return int
  */
 
 
 static function eliminarPostId($id){
-
-    
     
     try{
         
@@ -820,9 +598,7 @@ static function eliminarPostId($id){
         $con = Conne::connect();
         $sql = "DELETE  from ".TBL_POST.
                 " where idPost = :idPost";
-                
-        //echo "sql actualizarTexto ".$sql.'<br>';
-        
+  
         $stm = $con->prepare($sql);
         $stm->bindValue(":idPost", $id, PDO::PARAM_INT );
         $stm->execute();
@@ -837,85 +613,10 @@ static function eliminarPostId($id){
             $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("",true);
         
     }
-//fin eliminarImagenesPostAlSubir     
+   
         
 //fin eliminarPostId
 }
-
-
-
-
-/**
- * Metodo que inserta las imagenes
- * y comentarios de cada imagen subida
- * @return type boolean
- */
-  public function insertarFotos(){
-   
-      
-       $_SESSION['idImgadenIngresar'] = $this->getValue('idImagen'); // ../photos/2/1.jpg
-       $_SESSION['contador'] = $_SESSION['contador'] + 1;
-       $tmp = $_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1]."/".$_SESSION['contador'];
-      
-      
-    try{
-        
-        $con = Conne::connect();
-
-        $sql = "INSERT INTO ".TBL_IMAGENES." (postIdPost, directorio, texto) VALUES ( :postIdPost, :directorio, :texto)";
-        
-        $st = $con->prepare($sql);
-        
-        $st->bindValue(":postIdPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
-        $st->bindValue(":directorio",$tmp, PDO::PARAM_STR);
-        //En caso el usuario no escriba una descripcion de la imagen
-        if($this->data['figcaption'] == null){
-            $st->bindValue(":texto", " ", PDO::PARAM_STR);  
-        }else{
-            $st->bindValue(":texto", $this->data['figcaption'], PDO::PARAM_STR);
-        }
-   
-        
-        $test = $st->execute() ? true : false;
-       
-       
-        //Si la foto se ha subido con exito el contador de imagenes se incrementa en 1
-            if(!$test){
-                throw new Exception();
-            }
-        //                    IMPORTANTE
-        //Cuando insertamos una imagen eliminamos de la tabla imagenes
-        // la imagen demo que subimos.Unicamente hacemos eso si contador == 1
-        if(isset($_SESSION['contador']) and $_SESSION['contador'] == 1){
-            $sql = "DELETE FROM ".TBL_IMAGENES." WHERE postIdPost = :postIdPost and directorio = :directorio";
-           
-                $st = $con->prepare($sql);
-                $st->bindValue(":postIdPost", $_SESSION['lastId'][0], PDO::PARAM_INT);       
-                $st->bindValue(":directorio",$_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1]."/demo", PDO::PARAM_STR);
-               // echo 'eliminar demo bbdd '.$_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1]."/demo";
-                 $test = $st->execute() ? true : false;
-                 
-                 if(!$test){throw new Exception();}
-        }
-        
-        
-        Conne::disconnect($con);
-        return $test;
-    
-    }catch(Exception $ex){
-       
-        Conne::disconnect($con);
-        $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-        $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_AL_SUBIR_UNA_IMG_SUBIENDO_POST[1],CONST_ERROR_BBDD_AL_SUBIR_UNA_IMG_SUBIENDO_POST[0],$ex); 
-        $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
-        
-    }
-    
- 
-   
-//fin insertarFotos  
-}
-
 
 
 

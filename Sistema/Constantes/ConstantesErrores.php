@@ -63,7 +63,7 @@ define("CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST",array(32,"No se pudo renombr
 //error al contar los archivos para renombrar las fotos
 define("CONST_ERROR_CONTAR_ARCHIVOS",array(33, "Hubo un error al contar los archivos"));
 //error al ingresar img en la bbdd al subir post
-define("CONST_ERROR_BBDD_AL_SUBIR_UNA_IMG_SUBIENDO_POST",array(34,"No se pudo subir imagen registrando un post en la bbdd"));
+define("CONST_ERROR_BBDD_AL_SUBIR_UNA_IMG_SUBIENDO_POST",array(34,"No se pudo subir imagen registrando un post en la bbdd o no se pudo eliminar la imagen demo de la bbdd"));
 //errorbuscar usuarios palabras email
 define("CONST_ERROR_BBDD_BUSCAR_USUARIOS_EMAIL",array(35,"Hubo un error al buscar usuarios interesados en las palabras tabla email"));
 //error actualizar palabras queridas
@@ -84,6 +84,14 @@ define( "CONST_ERROR_ELIMINAR_DIR_PUBLICAR_POST",array(42,"No se pudieron elimin
 define("CONST_ERROR_ELIMINAR_IMG_DEMO_POST", array(43,"No se pudo eliminar la imagen demo cuando un usuario subua imagenmes"));
 //Error al eliminar una imagen quye esta subiendo un usuario al Post
 define("CONST_ERROR_ELIMINAR_IMG_SUBIR_POST",array(44,"No se pudo eliminar la img subida por el usuario al post"));
+//Error mostrar img seleccionada
+define("CONST_ERROR_MOSTRAR_IMG_SELECCIONADA",array(45,"No se pudo mostrar la imagen seleccionada al usuario para modificar o eliminar"));
+//Error al intentar ingresar o mover la imagen demo cuando el usuario subia un post y eliminaba las imagenes
+define("CONST_ERROR_INGRESAR_IMG_DEMO_AL_ELIMINAR_TODAS_IMG_SUBIR_POST",array(46,"No se pudo ingresar o mover la imagen demo cuando el usuario subia un post y eliminaba las imagenes"));
+
+
+
+
 
 
 

@@ -26,8 +26,9 @@ if(!isset($_SESSION))
  *  Este metodo Crea un subdirectorio para almacenar las imagenes </br>
  *   IMPORTANTE CONOCER EL CONTENIDO DE 'nuevoSubdirectorio' </br>
  *   Es la usada para mover, copiar, eliminar he ingresar en la bbdd </br>
- *   Su contenido es del tipo nombreUsuario/totalSubdirectorios => 1/1</br>
- *               
+ *   Su contenido es del tipo  52/1</br>
+ *   52 => id Usuario<br/>
+ *   1 => Nombre del directorio donde se guardan las imagenes.<br/>           
  *  Agregamos una foto demo por </br>
  *  si el usuario no quiere subir ninguna imagen </br>
  *   Esto solo se hace la primera vez y se evita crearlo otra vez si el usuario </br>
@@ -56,13 +57,15 @@ function crearSubdirectorio(){
 
 
      /**
-     * Metodo que valida los datos introducidos por el usuario.</br>
-     * Valida los campos con los metodos static de ValidaForm </br>
-     * 
-     *
-     * @param type $st</br>
-      * String con la opciondel paso a validar </br>
-     * 
+      * Metodo que valida los datos introducidos por el usuario.</br>
+      * Valida los campos con los metodos static de ValidaForm </br>
+      * Importante el uso de la variable $_SESSION['imgTMP'].<br/>
+      * Esta indicara si el usuario ha eliminado una imagen<br/>
+      * subiendo un post.<br/>
+      * Ver metodo insertarFotos de Imagenes.php <br/>
+      * @param type $st</br>
+      * String con la opciondel paso a validar.
+      * 
      */
    
 function validarCamposSubirPost($st){
@@ -111,22 +114,22 @@ function validarCamposSubirPost($st){
                 //Si lo ha hecho le asignamos en el directorio photos/subdirectorio 
                 //Ese nombre
                     
-                if(isset($_SESSION['imgTMP']) and $_SESSION['imgTMP']['imagenesBorradas'][0] != null){
-                                
+                if(isset($_SESSION['imgTMP']) and (!empty($_SESSION['imgTMP']['imagenesBorradas'][0]))){
+                        
                     $_SESSION['idImagen'] = Directorios::renombrarFotoSubirPost($destino, 0); 
                                     
                         
                   //Aqui vamos subiendo las fotos al post mientras el usuario no 
                             //hubiera eliminado ninguna mientras subia las fotos                    
                     }else if (!isset($_SESSION['imgTMP'])){   
-                                
+                           
                         $_SESSION['idImagen'] = Directorios::renombrarFotoSubirPost($destino, 1);
                                     
                     }   
            
                         
                     
-        }else if($testSubirArchivo === '4' || $testSubirArchivo === '10' || $testSubirArchivo === '1' || $testSubirArchivo === '3'){
+        }else if($testSubirArchivo === 4 || $testSubirArchivo === 10 || $testSubirArchivo === 1 || $testSubirArchivo === 3){
             //Si hay algun error al validar la imagen 
             //redirigimos a la pagina mostrarError
             //y le indicamos el motivo del error

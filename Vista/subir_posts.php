@@ -3,6 +3,7 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Post.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Imagenes.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ValidoForm.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Directorios.php');
@@ -117,7 +118,8 @@ $excepciones = new MisExcepcionesPost(null,null, $exc);
             if(!isset($_SESSION['contador'])){
                 $_SESSION['contador'] = 0; 
             }   
-    
+            
+            
     //Si no se ha recivido el step
     //se muestra el formulario por primera vez
     if(!isset($_POST['step'])){  
@@ -516,7 +518,7 @@ function ingresarPost(){
  * $_SESSION['post']['figcaption']
  * Se instancia en el formulario subir_post 
  * de este mismo archivo.
- * $_SESSION['idImagen'] = ../photos/carlos/60/2.jpg
+ * $_SESSION['idImagen'] = /60/2/1
  * Se instancia en ControlErroresSistemaEnArchivosPOst al validar la foto y cambiarle 
  * el nombre en la clase Directorios.
  * En este metodo solo se comprueba que el sistema a
@@ -529,7 +531,7 @@ function ingresarImagenes(){
    
     global $articulo;
            
-    $articulo = new Post(array(
+    $articulo = new Imagenes(array(
        "figcaption" => $_SESSION['post']['figcaption'],
        "idImagen" => $_SESSION['idImagen']
     ));
@@ -545,16 +547,16 @@ function ingresarImagenes(){
 
 
 /**
- * Metodo que actualiza una imagen
- * Las variables $_POST['txtModificar'] y $_POST['ruta']
- *  vienen de dos campos ocultos del formulario cargarImgEliminar
+ * Metodo que actualiza el texto de una imagen.<br/>
+ * Las variables $_POST['txtModificar'] y $_POST['ruta']<br/>
+ *  vienen de dos campos ocultos del formulario cargarImgEliminar<br/>
  *  creado en subirPosts.js
  */
 function actualizarImagen(){
     
-    $articulo = new Post(array(
+    $articulo = new Imagenes(array(
        "figcaption" => $_POST['txtModificar'],
-       "idImagen" => $_POST['ruta']
+       "idImagen" => $_POST['idImagen']
     ));
     
     
@@ -566,22 +568,20 @@ function actualizarImagen(){
 }
 
 /**
- * Metodo que elimina una imagen
- *  $_POST['ruta'] Se instancia en
- *  el formulario que esta generado totalmente con JQUERY
- *  Metodo cargarImgEliminar en un campo hidden
- * script  subirPost.js
- *  Post $articulo
+ * Metodo que elimina una imagen <br/>
+ * mientras el usuario esta publicando un Post.<br/>
+ * Se generan dos campos hidden<br/>
+ * idImagen y ruta.
  *
  */
 function eliminarImagen(){
     
-    $articulo = new Post(array(
-        "idImagen" => $_POST['ruta'] 
+    $img = new Imagenes(array(
+        "idImagen" => $_POST['idImagen'],
+        "directorio" => $_POST['ruta']
     ));
-    
-    
-   $articulo->eliminarImg();
+            
+   $img->eliminarImg();
    
     
 //    
