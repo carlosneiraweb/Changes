@@ -16,8 +16,8 @@ define("CONST_ERROR_RENOMBRAR_FOTO_ACTUALIZARSE", array(8, "No se pudo renombrar
 define("CONST_ERROR_RENOMBRAR_DIRECTORIOS_ACTUALIZAR", array(9, "Error al renombrar los directorios en la actualiación"));
 //error mover imagen
 define("CONST_ERROR_MOVER_IMAGEN",array(10,"La imagen no se ha podido mover"));
-//error al crear directorio padre en TMP_ACTUALIZAR
-define("CONST_ERROR_CREAR_DIRECTORIO_PADRE_TMP", array(11,"No se pudo crear el directorio padre TMP"));
+/**Metodo que nos devuelve el ID del usuario a bloquear.<br/> Para saber si ya esta bloqueado*/
+define("CONST_ERROR_DEVOLVER_ID_USUARIO_BLOQUEAR", array(11,"Error al recuperar el id del usuario a bloquear"));
 //error ya existe el directorio a copiar en DIRECTORIO_PADRE_TMP
 define("CONST_ERROR_CREAR_DIRECTORIO_PADRE_TMP_YA_EXISTE_DIRECTORIO", array(12,"No se pudo crear el directorio padre TMP, ya existe"));
 //error en la bbdd al actualizar un usuario
@@ -75,7 +75,7 @@ define("CONST_ERROR_BBDD_DEVOLVER_ID_PALABRAS_AL_ACTUALIZAR",array(38,"Hubo un e
 //error al cambiar nombre img que sube el usuario al registrarse
 define("CONST_ERROR_RENOMBRAR_IMG_REGISTRARSE",array(39,"Hubo un error al renombrar la img del usuario cuando se registraba"));
 //Error al desbloquear un usuario
-define("CONST_ERROR_DESBLOQUEO_USUARIO",array(40,'Hemos tenido un problema al desbloquear un usuario'));
+//define("CONST_ERROR_DESBLOQUEO_USUARIO",array(40,'Hemos tenido un problema al desbloquear un usuario'));
 //Error al Desbloquear Tabla Desbloquear un usuario
 define("CONST_ERROR_ELIMINAR_TABLA_DESBLOQUEAR",array(41,"No se ha podido eliminar un usuario de la tabla Desbloqueo"));
 //Error eliminar directorios al publicar un post y haber un error
@@ -88,12 +88,23 @@ define("CONST_ERROR_ELIMINAR_IMG_SUBIR_POST",array(44,"No se pudo eliminar la im
 define("CONST_ERROR_MOSTRAR_IMG_SELECCIONADA",array(45,"No se pudo mostrar la imagen seleccionada al usuario para modificar o eliminar"));
 //Error al intentar ingresar o mover la imagen demo cuando el usuario subia un post y eliminaba las imagenes
 define("CONST_ERROR_INGRESAR_IMG_DEMO_AL_ELIMINAR_TODAS_IMG_SUBIR_POST",array(46,"No se pudo ingresar o mover la imagen demo cuando el usuario subia un post y eliminaba las imagenes"));
-
-
-
-
-
-
+/**Error al recuperar el id de un ususario en bloquear usuario**/
+define("CONST_ERROR_RECUPERAR_ID_USUARIO_BLOQUEO",array(47,"No se pudo recuperar el id cuando un usuario introduzco el nick para bloquearlo"));
+/**Error al comprobar que un usuario ya estaba bloqueado total o parcialmente*/
+define("CONST_ERROR_COMPROBAR_BLOQUEO_USUARIO",array(48,"No se pudo saber si el usuario ya estaba bloqueado totalmemte o parcialmente"));
+/**Error al bloquear al usuario totalmente*/
+define("CONST_ERROR_BLOQUEAR_TOTAL_USUARIO",array(49,"No pudimos bloquear totalmente al usuario"));
+/**Error al bloquear parcial un usuario*/
+define("CONST_ERROR_BLOQUEAR_PARCIAL_USUARIO",array(50,"No pudimos bloquear parcialmente al usuario"));
+/**Error al desbloquear totalmente un usuario*/
+define("CONST_ERROR_DESBLOQUEAR_TOTALMENTE_USUARIO",array(51,"No pudimos desbloquear totalmente al usuario"));
+/**Error al desbloquear parcialmente un susuario*/
+define("CONST_ERROR_DESBLOQUEAR_PARCIAL", array(52,"No pudimos desbloquear parcialmente al usuario"));
+/**Error al mostrar los usuarios bloqueados totalmente*/
+define("CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_TOTAL",array(53,"No pudimos mostrar los usuarios bloqueados total"));
+/**Error al mostrar los usuarios bloqueados parcialmente*/
+define("CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_PARCIAL",array(54,"No pudimos mostrar los usuarios bloqueados parcial"));
+/**Error eliminar de la tabla bloqueado parcial*/
 
 
 define("ERROR", "<h5>Revisa tu formulario.</h5><h6>Parece que hay algun campo vacio</h6>");
@@ -125,9 +136,12 @@ define("TXT_ERROR_VALIDACION", "../Errores/ErroresValidacion.txt");
 define("TXT_ERROR_ELIMINAR_POST", "../Errores/ErroresEliminarPost.txt");
 define("ERROR_MANDAR_EMAIL","<h5>Lo sentimos pero por alguna razon no se te ha mandado un email</h5>");
 define("ERROR_ACTUALIZAR_POST","<h5>Hemos tenido un problema al actualizar tú Post</h5><h4>Debes ingresarlo otra vez</h4>");
+/**Error al desbloquear un usuario*/
 define("ERROR_DESBLOQUEAR_USUARIO","<h5>Por algún motivo no hemos podido desbloquearte</h5><h4>Ponte en contacto con nosotros por email</h4>");
-
-
+/**Error bloquear usuario*/
+define("ERROR_BLOQUEAR_USUARIO","<h5>Por algún motivo no hemos podido hacer el bloqueo<h5><h4>Puedes intentarlo de nuevo</h4>");
+/**Error mostrar usuarios bloqueados*/
+define("ERROR_MOSTRAR_USUARIOS_BLOQUEADOS","<h5>Por algún motivo no podemos mostrarte los usuarios que tienes bloqueados</h5><h4>Puedes intentarlo de nuevo</h4>");
 
 
 

@@ -5,7 +5,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MetodosInfoExcepciones.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
 /**
- * Description of MisExcepciones
+ * @Description of MisExcepciones
  * Clase que sobreescribe Exception
  * Utiliza metodos  propios para excepciones 
  * 
@@ -17,13 +17,17 @@ class MisExcepcionesUsuario extends MetodosInfoExcepciones{
 
    
 /**
- * Metodo que elimina los directorios creados
- * al registrarse un usuario o actualizar los
- * datos un usuario
+ * Metodo que elimina los directorios creados <br/>
+ * al registrarse un usuario o actualizar los <br/>
+ * datos un usuario. <br/>
+ * @param String $opc <br/>
+ * Opción para tratar el error.
+ * 
  */
 
 public function eliminarDirectoriosUsuario($opc) {
-        
+     
+    
     if(isset($_SESSION["userTMP"])){        
         $usuViejo = $_SESSION["userTMP"]->getValue('nick');
     }
@@ -88,152 +92,24 @@ public function eliminarDirectoriosUsuario($opc) {
 //fin eliminarDirectoriosUsuario   
 }
 
-
-
 /**
- * Metodo que elimina el subdirectorio
- * creado al intentar registrar un post
- * y algo sale mal
- */
-private function eliminarNuevoSubdirectorio(){
-    
-    Directorios::eliminarDirectoriosSistema($_SESSION['nuevoSubdirectorio'], "nuevoSubdirectorioSubirPost");
-    
-    
-  //fin eliminarNuevoSubdirectorio  
-}
-
-
-
-
-
-/**
-    * Metodo que elimina variables de sesion
-    * cuando un usuario ha acabado de subir 
-    * un post
-    
-
-public function eliminarVariablesSesionPostAcabado(){
- 
-    
-   
-    if(isset($_SESSION['imgTMP'])){
-            unset($_SESSION['imgTMP']);
-        }
-        
-    if(isset($_SESSION['atras'])){
-        
-            unset($_SESSION['atras']);
-        }
-    
-    if(isset($_SESSION['contador'])){
-            unset($_SESSION['contador']);
-        }
-    
-    if(isset($_SESSION['png'])){
-            unset($_SESSION['png']);
-        }
-        
-    if(isset($_SESSION['error'])){
-            unset($_SESSION['error']);
-        }
-        
-    if(isset($_SESSION['post'])){unset($_SESSION['post']);}
-     */
-    /*
-     * Se eliminara en el metodo
-     * convertir datosToString de la clase 
-     * MetodosInfoExcepciones o
-     * en el metodo ingresarPOst del archivo subir_post 
-     * si todo ha ido bien
-    if(isset($_SESSION['post'])){
-            unset($_SESSION['post']);
-    }
-    
-    //fin eliminarVariablesSesionPostAcabado()         
-    }
-*/
-    /**
-     * Este metodo manda a EliminarPost de la clase Post,
-     * cuando un usuario quiere subir un post 
-     * y a mitad de proceso se sale y no
-     * acaba publicandolo
-     * @param name $opc<br/>
-     * type boolean <br/>
-     * Se usa para cortar la secuencia
-     * 
-     */
-
- public function eliminarPostAlPublicar($opc){
-    
-        
-            $tmp=  $_SESSION['nuevoSubdirectorio'];//de fotos
-            $eliminarPost = "../photos/$tmp[0]/$tmp[1]";
-            
-            $idPost = $_SESSION['lastId'][0]; 
-            Directorios::eliminarDirectoriosSistema($eliminarPost,"nuevoSubdirectorioSubirPost");
-            Post::eliminarPostId($idPost,$opc);
-        
-   
-        
-        //fin  eliminarPostAlPublicar
-}
-
-/**
- * Metodo que trata los <br/>
- * errores al subir un post <br/>
- * Se encarga de eliminar los directorios <br/>
- * y los datos que se han podido ingresar en la bbdd <br/>
- * asi como variables de sesion <br/>
- * @param name $error </br>
- * type String <br/>
- * Mensaje de error <br/>
- * @param $grado <br/>
- * type boolean
- * Grado de error para actuar <br/>
- * de distinta manera en <br/>
- * redirigirPorErrorSistyema <br/>
- * 
- */
-
-public function eliminarDatosErrorAlSubirPost($error,$grado,$excep){
-      
-    
-    $_SESSION['errorArchivos'] = "existo";
-    $_SESSION["paginaError"] = "index.php";
-    $this->eliminarPostAlPublicar("errorPost");
-    $this->eliminarVariablesSesionPostAcabado();
-    $this->redirigirPorErrorSistema($error,$grado,$excep);
-   // 
-    
-    
-    
-    die();
-    
-    //fin eliminarDatosErrorAlSubirPost
-}
-
-
-
-
-
-/**
- * Metodo que es llamado cuando se produce un error
- * al trabajar con archivos o al trabajar con la bbdd.
- * Elimina los directorios del usuario 
- * en el registro o en la actualizacion
- * Tambien maneja los errores
- * al subir o actualizar un Post
+ * Metodo que es llamado cuando se produce un error <br/>
+ * al trabajar con archivos o al trabajar con la bbdd,<br/>
+ * cuando un usuario esta registrandose, actualizando<br/>
+ * o hay un fallo de funcionalidad. <br/>
+ * Segun opcion y grado elimina los directorios del usuario <br/>
+ * en el registro o en la actualizacion <br/>
  * @param 
  * $opc <br/>
  * Type String <br/>
- * Opcion para trabajar correctamente con el error
+ * Opcion para trabajar correctamente con el error<br/>
  * @param $grado <br/>
- * @uses Se usa para dependiendo <br/>
+ * Type Boolean <br/>
+ *  Se usa para dependiendo <br/>
  * del grado se actuara en tratar errores <br/>
  * de una forma u otra.</br>
- *Cuando este a true redirige a mostrar error<br/>
- *cuando este a false solo hara insercion en la bbdd
+ * Cuando este a true redirige a mostrar error.<br/>
+ * Cuando este a false solo hara insercion en la bbdd
  *
  */
 
@@ -247,7 +123,7 @@ public function redirigirPorErrorSistema($opc,$grado){
    // echo PHP_EOL."opcion vale ".$opc." y gr4ado vale ".$grado." el id es ".$_SESSION["datos"]["id"].PHP_EOL;
     switch ($opc) {
       
-      
+       
            
         case $opc == "registrar":
            
@@ -295,7 +171,7 @@ public function redirigirPorErrorSistema($opc,$grado){
         
         case $opc == "ProblemaEmail":
             
-            $grado = false;
+            
             $this->tratarDatosErrores($opc,$grado);
             
                 die();
@@ -303,7 +179,7 @@ public function redirigirPorErrorSistema($opc,$grado){
         
         case $opc == "mandarEmailActivacion":   
             
-            $grado = true;
+            
             $this->tratarDatosErrores($opc, $grado);
             
                 die();
@@ -316,9 +192,16 @@ public function redirigirPorErrorSistema($opc,$grado){
             
                 die();
                 break;
+        
+        case $opc == "bloquear":
             
+            $this->tratarDatosErrores($opc, $grado);
+            
+                die();
+                break;
+        
         default:
-            
+           
              $this->tratarDatosErrores($opc,false);
             die();
             break;

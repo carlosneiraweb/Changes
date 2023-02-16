@@ -58,7 +58,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
         
         
         
-        <script src="./cargarPostsElegido.js"></script>
+        <script src="../Controlador/Elementos_AJAX/cargarPostsElegido.js"></script>
         <script src="./mostrarPosts.js"></script>
         <script src="./buscador.js"></script>
         <script src="../Controlador/Elementos_AJAX/comentarios.js"></script>
@@ -466,7 +466,7 @@ function processForm(){
      
      //validador web https://jigsaw.w3.org/css-validator/
      
-      ?>
+    /* 
     
      <p>
     <a href="http://jigsaw.w3.org/css-validator/check/referer">
@@ -484,9 +484,9 @@ function processForm(){
     </a>
     </p>
         
+    */
     
-    
-     <?php
+    // <?php
     echo'</footer>';
    
        

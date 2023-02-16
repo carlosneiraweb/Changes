@@ -9,11 +9,13 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
    
 
 /**
+ * @Description
+ * Esta clase es extendida por <br/>
+ * MisExcepcionesUsuario <br/>
+ * MisExcepcionesPost <br/>
+ * Recoje los datos de los errores<br/>
+ * y los inserta en la bbdd
  * 
- * ControlErroresSistemaEnArchivosPost y
- * ControlErroresSistemaEnArchivosUsuario
- * para trabajar con los metodos 
- * de la clase Exception
  */
 
 
@@ -42,24 +44,26 @@ class MetodosInfoExcepciones {
     }
 
     private function mostrarError(){
+        
             header(MOSTRAR_PAGINA_ERROR);
-            
-            
+       
     }
     
     private function redirirgirFalloNoCritico(){
         //$url = $_SESSION["paginaError"];
-         header(MOSTRAR_PAGINA_INDEX);
+        
+        header(MOSTRAR_PAGINA_INDEX);
+        
     }
     
 
 
 /**
- * Metodo que convierte a string
- * los datos que ha ido introduciento el usuario
- * durante el proceso de registro, actualizacion
- * @param String $opc Opcion para recuperar los
- * datos de la variable de sesion para insertar en la bbdd
+ * Metodo que convierte a string <br/>
+ * los datos que ha ido introduciento el usuario <br/>
+ * durante el proceso de registro, actualizacion <br/>
+ * @param String $opc Opcion para recuperar los <br/>
+ * datos de la variable de sesion para insertar en la bbdd <br/>
  * @return  string
  */
 private function convertirStringDatosSesion($opc){
@@ -135,17 +139,20 @@ private function convertirStringDatosSesion($opc){
     return $datosSesion;
 }    
     
-    /**
- * Metodo que inserta los errores 
- * en la tabla correspondiente de 
- * la bbdd. 
- * @param  string,  errorInterno, Muestra los errorres de la clase padre con los metodos get <br />
- * @param  String,  datosUsuario, Muestra los datos que ha introducido el usuario
- * @param String $opc Tipo de error
+/**
+ * Metodo que inserta los errores <br/>
+ * en la tabla correspondiente de <br/>
+ * la bbdd. <br/>
+ * @param  $datosUsuario <br/> 
+ * Type String <br/>
+ *  Contiene los datos que ha introducido el usuario.<br/>
+ * @param String opc <br/>
+ * Tipo de error
+ * @param type $name Description
  */
 
 
-private function insertarErroresBBDD( $opc,$datosSesion){
+protected function insertarErroresBBDD( $opc,$datosSesion){
     
      $con = Conne::connect();
      
@@ -207,19 +214,19 @@ private function insertarErroresBBDD( $opc,$datosSesion){
 
 
 /**
- * Este metodo se encarga de tratar 
- * los datos cuando hay un error.
- * LLama a varios metodos de la clase,
- * errorMessage, covertirStringDatosSesion,
- * insertarErroresBBDD.
- * @param type $opc Description
- *  String
- * $opc
- * Opcion para tratar el errror
+ * Este metodo se encarga de tratar <br/>
+ * los datos cuando hay un error. <br/>
+ * LLama a varios metodos de la clase, <br/>
+ * errorMessage, covertirStringDatosSesion, <br/>
+ * insertarErroresBBDD. <br/>
+ * @param String $opc <br/>
+ * Opcion para tratar el error <br/>
+ * @param Boolean $grado  <br/>
+ * Grado del error para aplicar salida
+ * 
  */
 protected function tratarDatosErrores($opc,$grado){
     
-   // var_dump($excep);
     $datosSesion = $this->convertirStringDatosSesion($opc);
         //Los insertammos en la bbdd
     
@@ -228,6 +235,7 @@ protected function tratarDatosErrores($opc,$grado){
     if($grado){
         
         $this->mostrarError();
+    
     }else{
         
         $this->redirirgirFalloNoCritico();

@@ -26,7 +26,9 @@ define("TBL_IMAGENES", "imagenes");
 define("TBL_TIEMPO_CAMBIO", "tiempo_cambio");
 define("TBL_PALABRAS_EMAIL", "palabras_email");
 define("TBL_INSERTAR_ERROR", "Errores");
+/**Usuarios bloqueados total*/
 define("TBL_BLOQUEADOS_TOTAL", "usuarios_bloqueados_total");
+/**Usuarios bloqueados nparcial*/
 define("TBL_BLOQUEADOS_PARCIAL", "usuarios_bloqueados_parcial");
 define("TBL_ADMIN", "administradores");
 define("TBL_DESBLOQUEAR", "Desbloquear");

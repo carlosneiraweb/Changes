@@ -1,7 +1,20 @@
 /**
+ * @description 
+ * Metodo que nos redirige<br/>
+ * a la pagina mostrar error<br/>
+ * en caso de ocurrir un error<br/>
+ * en el proceso de bloquear un usuario
  * 
- * Prueba git
  */
+
+function errorBloqueo() {
+    
+    $('#bloquearUsuarios').empty();
+    location.href = "mostrar_error.php";
+}
+
+
+
 
 /**
  * Metodo que muestra los usuarios bloqueados</br>
@@ -13,6 +26,7 @@
 
 function mostrarUsuariosBloqueados(data){
 
+   
     var cont = $("<section>",{
         id : 'contMostrarBloqueados'});
     $("h4.desbloquear").before(cont);
@@ -26,30 +40,41 @@ function mostrarUsuariosBloqueados(data){
     }).append($("<h3>",{
         text  : 'Usuarios bloqueados Parcialmente'
     })));
-    
-    if(data !== 'NO_BLOQUEADOS'){
+  
+    if(data[0].length !== 0){
             var i = 0;
         for(i; i < data[0].length; i++ ){
             $("#bloqueadosTotal").append($("<p>",{
-                html : data[0][i]+'</br>'
+                html : data[0][i].bloqueadoTotal+'</br>'
             }));
         }
-
-         var i = 0;
-        for(i; i < data[1].length; i++ ){
-            $("#bloqueadosParcial").append($("<p>",{
-                html : data[1][i]+'</br>'
-            }));
-        }
+        
     }else{
+        
         $("#bloqueadosTotal").append($("<p>",{
             html : 'No tienes usuarios bloqueados'
         }));
+        
+    }
+        
+    if(data[1].length !== 0){
+         
+        var i = 0;
+        for(i; i < data[1].length; i++ ){
+            $("#bloqueadosParcial").append($("<p>",{
+                html : data[1][i].bloqueadoParcial+'</br>'
+            }));
+        }
+        
+    }else{
+        
         $("#bloqueadosParcial").append($("<p>",{
             html : "No tienes usuarios bloqueados"
             }));
         
     }
+    
+    
     //mostrarUsuariosBloqueados
 }
 
@@ -99,7 +124,7 @@ function mostrarResultados(texto){
 
 function bloquear(nickBloquear,opc){
     
- //alert(nickBloquear + opc);
+ alert(nickBloquear + opc);
     
    $.ajax({
                     data: { 
@@ -113,19 +138,23 @@ function bloquear(nickBloquear,opc){
                     url: "../Controlador/Elementos_AJAX/bloquearUsuarios.php"
                 }).done(function( data) {
                     var test = data;
+                    alert(data);
                     var texto;
                     if(test === "NO_EXISTE_USUARIO"){
                         texto = "Parece ser que el usuario introducido no existe.";
                     }else if(test === "YA_BLOQUEADO_TOTAL"){
-                        texto = "Ya tienes bloqueado a este usuario totalmente.";
+                        texto = "Este usuario ya lo tienes bloqueado totalmente.";
                      }else if(test === "USUARIO_YA_BLOQUEADO_PARCIALMENTE"){
                         texto = "Este usuario ya lo tienes bloqueado parcialmente.";
                     }else if(test === 'OK'){
                         texto = "El usuario ha sido bloqueado";
-                    }else if(test === 'NO_OK'){
-                        texto = "Hemos tenido un pequeño problema </br>"+
-                                "Intentalo más tarde.";
+                    
+                    }else if(test === 'ERROR'){
+                         
+                        
+                            errorBloqueo();
                     }
+
                     
                         mostrarResultados(texto);
 
@@ -144,7 +173,7 @@ function bloquear(nickBloquear,opc){
  */
 function desbloquearUsuarios(nickUsuDesbloquear,total,parcial){
     
-   // alert(nickUsuDesbloquear+total+parcial);
+    alert(nickUsuDesbloquear+total+parcial);
     
      $.ajax({
                     data: { 
@@ -169,15 +198,10 @@ function desbloquearUsuarios(nickUsuDesbloquear,total,parcial){
                         texto = "Este usuario no estaba bloqueado total.";
                     }else if(test ==="NO_BLOQUEADO_PARCIAL"){
                         texto = "Este usuario no estaba bloqueado parcialmente.";
-                    }else if(test === "NO_SELECCION_BLOQUEO"){
-                        texto = "No has selecionado ninguna opción.";
                     }else if(test === 'OK'){
                         texto = "El usuario ha sido desbloqueado.";
-                    }else if(test ==="USUARIO_NO_BLOQUEADO"){
-                        texto = "No tenías bloqueado este usuario.";
-                    }else if(test === 'NO_OK'){
-                        texto = "Hemos tenido un pequeño problema </br>"+
-                                "Intentalo más tarde.";
+                    }else if(test === 'ERROR'){
+                        errorBloqueo();
                     }
                         mostrarResultados(texto);
 
@@ -188,15 +212,15 @@ function desbloquearUsuarios(nickUsuDesbloquear,total,parcial){
 
 
 /**
- * Metodo que muestra los usuarios bloqueados
- * y el tipo de bloqueo
+ * Metodo que muestra los usuarios bloqueados<br/>
+ * y el tipo de bloqueo <br/>
  * @returns muestra html
  */
 
 function verUsuariosBloqueados(){
     
     $.ajax({
-                    data: { 
+                data: { 
                         
                         opcion : 'mostrarBloqueos'
                        
@@ -205,18 +229,19 @@ function verUsuariosBloqueados(){
                     type: "POST",
                     dataType: 'JSON',   
                     url: "../Controlador/Elementos_AJAX/bloquearUsuarios.php"
-                }).done(function( data) {
+                }).done(function(data){
 
-                  
-                    if(data[0] !== 'NO_BLOQUEADOS' && data[1] !== 'NO_BLOQUEADOS'){
-                        mostrarUsuariosBloqueados(data);
+                   // alert(data[0][0].bloqueadoTotal);
+                    if(data === 'ERROR'){
+                        errorBloqueo();
                     }else{
-                       mostrarUsuariosBloqueados('NO_BLOQUEADOS');
+                       mostrarUsuariosBloqueados(data);
                     }
                     
-                }
+                });
+            
+           
     
-    )
     
 //verUsuariosBloqueados    
 }

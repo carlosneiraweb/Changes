@@ -82,7 +82,7 @@ function desbloquearUsuario($id){
 
     try{
  
-        
+        echo $id;
 
          $con = Conne::connect(); 
 
@@ -144,7 +144,7 @@ try{
     $stmComparar->execute();
     $row = $stmComparar->fetch();
     
-    
+    echo $row[0];
    
     if(strcmp($hash, $row[1]) === 0){
      

@@ -78,14 +78,15 @@ window.onload=function(){
         //Para mostrar el slider con los datos de esta
         
         $('#cuerpo').on('click','.lanzar', function(e){
-                var src = $(this).children().attr('src');
-              // alert("opcion=SLD&srcImg="+src+"&inicio="+inicio);
-                cargarPeticion("SLD", "opcion=SLD&srcImg="+src+"&inicio="+inicio);
+            
+                var id = $(this).parent().parent().attr('id');
+                //alert("opcion=SLD&srcImg="+id+"&inicio="+inicio);
+                cargarPeticion("SLD", "opcion=SLD&srcImg="+id+"&inicio="+inicio);
                
             });
             
         
-        
+       
     
     $('#cuerpo').on('click','li.pagina', function(e){
        //Llamamos al metodo que nos 

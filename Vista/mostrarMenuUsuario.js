@@ -1,4 +1,9 @@
-
+function verifica_seleccion(check){
+    alert("hola");
+    if(!check.checked){
+        check.checked=1;
+    }
+}
 
 
 
@@ -181,8 +186,7 @@ function mostrarMenu(){
             value : 'Aceptar'
         }))).on('click','#bTotal',function(){
             var nickBloquear = $('#inputTotal').val();
-           //Llama al metodo del archivo bloquearUsuarios
-           bloquear(nickBloquear, "bloqueoTotal");  
+            bloquear(nickBloquear, "bloqueoTotal");
         }) .append($('<h5>',{
             text : 'Bloqueo Parcial, no podrá comentar tus Posts.',
             id : 'bloqueoParcial'
@@ -219,16 +223,21 @@ function mostrarMenu(){
             text : 'Desbloqueo Total'
         }).append($("<input>",{
             type : 'checkbox',
+            checked : true,
             class : 'desCheck',
             id : 'desBloqueoTotal'
-        }))).append($("<span>",{
+        })).on("change",function (){
+            $("#desBloqueoParcial").attr("checked",false);  
+        })).append($("<span>",{
             id : 'desParcial',
             text : 'Desbloqueo Parcial'
         }).append($("<input>",{
             type : 'checkbox',
             class : 'desCheck',
-            id : 'desBloqueoParcial'
-        })))).append($("<section>",{
+            id : 'desBloqueoParcial' 
+        })).on("change",function () {
+            $("#desBloqueoTotal").attr("checked",false);  
+        }))).append($("<section>",{
              id : 'contBtnDesbloqueo'
         }).append($('<input>',{
             type : 'button',

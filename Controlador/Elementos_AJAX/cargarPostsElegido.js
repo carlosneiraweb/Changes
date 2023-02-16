@@ -18,7 +18,7 @@
  */
 
 function cargarPostSeleccionado(objPost){
-  //alert("../photos/"+objPost[0][1].nick+'/'+objPost[0][1].ruta+".jpg");     
+  //alert("../photos/"+objPost[0].directorio+".jpg");     
         //Agregamos las imagenes al Slider 
        // alert("TEXTO"+objPost[1][0].pbsQueridas);
         
@@ -29,15 +29,15 @@ function cargarPostSeleccionado(objPost){
          $("#mostrarPostSeleccionado").append($("<section>",{
              id : 'contPostSeleccionado'
          }).append($("<h1>",{
-             text: "Post colgado por "+ objPost[0][0].nick 
+             text: "Te lo cambio" 
          })).append($('<figure>',{
             id : 'sliderIMG',
             class : 'slider-wrapper-IMG'
         }).append($('<img>',{
             class : 'imgSlider',
-            src : "../photos/"+objPost[0][0].nick+'/'+objPost[0][0].ruta+".jpg"   
+            src : "../photos/"+objPost[0].directorio+".jpg"   
         })).append($("<figcaption>",{
-            html : objPost[0][0].texto
+            html : objPost[0].texto
         }))
                 
         ));
@@ -57,10 +57,10 @@ function cargarPostSeleccionado(objPost){
            
             $('#sliderIMG').append($('<img>',{
                 class : 'imgSlider',
-            src : "../photos/"+objPost[0][0].nick+'/'+objPost[0][0].ruta+".jpg", 
+            src : "../photos/"+objPost[0].directorio+".jpg"
             })).append($('<figcaption>',{
                 class: 'pCaption',
-                text : objPost[0][0].texto
+                text : objPost[0].texto
                     }));
         })
         ).append($('<li>',{
@@ -75,10 +75,10 @@ function cargarPostSeleccionado(objPost){
 
                     $('#sliderIMG').append($('<img>',{
                         class : 'imgSlider',
-                    src : "../photos/"+objPost[0][1].nick+'/'+objPost[0][1].ruta+".jpg",
+                    src : "../photos/"+objPost[1].directorio+".jpg"
                     })).append($('<figcaption>',{
                     class : 'pCaption',
-                    text : objPost[0][1].texto
+                    text : objPost[1].texto
                         }));
                 
          })    
@@ -93,10 +93,10 @@ function cargarPostSeleccionado(objPost){
                 //$('#sliderIMG  .pCaption').remove();
                 $('#sliderIMG').append($('<img>',{
                 class : 'imgSlider',
-                src : "../photos/"+objPost[0][2].nick+'/'+objPost[0][2].ruta+".jpg"
+                src : "../photos/"+objPost[2].directorio+".jpg"
             })).append($('<figcaption>',{
                 class : 'pCaption',
-                text : objPost[0][2].texto
+                text : objPost[2].texto
                     }));
         })        
             
@@ -110,10 +110,10 @@ function cargarPostSeleccionado(objPost){
                 //$('#sliderIMG  .pCaption').remove();
                 $('#sliderIMG').append($('<img>',{
                     class : 'imgSlider',
-                src : "../photos/"+objPost[0][3].nick+'/'+objPost[0][3].ruta+".jpg"
+                src : "../photos/"+objPost[3].directorio+".jpg"
             })).append($('<figcaption>',{
                 class : 'pCaption',
-                text : objPost[0][3].texto
+                text : objPost[3].texto
                     }));
         })     
                 
@@ -126,10 +126,10 @@ function cargarPostSeleccionado(objPost){
                 //$('#sliderIMG  .pCaption').remove();
                 $('#sliderIMG').append($('<img>',{
                     class : 'imgSlider',
-                src : "../photos/"+objPost[0][4].nick+'/'+objPost[0][4].ruta+".jpg"
+                src : "../photos/"+objPost[4].directorio+".jpg"
             })).append($('<figcaption>',{
                 class : 'pCaption',
-                text : objPost[0][4].texto
+                text : objPost[4].texto
                     }));
              
            
@@ -160,11 +160,11 @@ function cargarPostSeleccionado(objPost){
 
         var tmp = "";
           
-           for (var i =0; i < objPost[1].length; i++){
-                if(objPost[1][i].pbsQueridas === ''){
+           for (var i =0; i < objPost[5].length; i++){
+                if(objPost[5][i].pbsQueridas === ''){
                    continue;   
                 }else{
-                    tmp += '<li>'+objPost[1][i].pbsQueridas+'</li>';
+                    tmp += '<li>'+objPost[5][i].pbsQueridas+'</li>';
                 }
             }
            $('#lista>ol').append(tmp);

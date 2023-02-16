@@ -1,4 +1,3 @@
-
 <?php
  
 
@@ -10,13 +9,12 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ValidoForm.
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/mandarEmails.php');
 
 
-//require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Vista/registrarse.php');
 /**
- * Controla los errores del sistema
- * al eliminar, crear o copiar
- * Directorios archivos, etc
- * al registrarse o actualizar un usuario
- * Extiende MixExcepciones
+ * Controla los errores del sistema <br/>
+ * al eliminar, crear o copiar <br/>
+ * Directorios archivos, etc <br/> 
+ * al registrarse o actualizar un usuario <br/>
+ * Extiende MixExcepciones <br/>
  * @author carlos
  */
 
@@ -160,13 +158,7 @@ function comprobarEmailNuevo($user){
         $objMandarEmails->comprobarEmail($_SESSION["hash"],$_SESSION['usuario']['nick']);
        
         if(isset($_SESSION["hash"])){unset ($_SESSION["hash"]);}
-           
-    /*         
-    if(isset($_SESSION["datos"])){unset($_SESSION["datos"]);}
-    if(isset($_SESSION["usuRegistro"])){unset($_SESSION["usuRegistro"]);}
-    if(isset($_SESSION['usuario'])){unset($_SESSION['usuario']);}
-    */
-      
+
   //fin crearDirectoriosRegistro  
     
  }   

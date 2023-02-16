@@ -8,7 +8,8 @@
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesBbdd.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepcionesUsuario.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ControlErroresRunning.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesErrores.php');
 
 
  if(!isset($_SESSION)) 
@@ -19,140 +20,10 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepcio
 global $conBloqueo;
 $conBloqueo = Conne::connect();
 global $usuBloquea;
-$usuBloquea =$_SESSION["userTMP"]->devuelveId();
+$usuBloquea = $_SESSION["userTMP"]->devuelveId();
+global $nickBloquear;
 
 
-/**
- * Metodo que comprueba el tipo </br>
- * de bloqueo verdadero </br>
- * por si el usuario trata de </br>
- * desbloquear a otro usario y no esta bloqueado</br>
- * como solicita en el formulario
- * @param type $id
- * id usuario a comprobar el tipo mde bloqueo </br>
- * @return array $result</br>
- * los tipos de bloqueo que tiene el usuario
- */
-
-function comprobarTipoBloqueo($id,$opc,$opc2){
-    global $conBloqueo;
-    global $usuBloquea;
-    
-    
-        try{
-            $sqlComprobarUsu = "select $opc from ".TBL_USUARIOS_BLOQUEADOS.
-                                    " where  usuario_idUsuario= :usuBloquea and idUsuarioBloqueado = :idUsuarioBloqueado and $opc2;";
-            
-            $stmComprobar = $conBloqueo->prepare($sqlComprobarUsu);
-                    $stmComprobar->bindValue(":idUsuarioBloqueado",$id,PDO::PARAM_STR);
-                    $stmComprobar->bindValue(":usuBloquea",$usuBloquea , PDO::PARAM_STR);
-                    $stmComprobar->execute();
-
-                    $result = $stmComprobar->fetchAll();
-                    Conne::disconnect($conBloqueo); 
-                    
-                   //echo json_encode($result);
-        
-        
-        return $result;
-        
-        }catch(Exception $ex){
-            $ex->getMessage();
-        }
-}
-
-
-
-
-/**
- * 
- * @global type Conection <br>
- * Variable conexion
- * @global type usuario<br>
- * Usuario que bloquea
- * @param  type String <br>
- * Id usuario para comprobar que el usuario <br>
- * no esta ya bloqueado
- * 
- */
-function comprobarUsuario($id,$opcion){
-    
-    try{
-    
-    global $conBloqueo;
-    global $usuBloquea;
-    $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_CONSULTAR_USUARIOS_BLOQUEADOS[1],CONST_ERROR_BBDD_CONSULTAR_USUARIOS_BLOQUEADOS[0]); 
-   
-
-                $sqlComprobarUsu = "select idUsuarioBloqueado from ".TBL_USUARIOS_BLOQUEADOS.
-                                " where idUsuarioBloqueado = :idUsuarioBloqueado and usuario_idUsuario= :usuBloquea and ";
-                
-                if ($opcion =="bloqueoTotal"){
-                    $sqlComprobarUsu .= "bloqueadoTotal = 1;";
-                }else{
-                    $sqlComprobarUsu .="bloqueadoParcial = 1;";
-                }                
-                //echo $sqlComprobarUsu;
-                $stmComprobar = $conBloqueo->prepare($sqlComprobarUsu);
-                $stmComprobar->bindValue(":idUsuarioBloqueado",$id,PDO::PARAM_STR);
-                $stmComprobar->bindValue(":usuBloquea",$usuBloquea , PDO::PARAM_STR);
-                $stmComprobar->execute();
-               
-                $idsUsuBloquear = $stmComprobar->fetch();
-                Conne::disconnect($conBloqueo); 
-                return $idsUsuBloquear[0];
-                //echo json_encode($idsUsuBloquear);
-        
-       
-    } catch (Exception $ex) {
-        $excep =  $excepciones->recojerExcepciones($ex);
-        $excepciones->redirigirPorErrorSistema("consultarUsuariosBloqueados",false,$excep);
-                Conne::disconnect($conBloqueo); 
-
-    }
-    
-    
-}
-
-
-/**
- * Metodo que nos devuelve el id 
- * del usuario a bloquear
- * @param type String </br>
- * id del usuario a bloquear </br>
- * @return idUsuario a bloquear
- */
- 
-function devuelveIdUsu($nickBloquear){
-    
-    global $conBloqueo;
-    
-    try{
-        
-        
-         //Conseguimos el id del usuario a bloquear
-                $sqlIdBloqueoTotal = "Select idUsuario from ".TBL_USUARIO.
-                                " where nick = :nick;";
-                
-                $stmTotal = $conBloqueo->prepare($sqlIdBloqueoTotal);
-                $stmTotal->bindValue(":nick", $nickBloquear, PDO::PARAM_STR);
-                $stmTotal->execute();
-                $idUsuBloquear = $stmTotal->fetch();
-               
-    
-        return $idUsuBloquear[0];
-        
-    } catch (Exception $ex){
-        $ex->getMessage();
-    }
-    
-    
-}
-
-
-
-    try{
-        
          // -------- párametro opción para determinar la select a realizar -------
     if (isset($_POST['opcion'])){ 
             $opc=$_POST['opcion'];
@@ -196,96 +67,373 @@ function devuelveIdUsu($nickBloquear){
                 $parcial=$_GET['parcial'];
          }        
     }
-    
-    
-    
-    
-    
+
+
+/**
+ * Este metodo comprueba que el usuario <br/>
+ * a bloquear no este ya bloqueado <br/>
+ * totalmente o parcialmente. Si esta bloqueado totalmente<br/>
+ * no dejamos bloquear parcialmente.<br/>
+ * @global type Conection <br>
+ * Variable conexion
+ * @global type usuario<br>
+ * Usuario que bloquea
+ * @param  type String <br>
+ * Id usuario en caso que este bloqueado<br/>
+ * totalmente ya.
+ * 
+ */
+function comprobarTipoBloqueo($id,$opcion){
    
+    
+    global $conBloqueo;
+    global $usuBloquea;
+        
+    try{
+    
+ 
+                if ($opcion === "bloqueoTotal"){
+                    
+                    $sqlComprobarUsu = "select count(*) from ".TBL_BLOQUEADOS_TOTAL.
+                            " where usuarioIdUsuario = :usuBloquea and idUsuarioBloqueado = :idUsuarioBloqueado;";
+                
+                    
+                }else if($opcion === "bloqueoParcial"){
+                    
+                    $sqlComprobarUsu = "select count(*) from ".TBL_BLOQUEADOS_PARCIAL.
+                            " where usuarioIdUsuario = :usuBloquea and idUsuarioBloqueado = :idUsuarioBloqueado;";
+                    
+                }                
+                //echo $sqlComprobarUsu;
+                $stmComprobar = $conBloqueo->prepare($sqlComprobarUsu);
+                $stmComprobar->bindValue(":idUsuarioBloqueado",$id,PDO::PARAM_INT);
+                $stmComprobar->bindValue(":usuBloquea",$usuBloquea , PDO::PARAM_INT);
+                $stmComprobar->execute();
+               
+                $idsUsuBloquear = $stmComprobar->fetch();
+                Conne::disconnect($conBloqueo); 
+               
+                //echo json_encode($idsUsuBloquear[0]);
+                return $idsUsuBloquear[0];
+       
+    } catch (Exception $ex) {
+       
+        echo json_encode('ERROR');
+        Conne::disconnect($conBloqueo);
+        $_SESSION['error'] = ERROR_BLOQUEAR_USUARIO;
+        $_SESSION['paginaError'] = "index.php";
+        $excepciones = new ControlErroresRunning(CONST_ERROR_COMPROBAR_BLOQUEO_USUARIO[1],CONST_ERROR_COMPROBAR_BLOQUEO_USUARIO[0],$ex);
+        $excepciones->ErroresRunning("bloquear","El usuario ".$_SESSION["userTMP"]->getValue('nick').
+            " consulto que tipo de bloqueo tenía el  usuario a bloquear con id ".$id);
+        
+
+    }
+    
+    
+}
+
+
+/**
+ * Metodo que nos devuelve el id <br/>
+ * del usuario a bloquear<br/>
+ * @param type String </br>
+ * id del usuario a bloquear </br>
+ * @return idUsuario a bloquear
+ */
+ 
+function devuelveIdUsu($nickBloquear){
+    
+    global $conBloqueo;
+    
+    
+    try{
+        
+        
+         //Conseguimos el id del usuario a bloquear
+                $sqlIdBloqueoTotal = "Select idUsuario from ".TBL_USUARIO.
+                                " where nick = :nick;";
+                
+                $stmTotal = $conBloqueo->prepare($sqlIdBloqueoTotal);
+                $stmTotal->bindValue(":nick", $nickBloquear, PDO::PARAM_STR);
+                $stmTotal->execute();
+                $idUsuBloquear = $stmTotal->fetch();
+
+                    Conne::disconnect($conBloqueo);
+                
+                $result = isset($idUsuBloquear[0]) ?   $idUsuBloquear[0] : null;
+     
+                return $result;
+                    
+    } catch (Exception $ex){
+       
+        echo json_encode('ERROR');
+        Conne::disconnect($conBloqueo);
+        $_SESSION['error'] = ERROR_BLOQUEAR_USUARIO;
+        $_SESSION['paginaError'] = "index.php";
+        $excepciones = new ControlErroresRunning(CONST_ERROR_DEVOLVER_ID_USUARIO_BLOQUEAR[1],CONST_ERROR_DEVOLVER_ID_USUARIO_BLOQUEAR[0],$ex);
+        $excepciones->ErroresRunning("bloquear",$nickBloquear);  
+  
+    } 
+    
+    
+}
+
+/**
+ * Metodo que bloquea a un usuario<br/>
+ * parcialmente.<br/>
+ * @global name $usuBloquea<br/>
+ * Nick del usuario que bloquea.<br/>
+ * @global name $nickBloquear<br/>
+ * Nick del usuario a bloquear.<br/>
+ * @param type $idUsuBloquear<br/>
+ * El id del usuario a bloquear.
+ */
+
+
+function bloquearParcial($idUsuBloquear){
+    
+    global $usuBloquea;
+    global $nickBloquear;
+    global $conBloqueo;
+    
+    
+    try {
+        
+        $sqlBloquearTotal = "insert into ".TBL_BLOQUEADOS_PARCIAL." (usuarioIdUsuario,idUsuarioBloqueado)"
+                                . " values (:usuBloquea,:usuBloqueado);";
+                        
+        $stmBloquearTotal = $conBloqueo->prepare($sqlBloquearTotal);
+        $stmBloquearTotal->bindValue(":usuBloquea", $usuBloquea, PDO::PARAM_INT);
+        $stmBloquearTotal->bindValue(":usuBloqueado", $idUsuBloquear, PDO::PARAM_INT );
+                    
+            $test = $stmBloquearTotal->execute();
+
+            if($test){
+                echo json_encode('OK'); 
+            }else{
+                echo json_encode('NO_OK');
+            }
+            
+        Conne::disconnect($conBloqueo);
+    
+    } catch (Exception $ex) {
+        
+        echo json_encode('ERROR');
+        Conne::disconnect($conBloqueo);
+               
+            $_SESSION['error'] = ERROR_BLOQUEAR_USUARIO;
+            $_SESSION['paginaError'] = "index.php";
+            $excepciones = new ControlErroresRunning(CONST_ERROR_BLOQUEAR_PARCIAL_USUARIO[1],CONST_ERROR_BLOQUEAR_PARCIAL_USUARIO[0],$ex);
+            $excepciones->ErroresRunning("bloquear"," Usuario bloquea ".$_SESSION["userTMP"]->getValue('nick').
+                            " usuario con id a bloquear ".$nickBloquear);  
+        
+    }
+
+//fin bloquearParcial    
+}
+
+/**
+ * Metodo que recibe un id de un usuario<br/>
+ * para desbloquearlo PARCIAL.<br/>
+ * @global name $usuBloquea<br/>
+ * INT id usuario que desbloquea.<br/>
+ * @param name $idUsuDesBloquear<br/>
+ * INT id usuario a desbloquear·
+ */
+
+function eliminarBloqueoParcial($idUsuDesBloquear){
+    
+    global $usuBloquea;
+    global $conBloqueo;
+    
+    
+    
+    try {
+                                
+        $sqlDesbloquearParcial = "DELETE FROM ".TBL_BLOQUEADOS_PARCIAL. 
+            " WHERE usuarioIdUsuario = :usuDesbloquea AND idUsuarioBloqueado = :usuBloqueado;";
+
+
+        $stmDesbloquearParcial = $conBloqueo->prepare($sqlDesbloquearParcial);
+        $stmDesbloquearParcial->bindValue(":usuDesbloquea", $usuBloquea, PDO::PARAM_INT);
+        $stmDesbloquearParcial->bindValue(":usuBloqueado", $idUsuDesBloquear, PDO::PARAM_INT );
+
+            $test = $stmDesbloquearParcial->execute();
+            
+                if($test){echo json_encode("OK");}
+                
+            Conne::disconnect($conBloqueo);    
+                                
+    } catch (Exception $ex) {
+                                
+        echo json_encode('ERROR');
+        Conne::disconnect($conBloqueo);
+               
+        $_SESSION['error'] = ERROR_DESBLOQUEAR_USUARIO;
+        $_SESSION['paginaError'] = "index.php";
+        $excepciones = new ControlErroresRunning(CONST_ERROR_DESBLOQUEAR_PARCIAL[1],CONST_ERROR_DESBLOQUEAR_PARCIAL[0],$ex);
+        $excepciones->ErroresRunning("bloquear"," Usuario desbloquea PARCIAL".$_SESSION["userTMP"]->getValue('nick').
+        " IdUsuario a desbloquear ".$idUsuDesBloquear);  
+            
+                               
+    }
+
+    
+    //fin eliminarBloqueoParcial
+}
+
+
+/**
+ * Metodo que inserta en la tabla<br/>
+ * bloqueoTotal a un usuario.<br/>
+ * @global name $usuBloquea<br/>
+ * Id del usuario que bloquea.<br/>
+ * @global name $nickBloquear<br/>
+ * El nick del usuario a bloquear.<br/>
+ * @param name $idUsuBloquear <br/>
+ * El id del usuario a bloquear.
+ */
+function bloquearTotal($idUsuBloquear){
+ 
+    global $usuBloquea;
+    global $nickBloquear;
+    global $conBloqueo;
+    
+    try {
+        
+        $sqlBloquearTotal = "insert into ".TBL_BLOQUEADOS_TOTAL." (usuarioIdUsuario,idUsuarioBloqueado)"
+                     . " values (:usuBloquea,:usuBloqueado);";
+                        
+                    $stmBloquearTotal = $conBloqueo->prepare($sqlBloquearTotal);
+                    $stmBloquearTotal->bindValue(":usuBloquea", $usuBloquea, PDO::PARAM_INT);
+                    $stmBloquearTotal->bindValue(":usuBloqueado", $idUsuBloquear, PDO::PARAM_INT );
+                    
+                        $test = $stmBloquearTotal->execute();
+                   
+                        if($test){
+                            echo json_encode('OK');
+  
+                        }else{
+                            echo json_encode('NO_OK');
+                        }
+                        
+        Conne::disconnect($conBloqueo);
+                        
+    } catch (Exception $ex) {
+        
+        echo json_encode('ERROR');
+        Conne::disconnect($conBloqueo);
+               
+        $_SESSION['error'] = ERROR_BLOQUEAR_USUARIO;
+        $_SESSION['paginaError'] = "index.php";
+        $excepciones = new ControlErroresRunning(CONST_ERROR_BLOQUEAR_TOTAL_USUARIO[1],CONST_ERROR_BLOQUEAR_TOTAL_USUARIO[0],$ex); 
+        $excepciones->ErroresRunning("bloquear"," Usuario bloquea ".$_SESSION["userTMP"]->getValue('nick').
+                            " usuario a bloquear ".$nickBloquear);  
+    }
+}
+    //fin bloquearTotal
+    
+ /**
+ * Metodo que recibe un id de un usuario<br/>
+ * para desbloquearlo TOTAL.<br/>
+ * @global name $usuBloquea<br/>
+ * INT id usuario que desbloquea.<br/>
+ * @param name $idUsuDesBloquear<br/>
+ * INT id usuario a desbloquear·
+ */
+    
+function eliminarBloqueoTotal($idUsuDesBloquear){
+        
+        global $usuBloquea;
+        global $conBloqueo;
+    
+    
+    
+            try {
+
+                $sqlDesbloquearTotal = "DELETE FROM ".TBL_BLOQUEADOS_TOTAL. 
+                    " WHERE usuarioIdUsuario = :usuDesbloquea AND idUsuarioBloqueado = :usuBloqueado;";
+
+
+                $stmDesbloquearTotal = $conBloqueo->prepare($sqlDesbloquearTotal);
+                $stmDesbloquearTotal->bindValue(":usuDesbloquea", $usuBloquea, PDO::PARAM_INT);
+                $stmDesbloquearTotal->bindValue(":usuBloqueado", $idUsuDesBloquear, PDO::PARAM_INT );
+
+                    $test = $stmDesbloquearTotal->execute();
+
+                        if($test){echo json_encode("OK");}
+
+                    Conne::disconnect($conBloqueo);    
+
+            } catch (Exception $ex) {
+
+                echo json_encode('ERROR');
+                Conne::disconnect($conBloqueo);
+
+                $_SESSION['error'] = ERROR_DESBLOQUEAR_USUARIO;
+                $_SESSION['paginaError'] = "index.php";
+                $excepciones = new ControlErroresRunning(CONST_ERROR_DESBLOQUEAR_TOTAL[1],CONST_ERROR_DESBLOQUEAR_TOTAL[0],$ex);
+                $excepciones->ErroresRunning("bloquear"," Usuario desbloquea TOTAL ".$_SESSION["userTMP"]->getValue('nick').
+                " IdUsuario a desbloquear ".$idUsuDesBloquear);  
+
+
+            }
+        
+        
+        
+        //fin eliminarBloqueoTotal
+    }
+
+
+
     switch ($opc) {
    
         
         
         case 'bloqueoTotal':
+   
+            $idUsuBloquear = devuelveIdUsu($nickBloquear);
+                
             
-            try {
-                
-                
-                $idUsuBloquear = devuelveIdUsu($nickBloquear);
-                
                 if($idUsuBloquear != null){
                     
-                    $test = comprobarUsuario($idUsuBloquear,$opc);
-                    
-                    if($test != null){
-                       echo json_encode("YA_BLOQUEADO_TOTAL"); 
-                    }else{
+                    $test = comprobarTipoBloqueo($idUsuBloquear,$opc);
+
+                    if($test == 1){
                         
-                        $sqlBloquearTotal = "insert into ".TBL_USUARIOS_BLOQUEADOS." (usuario_idUsuario,idUsuarioBloqueado,bloqueadoTotal,bloqueadoParcial)"
-                     . " values (:usuBloquea,:usuBloqueado,:total,:parcial);";
-                    $stmBloquearTotal = $conBloqueo->prepare($sqlBloquearTotal);
-                    $stmBloquearTotal->bindValue(":usuBloquea", $usuBloquea, PDO::PARAM_INT);
-                    $stmBloquearTotal->bindValue(":usuBloqueado", $idUsuBloquear, PDO::PARAM_INT );
-                    $stmBloquearTotal->bindValue(":total", "1", PDO::PARAM_INT );
-                    $stmBloquearTotal->bindValue(":parcial", "0", PDO::PARAM_INT );
-                    $test = $stmBloquearTotal->execute();
-                   
-                        if($test){
-                            echo json_encode('OK'); 
-                        }else{
-                            echo json_encode('NO_OK');
-                        }
-                    }
+                       echo json_encode("YA_BLOQUEADO_TOTAL"); 
+                       
+                    }else{
+                      
+                        bloquearTotal($idUsuBloquear);
+                    }    
                     
                 }else{
                     echo json_encode("NO_EXISTE_USUARIO");
                 }
-                 
-                
-              
-                 Conne::disconnect($conBloqueo);
-            } catch (Exception $exc) {
-                echo $exc->getTraceAsString();
-                echo $exc->getMessage();
-                
-            }
-
-
+     
             break;
             
             
         case 'bloqueoParcial':
             
-            try{
+            
             
                 $idUsuBloquear = devuelveIdUsu($nickBloquear);
-       
+                
                 if($idUsuBloquear != null){
                      //Comprobamos que el usuario no este bloqueado totalmente ya
-                    $testTotal = comprobarUsuario($idUsuBloquear,'bloqueoTotal');
+                    $testTotal = comprobarTipoBloqueo($idUsuBloquear,'bloqueoTotal');
                     
-                    if($testTotal == null){
+                    if($testTotal != 1){
                         //Comprobamos que el usuario no este bloqueado parcialmente ya
-                        $test = comprobarUsuario($idUsuBloquear,$opc);
-                       // echo $test;
-                        if($test != null){
+                        $test = comprobarTipoBloqueo($idUsuBloquear,$opc);
+                        
+                        if($test == 1){
                            echo json_encode("USUARIO_YA_BLOQUEADO_PARCIALMENTE"); 
                         }else{
-
-                            $sqlBloquearTotal = "insert into ".TBL_USUARIOS_BLOQUEADOS." (usuario_idUsuario,idUsuarioBloqueado,bloqueadoTotal,bloqueadoParcial)"
-                         . " values (:usuBloquea,:usuBloqueado,:total,:parcial);";
-                        $stmBloquearTotal = $conBloqueo->prepare($sqlBloquearTotal);
-                        $stmBloquearTotal->bindValue(":usuBloquea", $usuBloquea, PDO::PARAM_INT);
-                        $stmBloquearTotal->bindValue(":usuBloqueado", $idUsuBloquear, PDO::PARAM_INT );
-                        $stmBloquearTotal->bindValue(":total", "0", PDO::PARAM_INT );
-                        $stmBloquearTotal->bindValue(":parcial", "1", PDO::PARAM_INT );
-                        $test = $stmBloquearTotal->execute();
-
-                            if($test){
-                                echo json_encode('OK'); 
-                            }else{
-                                echo json_encode('NO_OK');
-                            }
+                            
+                            bloquearParcial($idUsuBloquear);
                         }
 
                     }else{
@@ -295,178 +443,140 @@ function devuelveIdUsu($nickBloquear){
                 }else{
                     echo json_encode("NO_EXISTE_USUARIO");
                 }        
-              
-                 Conne::disconnect($conBloqueo);
-            } catch (Exception $exc) {
-                echo $exc->getTraceAsString();
-                echo $exc->getMessage();
-                
-            }
             
             break;
             
             
         case 'desbloquear':
             
-            $resp = null;
-            $idUsuBloquear = devuelveIdUsu($nickDesbloquear);
-            
-                if($idUsuBloquear != null){
-                   
-                    
-                    if($total == "true"){
-                        $opc = 'bloqueoTotal';
-                        $stmTotal = "1";
-                        $stmParcial = "0";
-                    }else if ($parcial == "true"){
-                        $opc = 'bloqueoParcial';
-                        $stmTotal = "0";
-                        $stmParcial = "1";
-                    }
-                   
-                    $bloqueadoTotal = comprobarTipoBloqueo($idUsuBloquear,'bloqueadoTotal','bloqueadoTotal = 1');
-                    $bloqueadoParcial = comprobarTipoBloqueo($idUsuBloquear,'bloqueadoParcial','bloqueadoParcial = 1');
-                    
-                    //var_dump($bloqueadoTotal);
-                    //var_dump($bloqueadoParcial);
-                    
-                    
-                    
-                    if($bloqueadoTotal[0][0] == '1' || $bloqueadoParcial[0][0] == '1'){
-                        
-                        if($bloqueadoTotal[0][0] == "0" and $total == "true"){
-                            $resp = "NO_BLOQUEADO_TOTAL";  
-                        }elseif($bloqueadoTotal == null and $total == "true") {
-                            $resp = "NO_BLOQUEADO_TOTAL";  
-                        }else if($bloqueadoParcial[0][0] == "0" and $parcial == "true"){
-                            $resp = "NO_BLOQUEADO_PARCIAL";
-                        }else if($bloqueadoParcial == null and $parcial == "true"){
-                            $resp = "NO_BLOQUEADO_PARCIAL";
-                        }else if($total == "false" and $parcial == "false"){
-                            $resp = "NO_SELECCION_BLOQUEO";
-                        }
-                        
-                    }else{
-                        $resp = "USUARIO_NO_BLOQUEADO";
-                    }
-                        
-                     
-                        
-                        
-                        if($resp == null){
-                            
-                            try{
-
-                                $sqlDesbloquear = "Delete from usuarios_bloqueados where "
-                                . " usuario_idUsuario=:usuBloquea and idUsuarioBloqueado=:usuBloqueado " 
-                                . " and bloqueadoTotal=:total and bloqueadoParcial=:parcial;";
-                               // echo $sqlDesbloquear;
-                                    $stmDesbloquear = $conBloqueo->prepare($sqlDesbloquear);
-                                    $stmDesbloquear->bindValue(":usuBloquea", $usuBloquea, PDO::PARAM_INT);
-                                    $stmDesbloquear->bindValue(":usuBloqueado", $idUsuBloquear, PDO::PARAM_INT );
-                                    $stmDesbloquear->bindValue(":total", $stmTotal, PDO::PARAM_INT );
-                                    $stmDesbloquear->bindValue(":parcial", $stmParcial, PDO::PARAM_INT );
-                                   
-                                    $test = $stmDesbloquear->execute();
-
-                                        if($test){
-                                            echo json_encode('OK'); 
-                                        }else{
-                                            echo json_encode('NO_OK');
-                                        }
-                            }catch(Exception $ex){
-                                $ex->getMessage();
-                            }
-                        }else{
-                             echo json_encode($resp);
-                        }
-                        
-                           
-                }else{
-                   $resp = "NO_EXISTE_USUARIO";
-                   echo json_encode($resp);
-                }
-                 
+            $resp ="";
            
+            $idUsuDesbloquear = devuelveIdUsu($nickDesbloquear);
+        
+            
+                if($idUsuDesbloquear != null){
+              
+                    if($parcial === 'true'){
+                        
+                    
+                        if($parcial === "true"){
+
+                            $test = comprobarTipoBloqueo($idUsuDesbloquear,"bloqueoParcial");
+
+                                if($test == 0){
+
+                                    $resp = "NO_BLOQUEADO_PARCIAL";
+
+                                }else{
+
+                                    eliminarBloqueoParcial($idUsuDesbloquear);
+                                }      
+
+                        }
+                        
+                    }else if($total === 'true'){
+                         
+                        $test = comprobarTipoBloqueo($idUsuDesbloquear,"bloqueoTotal");
+                        
+                            if($test == 0){
+
+                                $resp = "NO_BLOQUEADO_TOTAL";
+
+                            }else{
+
+                                eliminarBloqueoTotal($idUsuDesbloquear);
+                            }  
+                        
+                    }    
+
+                }else{
+                    
+                    $resp = "NO_EXISTE_USUARIO";
+                   
+                } 
+                    if($resp != ""){echo json_encode($resp);}
+                    
+        
             break;
             
             
         case 'mostrarBloqueos':
             
-            $totalArr = array();
-            $parcialArr = array();
-            $final = array();
+            $verBlo = array();
             
-            try{
+            try {
             
-               $sqlIdBloqueados= "Select distinct  idUsuarioBloqueado from ".TBL_USUARIOS_BLOQUEADOS.
-                       " WHERE usuario_idUsuario =  :usuBloquea;";
-               //echo $sqlIdBloqueados;
-               $stmIdBloqueados = $conBloqueo->prepare($sqlIdBloqueados);
-               $stmIdBloqueados->bindValue(":usuBloquea",$usuBloquea,PDO::PARAM_STR);
-               $stmIdBloqueados->execute();
-               $idBloqueados = $stmIdBloqueados->fetchAll();
-               $x = count($idBloqueados);
-               
-                if($x > 0){
-                    //var_dump($idBloqueados);
-                    foreach($idBloqueados as $f){
-
-                         $arr2[]=$f[0];
-                     }
-                    $ids = implode(",",$arr2);
-
-
                 
-        $sqlMostrarBloqueos = "select u.nick, b.bloqueadoTotal, b.bloqueadoParcial  from ".TBL_USUARIOS_BLOQUEADOS." b ".
-                " inner join ".TBL_USUARIO. "  as u on u.idUsuario = b.idUsuarioBloqueado ". 
-                " where  usuario_idUsuario= :usuBloquea and idUsuarioBloqueado in ($ids)".
-                " order by bloqueadoTotal DESC;";
+            
+                $sqlBT = "SELECT nick AS bloqueadoTotal  FROM ".TBL_BLOQUEADOS_TOTAL.
+                         " INNER JOIN usuario AS usu ON ".
+                         " usu.idUsuario = idUsuarioBloqueado ".
+                         " WHERE usuarioIdUsuario = :usuarioIdUsuario;";
                 
-                $stmMostrarBloqueos = $conBloqueo->prepare($sqlMostrarBloqueos);
-                //$stmMostrarBloqueos->bindValue(":idUsuarioBloqueado",$ids,PDO::);
-                $stmMostrarBloqueos->bindValue(":usuBloquea",$usuBloquea , PDO::PARAM_STR);
-                $stmMostrarBloqueos->execute();
-
-                   
-                   
-                    $tmp = $stmMostrarBloqueos->fetchAll(PDO::FETCH_ASSOC);
-                    
-                    
-                    
-                    
-                        foreach ($tmp as $clave => $dato) {
-                            if($dato["bloqueadoTotal"] =='1'){
-                                array_push($totalArr, $dato['nick']);
-                            }elseif($dato["bloqueadoParcial"] == '1'){
-                                array_push($parcialArr,$dato['nick']);
-                            }
-                        }
-                    
-                   
-                        array_push($final,$totalArr,$parcialArr);
-                }else{
-                    $totalArr = 'NO_BLOQUEADOS';
-                    $parcialArr = 'NO_BLOQUEADOS';
-                    array_push($final,$totalArr,$parcialArr);
-                }        
-                   echo json_encode($final);
-                    
-            Conne::disconnect($conBloqueo); 
+                $stmBT = $conBloqueo->prepare($sqlBT);
+                $stmBT->bindValue(":usuarioIdUsuario", $usuBloquea);
+                $stmBT->execute();
+                $resultTotal = $stmBT->fetchAll();
+                
+                array_push($verBlo,$resultTotal);
+                
+                Conne::disconnect($conBloqueo);
+                
+                
             } catch (Exception $ex) {
-                $ex->getMessage();
+                
+                echo json_encode('ERROR');
+                Conne::disconnect($conBloqueo);
+               
+                $_SESSION['error'] = ERROR_MOSTRAR_USUARIOS_BLOQUEADOS;
+                $_SESSION['paginaError'] = "index.php";
+                $excepciones = new ControlErroresRunning(CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_TOTAL[1],CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_TOTAL[0],$ex);
+                $excepciones->ErroresRunning("bloquear"," Usuario para mostrar sus bloqueos ".$_SESSION["userTMP"]->getValue('nick'));
+                                 
             }
+
+
+            try {
             
+                
             
-            break;
+                $sqlBP = "SELECT nick AS bloqueadoParcial  FROM ".TBL_BLOQUEADOS_PARCIAL.
+                         " INNER JOIN usuario AS usu ON ".
+                         " usu.idUsuario = idUsuarioBloqueado ".
+                         " WHERE usuarioIdUsuario = :usuarioIdUsuario;";
+                
+                $stmBP = $conBloqueo->prepare($sqlBP);
+                $stmBP->bindValue(":usuarioIdUsuario", $usuBloquea);
+                $stmBP->execute();
+                $resultParcial = $stmBP->fetchAll();
+                
+                Conne::disconnect($conBloqueo);
+                
+                
+            } catch (Exception $ex) {
+                
+                echo json_encode('ERROR');
+                Conne::disconnect($conBloqueo);
+               
+                $_SESSION['error'] = ERROR_MOSTRAR_USUARIOS_BLOQUEADOS;
+                $_SESSION['paginaError'] = "index.php";
+                $excepciones = new ControlErroresRunning(CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_PARCIAL[1],CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_PARCIAL[0],$ex);
+                $excepciones->ErroresRunning("bloquear"," Usuario para mostrar sus bloqueos ".$_SESSION["userTMP"]->getValue('nick'));
+                                 
+            }
+
+
+            array_push($verBlo, $resultParcial);
+            echo json_encode($verBlo);
+            
+                break;
 
         default:
             break;
+        //SWITCH        
     }
     
     
     
         
-    } catch (Exception $ex) {
-        $ex->getMessage();
-    }
+    

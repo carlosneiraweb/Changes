@@ -40,10 +40,10 @@ try {
     }
 
     if (isset($_POST['srcImg'])) {
-        $idImg = $_POST['srcImg'];
+        $idPost = $_POST['srcImg'];
     } else {
         if (isset($_GET['srcImg'])) {
-            $idImg = $_GET['srcImg'];
+            $idPost = $_GET['srcImg'];
         }
     }
 
@@ -165,47 +165,37 @@ try {
         
          
     } else if ($opc == "SLD") {
-        //Nos quedamos con la parte necesaria para sacar de la tabla imagenes el id del post
-        //Ejemplo '../photos/joseMartin/50000/5.jpg'
-        //usuario joseMartin
-        //url 50000/5
-
-        $tmpUrl = explode('/', $idImg); //
-        $nickUsuario = $tmpUrl[2];
-        $tmpUrl[4] = substr($tmpUrl[4], 0, -4);
-        $url = $tmpUrl[3] . '/' . $tmpUrl[4];
-        //echo $nickUsuario . '  '.$url;
-        // echo PHP_EOL;
-        $sql = 'select post_idPost from ' . TBL_IMAGENES . ' where nickUsuario = :nickUsuario and  ruta = :ruta;';
-        //echo $sql;
-        $stm4 = $conPost->prepare($sql);
-        $stm4->bindValue(':nickUsuario', $nickUsuario, PDO::PARAM_STR);
-        $stm4->bindValue(':ruta', $url, PDO::PARAM_STR);
-        $stm4->execute();
-        //Recuperamos el id del post
-        $idImgSLD = $stm4->fetch();
-        //echo $idImgSLD;
-        //echo PHP_EOL;
-        //$stm4->closeCursor();
-        //Almacenaremos varios arrays para mostrar todos los datos
-        //La ruta de las imagenes, el texto que describe la imagen y las palabras buscadas
-        $rutaTextoPbsBuscadas = array();
+       
+        
+     
         //Recuperamos la ruta de la imagen y la descripcion de cada una
-        $sql = "select nickUsuario as nick, ruta as ruta, texto as texto from " . TBL_IMAGENES . " where post_idPost =" . $idImgSLD[0] . ";";
-        $stm5 = $conPost->query($sql);
-        $tmpRutaTexto = $stm5->fetchAll();
-        array_push($rutaTextoPbsBuscadas, $tmpRutaTexto);
+        $sqlImg = "select idImagen as idImagen, postIdPost as idPost, directorio as directorio, texto as texto from " . TBL_IMAGENES . " where postIdPost = :idPost;";
+        $stmImg = $conPost->prepare($sqlImg);
+        $stmImg->bindValue(":idPost", $idPost);
+        $stmImg->execute();
+        $mostrarElegido = $stmImg->fetchAll();
+        
+        
+        //Nos aseguramos que el array contenga 
+        //5 elementos. Puede ser que el usuario 
+        //no suba 5 imagenes.
+        while(count($mostrarElegido) < 5 ){
+            array_push($mostrarElegido,array(""));
+            
+        }
 
+        
 
         //Recuperamos las palabras queridas o buscadas del usuario
-        $sql = "select palabrasBuscadas as pbsQueridas from " . TBL_PBS_QUERIDAS . " where idPost_queridas = " . $idImgSLD[0] . ";";
-        $stm6 = $conPost->query($sql);
-        $tmpPbsBuscadas = $stm6->fetchAll();
+        $sqlPbq = "select palabrasBuscadas as pbsQueridas from " . TBL_PBS_QUERIDAS . " where idPostQueridas = :idPost;";
+        $stmPq = $conPost->prepare($sqlPbq);
+        $stmPq->bindValue(":idPost", $idPost, PDO::PARAM_INT);
+        $stmPq->execute();
+        $arrayPq = $stmPq->fetchAll();
+        array_push($mostrarElegido, $arrayPq);
+ 
 
-        array_push($rutaTextoPbsBuscadas, $tmpPbsBuscadas);
-
-
-        echo json_encode($rutaTextoPbsBuscadas); //
+        echo json_encode($mostrarElegido); //
     }
 } catch (PDOException $ex) {
     Conne::disconnect($conPost);
