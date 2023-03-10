@@ -104,7 +104,8 @@ define("CONST_ERROR_DESBLOQUEAR_PARCIAL", array(52,"No pudimos desbloquear parci
 define("CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_TOTAL",array(53,"No pudimos mostrar los usuarios bloqueados total"));
 /**Error al mostrar los usuarios bloqueados parcialmente*/
 define("CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_PARCIAL",array(54,"No pudimos mostrar los usuarios bloqueados parcial"));
-/**Error eliminar de la tabla bloqueado parcial*/
+/**Error al eliminar los directorios al darse de baja un usuario*/
+define("CONST_ERROR_ELIMINAR_DIRECTORIOS_BAJA",array(55,"No se pudo eliminar los directorios al dar de baja un usuario"));
 
 
 define("ERROR", "<h5>Revisa tu formulario.</h5><h6>Parece que hay algun campo vacio</h6>");
@@ -142,7 +143,8 @@ define("ERROR_DESBLOQUEAR_USUARIO","<h5>Por algún motivo no hemos podido desblo
 define("ERROR_BLOQUEAR_USUARIO","<h5>Por algún motivo no hemos podido hacer el bloqueo<h5><h4>Puedes intentarlo de nuevo</h4>");
 /**Error mostrar usuarios bloqueados*/
 define("ERROR_MOSTRAR_USUARIOS_BLOQUEADOS","<h5>Por algún motivo no podemos mostrarte los usuarios que tienes bloqueados</h5><h4>Puedes intentarlo de nuevo</h4>");
-
+/**Error al eliminar de la BBDD a un usuario*/
+define("ERROR_ELIMINAR_USUARIO_BBDD","<h5>No hemos podido darte de baja<h5><h4>Si no puedes ponerte en logearte</h4><h4>Ponte en contacto con nosotros</h4>");
 
 
 define("ACTUALIZAR", 1);

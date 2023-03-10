@@ -1,8 +1,8 @@
 /**
  * @description 
- * Metodo que nos redirige<br/>
- * a la pagina mostrar error<br/>
- * en caso de ocurrir un error<br/>
+ * Metodo que nos redirige <br/>
+ * a la pagina mostrar error <br/>
+ * en caso de ocurrir un error <br/>
  * en el proceso de bloquear un usuario
  * 
  */
@@ -17,9 +17,9 @@ function errorBloqueo() {
 
 
 /**
- * Metodo que muestra los usuarios bloqueados</br>
+ * Metodo que muestra los usuarios bloqueados </br>
  * @param {type} data array  </br>
- * Metodo que muestra los usarios bloqueados</b>
+ * Metodo que muestra los usarios bloqueados </b>
  * por el usuario 
  *  @returns {html}
  */
@@ -81,9 +81,9 @@ function mostrarUsuariosBloqueados(data){
 
 
 /**
- * Metodo que muestra el resultado</br>
- * al bloquear un usuario.</br>
- * @param {type} texto
+ * Metodo que muestra el resultado </br>
+ * al bloquear un usuario. </br>
+ * @param {type} texto <br/>
  * variable con el texto a mostrar
  * @returns {html}
  */
@@ -116,15 +116,15 @@ function mostrarResultados(texto){
 
 
 /**
- * Metodo que bloquea a los usuarios
- * @param {type} nickBloquear
- * @param {type} opc
+ * Metodo que bloquea a los usuarios <br/>
+ * @param {type} nickBloquear <br/>
+ * @param {type} opc <br/>
  * @returns elementos HTML
  */
 
 function bloquear(nickBloquear,opc){
     
- alert(nickBloquear + opc);
+ 
     
    $.ajax({
                     data: { 
@@ -138,7 +138,7 @@ function bloquear(nickBloquear,opc){
                     url: "../Controlador/Elementos_AJAX/bloquearUsuarios.php"
                 }).done(function( data) {
                     var test = data;
-                    alert(data);
+                    
                     var texto;
                     if(test === "NO_EXISTE_USUARIO"){
                         texto = "Parece ser que el usuario introducido no existe.";
@@ -165,15 +165,15 @@ function bloquear(nickBloquear,opc){
 
 
 /**
- * Metodo que desbloquea a los usuarios
- * @param {type} nickUsuDesbloquear
- * @param {type} total
- * @param {type} parcial
- * @returns {undefined}
+ * Metodo que desbloquea a los usuarios <br/>   
+ * @param {type} nickUsuDesbloquear <br/>
+ * @param {type} total <br/>
+ * @param {type} parcial <br/>
+ * 
  */
 function desbloquearUsuarios(nickUsuDesbloquear,total,parcial){
     
-    alert(nickUsuDesbloquear+total+parcial);
+   // alert(nickUsuDesbloquear+total+parcial);
     
      $.ajax({
                     data: { 
@@ -212,7 +212,7 @@ function desbloquearUsuarios(nickUsuDesbloquear,total,parcial){
 
 
 /**
- * Metodo que muestra los usuarios bloqueados<br/>
+ * Metodo que muestra los usuarios bloqueados <br/>
  * y el tipo de bloqueo <br/>
  * @returns muestra html
  */

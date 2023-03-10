@@ -557,13 +557,13 @@ public function eliminarImagenDemoSubirPost(){
 
 /**
  * Metodo que elimina los directorios creados <br>
- * cuando hay un error al registrarse o cualquier otro motivo.<br>
- * Una vez ingresado el usuario en la bbdd el sitema<br />
- * intenta crear los directorios al usuario.<br>
+ * cuando hay un error al registrarse o cualquier otro motivo. <br>
+ * Una vez ingresado el usuario en la bbdd el sitema <br />
+ * intenta crear los directorios al usuario. <br>
  * Si esto no es posible intenta eliminar
- * las carpetas creadas en datos_usuario, photos y Videos<br />
- * Recive una ruta con el directorio a eliminar.<br />
- *  glob() busca todos los nombres de ruta que coinciden con pattern<br />
+ * las carpetas creadas en datos_usuario, photos y Videos <br />
+ * Recive una ruta con el directorio a eliminar. <br />
+ *  glob() busca todos los nombres de ruta que coinciden con pattern <br />
  * @param $src <br />
  * type String <br />
  * Ruta donde estan los directorios que hay que eliminar
@@ -571,6 +571,7 @@ public function eliminarImagenDemoSubirPost(){
 
 final static function eliminarDirectoriosSistema($src,$opc){
    
+    
         try{
             
             //Nos aseguramos recive rutas de directorios
@@ -597,7 +598,7 @@ final static function eliminarDirectoriosSistema($src,$opc){
                             
                         }      
                     }
-        }
+        }else{throw new Exception("NO se pudo eliminar el directorio",0);}
     
         } catch (Exception $ex) {
             
@@ -605,6 +606,9 @@ final static function eliminarDirectoriosSistema($src,$opc){
                 
                 $excepciones =  new MisExcepcionesPost(CONST_ERROR_ELIMINAR_DIR_PUBLICAR_POST[1], CONST_ERROR_ELIMINAR_DIR_PUBLICAR_POST[0],$ex);  
                 $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("",true);
+            }elseif ($opc == 'eliminarDirectoriosBajaUsuario'){
+                $excepciones = new MisExcepcionesUsuario(CONST_ERROR_ELIMINAR_DIRECTORIOS_BAJA[1],CONST_ERROR_ELIMINAR_DIRECTORIOS_BAJA[0],$ex);
+                $excepciones->redirigirPorErrorSistema("eliminarDirectoriosBajaUsuario",true);
             }else{
                 $excepciones = new MisExcepcionesUsuario(CONST_ERROR_ELIMINAR_DIRECTORIO[1],CONST_ERROR_ELIMINAR_DIRECTORIO[0],$ex);
                 $excepciones->redirigirPorErrorSistema("",true);

@@ -384,6 +384,93 @@ function eliminarBloqueoTotal($idUsuDesBloquear){
         //fin eliminarBloqueoTotal
     }
 
+    
+    
+/**
+ * Metodo que muestra los usuarios bloqueados <br/>
+ * totalmente y parcialmente del usuario <br/>
+ * logueado. <br/>
+ * @global name $usuBloquea <br/>
+ * Id del usuario logueado
+ * 
+ */
+function verBloqueados(){
+    
+    global $usuBloquea;
+    global $conBloqueo;
+    
+    $verBlo = array();
+            
+            try {
+            
+                
+            
+                $sqlBT = "SELECT nick AS bloqueadoTotal  FROM ".TBL_BLOQUEADOS_TOTAL.
+                         " INNER JOIN usuario AS usu ON ".
+                         " usu.idUsuario = idUsuarioBloqueado ".
+                         " WHERE usuarioIdUsuario = :usuarioIdUsuario;";
+                
+                $stmBT = $conBloqueo->prepare($sqlBT);
+                $stmBT->bindValue(":usuarioIdUsuario", $usuBloquea);
+                $stmBT->execute();
+                $resultTotal = $stmBT->fetchAll();
+                
+                array_push($verBlo,$resultTotal);
+                
+                Conne::disconnect($conBloqueo);
+                
+                
+            } catch (Exception $ex) {
+                
+                echo json_encode('ERROR');
+                Conne::disconnect($conBloqueo);
+               
+                $_SESSION['error'] = ERROR_MOSTRAR_USUARIOS_BLOQUEADOS;
+                $_SESSION['paginaError'] = "index.php";
+                $excepciones = new ControlErroresRunning(CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_TOTAL[1],CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_TOTAL[0],$ex);
+                $excepciones->ErroresRunning("bloquear"," Usuario para mostrar sus bloqueos ".$_SESSION["userTMP"]->getValue('nick'));
+                                 
+            }
+
+
+            try {
+            
+                
+            
+                $sqlBP = "SELECT nick AS bloqueadoParcial  FROM ".TBL_BLOQUEADOS_PARCIAL.
+                         " INNER JOIN usuario AS usu ON ".
+                         " usu.idUsuario = idUsuarioBloqueado ".
+                         " WHERE usuarioIdUsuario = :usuarioIdUsuario;";
+                
+                $stmBP = $conBloqueo->prepare($sqlBP);
+                $stmBP->bindValue(":usuarioIdUsuario", $usuBloquea);
+                $stmBP->execute();
+                $resultParcial = $stmBP->fetchAll();
+                
+                Conne::disconnect($conBloqueo);
+                
+                
+            } catch (Exception $ex) {
+                
+                echo json_encode('ERROR');
+                Conne::disconnect($conBloqueo);
+               
+                $_SESSION['error'] = ERROR_MOSTRAR_USUARIOS_BLOQUEADOS;
+                $_SESSION['paginaError'] = "index.php";
+                $excepciones = new ControlErroresRunning(CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_PARCIAL[1],CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_PARCIAL[0],$ex);
+                $excepciones->ErroresRunning("bloquear"," Usuario para mostrar sus bloqueos ".$_SESSION["userTMP"]->getValue('nick'));
+                                 
+            }
+
+
+            array_push($verBlo, $resultParcial);
+            echo json_encode($verBlo);
+ 
+    //fin verBloqueados
+}
+
+
+
 
 
     switch ($opc) {
@@ -502,72 +589,7 @@ function eliminarBloqueoTotal($idUsuDesBloquear){
             
         case 'mostrarBloqueos':
             
-            $verBlo = array();
-            
-            try {
-            
-                
-            
-                $sqlBT = "SELECT nick AS bloqueadoTotal  FROM ".TBL_BLOQUEADOS_TOTAL.
-                         " INNER JOIN usuario AS usu ON ".
-                         " usu.idUsuario = idUsuarioBloqueado ".
-                         " WHERE usuarioIdUsuario = :usuarioIdUsuario;";
-                
-                $stmBT = $conBloqueo->prepare($sqlBT);
-                $stmBT->bindValue(":usuarioIdUsuario", $usuBloquea);
-                $stmBT->execute();
-                $resultTotal = $stmBT->fetchAll();
-                
-                array_push($verBlo,$resultTotal);
-                
-                Conne::disconnect($conBloqueo);
-                
-                
-            } catch (Exception $ex) {
-                
-                echo json_encode('ERROR');
-                Conne::disconnect($conBloqueo);
-               
-                $_SESSION['error'] = ERROR_MOSTRAR_USUARIOS_BLOQUEADOS;
-                $_SESSION['paginaError'] = "index.php";
-                $excepciones = new ControlErroresRunning(CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_TOTAL[1],CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_TOTAL[0],$ex);
-                $excepciones->ErroresRunning("bloquear"," Usuario para mostrar sus bloqueos ".$_SESSION["userTMP"]->getValue('nick'));
-                                 
-            }
-
-
-            try {
-            
-                
-            
-                $sqlBP = "SELECT nick AS bloqueadoParcial  FROM ".TBL_BLOQUEADOS_PARCIAL.
-                         " INNER JOIN usuario AS usu ON ".
-                         " usu.idUsuario = idUsuarioBloqueado ".
-                         " WHERE usuarioIdUsuario = :usuarioIdUsuario;";
-                
-                $stmBP = $conBloqueo->prepare($sqlBP);
-                $stmBP->bindValue(":usuarioIdUsuario", $usuBloquea);
-                $stmBP->execute();
-                $resultParcial = $stmBP->fetchAll();
-                
-                Conne::disconnect($conBloqueo);
-                
-                
-            } catch (Exception $ex) {
-                
-                echo json_encode('ERROR');
-                Conne::disconnect($conBloqueo);
-               
-                $_SESSION['error'] = ERROR_MOSTRAR_USUARIOS_BLOQUEADOS;
-                $_SESSION['paginaError'] = "index.php";
-                $excepciones = new ControlErroresRunning(CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_PARCIAL[1],CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_PARCIAL[0],$ex);
-                $excepciones->ErroresRunning("bloquear"," Usuario para mostrar sus bloqueos ".$_SESSION["userTMP"]->getValue('nick'));
-                                 
-            }
-
-
-            array_push($verBlo, $resultParcial);
-            echo json_encode($verBlo);
+            verBloqueados();
             
                 break;
 

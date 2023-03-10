@@ -22,16 +22,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepcio
         session_start(); 
     } 
     
-global $conMenu;
 
- 
-
-
-try {
-    global $conMenu;
-    $conMenu= Conne::connect();
-  
-    
      // -------- párametro opción para determinar la select a realizar -------
     if (isset($_POST['opcion'])){ 
             $opc=$_POST['opcion'];
@@ -42,52 +33,70 @@ try {
     }
     
     
+
+
+function darBajaDefinitiva(){
+    
+              
+            try{
+           
+               
+                
+                $test = array();
+                $idUsu = $_SESSION["userTMP"]->devuelveId();
+                $nickEliTotal = $_SESSION["userTMP"]->getValue('nick');
+                $email= $_SESSION["userTMP"]->getValue('email');
+                $test = $_SESSION["userTMP"]->eliminarPorId($idUsu);
+                
+                /**
+                dar baja administradores
+                */
+                
+                //ELIMINAMOS LOS DIRECTORIOS CREADOS AL REGISTRARSE
+                if($test && $idUsu != ""){
+                   
+                    Directorios::eliminarDirectoriosSistema("../../photos/".$idUsu,"eliminarDirectoriosBajaUsuario");
+                    Directorios::eliminarDirectoriosSistema("../../datos_usuario/".$idUsu,"eliminarDirectoriosBajaUsuario");
+                    Directorios::eliminarDirectoriosSistema("../../Videos/".$idUsu,"eliminarDirectoriosBajaUsuario");
+                    
+                        
+                }
+                
+                if($test){
+                    echo json_encode('OK');
+                        $objMandarEmails = new mandarEmails();
+                        $objMandarEmails->mandarEmailBajaUsuario($nickEliTotal,$email);
+                }else{
+                    echo json_encode('NO_OK');
+                }
+            
+            
+            
+            
+              
+            } catch (Exception $ex) {
+                   
+            //$excepciones->redirigirPorErrorSistema("darBajaDefinitivamente",false,$);
+                    
+            }
+    
+
+ //fin darBajaDefinitiva   
+}
+
+
+
+
+
+    
     switch ($opc) {
     
     
         case 'Definitivamente':
-          
-            try{
-           
-               // $excepciones = new MisExcepciones(CONST_ERROR_BBDD_DAR_BAJA_USUARIO_DEFINITIVAMENTE[1],CONST_ERROR_BBDD_DAR_BAJA_USUARIO_DEFINITIVAMENTE[0]); 
-                $resultadoTotal = array("resultadoTotal" => 'true');
             
-            global $conMenu;
-                $idUsu = $_SESSION["userTMP"]->devuelveId();
-                $nickEliTotal = $_SESSION["userTMP"]->getValue('nick');
-                $email= $_SESSION["userTMP"]->getValue('email');
-                 $_SESSION["userTMP"]->deleteFrom('usuario');
             
-               
-                
+            darBajaDefinitiva();
 
-                     
-                
-                Conne::disconnect($conMenu);
-            
-                //ELIMINAMOS LOS DIRECTORIOS CREADOS AL REGISTRARSE
-                if($idUsu != "" ){
-                    
-                    Directorios::eliminarDirectoriosSistema("../../photos/".$nickEliTotal,"eliminarDirectoriosBajaUsuario");
-                    Directorios::eliminarDirectoriosSistema("../../datos_usuario/".$nickEliTotal,"eliminarDirectoriosBajaUsuario");
-                    Directorios::eliminarDirectoriosSistema("../../Videos/".$nickEliTotal,"eliminarDirectoriosBajaUsuario");
-                    
-                        
-                }
-               
-                
-                
-                
-            echo json_encode($resultadoTotal);
-            
-            $objMandarEmails = new mandarEmails();
-            $objMandarEmails->mandarEmailBajaUsuario($nickEliTotal,$email);
-               Conne::disconnect($conMenu); 
-            } catch (Exception $ex) {
-                    Conne::disconnect($conMenu);
-                    //echo $ex->getMessage();                    //$excepciones->redirigirPorErrorSistema("darBajaDefinitivamente",false,$);
-                    
-            }
                  
                             
             break;
@@ -127,14 +136,3 @@ try {
            
     }
 
-
-
-
-
-
-
-
-    
-} catch (Exception $exc) {
-    echo $exc->getTraceAsString();
-}

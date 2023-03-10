@@ -1,21 +1,23 @@
 
 /**
  * 
- * Redirige a abandonar sesion 
- * para eliminar todas las variables de sesion
- * El usuario ya no podra logearse
+ * Redirige a abandonar sesion <br/>
+ * para eliminar todas las variables de sesion <br/>
+ * El usuario ya no podra logearse <br/>
  */
 function redirigirInicio(){
     
-    setTimeout("location.href = 'abandonar_sesion.php'", 8000);  
+    location.href = 'abandonar_sesion.php';  
 }
 /**
  * 
- * Metodo que da de baja totalmente
- * a un usuario. Elimina todo rastro 
- * del portal
+ * Metodo que da de baja totalmente <br/>
+ * a un usuario. Elimina todo rastro <br/>
+ * del portal.
  */
 function darseBajaDefinitivamente(){
+    
+    
     $.ajax({
                     data: { opcion : 'Definitivamente'       
                            },
@@ -23,25 +25,28 @@ function darseBajaDefinitivamente(){
                     dataType: 'json',
                     url: "../Controlador/Elementos_AJAX/darBajaUsuario.php"
                 }).done(function( data ) {
-                   var result = data.resultadoTotal;
-                   
-                   if(result == 'true'){
+                   var test = data;
+                 
+                   if(test === "OK"){
                        
-                       $('#baja').empty();
-                       $("#baja").append($('<h4>',{
-                        text : 'Tú baja ha sido cursada correctamente.',
-                        class : 'rsTotal'
-                        })).append($('<h5>',{
-                        text: 'Recuerda que puedes darte de alta cuando tú quieras',
-                        class: 'rsTotal'
-                        })).append($('<h5>',{
-                        text: 'Vas a ser redirigido al inicio del portal',
-                        class: 'rsTotal'
+                       
+                        $('#baja').empty();
+                            $('#baja').append($('<h4>',{
+                            text : 'Tú baja ha sido cursada correctamente.',
+                            class : 'rsTotal'
+                            })).append($('<h5>',{
+                            text: 'Recuerda que puedes darte de alta cuando tú quieras',
+                            class: 'rsTotal'
+                            })).append($('<h5>',{
+                            text: 'Vas a ser redirigido al inicio del portal',
+                            class: 'rsTotal'
                     }));
                         
                         redirigirInicio();
                         
-                    }     
+                    } 
+                    
+                    
                 });
      
     
@@ -52,9 +57,10 @@ function darseBajaDefinitivamente(){
 
 /**
  * 
- * Metodo que bloquea al usuario
- * parcialmente. Sus post podran seguir siendo vistos
- * pero no podra loguearse
+ * Metodo que bloquea al usuario <br/>
+ * parcialmente. Sus post podran seguir siendo vistos <br/>
+ * pero no podra loguearse.
+ * 
  */
 function darseBajaParcialmente(){
 

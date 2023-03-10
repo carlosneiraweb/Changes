@@ -1,5 +1,5 @@
 function verifica_seleccion(check){
-    alert("hola");
+    
     if(!check.checked){
         check.checked=1;
     }
@@ -35,9 +35,9 @@ function mostrarMenu(){
                 $('#baja').append($('<section>',{
                     id : 'sectionDefinitivo',
                     html : 'Este proceso puede llevarnos'+'<br/>'+
-                           ' un par de dias para que sea visible '+'<br/>'+
+                           ' un par de días para que sea visible '+'<br/>'+
                            ' sus resultados.'+'<br/>'+
-                           ' No te asustes si ves que no se realiza '+'<br/>'+
+                           ' No te preocupes si ves que no se realiza '+'<br/>'+
                            ' inmediatamanente.'+'<br/>'+
                            ' Gracias por comprendernos.'+'<br/>'+
                            ' Recibirás un email de nuestro equipo. '+'<br/>'

@@ -235,6 +235,7 @@ public static function getUserName($nick){
  * Metodo que inserta en la bbdd un usuario
  */    
 public final function insert(){
+    
     $con = Conne::connect();
     $idUsu;
     
@@ -331,14 +332,15 @@ public final function insert(){
             
             $con->commit();
             Conne::disconnect($con);
-            return $idUsu;
+            
+                return $idUsu;
+            
         } catch (Exception $ex) {
             //echo $ex->getMessage();
             $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_REGISTRAR_USUARIO[1],CONST_ERROR_BBDD_REGISTRAR_USUARIO[0],$ex);
-            Conne::disconnect($con);
-           
             $con->rollBack();
-            
+            Conne::disconnect($con);
+
             $excepciones->redirigirPorErrorSistema("RegistrarUsuarioBBDD",true);
            
         }
@@ -347,6 +349,47 @@ public final function insert(){
 } 
    
   
+/**
+ * Metodo que elimina un usuario por su id <br>
+ * @param id <br>
+ * String con el id del usuario a eliminar.
+ * @return name $test<br/>
+ * Resultado de la acción
+ */
+ public function eliminarPorId($id){
+    
+    $con = Conne::connect();
+    $con->beginTransaction();
+    
+    $sql = " DELETE FROM ".TBL_USUARIO. " WHERE idUsuario = :idUsuario";
+    
+        
+        
+        try{
+            
+            $st = $con->prepare($sql);
+            $st->bindValue(":idUsuario", $id, PDO::PARAM_INT);
+            $test = $st->execute();
+            
+            $con->commit();
+            Conne::disconnect($con);
+            return $test;
+            
+        } catch (Exception $ex) {
+            
+            $con->rollBack();
+            Conne::disconnect($con);
+            $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_DAR_BAJA_USUARIO_DEFINITIVAMENTE[1],CONST_ERROR_BBDD_DAR_BAJA_USUARIO_DEFINITIVAMENTE[0],$ex);
+            $excepciones->redirigirPorErrorSistema("elimanarUsuBBDD",true);
+           
+        }
+     
+     
+  //fin eliminarPorId   
+ }
+    
+ 
+ 
     /**
      * Metodo publico que recive
      * el nick de un usuario y nos devuelve el id
@@ -380,83 +423,10 @@ public final function insert(){
     }
 
 /**
- * Metodo que elimina un usuario por su id<br>
- * @param id <br>
- * String con el id del usuario a eliminar
- */
- public function eliminarPorId($id){
-    
-    $con = Conne::connect();
-    $sql = " DELETE FROM ".TBL_USUARIO. " WHERE idUsuario = :idUsuario";
-        $id = (int) $id;
-        try{
-            $st = $con->prepare($sql);
-            $st->bindValue(":idUsuario", $id, PDO::PARAM_INT);
-            $st->execute();
-
-            $st->closeCursor();
-            Conne::disconnect($con);
- 
-        } catch (Exception $ex) {
-            Conne::disconnect($con);
-            echo $ex->getLine().'<br>';
-            echo $ex->getFile().'<br>';
-            die("Query failed: ".$ex->getMessage());
-        }
-     
-     
-  //fin eliminarPorId   
- }
-    
- 
-    
-   /**
-    * Metodo public 
-    * Recive un id para eliminar los datos de un usuario.
-    * Recive como parametro el nombre de la tabla 
-    * de la cual eliminar los datos, 
-    * usuario para los datos de la tabla usuario
-    * o datos_usuario para eliminar de la tabla datos_usuario
-    *  @param type tabla de la bbdd
-     * 
-    */
-    public function deleteFrom($var){
-        
-        $con = Conne::connect();
-        $tmp = $this->devuelveId();
-        
-        $id = (int) $tmp;
-        
-        if($var == 'usuario'){
-            $sql = " DELETE FROM ".TBL_USUARIO. " WHERE idUsuario = :idUsuario";
-        }  
-        try{
-            $st = $con->prepare($sql);
-            $st->bindValue(":idUsuario", $id, PDO::PARAM_INT);
-            $st->execute();
-            $result = $st->rowCount();
-            
-            $st->closeCursor();
-            Conne::disconnect($con);
-            
-            return $result;
-            
-        } catch (Exception $ex) {
-            Conne::disconnect($con);
-            echo $ex->getLine().'<br>';
-            echo $ex->getFile().'<br>';
-            die("Query failed: ".$ex->getMessage());
-        }
-    //fin delete    
-    }           
-       
-   
-    
-/**
- * Metodo que recive el id del usuario logeado
- * y devuelve los posibles usuarios bloqueados
- * @param type idUsuario
- * @return type array de ids de usuarios
+ * Metodo que recive el id del usuario logeado <br/>
+ * y devuelve los posibles usuarios bloqueados <br/>
+ * @param type idUsuario <br/>
+ * @return type array de ids de usuarios <br/>
  */
 public final function devuelveUsuariosBloqueadosTotal($id){
     
@@ -490,10 +460,10 @@ public final function devuelveUsuariosBloqueadosTotal($id){
 }
     
 /**
- * Metodo que recive el id del usuario logeado
- * y devuelve los posibles usuarios bloqueados
- * @param type idUsuario
- * @return type array de ids de usuarios
+ * Metodo que recive el id del usuario logeado <br/>
+ * y devuelve los posibles usuarios bloqueados <br/>
+ * @param type idUsuario <br/>
+ * @return type array de ids de usuarios <br/>
  */
 public final function devuelveUsuariosBloqueadosParcial($id){
     
@@ -531,9 +501,9 @@ public final function devuelveUsuariosBloqueadosParcial($id){
 
 
 /**
- * Metodo que devuelve la direcion 
- * de un susuario
- * @return array direccion
+ * Metodo que devuelve la direcion <br/>
+ * de un susuario <br/>
+ * @return array direccion <br/>
  */
 
 public function retornoDireccionUsuario(){
@@ -554,6 +524,7 @@ public function retornoDireccionUsuario(){
             Conne::disconnect($conDireccion);
             
             return $direccion;
+            
         } catch (Exception $ex) {
             Conne::disconnect($conBloqueo);
             echo $ex->getCode();
@@ -569,10 +540,11 @@ public function retornoDireccionUsuario(){
   
 
 /**
- * Metodo que recive un id de
- * Usuario y devuelve el email
- * @return  String email usuario
- * @param type String idUsuario
+ * Metodo que recive un id de <br/>
+ * Usuario y devuelve el email <br/>
+ * 
+ * @param type String idUsuario <br/>
+ * @return  String email usuario <br/>
  * 
  */
 
@@ -601,8 +573,8 @@ public function devuelveEmailPorId($id){
 
 
 /**
- * Metodo que actualia los datos 
- * de un  usuario
+ * Metodo que actualia los datos <br/>
+ * de un  usuario.
  *
  */
 public function actualizoDatosUsuario(){

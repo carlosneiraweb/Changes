@@ -137,7 +137,7 @@ public function redirigirPorErrorSistema($opc,$grado){
                 die();
                 break;
 
-         case $opc == "RegistrarUsuarioBBDD":
+        case $opc == "RegistrarUsuarioBBDD":
             
             $_SESSION['error'] = ERROR_REGISTRAR_USUARIO;
             $_SESSION["paginaError"] = "registrarse.php";
@@ -158,7 +158,7 @@ public function redirigirPorErrorSistema($opc,$grado){
                 die();
                 break;
             
-         case $opc == "actualizar":
+        case $opc == "actualizar":
             
             $_SESSION['error'] = ERROR_ACTUALIZAR_USUARIO; //Sirve de bandera en caso de error
             $_SESSION["paginaError"] = "registrarse.php";
@@ -168,6 +168,25 @@ public function redirigirPorErrorSistema($opc,$grado){
                 die();
                 break;
             
+        case $opc = "elimanarUsuBBDD";
+            
+            $_SESSION['error'] = ERROR_ELIMINAR_USUARIO_BBDD;
+            $_SESSION['paginaError']= "index.php";
+            $this->tratarDatosErrores("No pudimos eliminar al usuario de la BBDD", $grado);
+            
+                 
+                die();
+                break;
+            
+        case $opc = "eliminarDirectoriosBajaUsuario";
+            
+            $_SESSION['error'] = ERROR_ELIMINAR_USUARIO_BBDD;
+            $_SESSION['paginaError']= "index.php";
+            $this->tratarDatosErrores("No pudimos eliminar los directorios del usuario", $grado);
+            
+                 
+                die();
+                break;
         
         case $opc == "ProblemaEmail":
             
@@ -185,20 +204,7 @@ public function redirigirPorErrorSistema($opc,$grado){
                 die();
                 break;
             
-        case $opc == "desbloquearUsuario":
-            $_SESSION['error'] = ERROR_DESBLOQUEAR_USUARIO;
-            $grado = true;
-            $this->tratarDatosErrores($opc, $grado);
-            
-                die();
-                break;
-        
-        case $opc == "bloquear":
-            
-            $this->tratarDatosErrores($opc, $grado);
-            
-                die();
-                break;
+       
         
         default:
            
