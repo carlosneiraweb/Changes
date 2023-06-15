@@ -336,7 +336,7 @@ public final function insert(){
                 return $idUsu;
             
         } catch (Exception $ex) {
-            //echo $ex->getMessage();
+            
             $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_REGISTRAR_USUARIO[1],CONST_ERROR_BBDD_REGISTRAR_USUARIO[0],$ex);
             $con->rollBack();
             Conne::disconnect($con);

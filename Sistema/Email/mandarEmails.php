@@ -30,7 +30,7 @@ class mandarEmails {
  
 
 
- final function comprobarEmail($hash,$nick){
+ final function comprobarEmailActivacion($hash,$nick){
      
    
      try{
@@ -57,15 +57,14 @@ class mandarEmails {
         $correo = $email->mandarEmail($_SESSION["usuRegistro"]->getValue("email"));
         
         $test = $correo->send();       
-                
-         if(!$test){throw new Exception("No se pudo contruir el email para activar al usuario",0);}
-                    
+        
+         if(!$test){throw new Exception("No se pudo contruir el email para activar al usuario  ", 0);}
          
          
      } catch (Exception $ex) {
          
         $excepciones = new MisExcepcionesUsuario(CONST_ERROR_CONSTRUIR_DARSE_ALTA[1],CONST_ERROR_CONSTRUIR_DARSE_ALTA[0],$ex);
-        $excepciones->redirigirPorErrorSistema("ProblemaEmail",true);
+        $excepciones->redirigirPorErrorSistema("mandarEmailActivacion",true);
 
     }catch (\Exception $e) { //The leading slash means the Global PHP Exception class will be caught
                 //echo $e->getMessage(); //Boring error messages from anything else!
@@ -104,7 +103,7 @@ final function mandarEmailWelcome(){
                 $correo = $email->mandarEmail($_SESSION["usuRegistro"]->getValue("email"));
                 $test =  $correo->send();
                 
-                if(!$test){throw new Exception("No se pudo contruir el email welcome o la direccion de email no existe",0);}
+                if(!$test){throw new Exception($correo->ErrorInfo,0);}
                 
             }catch (Exception $ex){    
                 
@@ -172,7 +171,7 @@ final function mandarEmailWelcome(){
                
                $correoPalabras = $email->mandarEmail($correo);
                $test = $correoPalabras->send();
-               if(!$test){throw new Exception("NO se pudo construir email palabras buscadas",0);}
+               if(!$test){throw new Exception("NO se pudo construir email palabras buscadas ",0);}
                    
             }catch (Exception $ex){
                 

@@ -36,23 +36,26 @@ define("CONST_ERROR_ELIMINAR_DIRECTORIOS_ALTA",array("DIR  10","No se pudo elimi
 define("CONST_COPIAR_ARCHIVO", array("FILE 0", "No se pudo copiar archivo o imagen"));
 /**Error eliminar archivo*/
 define("CONST_ERROR_ELIMINAR_ARCHIVO", array("FILE 1","No se pudo eliminar una imagen"));
+/**Error al eliminar la foto antigua al actualizar a la nueva*/
+define("CONST_ERROR_ELIMINAR_FOTO_VIEJA_AL_ACTUALIZAR",array("FILE2 ","No se pudo eliminar la antigua foto al actualizar"));
 /**Error renombrar foto actualizar*/
-define("CONST_ERROR_RENOMBRAR_FOTO_ACTUALIZARSE", array("FILE 2", "No se pudo renombrar la foto  al actualizarse"));
+define("CONST_ERROR_RENOMBRAR_FOTO_ACTUALIZARSE", array("FILE 3", "No se pudo renombrar la foto  al actualizarse"));
 /**Error al mover imagen al registrarse o actualizar */
-define("CONST_ERROR_MOVER_IMAGEN_ACTUALIZAR_REGISTRAR",array("FILE 3","La imagen no se ha podido mover al actualizar o registrar"));
+define("CONST_ERROR_MOVER_IMAGEN_ACTUALIZAR_REGISTRAR",array("FILE 4","La imagen no se ha podido mover al actualizar o registrar"));
 /**Error al mover imagen al subir un Post */
-define("CONST_ERROR_MOVER_IMAGEN_SUBIR_POST",array("FILE 4","La imagen no se ha podido mover al subir un post"));
+define("CONST_ERROR_MOVER_IMAGEN_SUBIR_POST",array("FILE 5","La imagen no se ha podido mover al subir un post"));
 /**Error al renombrar una img cuando el usuario ha eliminado una img al subir un post*/
-define("CONST_ERROR_RENOMBRAR_IMG_AL_ELIMINARLA_DEL_POST",array("FILE 5","No se pudo renombrar la imagen cuando un usuario elimino una subiendo un post y subio otra"));
+define("CONST_ERROR_RENOMBRAR_IMG_AL_ELIMINARLA_DEL_POST",array("FILE 6","No se pudo renombrar la imagen cuando un usuario elimino una subiendo un post y subio otra"));
 /**Error al renombrar una img cuando un usuario sube una a un post*/
-define("CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST",array("FILE 6","No se pudo renombrar la imagen cuando un usuario  subiendo una imagen a un post"));
+define("CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST",array("FILE 7","No se pudo renombrar la imagen cuando un usuario  subiendo una imagen a un post"));
 /**Error al contar los archivos para renombrar las fotos*/
-define("CONST_ERROR_CONTAR_ARCHIVOS",array("FILE 7", "Hubo un error al contar los archivos"));
+define("CONST_ERROR_CONTAR_ARCHIVOS",array("FILE 8", "Hubo un error al contar los archivos"));
 /**Error eliminar imagen demo al subir un post*/
-define("CONST_ERROR_ELIMINAR_IMG_DEMO_POST_DEL_DIRECTORIO", array("FILE 8","No se pudo eliminar la imagen demo del directorio cuando un usuario subia imagenes"));
+define("CONST_ERROR_ELIMINAR_IMG_DEMO_POST_DEL_DIRECTORIO", array("FILE 9","No se pudo eliminar la imagen demo del directorio cuando un usuario subia imagenes"));
 /**Error al eliminar una imagen que del directorio esta subiendo un usuario al Post*/
-define("CONST_ERROR_ELIMINAR_IMG_SUBIR_POST",array("FILE 9","No se pudo eliminar la img subida al directorio por el usuario al post"));
-
+define("CONST_ERROR_ELIMINAR_IMG_SUBIR_POST",array("FILE 10","No se pudo eliminar la img subida al directorio por el usuario al post"));
+/**Error al copiar la foto demo al registrarse*/
+define("CONST_ERROR_COPIAR_DEMO", array("FILE 11", "No se pudo copiar la imagen demo al registrarse"));
 
 
 
@@ -118,7 +121,8 @@ define("CONST_ERROR_BBDD_DESBLOQUEAR_PARCIAL", array("BBDD 26","No pudimos desbl
 define("CONST_ERROR_BBDD_DESBLOQUEAR_TOTALMENTE_USUARIO",array("BBDD 27","No pudimos desbloquear totalmente al usuario"));
 /**Error en la BBDD al mostrar los usuarios bloqueados totalmente*/
 define("CONST_ERROR_BBDD_MOSTRAR_USUARIOS_BLOQUEADOS_TOTAL",array("BBDD 28","No pudimos mostrar los usuarios bloqueados total"));
-
+/**Error en la BBDD al mostrar los usuarios bloqueados parcialmente*/
+define("CONST_ERROR_BBDD_MOSTRAR_USUARIOS_BLOQUEADOS_PARCIAL",array("EMAIL 4","No pudimos mostrar los usuarios bloqueados parcial"));
 
                         /**ERRORES EMAIL*/
 /**Error al construir el email palabras buscadas*/
@@ -129,8 +133,7 @@ define("CONST_ERROR_CONSTRUIR_DARSE_BAJA",array("EMAIL 1","No se pudo contruir e
 define("CONST_ERROR_CONSTRUIR_DARSE_ALTA",array("EMAIL 2","No se pudo contruir el email cuando un usuario se da de alta"));
 /**Error al desbloquear un usuario*/
 define("CONST_ERROR_DESBLOQUEO_USUARIO",array("EMAIL 3",'Hemos tenido un problema al desbloquear un usuario'));
-/**Error en la BBDD al mostrar los usuarios bloqueados parcialmente*/
-define("CONST_ERROR_BBDD_MOSTRAR_USUARIOS_BLOQUEADOS_PARCIAL",array("EMAIL 4","No pudimos mostrar los usuarios bloqueados parcial"));
+
 
 
 
@@ -173,7 +176,11 @@ define("ERROR_REGISTRAR_USUARIO", "<h5>Hemos tenido un problema al tratar de reg
 define("ERROR_ACTUALIZAR_USUARIO", "<h5>Hemos tenido un problema al actualizarte.</h5><h6>Puedes volver a intentarlo o  ponerte en contacto con nosotros.</h6>");
 define("TXT_ERROR_VALIDACION", "../Errores/ErroresValidacion.txt");
 define("TXT_ERROR_ELIMINAR_POST", "../Errores/ErroresEliminarPost.txt");
+/**Error generico al mandar un email*/
 define("ERROR_MANDAR_EMAIL","<h5>Lo sentimos pero por alguna razon no se te ha mandado un email</h5>");
+/**Error al mandar email de validacion*/
+define("ERROR_MANDAR_EMAIL_ACTIVACION","<h5>Parece ser que tuvimos un problema al mandar tú email de activación</h5><h4>Intenta registrarte de nuevo</h4><h4>Lo sentimos</h4>");
+/**Error al actualizar el post del usuario*/
 define("ERROR_ACTUALIZAR_POST","<h5>Hemos tenido un problema al actualizar tú Post</h5><h4>Debes ingresarlo otra vez</h4>");
 /**Error al desbloquear un usuario*/
 define("ERROR_DESBLOQUEAR_USUARIO","<h5>Por algún motivo no hemos podido desbloquearte</h5><h4>Ponte en contacto con nosotros por email</h4>");

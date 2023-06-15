@@ -287,7 +287,7 @@ class Directorios {
         } catch (Exception $ex) {
 
             if ($opc == "registrar") {
-                $excepciones = new MisExcepcionesUsuario(CONST_COPIAR_ARCHIVO[1], CONST_COPIAR_ARCHIVO[0], $ex);
+                $excepciones = new MisExcepcionesUsuario(CONST_ERROR_COPIAR_DEMO[1], CONST_ERROR_COPIAR_DEMO[0], $ex);
                 $excepciones->redirigirPorErrorSistema($opc, true);
             } else {
                 $_SESSION['error'] = ERROR_ARCHIVOS;
@@ -492,7 +492,7 @@ class Directorios {
 
             if ($opc == 'actualizar') {
 
-                $excepciones = new MisExcepcionesUsuario(CONST_ERROR_ELIMINAR_ARCHIVO[1], CONST_ERROR_ELIMINAR_ARCHIVO[0], $ex);
+                $excepciones = new MisExcepcionesUsuario(CONST_ERROR_ELIMINAR_FOTO_VIEJA_AL_ACTUALIZAR[1], CONST_ERROR_ELIMINAR_FOTO_VIEJA_AL_ACTUALIZAR[0], $ex);
                 $excepciones->redirigirPorErrorSistema("actualizar", true);
             } else if ($opc == "eliminarImgDemoSubirPost") {
 

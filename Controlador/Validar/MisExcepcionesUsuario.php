@@ -145,7 +145,7 @@ public function redirigirPorErrorSistema($opc,$grado){
             $_SESSION['error'] = ERROR_REGISTRAR_USUARIO;
             $_SESSION["paginaError"] = "registrarse.php";
             //$_SESSION['errorArchivos'] = "existo";
-            $this->tratarDatosErrores("Error en el gestor bbdd al registrar usuario",$grado);
+            $this->tratarDatosErrores("Error en el gestor bbdd al registrar usuario. \n\r",$grado);
             
             
                 die();
@@ -156,7 +156,7 @@ public function redirigirPorErrorSistema($opc,$grado){
             
             $_SESSION['error'] = ERROR_ACTUALIZAR_USUARIO; //No hace falta por el rollBlack de mysql
             $_SESSION["paginaError"] = "registrarse.php";
-            $this->tratarDatosErrores("Error en el gestor bbdd al actualizar usuario",$grado);
+            $this->tratarDatosErrores("Error en el gestor bbdd al actualizar usuario. \n\r",$grado);
             
                 die();
                 break;
@@ -165,7 +165,7 @@ public function redirigirPorErrorSistema($opc,$grado){
             
             $_SESSION['error'] = ERROR_ACTUALIZAR_USUARIO; //Sirve de bandera en caso de error
             $_SESSION["paginaError"] = "registrarse.php";
-            $this->tratarDatosErrores("No se pudo renombrar o eliminar la vieja la foto del usuario cuando estaba actualizando su nick",$grado);    
+            $this->tratarDatosErrores("No se pudo renombrar o eliminar la vieja la foto del usuario cuando estaba actualizando su nick. \n\r",$grado);    
             $_SESSION['actualizo']->actualizoDatosUsuario();
                 
                 die();
@@ -175,7 +175,7 @@ public function redirigirPorErrorSistema($opc,$grado){
             
             $_SESSION['error'] = ERROR_ELIMINAR_USUARIO_BBDD;
             $_SESSION['paginaError']= "index.php";
-            $this->tratarDatosErrores("No pudimos eliminar al usuario de la BBDD", $grado);
+            $this->tratarDatosErrores("No pudimos eliminar al usuario de la BBDD. \n\r", $grado);
             
                  
                 die();
@@ -185,7 +185,7 @@ public function redirigirPorErrorSistema($opc,$grado){
             
             $_SESSION['error'] = ERROR_ELIMINAR_DIRECTORIO_BAJA_USUARIO;
             $_SESSION['paginaError']= "index.php";
-            $this->tratarDatosErrores("No pudimos eliminar los directorios del usuario", $grado);
+            $this->tratarDatosErrores("No pudimos eliminar los directorios del usuario. \n\r", $grado);
             
                  
                 die();
@@ -195,7 +195,7 @@ public function redirigirPorErrorSistema($opc,$grado){
             
             $_SESSION['error'] = ERROR_ELIMINAR_DIRECTORIO_ALTA_USUARIO;
             $_SESSION['paginaError']= "index.php";
-            $this->tratarDatosErrores("No pudimos eliminar los directorios del usuario al ocurrir un error en su registro", $grado);
+            $this->tratarDatosErrores("No pudimos eliminar los directorios del usuario al ocurrir un error en su registro. \n\r", $grado);
             
                  
                 //Eliminamos el die() Por que queremos 
@@ -204,16 +204,19 @@ public function redirigirPorErrorSistema($opc,$grado){
         
         case  "ProblemaEmail":
             
-            
-            $this->tratarDatosErrores($opc,$grado);
+           
+            $this->tratarDatosErrores($opc,false);
             
                 die();
                 break;
         
         case  "mandarEmailActivacion":   
             
-            
-            $this->tratarDatosErrores($opc, $grado);
+            $_SESSION['error'] = ERROR_MANDAR_EMAIL_ACTIVACION;
+            $_SESSION["paginaError"] = "registrarse.php";
+            $_SESSION["usuRegistro"]->eliminarPorId($_SESSION["datos"]["id"]); //POr si ha quedado algun registro
+            $this->eliminarDirectoriosUsuario("registrar");
+            $this->tratarDatosErrores("No se pudo enviar el email de activar registro \n\r",$grado);
             
                 die();
                 break;

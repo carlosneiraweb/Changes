@@ -3,12 +3,7 @@
 define("DB_DNS", "mysql:dbname=bbdd_portal_genesis_2022");
 define("DB_USERNAME", "root");
 define("DB_PASSWORD", "987654321");
-define("EMAIL_PASSWORD", "htxrcdgrdcfwbjme");//"ipnjegphlwxedjpz"); 
-define("EMAIL_USERNAME", "carlosneiraweb@gmail.com");
-define("EMAIL_SMTPAUTH", 1);
-define("EMAIL_SMTPSECURE", "tls");
-define("EMAIL_HOST", "smtp.gmail.com");//""
-define("EMAIL_PORT_EMAIL", 587);
+
 
 
 

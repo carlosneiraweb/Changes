@@ -156,7 +156,7 @@ function comprobarEmailNuevo($user){
         }
        
         
-        $objMandarEmails->comprobarEmail($_SESSION["hash"],$_SESSION['usuario']['nick']);
+        $objMandarEmails->comprobarEmailActivacion($_SESSION["hash"],$_SESSION['usuario']['nick']);
        
         if(isset($_SESSION["hash"])){unset ($_SESSION["hash"]);}
 
@@ -187,6 +187,9 @@ function modificarDirectoriosUsuario(){
     
     $foto = "";
     
+        //Variable para mostrar distinto mensaje
+        //en la pagina abandonar sesion
+        //es destruida alli
         $_SESSION["resultActualizacion"] = ["ok"];
         abandonarSession();
     //fin crearDirectoriosRegistro
@@ -261,7 +264,7 @@ function validarCamposRegistro($st, $user){
                       
                             }
                         }
-                    
+                   
                     if(!ValidoForm::validarPassword($_SESSION['usuario']['password'])){
                         $testValidoReg[0] =  ERROR_PASSWORD_INCORRECTO;
                         $testValidoReg[1] = 0;

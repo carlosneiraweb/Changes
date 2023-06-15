@@ -154,13 +154,14 @@
     final static function validarEmail($elemento){
           
         $expresion = "/^[_a-zA-ZñÑ0-9-]+(.[_a-zÑñ0-9-]+)*@[a-zñÑ0-9-]+(.[a-zÑñ0-9-]+)*(.[a-z]{2,4})$/";
-        
+         $result = preg_match($expresion, $elemento);
+        /*
         if(filter_var($elemento, FILTER_VALIDATE_EMAIL)){
-            $result = preg_match($expresion, $elemento);
+           
         }else{
             $result = false;
         }
-        
+        */
         
             return $result;
 
