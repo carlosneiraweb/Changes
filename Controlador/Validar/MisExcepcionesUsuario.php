@@ -26,40 +26,42 @@ class MisExcepcionesUsuario extends MetodosInfoExcepciones{
  */
 
 public function eliminarDirectoriosUsuario($opc) {
+   
+    
      
     
     if(isset($_SESSION["userTMP"])){        
         $usuViejo = $_SESSION["userTMP"]->getValue('nick');
     }
-    
+   
     switch ($opc) {
         
-        
-          
+       
+         
         case "registrar":
-            
+         
                 //Se esta registrando y hay un error
             $fotos = "../photos/".$_SESSION["datos"]["id"];
             $datos = "../datos_usuario/".$_SESSION["datos"]["id"];
             $videos = "../Videos/".$_SESSION["datos"]["id"];
+            
             if(isset($_SESSION["userTMP"])){
                 $opc = "EliminarNuevosDirectorios";
             }else{
                 $opc = "registrar";
             }
-           
+          
             break;
-        
-        
-           
-            
+
+          
+        default:
+             
+            echo " Hemos tenido un error";
           
             
-        default:
+           
             
-            echo "Hemos tenido un error";
-            
-            break;
+           
     }
     
         if(isset($_SESSION["datos"]["id"])&& $_SESSION["datos"]["id"] != ""){
@@ -95,7 +97,7 @@ public function eliminarDirectoriosUsuario($opc) {
 /**
  * Metodo que es llamado cuando se produce un error <br/>
  * al trabajar con archivos o al trabajar con la bbdd,<br/>
- * cuando un usuario esta registrandose, actualizando<br/>
+ * cuando un usuario esta registrandose o actualizando<br/>
  * o hay un fallo de funcionalidad. <br/>
  * Segun opcion y grado elimina los directorios del usuario <br/>
  * en el registro o en la actualizacion <br/>
@@ -117,31 +119,32 @@ public function eliminarDirectoriosUsuario($opc) {
 public function redirigirPorErrorSistema($opc,$grado){
 
    $_SESSION['errorArchivos'] = "existo";
- 
-    
-   
+
    // echo PHP_EOL."opcion vale ".$opc." y gr4ado vale ".$grado." el id es ".$_SESSION["datos"]["id"].PHP_EOL;
     switch ($opc) {
       
        
            
-        case $opc == "registrar":
-           
+        case  "registrar":
+            
             $_SESSION['error'] = ERROR_INGRESAR_USUARIO;
             $_SESSION["paginaError"] = "registrarse.php";
-            $this->eliminarDirectoriosUsuario($opc);
             $_SESSION["usuRegistro"]->eliminarPorId($_SESSION["datos"]["id"]); //POr si ha quedado algun registro
+            $this->eliminarDirectoriosUsuario($opc);
             $this->tratarDatosErrores($opc,$grado);
+            
+            
+            
             
             
                 die();
                 break;
 
-        case $opc == "RegistrarUsuarioBBDD":
+        case  "RegistrarUsuarioBBDD":
             
             $_SESSION['error'] = ERROR_REGISTRAR_USUARIO;
             $_SESSION["paginaError"] = "registrarse.php";
-            $_SESSION['errorArchivos'] = "existo";
+            //$_SESSION['errorArchivos'] = "existo";
             $this->tratarDatosErrores("Error en el gestor bbdd al registrar usuario",$grado);
             
             
@@ -149,7 +152,7 @@ public function redirigirPorErrorSistema($opc,$grado){
                 break;
             
         
-        case $opc == "ActualizarUsuarioBBDD":
+        case "ActualizarUsuarioBBDD":
             
             $_SESSION['error'] = ERROR_ACTUALIZAR_USUARIO; //No hace falta por el rollBlack de mysql
             $_SESSION["paginaError"] = "registrarse.php";
@@ -158,7 +161,7 @@ public function redirigirPorErrorSistema($opc,$grado){
                 die();
                 break;
             
-        case $opc == "actualizar":
+        case  "actualizar":
             
             $_SESSION['error'] = ERROR_ACTUALIZAR_USUARIO; //Sirve de bandera en caso de error
             $_SESSION["paginaError"] = "registrarse.php";
@@ -168,7 +171,7 @@ public function redirigirPorErrorSistema($opc,$grado){
                 die();
                 break;
             
-        case $opc = "elimanarUsuBBDD";
+        case  "elimanarUsuBBDD";
             
             $_SESSION['error'] = ERROR_ELIMINAR_USUARIO_BBDD;
             $_SESSION['paginaError']= "index.php";
@@ -177,18 +180,29 @@ public function redirigirPorErrorSistema($opc,$grado){
                  
                 die();
                 break;
+                               
+        case  "eliminarDirectoriosBajaUsuario";
             
-        case $opc = "eliminarDirectoriosBajaUsuario";
-            
-            $_SESSION['error'] = ERROR_ELIMINAR_USUARIO_BBDD;
+            $_SESSION['error'] = ERROR_ELIMINAR_DIRECTORIO_BAJA_USUARIO;
             $_SESSION['paginaError']= "index.php";
             $this->tratarDatosErrores("No pudimos eliminar los directorios del usuario", $grado);
             
                  
                 die();
                 break;
+            
+        case  "eliminarDirectoriosAltaUsuario";
+            
+            $_SESSION['error'] = ERROR_ELIMINAR_DIRECTORIO_ALTA_USUARIO;
+            $_SESSION['paginaError']= "index.php";
+            $this->tratarDatosErrores("No pudimos eliminar los directorios del usuario al ocurrir un error en su registro", $grado);
+            
+                 
+                //Eliminamos el die() Por que queremos 
+                //que el script continue para la opción de registrar
+                break;
         
-        case $opc == "ProblemaEmail":
+        case  "ProblemaEmail":
             
             
             $this->tratarDatosErrores($opc,$grado);
@@ -196,7 +210,7 @@ public function redirigirPorErrorSistema($opc,$grado){
                 die();
                 break;
         
-        case $opc == "mandarEmailActivacion":   
+        case  "mandarEmailActivacion":   
             
             
             $this->tratarDatosErrores($opc, $grado);
@@ -208,9 +222,11 @@ public function redirigirPorErrorSistema($opc,$grado){
         
         default:
            
-             $this->tratarDatosErrores($opc,false);
+             $this->tratarDatosErrores($opc,$grado);
             die();
             break;
+        
+        
     } 
     
    

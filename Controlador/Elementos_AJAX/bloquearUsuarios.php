@@ -122,7 +122,7 @@ function comprobarTipoBloqueo($id,$opcion){
         Conne::disconnect($conBloqueo);
         $_SESSION['error'] = ERROR_BLOQUEAR_USUARIO;
         $_SESSION['paginaError'] = "index.php";
-        $excepciones = new ControlErroresRunning(CONST_ERROR_COMPROBAR_BLOQUEO_USUARIO[1],CONST_ERROR_COMPROBAR_BLOQUEO_USUARIO[0],$ex);
+        $excepciones = new ControlErroresRunning(CONST_ERROR_BBDD_COMPROBAR_BLOQUEO_USUARIO[1],CONST_ERROR_BBDD_COMPROBAR_BLOQUEO_USUARIO[0],$ex);
         $excepciones->ErroresRunning("bloquear","El usuario ".$_SESSION["userTMP"]->getValue('nick').
             " consulto que tipo de bloqueo tenía el  usuario a bloquear con id ".$id);
         
@@ -223,7 +223,7 @@ function bloquearParcial($idUsuBloquear){
                
             $_SESSION['error'] = ERROR_BLOQUEAR_USUARIO;
             $_SESSION['paginaError'] = "index.php";
-            $excepciones = new ControlErroresRunning(CONST_ERROR_BLOQUEAR_PARCIAL_USUARIO[1],CONST_ERROR_BLOQUEAR_PARCIAL_USUARIO[0],$ex);
+            $excepciones = new ControlErroresRunning(CONST_ERROR_BBDD_BLOQUEAR_PARCIAL_USUARIO[1],CONST_ERROR_BBDD_BLOQUEAR_PARCIAL_USUARIO[0],$ex);
             $excepciones->ErroresRunning("bloquear"," Usuario bloquea ".$_SESSION["userTMP"]->getValue('nick').
                             " usuario con id a bloquear ".$nickBloquear);  
         
@@ -271,7 +271,7 @@ function eliminarBloqueoParcial($idUsuDesBloquear){
                
         $_SESSION['error'] = ERROR_DESBLOQUEAR_USUARIO;
         $_SESSION['paginaError'] = "index.php";
-        $excepciones = new ControlErroresRunning(CONST_ERROR_DESBLOQUEAR_PARCIAL[1],CONST_ERROR_DESBLOQUEAR_PARCIAL[0],$ex);
+        $excepciones = new ControlErroresRunning(CONST_ERROR_BBDD_DESBLOQUEAR_PARCIAL[1],CONST_ERROR_BBDD_DESBLOQUEAR_PARCIAL[0],$ex);
         $excepciones->ErroresRunning("bloquear"," Usuario desbloquea PARCIAL".$_SESSION["userTMP"]->getValue('nick').
         " IdUsuario a desbloquear ".$idUsuDesBloquear);  
             
@@ -326,7 +326,7 @@ function bloquearTotal($idUsuBloquear){
                
         $_SESSION['error'] = ERROR_BLOQUEAR_USUARIO;
         $_SESSION['paginaError'] = "index.php";
-        $excepciones = new ControlErroresRunning(CONST_ERROR_BLOQUEAR_TOTAL_USUARIO[1],CONST_ERROR_BLOQUEAR_TOTAL_USUARIO[0],$ex); 
+        $excepciones = new ControlErroresRunning(CONST_ERROR_BBDD_BLOQUEAR_TOTAL_USUARIO[1],CONST_ERROR_BBDD_BLOQUEAR_TOTAL_USUARIO[0],$ex); 
         $excepciones->ErroresRunning("bloquear"," Usuario bloquea ".$_SESSION["userTMP"]->getValue('nick').
                             " usuario a bloquear ".$nickBloquear);  
     }
@@ -372,7 +372,7 @@ function eliminarBloqueoTotal($idUsuDesBloquear){
 
                 $_SESSION['error'] = ERROR_DESBLOQUEAR_USUARIO;
                 $_SESSION['paginaError'] = "index.php";
-                $excepciones = new ControlErroresRunning(CONST_ERROR_DESBLOQUEAR_TOTAL[1],CONST_ERROR_DESBLOQUEAR_TOTAL[0],$ex);
+                $excepciones = new ControlErroresRunning(CONST_ERROR_BBDD_DESBLOQUEAR_TOTALMENTE_USUARIO[1],CONST_ERROR_BBDD_DESBLOQUEAR_TOTALMENTE_USUARIO[0],$ex);
                 $excepciones->ErroresRunning("bloquear"," Usuario desbloquea TOTAL ".$_SESSION["userTMP"]->getValue('nick').
                 " IdUsuario a desbloquear ".$idUsuDesBloquear);  
 
@@ -427,7 +427,7 @@ function verBloqueados(){
                
                 $_SESSION['error'] = ERROR_MOSTRAR_USUARIOS_BLOQUEADOS;
                 $_SESSION['paginaError'] = "index.php";
-                $excepciones = new ControlErroresRunning(CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_TOTAL[1],CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_TOTAL[0],$ex);
+                $excepciones = new ControlErroresRunning(CONST_ERROR_BBDD_MOSTRAR_USUARIOS_BLOQUEADOS_TOTAL[1],CONST_ERROR_BBDD_MOSTRAR_USUARIOS_BLOQUEADOS_TOTAL[0],$ex);
                 $excepciones->ErroresRunning("bloquear"," Usuario para mostrar sus bloqueos ".$_SESSION["userTMP"]->getValue('nick'));
                                  
             }
@@ -457,7 +457,7 @@ function verBloqueados(){
                
                 $_SESSION['error'] = ERROR_MOSTRAR_USUARIOS_BLOQUEADOS;
                 $_SESSION['paginaError'] = "index.php";
-                $excepciones = new ControlErroresRunning(CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_PARCIAL[1],CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_PARCIAL[0],$ex);
+                $excepciones = new ControlErroresRunning(CONST_ERROR_BBDD_MOSTRAR_USUARIOS_BLOQUEADOS_PARCIAL[1],CONST_ERROR_BBDD_MOSTRAR_USUARIOS_BLOQUEADOS_PARCIAL[0],$ex);
                 $excepciones->ErroresRunning("bloquear"," Usuario para mostrar sus bloqueos ".$_SESSION["userTMP"]->getValue('nick'));
                                  
             }

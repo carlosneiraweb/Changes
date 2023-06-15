@@ -152,7 +152,7 @@ private function convertirStringDatosSesion($opc){
  */
 
 
-protected function insertarErroresBBDD( $opc,$datosSesion){
+private function insertarErroresBBDD( $opc,$datosSesion){
     
      $con = Conne::connect();
      
@@ -166,7 +166,7 @@ protected function insertarErroresBBDD( $opc,$datosSesion){
         
         $stError = $con->prepare($sqlInsError);
         $stError->bindValue(":motivo", $opc, PDO::PARAM_STR);
-        $stError->bindValue(":codigo", $this->misExcepciones[1], PDO::PARAM_INT);//
+        $stError->bindValue(":codigo", $this->misExcepciones[1], PDO::PARAM_STR);//
         if(isset($_SESSION["userTMP"])){
             //Esta actualizando
             $stError->bindValue(":usuario", $_SESSION["userTMP"]->getValue('nick'), PDO::PARAM_STR); 
@@ -219,23 +219,25 @@ protected function insertarErroresBBDD( $opc,$datosSesion){
  * LLama a varios metodos de la clase, <br/>
  * errorMessage, covertirStringDatosSesion, <br/>
  * insertarErroresBBDD. <br/>
- * @param String $opc <br/>
+ * @param String $comentario <br/>
  * Opcion para tratar el error <br/>
  * @param Boolean $grado  <br/>
  * Grado del error para aplicar salida
  * 
  */
-protected function tratarDatosErrores($opc,$grado){
+protected function tratarDatosErrores($comentario,$grado){
     
-    $datosSesion = $this->convertirStringDatosSesion($opc);
+    $datosSesion = $this->convertirStringDatosSesion($comentario);
         //Los insertammos en la bbdd
     
-    $this->insertarErroresBBDD( $opc,$datosSesion);
+    $this->insertarErroresBBDD( $comentario,$datosSesion);
     
     if($grado){
         
         $this->mostrarError();
     
+    }elseif (!$grado) {
+        // No redirigimos ya lo hemos hecho antes
     }else{
         
         $this->redirirgirFalloNoCritico();

@@ -190,7 +190,7 @@ function displayStep1($missingFields){
                 echo"<legend>Formulario de ";if(isset($_SESSION['actualizo']) ){echo "Actualizar Primer paso";}else{echo "Registro Primer Paso";}echo "</legend>";
         echo"<input type='hidden' name='step' value='step1'>";
        
-    echo '<section class="contEtiquetas">';
+    echo '<section class="modificarDirectoriosUsuariocontEtiquetas">';
     echo'<label '.ValidoForm::validateField("nick", $missingFields).' for="nick" class="labelFormulario">Introduce nombre de usuario:</label><span class="obligatorio"><img src="../img/obligado.png" alt="campo obligatorio" title="obligatorio"></span>';
                                                                                                                                       
     echo'<input type="text" name="nick" id="nick" autofocus placeholder="Tú nombre usuario maximo 25 caracteres" maxlength="25" value=';if(isset($_SESSION['usuario']['nick'])){echo $_SESSION['usuario']['nick'];}else{if(isset($_SESSION['actualizo']) && (!isset($_SESSION['usuario']['nick']))){echo $_SESSION['actualizo']->getValue('nick');}}echo ">";      
@@ -536,6 +536,7 @@ function processFormRegistro($requiredFields, $st){
                 $_SESSION['usuario']["telefono"] = $_POST["telefono"];
                 $_SESSION['usuario']["genero"] = $_POST["genero"];
                     break;
+                
             case "step3":
                 $_SESSION['usuario']["calle"] = $_POST['calle'];
                 $_SESSION['usuario']["numeroPortal"] = $_POST['numeroPortal'];

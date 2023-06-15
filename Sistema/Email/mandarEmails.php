@@ -229,18 +229,6 @@ final function mandarEmailBajaUsuario($nick,$mail){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
      //mandarEmailBajaUsuario    
  }   
     

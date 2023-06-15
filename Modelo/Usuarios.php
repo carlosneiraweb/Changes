@@ -261,6 +261,12 @@ public final function insert(){
             
             );";
            
+        
+        
+        $con->beginTransaction();
+        
+        
+        
             $date = date('Y-m-d');
             $st = $con->prepare($sql);
             $st->bindValue(":nick", $this->data["nick"], PDO::PARAM_STR);
@@ -268,14 +274,7 @@ public final function insert(){
             $st->bindValue(":email", $this->data["email"], PDO::PARAM_STR);
             $st->bindValue(":fecha", $date, PDO::PARAM_STR);
             $st->bindValue(":bloqueado", '1', PDO::PARAM_STR);
-            
-            
-            
-            
-                        
-            
-            $con->beginTransaction();
-            
+
                 $st->execute(); 
                 $idUsu = $con->lastInsertId();
                 
@@ -309,6 +308,7 @@ public final function insert(){
                         $stDireccion->bindValue(":ciudad", $this->data["ciudad"], PDO::PARAM_STR);
                         $stDireccion->bindValue(":provincia", $this->data["provincia"], PDO::PARAM_STR);
                         $stDireccion->bindValue(":pais", $this->data["pais"], PDO::PARAM_STR);
+                        
                 $stDireccion->execute();             
 
                 
@@ -362,9 +362,7 @@ public final function insert(){
     $con->beginTransaction();
     
     $sql = " DELETE FROM ".TBL_USUARIO. " WHERE idUsuario = :idUsuario";
-    
-        
-        
+
         try{
             
             $st = $con->prepare($sql);

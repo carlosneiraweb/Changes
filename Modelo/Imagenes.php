@@ -144,7 +144,7 @@ public static function insertarImagenDemo(){
             
             Conne::disconnect($con);
             $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-            $excepciones = new MisExcepcionesPost(CONST_ERROR_ELIMINAR_IMG_DEMO_POST[1],CONST_ERROR_ELIMINAR_IMG_DEMO_POST[0],$ex); 
+            $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_ELIMINAR_IMG_DEMO_POST[1],CONST_ERROR_BBDD_ELIMINAR_IMG_DEMO_POST [0],$ex); 
             $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
         
             
@@ -258,7 +258,7 @@ public function eliminarImg(){
 
                 Conne::disconnect($con);
                 $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-                $excepciones = new MisExcepcionesPost(CONST_ERROR_INGRESAR_IMG_DEMO_AL_ELIMINAR_TODAS_IMG_SUBIR_POST[1], CONST_ERROR_INGRESAR_IMG_DEMO_AL_ELIMINAR_TODAS_IMG_SUBIR_POST[0],$ex);
+                $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_INGRESAR_IMG_DEMO_AL_ELIMINAR_TODAS_IMG_SUBIR_POST[1], CONST_ERROR_BBDD_INGRESAR_IMG_DEMO_AL_ELIMINAR_TODAS_IMG_SUBIR_POST[0],$ex);
                 $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost",true);
             
                 

@@ -48,6 +48,7 @@ if(!isset($_SESSION)){
      
         
 /**
+ * Crea los directorios para el registro<br/>
  * @param $dir <br/>
  * Array con la ruta donde crear los directorios <br/>
  * y la opcion por si hay algun error poder <br/>
@@ -192,7 +193,7 @@ function modificarDirectoriosUsuario(){
 }
 
   /**
-     * Metodo que valida los datos introducidos por el usuario al registrarse. </br>
+     * Metodo que valida los datos introducidos por el usuario. </br>
      * Valida los campos con los metodos static de ValidaForm </br>
      * Valida los datos de la bbdd con un objeto de la clase Usuarios </br>
      * Este metodo </br>
@@ -368,12 +369,13 @@ function validarCamposRegistro($st, $user){
 
                 $foto = $_FILES['photoArticulo']['tmp_name']; 
               
+                //ingresamos o actualizamos al usuario en la bbdd
                 ingresarUsuario();
                 //Si el usuario no se ha logeado
                 //entonces se esta registrando    
                 if(!isset($_SESSION["userTMP"])){  
                   
-                    //ingresamos usuario en la bbdd
+                    
                     
                         //SI todo ha ido bien 
                         //Creamos los directorios para el usuario 

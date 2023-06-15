@@ -28,8 +28,7 @@ function darseBajaDefinitivamente(){
                    var test = data;
                  
                    if(test === "OK"){
-                       
-                       
+
                         $('#baja').empty();
                             $('#baja').append($('<h4>',{
                             text : 'Tú baja ha sido cursada correctamente.',
@@ -40,9 +39,11 @@ function darseBajaDefinitivamente(){
                             })).append($('<h5>',{
                             text: 'Vas a ser redirigido al inicio del portal',
                             class: 'rsTotal'
+                            
+                           
                     }));
                         
-                        redirigirInicio();
+                         setTimeout(redirigirInicio,5000);
                         
                     } 
                     
@@ -71,9 +72,9 @@ function darseBajaParcialmente(){
                     dataType: 'json',
                     url: "../Controlador/Elementos_AJAX/darBajaUsuario.php"
                 }).done(function( data ) {
-                   var test = data.resultado;
+                   var test = data;
                   
-                   if(test === true){
+                   if(test === "OK"){
                        $('#baja').empty();
                        $("#baja").append($('<h4>',{
                         text : 'Tú baja ha sido cursada correctamente.',
@@ -89,7 +90,7 @@ function darseBajaParcialmente(){
                         class: 'rsParcial'
                     }));
                         
-                        redirigirInicio();
+                         setTimeout(redirigirInicio,5000);
                         
                    }
                         

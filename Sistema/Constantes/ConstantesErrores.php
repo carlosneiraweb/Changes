@@ -1,111 +1,149 @@
 <?php
-//Constantes copiar directorio
-define("CONST_YA_EXISTE_DIRECTORIO", array(0, "Ya existe el directorio o archivo a copiar"));
-define("CONST_ERROR_ABRIR_DIRECTORIO", array(1, "No se pudo abrir directorio"));
-define("CONST_ERROR_CREAR_DIRECTORIO", array(2, "No se pudo crear directorio"));
-define("CONST_COPIAR_DIRECTORIO", array(3, "No se pudo copiar directorio "));
-define("CONST_COPIAR_ARCHIVO", array(4, "No se pudo copiar archivo o imagen"));
-define("CONST_ERROR_NO_EXISTE_DIRECTORIO",array(5, "El directorio no existe"));
-//error eliminar archivo
-define("CONST_ERROR_ELIMINAR_ARCHIVO", array(6,"No se pudo eliminar una imagen"));
-//error eliminar directorio
-define("CONST_ERROR_ELIMINAR_DIRECTORIO", array(7,"No se pudo eliminar directorio en el registro"));
-//error renombrar foto actualizar
-define("CONST_ERROR_RENOMBRAR_FOTO_ACTUALIZARSE", array(8, "No se pudo renombrar la foto  al actualizarse"));
-//error renombrar directorios actualizar
-define("CONST_ERROR_RENOMBRAR_DIRECTORIOS_ACTUALIZAR", array(9, "Error al renombrar los directorios en la actualiación"));
-//error mover imagen
-define("CONST_ERROR_MOVER_IMAGEN",array(10,"La imagen no se ha podido mover"));
-/**Metodo que nos devuelve el ID del usuario a bloquear.<br/> Para saber si ya esta bloqueado*/
-define("CONST_ERROR_DEVOLVER_ID_USUARIO_BLOQUEAR", array(11,"Error al recuperar el id del usuario a bloquear"));
-//error ya existe el directorio a copiar en DIRECTORIO_PADRE_TMP
-define("CONST_ERROR_CREAR_DIRECTORIO_PADRE_TMP_YA_EXISTE_DIRECTORIO", array(12,"No se pudo crear el directorio padre TMP, ya existe"));
-//error en la bbdd al actualizar un usuario
-define("CONST_ERROR_BBDD_ACTUALIZAR_USUARIO", array(13,"Hubo un problema en bbdd al actualizar el usuario"));
-//error al ingresar un usuario
-define("CONST_ERROR_BBDD_REGISTRAR_USUARIO", array(14,"Hubo un problema en bbdd al registrar el usuario"));
-//error al crear el subdirectorio
-define("CONST_ERROR_CREAR_SUBDIRECTORIO_POST", array(15,"No se pudo crear el subdirectorio donde almacenar el nuevo post"));
-//error al registrar un post
-define("CONST_ERROR_BBDD_REGISTRAR_POST", array(16,"Hubo un problema en bbdd al registrar el post"));
-//error al eliminar un post al registrarlo
-define("CONST_ERROR_ELIMINAR_POST_AL_REGISTRARLO", array(17,"No se pudo eliminar el post cuando el usuario intentaba registrarlo"));
-//error en la bbdd al actualizar un POST
-define("CONST_ERROR_BBDD_ACTUALIZAR_POST", array(18,"Hubo un problema en bbdd al actualizar el post"));
-//error al eliminar las imagenes al haber un fallo en la bbdd al registrar un post
-define("CONST_ERROR_BBDD_ELIMINAR_IMG_POST", array(19,"Hubo un problema al eliminar las imagenes de un post y hubo un fallo en la bbdd"));
-//error al eliminar todas las imagenes al subir un post
-define("CONST_ERROR_BBDD_BORRAR_IMG_ELIMINANDO_UN_POST",array(20,"Hubo un error al tratar de eliminar todas las imagenes de un post al borrar este"));
-//error al ingresar imagen demo al subir un post
-define("CONST_ERROR_BBDD_INGRESAR_IMG_DEMO_SUBIR_POST",array(21,"Hubo un problema al ingresar la imagen demo al subir un post en la bbdd"));
-//error al ingresar palabras ofrecidas
-define("CONST_ERROR_BBDD_INGRESAR_PALABRAS_OFRECIDAS", array(22,"Hubo un problema al ingresar las palabras ofrecidas"));
-//error al ingresar las palabras queridas
-define("CONST_ERROR_BBDD_INGRESAR_PALABRAS_QUERIDAS", array(23,"Hubo un problema al ingresar las palabras queridas"));
-//error al actualizar texto de una imagen cuando se sube un post
-define("CONST_ERROR_BBDD_ACTUALIZAR_TEXT_IMG_SUBIR_POST",array(24,"Hubo un problema al actualizar el texto de una img al subir post"));
-//error al consultar los usuarios bloqueados
-define("CONST_ERROR_BBDD_CONSULTAR_USUARIOS_BLOQUEADOS", array(25,"Hubo un error al consultar los usuarios bloqueados"));
-//error al dar de baja un usuario
-define("CONST_ERROR_BBDD_DAR_BAJA_USUARIO_DEFINITIVAMENTE", array(26,"Hubo un error al dar de baja al usuario definitivamente"));
-//error bloquear parcialmente un usuario
-define("CONST_ERROR_BBDD_DAR_BAJA_USUARIO_PARCIAL", array(27,"Hubo un error al dar de baja parcial a un usuario"));
-//error al construir el email palabras buscadas
-define("CONST_ERROR_CONSTRUIR_PALABRAS_BUSCADAS",array(28,"No se pudo contruir el email palabras buscadas"));
-//error al mandar email darse baja
-define("CONST_ERROR_CONSTRUIR_DARSE_BAJA",array(29,"No se pudo contruir el email cuando un usuario se da de baja"));
-//error al mandar email darse alta
-define("CONST_ERROR_CONSTRUIR_DARSE_ALTA",array(30,"No se pudo contruir el email cuando un usuario se da de alta"));
-//error al renombrar una img cuando el usuario ha eliminado una img al subir un post
-define("CONST_ERROR_RENOMBRAR_IMG_AL_ELIMINARLA_DEL_POST",array(31,"No se pudo renombrar la imagen cuando un usuario elimino una subiendo un post y subio otra"));
-//error al renombrar una img cuando un usuario sube una a un post
-define("CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST",array(32,"No se pudo renombrar la imagen cuando un usuario  subiendo una imagen a un post"));
-//error al contar los archivos para renombrar las fotos
-define("CONST_ERROR_CONTAR_ARCHIVOS",array(33, "Hubo un error al contar los archivos"));
-//error al ingresar img en la bbdd al subir post
-define("CONST_ERROR_BBDD_AL_SUBIR_UNA_IMG_SUBIENDO_POST",array(34,"No se pudo subir imagen registrando un post en la bbdd o no se pudo eliminar la imagen demo de la bbdd"));
-//errorbuscar usuarios palabras email
-define("CONST_ERROR_BBDD_BUSCAR_USUARIOS_EMAIL",array(35,"Hubo un error al buscar usuarios interesados en las palabras tabla email"));
-//error actualizar palabras queridas
-define("CONST_ERROR_BBDD_ACTUALIZAR_PBS_QUERIDAS",array(36,"Hubo un error al actualizar las palabras buscadas por el usuario"));
-//error actualizar palabras ofrecidas
-define("CONST_ERROR_BBDD_ACTUALIZAR_PBS_OFRECIDAS",array(37,"Hubo un error al actualizar las palabras ofrecidas por el usuario"));
-//error al devolver id de las palabras buscadas/ofrecidas
-define("CONST_ERROR_BBDD_DEVOLVER_ID_PALABRAS_AL_ACTUALIZAR",array(38,"Hubo un error en la bbdd al devolver el id de las palabras buscadas/ofrecidas al actualizar un post"));
-//error al cambiar nombre img que sube el usuario al registrarse
-define("CONST_ERROR_RENOMBRAR_IMG_REGISTRARSE",array(39,"Hubo un error al renombrar la img del usuario cuando se registraba"));
-//Error al desbloquear un usuario
-//define("CONST_ERROR_DESBLOQUEO_USUARIO",array(40,'Hemos tenido un problema al desbloquear un usuario'));
-//Error al Desbloquear Tabla Desbloquear un usuario
-define("CONST_ERROR_ELIMINAR_TABLA_DESBLOQUEAR",array(41,"No se ha podido eliminar un usuario de la tabla Desbloqueo"));
-//Error eliminar directorios al publicar un post y haber un error
-define( "CONST_ERROR_ELIMINAR_DIR_PUBLICAR_POST",array(42,"No se pudieron eliminar los directorios al haber un error al publicar un post"));
-//Error eliminar imagen demo al subir un post
-define("CONST_ERROR_ELIMINAR_IMG_DEMO_POST", array(43,"No se pudo eliminar la imagen demo cuando un usuario subua imagenmes"));
-//Error al eliminar una imagen quye esta subiendo un usuario al Post
-define("CONST_ERROR_ELIMINAR_IMG_SUBIR_POST",array(44,"No se pudo eliminar la img subida por el usuario al post"));
-//Error mostrar img seleccionada
-define("CONST_ERROR_MOSTRAR_IMG_SELECCIONADA",array(45,"No se pudo mostrar la imagen seleccionada al usuario para modificar o eliminar"));
-//Error al intentar ingresar o mover la imagen demo cuando el usuario subia un post y eliminaba las imagenes
-define("CONST_ERROR_INGRESAR_IMG_DEMO_AL_ELIMINAR_TODAS_IMG_SUBIR_POST",array(46,"No se pudo ingresar o mover la imagen demo cuando el usuario subia un post y eliminaba las imagenes"));
-/**Error al recuperar el id de un ususario en bloquear usuario**/
-define("CONST_ERROR_RECUPERAR_ID_USUARIO_BLOQUEO",array(47,"No se pudo recuperar el id cuando un usuario introduzco el nick para bloquearlo"));
-/**Error al comprobar que un usuario ya estaba bloqueado total o parcialmente*/
-define("CONST_ERROR_COMPROBAR_BLOQUEO_USUARIO",array(48,"No se pudo saber si el usuario ya estaba bloqueado totalmemte o parcialmente"));
-/**Error al bloquear al usuario totalmente*/
-define("CONST_ERROR_BLOQUEAR_TOTAL_USUARIO",array(49,"No pudimos bloquear totalmente al usuario"));
-/**Error al bloquear parcial un usuario*/
-define("CONST_ERROR_BLOQUEAR_PARCIAL_USUARIO",array(50,"No pudimos bloquear parcialmente al usuario"));
-/**Error al desbloquear totalmente un usuario*/
-define("CONST_ERROR_DESBLOQUEAR_TOTALMENTE_USUARIO",array(51,"No pudimos desbloquear totalmente al usuario"));
-/**Error al desbloquear parcialmente un susuario*/
-define("CONST_ERROR_DESBLOQUEAR_PARCIAL", array(52,"No pudimos desbloquear parcialmente al usuario"));
-/**Error al mostrar los usuarios bloqueados totalmente*/
-define("CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_TOTAL",array(53,"No pudimos mostrar los usuarios bloqueados total"));
-/**Error al mostrar los usuarios bloqueados parcialmente*/
-define("CONST_ERROR_MOSTRAR_USUARIOS_BLOQUEADOS_PARCIAL",array(54,"No pudimos mostrar los usuarios bloqueados parcial"));
+                        /**ERRORES DIRECTORIOS*/
+
+
+/**Error ya existe el directorio*/
+define("CONST_YA_EXISTE_DIRECTORIO", array("DIR  0", "Ya existe el directorio o archivo a copiar"));
+/**Error abrir directorio*/
+define("CONST_ERROR_ABRIR_DIRECTORIO", array("DIR  1", "No se pudo abrir directorio"));
+/**Error crear directorio*/
+define("CONST_ERROR_CREAR_DIRECTORIO", array("DIR  2", "No se pudo crear directorio"));
+/**Error copiar directorio*/
+ define("CONST_COPIAR_DIRECTORIO", array("DIR  3", "No se pudo copiar directorio "));
+/**Error no existe directorio*/
+define("CONST_ERROR_NO_EXISTE_DIRECTORIO",array("DIR  4", "El directorio no existe"));
+/**Error eliminar directorio*/
+define("CONST_ERROR_ELIMINAR_DIRECTORIO", array("DIR  5","No se pudo eliminar directorio en el registro"));
+/**Error renombrar directorios actualizar*/
+define("CONST_ERROR_RENOMBRAR_DIRECTORIOS_ACTUALIZAR", array("DIR  6", "Error al renombrar los directorios en la actualiación"));
+/**Error al crear el subdirectorio para un Post*/
+define("CONST_ERROR_CREAR_SUBDIRECTORIO_POST", array("DIR  7","No se pudo crear el subdirectorio donde almacenar el nuevo post"));
+/**Error eliminar directorios al publicar un post y haber un error*/
+define( "CONST_ERROR_ELIMINAR_DIR_PUBLICAR_POST",array("DIR  8","No se pudieron eliminar los directorios al haber un error al publicar un post"));
 /**Error al eliminar los directorios al darse de baja un usuario*/
-define("CONST_ERROR_ELIMINAR_DIRECTORIOS_BAJA",array(55,"No se pudo eliminar los directorios al dar de baja un usuario"));
+define("CONST_ERROR_ELIMINAR_DIRECTORIOS_BAJA",array("DIR  9","No se pudo eliminar los directorios al dar de baja un usuario"));
+/**Error al eliminar los directorios que se crearon al intentar hacer el registro de un ususario*/
+define("CONST_ERROR_ELIMINAR_DIRECTORIOS_ALTA",array("DIR  10","No se pudo eliminar los directorios al registrar un usuario y ocurrir un error"));
+
+
+
+
+
+
+                    /**ERRORES ARCHIVO*/
+
+/**Error copiar archivo*/
+define("CONST_COPIAR_ARCHIVO", array("FILE 0", "No se pudo copiar archivo o imagen"));
+/**Error eliminar archivo*/
+define("CONST_ERROR_ELIMINAR_ARCHIVO", array("FILE 1","No se pudo eliminar una imagen"));
+/**Error renombrar foto actualizar*/
+define("CONST_ERROR_RENOMBRAR_FOTO_ACTUALIZARSE", array("FILE 2", "No se pudo renombrar la foto  al actualizarse"));
+/**Error al mover imagen al registrarse o actualizar */
+define("CONST_ERROR_MOVER_IMAGEN_ACTUALIZAR_REGISTRAR",array("FILE 3","La imagen no se ha podido mover al actualizar o registrar"));
+/**Error al mover imagen al subir un Post */
+define("CONST_ERROR_MOVER_IMAGEN_SUBIR_POST",array("FILE 4","La imagen no se ha podido mover al subir un post"));
+/**Error al renombrar una img cuando el usuario ha eliminado una img al subir un post*/
+define("CONST_ERROR_RENOMBRAR_IMG_AL_ELIMINARLA_DEL_POST",array("FILE 5","No se pudo renombrar la imagen cuando un usuario elimino una subiendo un post y subio otra"));
+/**Error al renombrar una img cuando un usuario sube una a un post*/
+define("CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST",array("FILE 6","No se pudo renombrar la imagen cuando un usuario  subiendo una imagen a un post"));
+/**Error al contar los archivos para renombrar las fotos*/
+define("CONST_ERROR_CONTAR_ARCHIVOS",array("FILE 7", "Hubo un error al contar los archivos"));
+/**Error eliminar imagen demo al subir un post*/
+define("CONST_ERROR_ELIMINAR_IMG_DEMO_POST_DEL_DIRECTORIO", array("FILE 8","No se pudo eliminar la imagen demo del directorio cuando un usuario subia imagenes"));
+/**Error al eliminar una imagen que del directorio esta subiendo un usuario al Post*/
+define("CONST_ERROR_ELIMINAR_IMG_SUBIR_POST",array("FILE 9","No se pudo eliminar la img subida al directorio por el usuario al post"));
+
+
+
+
+
+                    /**ERRORES BBDD*/
+
+
+/**Metodo que nos devuelve el ID del usuario a bloquear.<br/> Para saber si ya esta bloqueado*/
+define("CONST_ERROR_DEVOLVER_ID_USUARIO_BLOQUEAR", array("BBDD 0","Error al recuperar el id del usuario a bloquear"));
+/**Error en la bbdd al actualizar un usuario*/
+define("CONST_ERROR_BBDD_ACTUALIZAR_USUARIO", array("BBDD 1","Hubo un problema en bbdd al actualizar el usuario"));
+/**Error al ingresar un usuario*/
+define("CONST_ERROR_BBDD_REGISTRAR_USUARIO", array("BBDD 2","Hubo un problema en bbdd al registrar el usuario"));
+/**Error al registrar un post*/
+define("CONST_ERROR_BBDD_REGISTRAR_POST", array("BBDD 3","Hubo un problema en bbdd al registrar el post"));
+/**Error al eliminar un post al registrarlo de la bbdd*/
+define("CONST_ERROR_ELIMINAR_POST_AL_REGISTRARLO", array("BBDD 4","No se pudo eliminar el post cuando el usuario intentaba registrarlo"));
+/**Error en la bbdd al actualizar un POST*/
+define("CONST_ERROR_BBDD_ACTUALIZAR_POST", array("BBDD 5","Hubo un problema en bbdd al actualizar el post"));
+/**Error al eliminar las imagenes al haber un fallo en la bbdd al registrar un post*/
+define("CONST_ERROR_BBDD_ELIMINAR_IMG_POST", array("BBDD 6","Hubo un problema al eliminar las imagenes de un post y hubo un fallo en la bbdd"));
+/**Error al eliminar todas las imagenes al subir un post*/
+define("CONST_ERROR_BBDD_BORRAR_IMG_ELIMINANDO_UN_POST",array("BBDD 7","Hubo un error al tratar de eliminar todas las imagenes de un post al borrar este"));
+/**Error al ingresar imagen demo al subir un post*/
+define("CONST_ERROR_BBDD_INGRESAR_IMG_DEMO_SUBIR_POST",array("BBDD 8","Hubo un problema al ingresar la imagen demo al subir un post en la bbdd"));
+/**Error al ingresar palabras ofrecidas*/
+define("CONST_ERROR_BBDD_INGRESAR_PALABRAS_OFRECIDAS", array("BBDD 9","Hubo un problema al ingresar las palabras ofrecidas"));
+/**Error al ingresar las palabras queridas*/
+define("CONST_ERROR_BBDD_INGRESAR_PALABRAS_QUERIDAS", array("BBDD 10","Hubo un problema al ingresar las palabras queridas"));
+/**Error al actualizar texto de una imagen cuando se sube un post*/
+define("CONST_ERROR_BBDD_ACTUALIZAR_TEXT_IMG_SUBIR_POST",array("BBDD 11","Hubo un problema al actualizar el texto de una img al subir post"));
+/**Error al consultar los usuarios bloqueados*/
+define("CONST_ERROR_BBDD_CONSULTAR_USUARIOS_BLOQUEADOS", array("BBDD 12","Hubo un error al consultar los usuarios bloqueados"));
+/**Error al dar de baja un usuario*/
+define("CONST_ERROR_BBDD_DAR_BAJA_USUARIO_DEFINITIVAMENTE", array("BBDD 13","Hubo un error al dar de baja al usuario definitivamente"));
+/**Error bloquear parcialmente un usuario*/
+define("CONST_ERROR_BBDD_DAR_BAJA_USUARIO_PARCIAL", array("BBDD 14","Hubo un error al dar de baja parcial a un usuario"));
+/**Error al ingresar img en la bbdd al subir post*/
+define("CONST_ERROR_BBDD_AL_SUBIR_UNA_IMG_SUBIENDO_POST",array("BBDD 15","No se pudo subir imagen registrando un post en la bbdd o no se pudo eliminar la imagen demo de la bbdd"));
+/**Error buscar usuarios palabras email*/
+define("CONST_ERROR_BBDD_BUSCAR_USUARIOS_EMAIL",array("BBDD 16","Hubo un error al buscar usuarios interesados en las palabras tabla email"));
+/**Error actualizar palabras queridas*/
+define("CONST_ERROR_BBDD_ACTUALIZAR_PBS_QUERIDAS",array("BBDD 17","Hubo un error al actualizar las palabras buscadas por el usuario"));
+/**Error actualizar palabras ofrecidas*/
+define("CONST_ERROR_BBDD_ACTUALIZAR_PBS_OFRECIDAS",array("BBDD 18","Hubo un error al actualizar las palabras ofrecidas por el usuario"));
+/**Error al devolver id de las palabras buscadas/ofrecidas*/
+define("CONST_ERROR_BBDD_DEVOLVER_ID_PALABRAS_AL_ACTUALIZAR",array("BBDD 19","Hubo un error en la bbdd al devolver el id de las palabras buscadas/ofrecidas al actualizar un post"));
+/**Error eliminar imagen demo al subir un post de la BBDD*/
+define("CONST_ERROR_BBDD_ELIMINAR_IMG_DEMO_POST", array("BBDD 20","No se pudo eliminar la imagen demo de la BBDD cuando un usuario subia imagenes"));
+/**Error bbdd mostrar img seleccionada*/
+define("CONST_ERROR_BBDD_MOSTRAR_IMG_SELECCIONADA",array("BBDD 21","No se pudo mostrar la imagen seleccionada al usuario para modificar o eliminar"));
+/**Error al intentar ingresar en la BBDD la imagen demo cuando un usuario eliminaba todas las que estaba subiendo*/
+define("CONST_ERROR_BBDD_INGRESAR_IMG_DEMO_AL_ELIMINAR_TODAS_IMG_SUBIR_POST",array("BBDD 22","No se pudo ingresar o mover la imagen demo cuando el usuario subia un post y eliminaba las imagenes"));
+/**Error al comprobar que un usuario ya estaba bloqueado total o parcialmente en la BBDD*/
+define("CONST_ERROR_BBDD_COMPROBAR_BLOQUEO_USUARIO",array("BBDD 23","No se pudo saber si el usuario ya estaba bloqueado totalmemte o parcialmente"));
+/**Error en la BBDD al bloquear al usuario totalmente*/
+define("CONST_ERROR_BBDD_BLOQUEAR_TOTAL_USUARIO",array("BBDD 24","No pudimos bloquear totalmente al usuario"));
+/**Error  en la BBDD al bloquear parcial un usuario*/
+define("CONST_ERROR_BBDD_BLOQUEAR_PARCIAL_USUARIO",array("BBDD 25","No pudimos bloquear parcialmente al usuario"));
+/**Error en la BBDD al desbloquear parcialmente un susuario*/
+define("CONST_ERROR_BBDD_DESBLOQUEAR_PARCIAL", array("BBDD 26","No pudimos desbloquear parcialmente al usuario"));
+/**Error en la BBDD al desbloquear totalmente un usuario*/
+define("CONST_ERROR_BBDD_DESBLOQUEAR_TOTALMENTE_USUARIO",array("BBDD 27","No pudimos desbloquear totalmente al usuario"));
+/**Error en la BBDD al mostrar los usuarios bloqueados totalmente*/
+define("CONST_ERROR_BBDD_MOSTRAR_USUARIOS_BLOQUEADOS_TOTAL",array("BBDD 28","No pudimos mostrar los usuarios bloqueados total"));
+
+
+                        /**ERRORES EMAIL*/
+/**Error al construir el email palabras buscadas*/
+define("CONST_ERROR_CONSTRUIR_PALABRAS_BUSCADAS",array("EMAIL 0","No se pudo contruir el email palabras buscadas"));
+/**error al mandar email darse baja*/
+define("CONST_ERROR_CONSTRUIR_DARSE_BAJA",array("EMAIL 1","No se pudo contruir el email cuando un usuario se da de baja"));
+/**Error al mandar email darse alta*/
+define("CONST_ERROR_CONSTRUIR_DARSE_ALTA",array("EMAIL 2","No se pudo contruir el email cuando un usuario se da de alta"));
+/**Error al desbloquear un usuario*/
+define("CONST_ERROR_DESBLOQUEO_USUARIO",array("EMAIL 3",'Hemos tenido un problema al desbloquear un usuario'));
+/**Error en la BBDD al mostrar los usuarios bloqueados parcialmente*/
+define("CONST_ERROR_BBDD_MOSTRAR_USUARIOS_BLOQUEADOS_PARCIAL",array("EMAIL 4","No pudimos mostrar los usuarios bloqueados parcial"));
+
+
+
+//Error al Desbloquear Tabla Desbloquear un usuario
+//define("CONST_ERROR_ELIMINAR_TABLA_DESBLOQUEAR",array(41,"No se ha podido eliminar un usuario de la tabla Desbloqueo"));
+/**Error al recuperar el id de un ususario en bloquear usuario**/
+//define("CONST_ERROR_RECUPERAR_ID_USUARIO_BLOQUEO",array(47,"No se pudo recuperar el id cuando un usuario introduzco el nick para bloquearlo"));
+
+
+
+
+
+
 
 
 define("ERROR", "<h5>Revisa tu formulario.</h5><h6>Parece que hay algun campo vacio</h6>");
@@ -145,7 +183,10 @@ define("ERROR_BLOQUEAR_USUARIO","<h5>Por algún motivo no hemos podido hacer el 
 define("ERROR_MOSTRAR_USUARIOS_BLOQUEADOS","<h5>Por algún motivo no podemos mostrarte los usuarios que tienes bloqueados</h5><h4>Puedes intentarlo de nuevo</h4>");
 /**Error al eliminar de la BBDD a un usuario*/
 define("ERROR_ELIMINAR_USUARIO_BBDD","<h5>No hemos podido darte de baja<h5><h4>Si no puedes ponerte en logearte</h4><h4>Ponte en contacto con nosotros</h4>");
-
+/**Error  al eliminar los directorios de un usuario al darse de baja*/
+define("ERROR_ELIMINAR_DIRECTORIO_BAJA_USUARIO","<h5>Tuvimos un problema al darte de baja</h5><h4>Intentaremos solucionarlo lo antes posible</h4>");
+/**Error al eliminar os directorios de un usuario al ocurrir un error al darse de alta*/
+define("ERROR_ELIMINAR_DIRECTORIO_ALTA_USUARIO","<h5>Parece que hubo un problema al darte de alta</h5>");
 
 define("ACTUALIZAR", 1);
 define("ERROR_ARCHIVOS", "<h5>Parece que hemos tenido un problema.</h5><h5>Lo sentimos, intentalo otra vez.</h5>");

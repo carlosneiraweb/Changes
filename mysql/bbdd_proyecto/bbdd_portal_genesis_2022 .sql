@@ -33,7 +33,7 @@ DROP TABLE IF EXISTS `Errores`;
 CREATE TABLE `Errores` (
   `idErrores` int NOT NULL AUTO_INCREMENT,
   `motivo` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `codigo` int NOT NULL,
+  `codigo` varchar(25) NOT NULL,
   `usuario` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `fechaError` datetime NOT NULL,
   `mensaje` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,

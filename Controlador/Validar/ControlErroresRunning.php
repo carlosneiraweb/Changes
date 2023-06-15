@@ -27,7 +27,7 @@ public function ErroresRunning($opc,$stringError){
             break;
         
         default:
-            //nothing
+            //nothingeliminarDirectoriosSistema
             
     
     

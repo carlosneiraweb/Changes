@@ -16,6 +16,8 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Directorios.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/mandarEmails.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepcionesUsuario.php');
 
+global $conMenu;
+$conMenu = Conne::connect();  
 
  if(!isset($_SESSION)) 
     { 
@@ -40,17 +42,14 @@ function darBajaDefinitiva(){
               
             try{
            
-               
-                
-                $test = array();
                 $idUsu = $_SESSION["userTMP"]->devuelveId();
                 $nickEliTotal = $_SESSION["userTMP"]->getValue('nick');
                 $email= $_SESSION["userTMP"]->getValue('email');
                 $test = $_SESSION["userTMP"]->eliminarPorId($idUsu);
                 
-                /**
-                dar baja administradores
-                */
+              
+                //dar baja administradores
+                
                 
                 //ELIMINAMOS LOS DIRECTORIOS CREADOS AL REGISTRARSE
                 if($test && $idUsu != ""){
@@ -58,25 +57,18 @@ function darBajaDefinitiva(){
                     Directorios::eliminarDirectoriosSistema("../../photos/".$idUsu,"eliminarDirectoriosBajaUsuario");
                     Directorios::eliminarDirectoriosSistema("../../datos_usuario/".$idUsu,"eliminarDirectoriosBajaUsuario");
                     Directorios::eliminarDirectoriosSistema("../../Videos/".$idUsu,"eliminarDirectoriosBajaUsuario");
-                    
-                        
+     
                 }
                 
                 if($test){
                     echo json_encode('OK');
                         $objMandarEmails = new mandarEmails();
                         $objMandarEmails->mandarEmailBajaUsuario($nickEliTotal,$email);
-                }else{
-                    echo json_encode('NO_OK');
                 }
-            
-            
-            
-            
-              
+
             } catch (Exception $ex) {
                    
-            //$excepciones->redirigirPorErrorSistema("darBajaDefinitivamente",false,$);
+                echo $ex->getMessage();
                     
             }
     
@@ -85,7 +77,39 @@ function darBajaDefinitiva(){
 }
 
 
-
+function darBajaParcial(){
+    
+    try{
+            
+             
+            global $conMenu;
+            $idUsu = $_SESSION["userTMP"]->devuelveId();
+            
+            $sqlBajaParcial = "UPDATE  usuario SET bloqueado = 1"
+                    . " where idUsuario = :idUsuario;";
+        
+            $stmBajaParcial = $conMenu->prepare($sqlBajaParcial);
+            $stmBajaParcial->bindValue(":idUsuario", $idUsu, PDO::PARAM_INT );
+            $test = $stmBajaParcial->execute();
+            
+                if($test){
+                    echo json_encode("OK");
+                }
+                
+                
+            Conne::disconnect($conMenu);
+            
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+            Conne::disconnect($conMenu);
+           // $excepciones->redirigirPorErrorSistema("Error al dar de baja parcial al usuario");
+        }    
+            
+            
+    
+    
+    //fin darBajaParcial
+}
 
 
     
@@ -94,41 +118,15 @@ function darBajaDefinitiva(){
     
         case 'Definitivamente':
             
-            
             darBajaDefinitiva();
-
-                 
-                            
-            break;
+            
+                break;
         
         case "parcialmente":
             
-        try{
-            
-            $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_DAR_BAJA_USUARIO_PARCIAL[1],CONST_ERROR_BBDD_DAR_BAJA_USUARIO_PARCIAL[0]); 
-            global $conMenu;
-            $idUsu = $_SESSION["userTMP"]->devuelveId();
-                
-            //ELIMINAMOS LAS PALABRAS DE AVISO
-            $sqlPalabrasEmail =  "update  usuario set activo = 0"
-                    . " where idUsuario = :idUsuario;";
-                           
-            
-            $stmEliPalabrasEmail = $conMenu->prepare($sqlPalabrasEmail);
-            $stmEliPalabrasEmail->bindParam(":idUsuario", $idUsu, PDO::PARAM_INT );
-            $test = $stmEliPalabrasEmail->execute();
-            $resultado = array("resultado" => $test);
-            echo json_encode($resultado);
-            Conne::disconnect($conMenu);
-            
-        } catch (Exception $ex) {
+             darBajaParcial();
 
-            Conne::disconnect($conMenu);
-            $excepciones->redirigirPorErrorSistema("Error al dar de baja parcial al usuario");
-        }    
-            
-            
-            break;
+                break;
         
         
         default:

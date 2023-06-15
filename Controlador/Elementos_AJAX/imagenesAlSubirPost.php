@@ -53,7 +53,15 @@ if(isset($_POST['ruta'])){
  
  // echo $idPost." ".$ruta." ".$opcImgSubirPost;
             
- 
+ /**
+  * 
+  * 
+  * COMPROBAR CONSTANTES DE LOS ERRORES
+  * 
+  * 
+  * 
+  * 
+  */
   
  switch ($opcImgSubirPost) {
         case "ImagenNueva":
@@ -82,7 +90,7 @@ if(isset($_POST['ruta'])){
         $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
         
         if($opcImgSubirPost == "ImagenEliminarNueva"){
-            $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_ELIMINAR_IMG_POST[1],CONST_ERROR_ELIMINAR_IMG_SUBIR_POST[0],$ex);
+            $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_ELIMINAR_IMG_POST[1],CONST_ERROR_BBDD_ELIMINAR_IMG_SUBIR_POST[0],$ex);
             $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost",true);
         }else{
             $excepciones = new MisExcepcionesPost(CONST_ERROR_MOSTRAR_IMG_SELECCIONADA[1],CONST_ERROR_MOSTRAR_IMG_SELECCIONADA[0],$ex);
