@@ -20,7 +20,7 @@ class MisExcepcionesPost extends MetodosInfoExcepciones{
     * un post
     */
 
-public function eliminarVariablesSesionPostAcabado(){
+static function eliminarVariablesSesionPostAcabado(){
 
     if(isset($_SESSION['imgTMP'])){unset($_SESSION['imgTMP']);}
     if(isset($_SESSION['atras'])){unset($_SESSION['atras']);}
@@ -29,6 +29,7 @@ public function eliminarVariablesSesionPostAcabado(){
     if(isset($_SESSION['imgTMP']['imagenesBorradas'])){unset($_SESSION['imgTMP']['imagenesBorradas']);}
     if(isset($_SESSION['error'])){unset($_SESSION['error']);}
     if(isset($_SESSION['post'])){unset($_SESSION['post']);}
+   // if(isset($_SESSION['nuevoSubdirectorio'])){unset($_SESSION['nuevoSubdirectorio']);}
 
     //fin eliminarVariablesSesionPostAcabado()         
     }
@@ -40,22 +41,22 @@ public function eliminarVariablesSesionPostAcabado(){
      * y a mitad de proceso se sale y no<br/>
      * acaba publicandolo<br/>
      * Tambien se usa en caso de error.<br/>
-     * @param name $opc<br/>
-     * type boolean <br/>
-     * Se usa para cortar la secuencia
+     *
      * 
-     */
+     
 
  public function eliminarPostAlPublicar(){
     
         
-            $tmp=  $_SESSION['nuevoSubdirectorio'];//de fotos
+            
            
-            $eliminarPost = "../photos/$tmp[0]/$tmp[1]";
+            $eliminarPost = "../photos/".$_SESSION['nuevoSubdirectorio'][0]."/".$_SESSION['nuevoSubdirectorio'][1];
             
             $idPost = $_SESSION['lastId'][0];
             //En caso de que no se pueda crear el subdirectorio
+            //Solo eliminamos el directorio del Post
             if($eliminarPost !== "../photos/$tmp[0]/"){
+                
                 Directorios::eliminarDirectoriosSistema($eliminarPost,"SubirPost");
             }
                 Post::eliminarPostId($idPost);
@@ -65,7 +66,7 @@ public function eliminarVariablesSesionPostAcabado(){
         //fin  eliminarPostAlPublicar
 }
 
-
+*/
     
  /**
      * Metodo que en caso de error al
@@ -83,26 +84,26 @@ public  function redirigirPorErrorTrabajosEnArchivosSubirPost($opc,$grado){
         //Para mostrar el error al usuario en mostrar_error.php
         $_SESSION['mostrarError'] = $_SESSION['error'];
         $_SESSION["paginaError"] = "subir_posts.php";
+        //Directorio a eliminar al ocurrir un error
+        $dir = "../photos/".$_SESSION['nuevoSubdirectorio'][0]."/".$_SESSION['nuevoSubdirectorio'][1];
         
         switch ($opc) {
             
             case 'errorPost':
                 
-               
+                //Solo eliminamos los directorios creados
+                //Aun no se ha insertado en la bbdd nada
                 $this->tratarDatosErrores($opc, $grado);
-                $this->eliminarPostAlPublicar();
-                $this->eliminarVariablesSesionPostAcabado();
+                //Por si no se ha podido crear el subdirectorio
+                if($_SESSION['nuevoSubdirectorio'][1] !== null){
+                   
+                    Directorios::eliminarDirectoriosSistema($dir,"SubirPost");
+                }
+                 $this->eliminarVariablesSesionPostAcabado();
 
                     die();
                     break;
-                
-            case "errorPostEliminarBBDD":
-
-                $this->tratarDatosErrores($opc, $grado);
-                $this->eliminarVariablesSesionPostAcabado();
-                
-                    die();
-                    break;
+           
                 
             default:
                 

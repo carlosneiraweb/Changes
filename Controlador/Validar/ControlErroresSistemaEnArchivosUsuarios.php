@@ -28,7 +28,7 @@ if(!isset($_SESSION)){
 
 
   if(!isset($_SESSION["paginaError"])){
-            $_SESSION["paginaError"] = "registrarse.php";
+            $_SESSION["paginaError"] = MOSTRAR_PAGINA_ERROR;
         }
  //Variable global para mostrar los errores de validacion
         

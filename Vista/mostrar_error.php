@@ -47,7 +47,11 @@
             echo $_SESSION['mostrarError'];
             unset($_SESSION['mostrarError']);
         }
+       
+       
+      
         $ex = $_SESSION['paginaError'];
+       
         echo '<script type="text/javascript">';
            //indicamos la url a javascript
            //para redirecionarnos a la pagina correcta

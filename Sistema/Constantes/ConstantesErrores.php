@@ -55,8 +55,9 @@ define("CONST_ERROR_ELIMINAR_IMG_DEMO_POST_DEL_DIRECTORIO", array("FILE 9","No s
 /**Error al eliminar una imagen que del directorio esta subiendo un usuario al Post*/
 define("CONST_ERROR_ELIMINAR_IMG_SUBIR_POST",array("FILE 10","No se pudo eliminar la img subida al directorio por el usuario al post"));
 /**Error al copiar la foto demo al registrarse*/
-define("CONST_ERROR_COPIAR_DEMO", array("FILE 11", "No se pudo copiar la imagen demo al registrarse"));
-
+define("CONST_ERROR_COPIAR_DEMO_REGISTRO", array("FILE 11", "No se pudo copiar la imagen demo al registrarse"));
+//**Error al copiar imagen DEMO al subir post*/
+define("CONST_ERROR_COPIAR_DEMO_POST", array("FILE 12", "No se pudo copiar la imagen DEMO al subir un post."));
 
 
 

@@ -34,6 +34,8 @@ if (isset($_POST['opcion'])){
      }
 }
 
+
+
 if (isset($_POST['idPost'])){ 
         $idPost = $_POST['idPost'];
 }else{
@@ -52,16 +54,7 @@ if(isset($_POST['ruta'])){
     }
  
  // echo $idPost." ".$ruta." ".$opcImgSubirPost;
-            
- /**
-  * 
-  * 
-  * COMPROBAR CONSTANTES DE LOS ERRORES
-  * 
-  * 
-  * 
-  * 
-  */
+
   
  switch ($opcImgSubirPost) {
         case "ImagenNueva":
@@ -72,13 +65,25 @@ if(isset($_POST['ruta'])){
         
             break;
     }   
+    
+    
+        $tmpImg = false;
         $stImgSubirPost = $conImgSubirPost->query($sqlImgSubirPost);
-        $resultImgSubirPost = $stImgSubirPost->fetchAll();
-       
-        if($resultImgSubirPost == null){throw new Exception();}
+        $resultImgSubirPost = $stImgSubirPost->fetch();
+        //var_dump($resultImgSubirPost);
+      
+        if($resultImgSubirPost != false){
+            $tmpImg = $resultImgSubirPost; 
+            $tmpImg = substr($tmpImg, -4);   
+        }
         
-        echo json_encode($resultImgSubirPost);
         
+        //No se ha subido ninguna imagen aun
+        if($tmpImg === false){
+            echo json_encode($tmpImg);
+        }else{
+            echo json_encode($resultImgSubirPost);
+        }
         
             $stImgSubirPost->closeCursor();
             Conne::disconnect($conImgSubirPost);
@@ -99,4 +104,3 @@ if(isset($_POST['ruta'])){
     }
     
     
-

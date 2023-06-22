@@ -13,7 +13,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/ControlErro
     { 
         session_start(); 
     } 
-   
+
 
 
  /**
@@ -27,7 +27,7 @@ function volverAnterior(){
  * Metodo que nos redirige a la pagina de mostrar error
  */ 
 function mostrarError(){
-        header('Location: mostrar_error.php');
+        header(MOSTRAR_PAGINA_ERROR);
 }  
 
 
@@ -41,9 +41,6 @@ $_SESSION["paginaError"] = basename($_SERVER['PHP_SELF']);
 global $articulo;
 $articulo = new Post(array());
 global $pa_queridas;
-global $excepciones;
-$exc = new Exception();
-$excepciones = new MisExcepcionesPost(null,null, $exc);
 
 ?>
 <!DOCTYPE html>
@@ -126,8 +123,11 @@ $excepciones = new MisExcepcionesPost(null,null, $exc);
       
         displayStep1(array());
     }
-    
-
+   
+    if(isset($_SESSION['nuevoSubdirectorio'])){
+        $eliminarPost = "../photos/".$_SESSION['nuevoSubdirectorio'][0]."/".$_SESSION['nuevoSubdirectorio'][1];
+            
+    }
    
     /*Mandamos a comprobar los campos del primer formulario*/
     if(isset($_POST['primeroSubirPost']) and $_POST['primeroSubirPost'] == "Siguiente"){        
@@ -141,20 +141,22 @@ $excepciones = new MisExcepcionesPost(null,null, $exc);
         //luego vuelve al paso anterior y decide no subir el post
         //Llamamos a este metodo para eliminar los datos con los que hemos trabajado
         if(isset($_SESSION['atras']) and $_SESSION['atras'] === "atras"){
-            $excepciones->eliminarPostAlPublicar();
-            $excepciones->eliminarVariablesSesionPostAcabado();
+            Directorios::eliminarDirectoriosSistema($eliminarPost,"SubirPost");
+            Post::eliminarPostId($_SESSION["lastId"][0]);
+            MisExcepcionesPost::eliminarVariablesSesionPostAcabado();
+            
             
                 
         }else{
             //Si no se ha llegado al segundo paso
             //redirigimos a index.php y eliminamos las variables
             //con las que hemos trabajado
-            $excepciones->eliminarVariablesSesionPostAcabado();
+            MisExcepcionesPost::eliminarVariablesSesionPostAcabado();
             
         } 
         
         
-        header('Location:'. "index.php");
+        header(MOSTRAR_PAGINA_INDEX);
         
     } elseif(isset($_POST['segundoSubirPost']) and $_POST['segundoSubirPost'] == "Enviar" ){    
         //El usario  quiere subir una foto al post
@@ -174,17 +176,17 @@ $excepciones = new MisExcepcionesPost(null,null, $exc);
                 
     } elseif(isset($_POST['segundoSubirPost']) and $_POST['segundoSubirPost'] == "Fin"){
         //El usuario ha terminado de ingresar los datos del post
-        //Le redirigimos a cualqier url que estubiera
+        //Le redirigimos a cualqier url que estuviera
         //Destruimos la sesion atras, la sesion contador y si existiera la 
             //la variable de imagenes borradas
-            $excepciones->eliminarVariablesSesionPostAcabado(); 
+            MisExcepcionesPost::eliminarVariablesSesionPostAcabado(); 
             //Esta variable de sesion no se destruye junto a las 
             //otras por que es necesaria para hacer un update
             //del post mientras se esta publicando.
             //Solo se puede destruir cuando se finaliza el proceso de publicar.
-            if(isset($_SESSION['lastId'])){
-                unset($_SESSION['lastId']);
-            }
+            if(isset($_SESSION['lastId'])){unset($_SESSION['lastId']);}
+            //Solo cuando se ha acabado de publicar el post
+            if(isset($_SESSION['nuevoSubdirectorio'])){unset($_SESSION['nuevoSubdirectorio']);}  
                 
                 volverAnterior();
            
@@ -212,20 +214,19 @@ $excepciones = new MisExcepcionesPost(null,null, $exc);
         
          
                 //Aqui escojemos el valor del campo textarea comentarioPost
-                //Lo hacemos asi por que este tipo campo no tiene el 
-                //atributo value()
+                
                     if(isset($_SESSION['post']['comentarioSubirPost'])){
                         $coment = $_SESSION['post']['comentarioSubirPost'];
-                    
-                        //Usamos las comillas `` para hecer una plantilla
+
+                        //Usamos las comillas `` para hacer una plantilla
                         //como noredoc en php
                             echo '<script type="text/javascript">'; 
-                            echo "coment = "; echo "`$coment`".';'; 
+                            echo "var coment = `".$coment."`;"; //"`$coment".';'
                             echo '</script>';   
                 
                     }else{
                             echo '<script type="text/javascript">'; 
-                            echo "coment = "; echo "".';';    
+                            echo 'var coment = " ";';    //"; echo "".';'
                             echo '</script>'; 
                     }
         
@@ -331,17 +332,19 @@ $excepciones = new MisExcepcionesPost(null,null, $exc);
   
     //Agregamos el contenido del textara 
     //comentario Post
-    echo '<script type="text/javascript">';
-       
-        echo 'if( coment != ""){';
-            //echo "document.getElementById('comentarioSubirPost').innerHTML = coment; ";
-            echo "$('#comentarioSubirPost').html(coment);";       
-        echo '}else{';
-            //echo "document.getElementById('comentarioSubirPost').innerHTML = coment; ";
-            echo "$('#comentarioSubirPost').html('');"; 
-        echo '}';
-                            
-    echo '</script>'; 
+    if($coment !== ""){
+        echo '<script type="text/javascript">';
+
+            echo 'if( coment != ""){';
+                //echo "document.getElementById('comentarioSubirPost').innerHTML = coment; ";
+                echo "$('#comentarioSubirPost').html(coment);";       
+            echo '}else{';
+                //echo "document.getElementById('comentarioSubirPost').innerHTML = coment; ";
+                echo "$('#comentarioSubirPost').html('');"; 
+            echo '}';
+
+        echo '</script>'; 
+    }
  //fin displayStep1
 }    
         
@@ -356,7 +359,11 @@ function displayStep2($missingFields){
             if(isset($_SESSION['png'])){
                 unset($_SESSION['png']);
             }
-     */       
+     */   
+
+     
+
+
     global $mensaje; 
   
     
@@ -371,8 +378,10 @@ function displayStep2($missingFields){
         //luego el usuario quiere puede subir fotos.
         //Ahi es cuando se utiliza.
             if(isset($_SESSION['lastId']) ){
+              
                 $idPost = $_SESSION['lastId'][0];
             echo '<script type="text/javascript">';
+            
                 echo "var idPost = "; echo "'$idPost'".";";
             echo '</script>';
          
@@ -511,19 +520,19 @@ function ingresarPost(){
 
 
 /**
- * Este metodo ingresa en la bbdd en la tabla de imagenes
- * las imagenes que va subiendo el usuario
- * cada vez que sube una imagen.
- * Es llamado desde procesForm una vez a validado las imagenes.
- * $_SESSION['post']['figcaption']
- * Se instancia en el formulario subir_post 
- * de este mismo archivo.
- * $_SESSION['idImagen'] = /60/2/1
- * Se instancia en ControlErroresSistemaEnArchivosPOst al validar la foto y cambiarle 
- * el nombre en la clase Directorios.
- * En este metodo solo se comprueba que el sistema a
- * podido ingresar la imagen en la bbdd
- * De moverla al directorio adecuado se encarga
+ * Este metodo ingresa en la bbdd en la tabla de imagenes </br>
+ * las imagenes que va subiendo el usuario</br>
+ * cada vez que sube una imagen.</br>
+ * Es llamado desde procesForm una vez a validado las imagenes.</br>
+ * $_SESSION['post']['figcaption']</br>
+ * Se instancia en el formulario subir_post </br>
+ * de este mismo archivo.</br>
+ * $_SESSION['idImagen'] = /60/2/1</br>
+ * Se instancia en ControlErroresSistemaEnArchivosPOst al validar la foto y cambiarle </br>
+ * el nombre en la clase Directorios.</br>
+ * En este metodo solo se comprueba que el sistema a</br>
+ * podido ingresar la imagen en la bbdd</br>
+ * De moverla al directorio adecuado se encarga</br>
  * la funcion validar campos.
 */
 
@@ -592,9 +601,8 @@ function eliminarImagen(){
 function processForm($requiredFields, $st){
     //Array para almacenar los campos no rellenados y obligatorios
         global $missingFields;
-        global $articulo;
+        $missingFields = array();
         global $pa_queridas;
-        $missingFields = array(); 
        
         
         

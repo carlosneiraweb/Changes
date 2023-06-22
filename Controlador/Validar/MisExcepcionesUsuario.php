@@ -116,7 +116,7 @@ public function eliminarDirectoriosUsuario($opc) {
  */
 
 
-public function redirigirPorErrorSistema($opc,$grado){
+public function redirigirPorErrorSistemaUsuario($opc,$grado){
 
    $_SESSION['errorArchivos'] = "existo";
 

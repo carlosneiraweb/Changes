@@ -87,7 +87,7 @@ public static function insertarImagenDemo(){
        $_SESSION['contador'] = $_SESSION['contador'] + 1;
        
        if(isset($_SESSION['imgTMP']) and (!empty($_SESSION['imgTMP']['imagenesBorradas'][0]))){
-
+           //   Eliminamos el primer elemento del array
            $tmp = array_shift($_SESSION['imgTMP']['imagenesBorradas']);
 
        }else{
@@ -213,6 +213,7 @@ public function eliminarImg(){
             
             if (empty($_SESSION['imgTMP']['imagenesBorradas'][$i])){
               $_SESSION['imgTMP']['imagenesBorradas'][$i] = $this->getValue('directorio');
+              
                            break;
             }
         }

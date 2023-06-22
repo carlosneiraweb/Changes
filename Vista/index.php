@@ -36,7 +36,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
 <html>
     <div id="ocultar" class="oculto"> </div>
     <head>
-       <meta charset="utf8mb4_unicode_520_ci 	">
+       <meta charset="utf8mb4_unicode_520_ci">
        <title>Tú portal de intercambio</title>
 	<meta name="description" content="Portal para intercambiar las cosas que ya no usas o utilizas por otras que necesitas o te gustan."/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>

@@ -8,6 +8,7 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesBbdd.php');
+//require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesSistemas.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/mandarEmails.php');
@@ -20,6 +21,7 @@ if(!isset($_SESSION)){
  session_start();
 
 } 
+
 
 if (isset($_POST['actv'])) {
         $hash =  $_POST['actv'];
@@ -56,7 +58,7 @@ function eliminarTablaDesbloquear($id){
         $stmELiminar = $con->prepare($sqlEliminar);
         $stmELiminar->bindValue(":idDesbloquear", $id, PDO::PARAM_INT);
         $test = $stmELiminar->execute();
-        
+        echo "test dice $test";
         if(!$test){throw Exception();}
 
 
@@ -66,7 +68,7 @@ function eliminarTablaDesbloquear($id){
 
         //echo $ex->getMessage();
         $excepciones = new MisExcepcionesUsuario(CONST_ERROR_DESBLOQUEO_USUARIO[1],CONST_ERROR_DESBLOQUEO_USUARIO[0],$ex);
-        $excepciones->redirigirPorErrorSistema("desbloquearUsuario",true);
+        $excepciones->redirigirPorErrorSistemaUsuario("desbloquearUsuario",true);
     }
     
     
@@ -93,20 +95,20 @@ function desbloquearUsuario($id){
          $stmValiEmail->bindValue(":idUsuario", $id, PDO::PARAM_INT);
         
          $test = $stmValiEmail->execute();
-        
+       
          if($test){
              
-             eliminarTablaDesbloquear($id);
-             header(MOSTRAR_PAGINA_INDEX);
+            eliminarTablaDesbloquear($id);
+            header(MOSTRAR_PAGINA_INDEX);
          }
 
     } catch (Exception $ex) {
    
         $_SESSION['emailNoActivado'] = $id;//se elimina en metodosInfoExcepciones
 
-        //echo $ex->getMessage();
+        echo $ex->getMessage();
         $excepciones = new MisExcepcionesUsuario(CONST_ERROR_DESBLOQUEO_USUARIO[1],CONST_ERROR_DESBLOQUEO_USUARIO[0],$ex);
-        $excepciones->redirigirPorErrorSistema("desbloquearUsuario",true);
+        $excepciones->redirigirPorErrorSistemaUsuario("desbloquearUsuario",true);
     }    
     
     
@@ -160,6 +162,6 @@ try{
 
         //echo $ex->getMessage();
         $excepciones = new MisExcepcionesUsuario(CONST_ERROR_DESBLOQUEO_USUARIO[1],CONST_ERROR_DESBLOQUEO_USUARIO[0],$ex);
-        $excepciones->redirigirPorErrorSistema("desbloquearUsuario",true);
+        $excepciones->redirigirPorErrorSistemaUsuario("desbloquearUsuario",true);
 
 } 

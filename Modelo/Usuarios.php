@@ -341,7 +341,7 @@ public final function insert(){
             $con->rollBack();
             Conne::disconnect($con);
 
-            $excepciones->redirigirPorErrorSistema("RegistrarUsuarioBBDD",true);
+            $excepciones->redirigirPorErrorSistemaUsuario("RegistrarUsuarioBBDD",true);
            
         }
         
@@ -378,7 +378,7 @@ public final function insert(){
             $con->rollBack();
             Conne::disconnect($con);
             $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_DAR_BAJA_USUARIO_DEFINITIVAMENTE[1],CONST_ERROR_BBDD_DAR_BAJA_USUARIO_DEFINITIVAMENTE[0],$ex);
-            $excepciones->redirigirPorErrorSistema("elimanarUsuBBDD",true);
+            $excepciones->redirigirPorErrorSistemaUsuario("elimanarUsuBBDD",true);
            
         }
      
@@ -649,7 +649,7 @@ public function actualizoDatosUsuario(){
       
         $con->rollBack();
         $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_ACTUALIZAR_USUARIO[1],CONST_ERROR_BBDD_ACTUALIZAR_USUARIO[0],$ex);
-        $excepciones->redirigirPorErrorSistema("ActualizarUsuarioBBDD",true);              
+        $excepciones->redirigirPorErrorSistemaUsuario("ActualizarUsuarioBBDD",true);              
 
     
     }finally {

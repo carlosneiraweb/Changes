@@ -44,16 +44,13 @@ class MetodosInfoExcepciones {
     }
 
     private function mostrarError(){
-        
-            header(MOSTRAR_PAGINA_ERROR);
-       
+        header('Location: mostrar_error.php');
+            
     }
     
     private function redirirgirFalloNoCritico(){
-        //$url = $_SESSION["paginaError"];
-        
-        header(MOSTRAR_PAGINA_INDEX);
-        
+        $url = $_SESSION["paginaError"];
+         header("Location: $url");
     }
     
 

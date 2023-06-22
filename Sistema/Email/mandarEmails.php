@@ -64,7 +64,7 @@ class mandarEmails {
      } catch (Exception $ex) {
          
         $excepciones = new MisExcepcionesUsuario(CONST_ERROR_CONSTRUIR_DARSE_ALTA[1],CONST_ERROR_CONSTRUIR_DARSE_ALTA[0],$ex);
-        $excepciones->redirigirPorErrorSistema("mandarEmailActivacion",true);
+        $excepciones->redirigirPorErrorSistemaUsuario("mandarEmailActivacion",true);
 
     }catch (\Exception $e) { //The leading slash means the Global PHP Exception class will be caught
                 //echo $e->getMessage(); //Boring error messages from anything else!
@@ -108,7 +108,7 @@ final function mandarEmailWelcome(){
             }catch (Exception $ex){    
                 
                 $excepciones = new MisExcepcionesUsuario(CONST_ERROR_CONSTRUIR_DARSE_ALTA[1],CONST_ERROR_CONSTRUIR_DARSE_ALTA[0],$ex);
-                $excepciones->redirigirPorErrorSistema("ProblemaEmail",false);
+                $excepciones->redirigirPorErrorSistemaUsuario("ProblemaEmail",false);
             
                 
             }catch (\Exception $e) { //The leading slash means the Global PHP Exception class will be caught
@@ -176,7 +176,7 @@ final function mandarEmailWelcome(){
             }catch (Exception $ex){
                 
                 $excepciones = new MisExcepcionesUsuario(CONST_ERROR_CONSTRUIR_PALABRAS_BUSCADAS[1],CONST_ERROR_CONSTRUIR_PALABRAS_BUSCADAS[0],$ex);
-                $excepciones->redirigirPorErrorSistema('ProblemaEmail',false);
+                $excepciones->redirigirPorErrorSistemaUsuario('ProblemaEmail',false);
                 
             } finally {
                 unset($correoPalabras);
@@ -219,7 +219,7 @@ final function mandarEmailBajaUsuario($nick,$mail){
         } catch (Exception $ex) {
              
             $excepciones = new MisExcepcionesUsuario(CONST_ERROR_CONSTRUIR_DARSE_BAJA[1],CONST_ERROR_CONSTRUIR_DARSE_BAJA[0],$ex);   
-             $excepciones->redirigirPorErrorSistema("ProblemaEmail",false);
+             $excepciones->redirigirPorErrorSistemaUsuario("ProblemaEmail",false);
         
              
         }finally{

@@ -488,7 +488,7 @@ private function insertarPalabrasOfrecidas(){
                 
                 Conne::disconnect($con);
                 
-                $_SESSION['error'] = ERROR_INGRESAR_USUARIO;
+                $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
                 $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_INGRESAR_PALABRAS_OFRECIDAS[1], CONST_ERROR_BBDD_INGRESAR_PALABRAS_OFRECIDAS[0],$ex); 
                 $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
 
@@ -499,7 +499,7 @@ private function insertarPalabrasOfrecidas(){
 
 
 /**
- * Metodo que inserta un articulo en un post.<br/>
+ * Metodo que inserta en la bbdd un post.<br/>
  * @return type boolean
  */
 public function insertPost(){
@@ -553,6 +553,8 @@ public function insertPost(){
             //Si el usuario quiere eliminar una imagen en el proceso
             $_SESSION['lastId'][0] =  $con->lastInsertId();
             
+            
+            
             $con->commit();
         
             $this->insertarPalabrasQueridas();
@@ -570,7 +572,7 @@ public function insertPost(){
             $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
             $con->rollBack();
             $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_REGISTRAR_POST[1],CONST_ERROR_BBDD_REGISTRAR_POST[0],$ex);
-            $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
+            $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost('errorPost', true);
             
            
              

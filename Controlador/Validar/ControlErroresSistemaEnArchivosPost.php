@@ -12,7 +12,8 @@ if(!isset($_SESSION))
     { 
         session_start(); 
     }
-
+    
+  
 /**
  * Description of ControlErroresSistemaEnArchivos
  * Es la encargada de controlar y tratar
@@ -43,7 +44,7 @@ function crearSubdirectorio(){
    $_SESSION['nuevoSubdirectorio'][0] = $id;
    //[1] numero subdirectorio ejemplo "1"
    $_SESSION['nuevoSubdirectorio'][1] = Directorios::crearSubdirectorio('../photos/'.$id);
-   // echo 'responde '."../photos/".$_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1];
+   //echo 'responde '."../photos/".$_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1];
    Directorios::copiarFoto("../photos/demo.jpg","../photos/".$_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1]."/demo.jpg", "copiarDemoSubirPost");    
    
 //fin crearSubdirectorio    
@@ -63,7 +64,7 @@ function crearSubdirectorio(){
       * Esta indicara si el usuario ha eliminado una imagen<br/>
       * subiendo un post.<br/>
       * Ver metodo insertarFotos de Imagenes.php <br/>
-      * @param type $st</br>
+      * @param type String $st</br>
       * String con la opciondel paso a validar.
       * 
      */
@@ -135,7 +136,7 @@ function validarCamposSubirPost($st){
             //y le indicamos el motivo del error
             // Esto ultimo se hace en el switch del
             //metodo que valida la subida en el directorio Directorios
-                $_SESSION['paginaError'] = 'subir_posts.php';
+                $_SESSION['paginaError'] = "mostrar_error.php";
                 //png bandera para que al recargar
                 //no se ingrese la img otra vez
                 $_SESSION['png'] = 'png';

@@ -131,7 +131,7 @@ class Directorios {
             //De la clase mis excepciones con la opcion adecuada
             if ($opc == "actualizar" || $opc == "registrar") {
                 $excepciones = new MisExcepcionesUsuario(CONST_ERROR_MOVER_IMAGEN_ACTUALIZAR_REGISTRAR[1], CONST_ERROR_MOVER_IMAGEN_ACTUALIZAR_REGISTRAR[0], $ex);
-                $excepciones->redirigirPorErrorSistema($opc, true);
+                $excepciones->redirigirPorErrorSistemaUsuario($opc, true);
             }
 
             if ($opc == "subirImagenPost") {
@@ -165,7 +165,7 @@ class Directorios {
 
             if ($opc == 'registrar') {
                 
-                $excepciones->redirigirPorErrorSistema($opc, true);
+                $excepciones->redirigirPorErrorSistemaUsuario($opc, true);
             }
         }
 
@@ -200,14 +200,14 @@ class Directorios {
             $testSalir = true;
 
             if (!is_dir($dir)) {
-
+                
                 throw new Exception("El directorio pasado para crear el subdirectorio no existe", 0);
             }
 
             $handle = opendir($dir);
 
             if (!$handle) {
-
+                
                 throw new Exception("Al crear el subdirectorio el manejador no pudo abrir el directorio", 0);
             }
 
@@ -238,6 +238,7 @@ class Directorios {
                 $nuevo = $count + 1;
 
                 $test = mkdir($usuario . '/' . $nuevo) ? true : false;
+               
                 $nuevoDirectorio = $nuevo;
             }
 
@@ -276,7 +277,7 @@ class Directorios {
 
         if ($opc == "registrar") {
             $mensaje = "No se pudo copiar imagen al registrarse un usuario";
-        } else {
+        } else if($opc == "copiarDemoSubirPost"){
             $mensaje = "No se pudo copiar imagen Demo al registrar un Post";
         }
         try {
@@ -287,11 +288,11 @@ class Directorios {
         } catch (Exception $ex) {
 
             if ($opc == "registrar") {
-                $excepciones = new MisExcepcionesUsuario(CONST_ERROR_COPIAR_DEMO[1], CONST_ERROR_COPIAR_DEMO[0], $ex);
-                $excepciones->redirigirPorErrorSistema($opc, true);
+                $excepciones = new MisExcepcionesUsuario(CONST_ERROR_COPIAR_DEMO_REGISTRO[1], CONST_ERROR_COPIAR_DEMO_REGISTRO[0], $ex);
+                $excepciones->redirigirPorErrorSistemaUsuario($opc, true);
             } else {
                 $_SESSION['error'] = ERROR_ARCHIVOS;
-                $excepciones = new MisExcepcionesPost(CONST_COPIAR_ARCHIVO[1], CONST_COPIAR_ARCHIVO[0], $ex);
+                $excepciones = new MisExcepcionesPost(CONST_ERROR_COPIAR_DEMO_POST[1], CONST_ERROR_COPIAR_DEMO_POST[0], $ex);
                 $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
             }
         }
@@ -326,9 +327,9 @@ class Directorios {
      *   Si ocurre esto es que el usuario al subir imagenes para un Post a </br>
      *   eliminado una imagen o varias. Entonces lo que sucede es que accedemos </br>
      *   a un array con el nombre de la imagen borrada dentro de la variable </br>
-     *   " $_SESSION['imgTMP']['imagenesBorradas'] " instanciada en la clase Post linea 660. </br>
+     *   " $_SESSION['imgTMP']['imagenesBorradas'] " instanciada en la clase Imagenes linea 214. </br>
      *   Lo que hacemos es ir recuperando su nombre y vamos asignando ese nombre  </br>
-     *   a las fotos que el usuario va subiendo. </br>
+     *   a las fotos que el usuario va subiendo nuevamente. </br>
      * 
      * 2º Si como segundo parametro recibe  un 1 </br>
      * 
@@ -357,10 +358,13 @@ class Directorios {
 
             try {
 
-                //Extraemos del array de imagenes borradas el ultimo elemento 
+                //Extraemos del array de imagenes borradas el ultimo elemento
+                //Siempre es el elemento [0] del array por que cuando se ingresa
+                //en la bbdd en la clase imgenes eliminamos ese elemento
+                //con array_shift
 
                 $ultimaImagenBorrada = $_SESSION['imgTMP']['imagenesBorradas'][0];
-
+                
                 //Nos quedamos con el numero de la imagen, tipo admin/2/4 => 4 
                 //este numero es el que interesa, y que es el nombre de la imagen + .jpg
                 //explode nos devuelve un array de strings
@@ -493,7 +497,7 @@ class Directorios {
             if ($opc == 'actualizar') {
 
                 $excepciones = new MisExcepcionesUsuario(CONST_ERROR_ELIMINAR_FOTO_VIEJA_AL_ACTUALIZAR[1], CONST_ERROR_ELIMINAR_FOTO_VIEJA_AL_ACTUALIZAR[0], $ex);
-                $excepciones->redirigirPorErrorSistema("actualizar", true);
+                $excepciones->redirigirPorErrorSistemaUsuario("actualizar", true);
             } else if ($opc == "eliminarImgDemoSubirPost") {
 
                 $_SESSION["error"] = ERROR_INSERTAR_ARTICULO;
@@ -554,16 +558,16 @@ class Directorios {
 
             if ($opc == "SubirPost") {
                 $excepciones = new MisExcepcionesPost(CONST_ERROR_ELIMINAR_DIR_PUBLICAR_POST[1], CONST_ERROR_ELIMINAR_DIR_PUBLICAR_POST[0], $ex);
-                $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("", true);
+                $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("SubirPost", true);
             } elseif ($opc == 'eliminarDirectoriosBajaUsuario') {
                 $excepciones = new MisExcepcionesUsuario(CONST_ERROR_ELIMINAR_DIRECTORIOS_BAJA[1], CONST_ERROR_ELIMINAR_DIRECTORIOS_BAJA[0], $ex);
-                $excepciones->redirigirPorErrorSistema("eliminarDirectoriosBajaUsuario", true);
+                $excepciones->redirigirPorErrorSistemaUsuario("eliminarDirectoriosBajaUsuario", true);
             } elseif($opc == "registrar"){
                 $excepciones = new MisExcepcionesUsuario(CONST_ERROR_ELIMINAR_DIRECTORIOS_ALTA[1], CONST_ERROR_ELIMINAR_DIRECTORIOS_ALTA[0], $ex);
-                $excepciones->redirigirPorErrorSistema("eliminarDirectoriosAltaUsuario", false);
+                $excepciones->redirigirPorErrorSistemaUsuario("eliminarDirectoriosAltaUsuario", false);
             }else {
                 $excepciones = new MisExcepcionesUsuario(CONST_ERROR_ELIMINAR_DIRECTORIO[1], CONST_ERROR_ELIMINAR_DIRECTORIO[0], $ex);
-                $excepciones->redirigirPorErrorSistema(' ', true);
+                $excepciones->redirigirPorErrorSistemaUsuario(' ', true);
             }
         }
 
