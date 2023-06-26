@@ -38,8 +38,11 @@ window.onload=function(){
      //Cada vez que subimos una foto nueva en el post
      //Estan se van mostrando en el formulario
      //Para ir recuperandolas de la bbdd necesitamos el idPost
-     cargarPeticionSubirPost("ImagenNueva", "opcion=ImagenNueva&idPost="+ idPost);   
-    
+     //Nos aseguramos que la varfiable idPost esta instanciada
+     //alert(idPost);
+    if(typeof idPost !== "undefined"){
+        cargarPeticionSubirPost("ImagenNueva", "opcion=ImagenNueva&idPost="+ idPost);   
+    }
  };
 
 
@@ -194,7 +197,7 @@ function mandarId(id){
  * @param {type} objLastImg
  * @returns {undefined} */
 function cargarUltimaImagen(objLastImg){
-       alert("ddddd"+objLastImg[0].ruta);
+       //alert(objLastImg[0].ruta);
         var sep = '<section id="capturar" class="contenedor_imagenes" >';
         for (var i= 0 ; i < objLastImg.length; i++){
             var demo = objLastImg[i].ruta;
@@ -209,6 +212,7 @@ function cargarUltimaImagen(objLastImg){
                    //Ha subido ninguna foto al Post.
                     continue;
                 }else{
+                    
                     //Al pinchar sobre este figure se nos abrira un nuevo 
                     //formulario por si debemos modificar o borrar
                     sep += "<figure class='img_usuario_tmp'>";
