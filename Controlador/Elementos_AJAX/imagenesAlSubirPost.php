@@ -67,23 +67,14 @@ if(isset($_POST['ruta'])){
     }   
     
     
-        $tmpImg = false;
+      
         $stImgSubirPost = $conImgSubirPost->query($sqlImgSubirPost);
-        $resultImgSubirPost = $stImgSubirPost->fetch();
+        $resultImgSubirPost = $stImgSubirPost->fetchAll();
         //var_dump($resultImgSubirPost);
       
-        if($resultImgSubirPost != false){
-            $tmpImg = $resultImgSubirPost; 
-            $tmpImg = substr($tmpImg, -4);   
-        }
-        
-        
-        //No se ha subido ninguna imagen aun
-        if($tmpImg === false){
-            echo json_encode($tmpImg);
-        }else{
+  
             echo json_encode($resultImgSubirPost);
-        }
+        
         
             $stImgSubirPost->closeCursor();
             Conne::disconnect($conImgSubirPost);
