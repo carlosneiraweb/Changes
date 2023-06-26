@@ -40,6 +40,7 @@ window.onload=function(){
      //Para ir recuperandolas de la bbdd necesitamos el idPost
      //Nos aseguramos que la varfiable idPost esta instanciada
      //alert(idPost);
+     //
     if(typeof idPost !== "undefined"){
         cargarPeticionSubirPost("ImagenNueva", "opcion=ImagenNueva&idPost="+ idPost);   
     }
