@@ -58,7 +58,8 @@ if(isset($_POST['ruta'])){
   
  switch ($opcImgSubirPost) {
         case "ImagenNueva":
-            $sqlImgSubirPost = "Select directorio  as ruta  from ".TBL_IMAGENES." WHERE postIdPost = '".$idPost."'";
+            $sqlImgSubirPost = "Select directorio  as ruta  from imagenes WHERE postIdPost = $idPost order by directorio ASC;";
+            
             break;
         case "ImagenEliminarNueva":
             $sqlImgSubirPost = "SELECT directorio as ruta, texto as texto, idImagen as idImagen from ".TBL_IMAGENES." WHERE postIdPost = '".$idPost."' and directorio = '".$ruta."'";

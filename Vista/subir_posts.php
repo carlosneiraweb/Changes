@@ -27,7 +27,7 @@ function volverAnterior(){
  * Metodo que nos redirige a la pagina de mostrar error
  */ 
 function mostrarError(){
-        header(MOSTRAR_PAGINA_ERROR);
+    header("Location: mostrar_error.php");
 }  
 
 
@@ -350,19 +350,7 @@ global $pa_queridas;
         
 
 function displayStep2($missingFields){
-    /*
-    //Solo en caso de que se produzca un error
-            if(!isset($_SESSION['contador'])){
-                $_SESSION['contador'] = 0; 
-            }
-            //Volvemos dejar subir imagenes
-            if(isset($_SESSION['png'])){
-                unset($_SESSION['png']);
-            }
-     */   
-
-     
-
+   
 
     global $mensaje; 
   
@@ -521,13 +509,13 @@ function ingresarPost(){
 
 /**
  * Este metodo ingresa en la bbdd en la tabla de imagenes </br>
- * las imagenes que va subiendo el usuario</br>
+ * las rutas de las imagenes que va subiendo el usuario</br>
  * cada vez que sube una imagen.</br>
  * Es llamado desde procesForm una vez a validado las imagenes.</br>
  * $_SESSION['post']['figcaption']</br>
  * Se instancia en el formulario subir_post </br>
- * de este mismo archivo.</br>
- * $_SESSION['idImagen'] = /60/2/1</br>
+ * de este mismo archivo, en el step 2.</br>
+ * $_SESSION['dirImagen'] = 60/2/1</br>
  * Se instancia en ControlErroresSistemaEnArchivosPOst al validar la foto y cambiarle </br>
  * el nombre en la clase Directorios.</br>
  * En este metodo solo se comprueba que el sistema a</br>
@@ -541,8 +529,9 @@ function ingresarImagenes(){
     global $articulo;
            
     $articulo = new Imagenes(array(
+       "postIdPost" => $_SESSION['lastId'][0],
        "figcaption" => $_SESSION['post']['figcaption'],
-       "idImagen" => $_SESSION['idImagen']
+       "directorio" => $_SESSION['dirImagen']
     ));
    
    $articulo->insertarFotos();
@@ -565,7 +554,8 @@ function actualizarImagen(){
     
     $articulo = new Imagenes(array(
        "figcaption" => $_POST['txtModificar'],
-       "idImagen" => $_POST['idImagen']
+       "idImagen" => $_POST['idImagen'],
+       "postIdPost" => $_SESSION['lastId'][0]
     ));
     
     
@@ -580,7 +570,9 @@ function actualizarImagen(){
  * Metodo que elimina una imagen <br/>
  * mientras el usuario esta publicando un Post.<br/>
  * Se generan dos campos hidden<br/>
- * idImagen y ruta.
+ * idImagen y ruta, al mostrar el formulario
+ * para eliminar o actualizar la imagen.
+ * Archivo subirPost.js
  *
  */
 function eliminarImagen(){

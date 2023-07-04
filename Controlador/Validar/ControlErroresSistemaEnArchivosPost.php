@@ -110,33 +110,18 @@ function validarCamposSubirPost($st){
                 
                 Directorios::moverImagen($foto, $destino, "subirImagenPost");
                 
-               
-                //Comprobamos subiendo imagenes el usuario no ha eliminado ninguna
-                //Si lo ha hecho le asignamos en el directorio photos/subdirectorio 
-                //Ese nombre
-                    
-                if(isset($_SESSION['imgTMP']) and (!empty($_SESSION['imgTMP']['imagenesBorradas'][0]))){
-                        
-                    $_SESSION['idImagen'] = Directorios::renombrarFotoSubirPost($destino, 0); 
-                                    
-                        
-                  //Aqui vamos subiendo las fotos al post mientras el usuario no 
-                            //hubiera eliminado ninguna mientras subia las fotos                    
-                    }else if (!isset($_SESSION['imgTMP'])){   
-                           
-                        $_SESSION['idImagen'] = Directorios::renombrarFotoSubirPost($destino, 1);
-                                    
-                    }   
-           
-                        
-                    
+               //Renombramos la imagen subida por el usuario
+                
+                $_SESSION['dirImagen'] = Directorios::renombrarFotoSubirPost($destino); 
+                                  
+          
         }else if($testSubirArchivo === 4 || $testSubirArchivo === 10 || $testSubirArchivo === 1 || $testSubirArchivo === 3){
             //Si hay algun error al validar la imagen 
             //redirigimos a la pagina mostrarError
             //y le indicamos el motivo del error
             // Esto ultimo se hace en el switch del
             //metodo que valida la subida en el directorio Directorios
-                $_SESSION['paginaError'] = "mostrar_error.php";
+                $_SESSION['paginaError'] = "subir_posts.php";
                 //png bandera para que al recargar
                 //no se ingrese la img otra vez
                 $_SESSION['png'] = 'png';

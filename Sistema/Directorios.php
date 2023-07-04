@@ -88,7 +88,7 @@ class Directorios {
 
 
         return $test;
-        // }   
+         
         //fin validar foto    
     }
 
@@ -112,13 +112,7 @@ class Directorios {
      */
     final static function moverImagen($nombreFoto, $nuevoDirectorio, $opc) {
 
-        if ($opc == "subirImagenPost") {
-            $mensaje = "No se pudo mover la imagen al subir un post";
-        } else if ($opc == "registrar") {
-            $mensaje = "No se pudo mover la imagen al registrarse.";
-        } else if ($opc == "actualizar") {
-            $mensaje = "No se pudo mover la imagen al actualizar.";
-        }
+        
 
         try {
 
@@ -126,6 +120,14 @@ class Directorios {
                 throw new Exception($mensaje, 0);
             }
         } catch (Exception $ex) {
+            
+            if ($opc == "subirImagenPost") {
+                $mensaje = "No se pudo mover la imagen al subir un post";
+            } else if ($opc == "registrar") {
+                $mensaje = "No se pudo mover la imagen al registrarse.";
+            } else if ($opc == "actualizar") {
+                $mensaje = "No se pudo mover la imagen al actualizar.";
+            }
 
             //En caso error se llama al metodo redirigirPorErrorTrabajosEnArchivosRegistro
             //De la clase mis excepciones con la opcion adecuada
@@ -275,17 +277,19 @@ class Directorios {
     final static function copiarFoto($imagen, $destino, $opc) {
 
 
-        if ($opc == "registrar") {
-            $mensaje = "No se pudo copiar imagen al registrarse un usuario";
-        } else if($opc == "copiarDemoSubirPost"){
-            $mensaje = "No se pudo copiar imagen Demo al registrar un Post";
-        }
+        
         try {
 
             if (!copy($imagen, $destino)) {
                 throw new Exception($mensaje, 0);
             }
         } catch (Exception $ex) {
+            
+            if ($opc == "registrar") {
+                $mensaje = "No se pudo copiar imagen al registrarse un usuario";
+            } else if($opc == "copiarDemoSubirPost"){
+                $mensaje = "No se pudo copiar imagen Demo al registrar un Post";
+            }
 
             if ($opc == "registrar") {
                 $excepciones = new MisExcepcionesUsuario(CONST_ERROR_COPIAR_DEMO_REGISTRO[1], CONST_ERROR_COPIAR_DEMO_REGISTRO[0], $ex);
@@ -319,114 +323,63 @@ class Directorios {
     }
 
     /**
-     * OJO ESTE METODO ES IMPORTANTE  LEER    </br>
-     *     
-     *       Este metodo se utiliza para: </br>
-     * 
-     * 1º Si este metodo recibe como segundo parametro un 0. </br>
-     *   Si ocurre esto es que el usuario al subir imagenes para un Post a </br>
-     *   eliminado una imagen o varias. Entonces lo que sucede es que accedemos </br>
-     *   a un array con el nombre de la imagen borrada dentro de la variable </br>
-     *   " $_SESSION['imgTMP']['imagenesBorradas'] " instanciada en la clase Imagenes linea 214. </br>
-     *   Lo que hacemos es ir recuperando su nombre y vamos asignando ese nombre  </br>
-     *   a las fotos que el usuario va subiendo nuevamente. </br>
-     * 
-     * 2º Si como segundo parametro recibe  un 1 </br>
-     * 
-     *    Si ocurre esto es que subiendo imagenes para el Post no ha borrado ninguna. </br>
-     *    Entonces lo unico que hace es contar el total de imagenes que hay en el </br>
-     *    directorio donde se guardan en cada Post. </br>
-     * 
-     *  
+     *
      * @param  $nombreViejo  </br>
      * type String </br>
      * Nombre tal cual el usuario sube una imagen al subir un Post </br>
-     * @param  $opc </br>
-     * type String </br>
-     * Nombre renombrado de la imagen </br>
+     * 
      * @return $newNombre </br> 
      * type String </br>
      * El nuevo nombre </br>
      */
-    public static function renombrarFotoSubirPost($nombreViejo, $opc) {
+    public static function renombrarFotoSubirPost($nombreViejo) {
 
-
-
-        if ($opc === 0) {
-
-
-
+            
+           
+            
             try {
 
-                //Extraemos del array de imagenes borradas el ultimo elemento
-                //Siempre es el elemento [0] del array por que cuando se ingresa
-                //en la bbdd en la clase imgenes eliminamos ese elemento
-                //con array_shift
-
-                $ultimaImagenBorrada = $_SESSION['imgTMP']['imagenesBorradas'][0];
-                
-                //Nos quedamos con el numero de la imagen, tipo admin/2/4 => 4 
-                //este numero es el que interesa, y que es el nombre de la imagen + .jpg
-                //explode nos devuelve un array de strings
-                //como limitados el caracter pasado
-                $tmp = explode('/', $ultimaImagenBorrada);
-
-                $newNombre = '../photos/' . $tmp[0] . '/' . $tmp[1] . '/' . $tmp[2] . '.jpg';
-
-                $test = rename($nombreViejo, $newNombre) ? true : false;
-
-                if (!$test) {
-                    throw new Exception("Error al renombrar una imgen cuando el usuario elimino alguna", 0);
-                }
-
-
-
-                //Devolvemos el nuevo nombre para ser ingresado si el usuario sube una nueva imagen
-                return $newNombre;
-            } catch (Exception $ex) {
-
-                $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
-                $excepciones = new MisExcepcionesPost(CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST[1], CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST[0], $ex);
-                $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
-            }
-        } else if ($opc === 1) {
-
-
-            //echo 'el usuario no ha borrado ninguna imagen<br>';
-            //Renombramos las imagenes por el numero de imagenes en su subdirectorio
-
-            $nombreRenombrado = Directorios::contarArchivos('../photos/' . $_SESSION['nuevoSubdirectorio'][0] . '/' . $_SESSION['nuevoSubdirectorio'][1]);
-
-            try {
-
-                if ($opc) {
-                    // echo 'nombre viejo '.$nombreViejo.'<br>';
-                    $original = basename($nombreViejo); //quedando en => indice.jpg
-                    //strstr con parametro true devuelve 
-                    //un string al encontrar la primera aparicion del string
-                    $tmp = strstr($nombreViejo, $original, true); //OJO
-                    //En este paso nos quedamos con la parte del directorio
-                    // echo 'Nombre temporal '.$tmp.'<br>';
-                    $newNombre = $tmp . $nombreRenombrado . '.jpg';
-                    // echo 'nuevo nombre '.$newNombre;
-                    //Le asignamos el nuevo nombre a la parte del directorio substraida antes
-
-                    $test = rename($nombreViejo, $newNombre) ? true : false;
-
-                    if (!$test) {
-                        throw new Exception("No se pudo renombrar la imagen subiendo Post. No se había eliminado ninguna imagen.", 0);
+                    if(isset($_SESSION['imgTMP']['imagenesBorradas'])) {
+                      
+                        //array_pop($_SESSION['imgTMP']['imagenesBorradas']
+                        //$tmp = explode('/', $_SESSION['imgTMP']['imagenesBorradas'][0]);
+                       
+                        $newNombre = '../photos/'.$_SESSION['imgTMP']['imagenesBorradas'][0];
+           
+                        $test = rename($nombreViejo, "../photos/$newNombre.jpg") ? true : false;
+                        
+                       
+                            if (!$test) {
+                                throw new Exception("No se pudo renombrar la imagen subiendo Post. Se había eliminado alguna imagen.", 0);
+                            }
+                        
+                        
+                    }else{
+                       
+                        $totalArch = Directorios::contarArchivos('../photos/' . $_SESSION['nuevoSubdirectorio'][0] . '/' . $_SESSION['nuevoSubdirectorio'][1]);
+                        $newNombre = $_SESSION['nuevoSubdirectorio'][0] . '/' . $_SESSION['nuevoSubdirectorio'][1]."/".$totalArch;
+                        
+                         
+                        $test = rename($nombreViejo, "../photos/$newNombre.jpg") ? true : false;
+                    
+                            if (!$test) {
+                                throw new Exception("No se pudo renombrar la imagen subiendo Post. No se había eliminado ninguna imagen.", 0);
+                            }
+                        
+                        
                     }
-                }
+                       
+                    
+                        return $newNombre;
 
-
-                return $newNombre;
+                
             } catch (Exception $ex) {
 
                 $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
                 $excepciones = new MisExcepcionesPost(CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST[1], CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST[0], $ex);
                 $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
             }
-        }
+        
 
 
         //fin renombrarImagenes

@@ -47,7 +47,7 @@ define("CONST_ERROR_MOVER_IMAGEN_SUBIR_POST",array("FILE 5","La imagen no se ha 
 /**Error al renombrar una img cuando el usuario ha eliminado una img al subir un post*/
 define("CONST_ERROR_RENOMBRAR_IMG_AL_ELIMINARLA_DEL_POST",array("FILE 6","No se pudo renombrar la imagen cuando un usuario elimino una subiendo un post y subio otra"));
 /**Error al renombrar una img cuando un usuario sube una a un post*/
-define("CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST",array("FILE 7","No se pudo renombrar la imagen cuando un usuario  subiendo una imagen a un post"));
+define("CONST_ERROR_RENOMBRAR_IMG_AL_SUBIR_UN_POST",array("FILE 7","No se pudo renombrar la imagen cuando un usuario estaba subiendo una imagen a un post"));
 /**Error al contar los archivos para renombrar las fotos*/
 define("CONST_ERROR_CONTAR_ARCHIVOS",array("FILE 8", "Hubo un error al contar los archivos"));
 /**Error eliminar imagen demo al subir un post*/

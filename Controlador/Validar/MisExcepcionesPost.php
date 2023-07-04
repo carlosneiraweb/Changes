@@ -21,7 +21,7 @@ class MisExcepcionesPost extends MetodosInfoExcepciones{
     */
 
 static function eliminarVariablesSesionPostAcabado(){
-
+    
     if(isset($_SESSION['imgTMP'])){unset($_SESSION['imgTMP']);}
     if(isset($_SESSION['atras'])){unset($_SESSION['atras']);}
     if(isset($_SESSION['contador'])){unset($_SESSION['contador']);}
@@ -29,44 +29,18 @@ static function eliminarVariablesSesionPostAcabado(){
     if(isset($_SESSION['imgTMP']['imagenesBorradas'])){unset($_SESSION['imgTMP']['imagenesBorradas']);}
     if(isset($_SESSION['error'])){unset($_SESSION['error']);}
     if(isset($_SESSION['post'])){unset($_SESSION['post']);}
+    if(isset($_SESSION['idImagen'])){unset($_SESSION['idImagen']);}
+    if(isset($_SESSION['imgTMP'])){unset($_SESSION['imgTMP']);}
    // if(isset($_SESSION['nuevoSubdirectorio'])){unset($_SESSION['nuevoSubdirectorio']);}
 
     //fin eliminarVariablesSesionPostAcabado()         
     }
 
 
-    /**
-     * Este metodo manda a EliminarPost de la clase Post,<br/>
-     * cuando un usuario quiere subir un post <br/>
-     * y a mitad de proceso se sale y no<br/>
-     * acaba publicandolo<br/>
-     * Tambien se usa en caso de error.<br/>
-     *
-     * 
-     
+  
 
- public function eliminarPostAlPublicar(){
-    
-        
-            
-           
-            $eliminarPost = "../photos/".$_SESSION['nuevoSubdirectorio'][0]."/".$_SESSION['nuevoSubdirectorio'][1];
-            
-            $idPost = $_SESSION['lastId'][0];
-            //En caso de que no se pueda crear el subdirectorio
-            //Solo eliminamos el directorio del Post
-            if($eliminarPost !== "../photos/$tmp[0]/"){
-                
-                Directorios::eliminarDirectoriosSistema($eliminarPost,"SubirPost");
-            }
-                Post::eliminarPostId($idPost);
-        
-   
-        
-        //fin  eliminarPostAlPublicar
-}
 
-*/
+
     
  /**
      * Metodo que en caso de error al
@@ -95,9 +69,13 @@ public  function redirigirPorErrorTrabajosEnArchivosSubirPost($opc,$grado){
                 //Aun no se ha insertado en la bbdd nada
                 $this->tratarDatosErrores($opc, $grado);
                 //Por si no se ha podido crear el subdirectorio
+                //tambien en caso hubiese un error una vez registrado el post
+                //pero no finalizado del todo el proceso
                 if($_SESSION['nuevoSubdirectorio'][1] !== null){
                    
                     Directorios::eliminarDirectoriosSistema($dir,"SubirPost");
+                    
+                    if(isset($_SESSION['lastId'][0])){Post::eliminarPostId($_SESSION['lastId'][0]);}
                 }
                  $this->eliminarVariablesSesionPostAcabado();
 

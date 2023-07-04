@@ -169,7 +169,7 @@ try {
         
      
         //Recuperamos la ruta de la imagen y la descripcion de cada una
-        $sqlImg = "select idImagen as idImagen, postIdPost as idPost, directorio as directorio, texto as texto from " . TBL_IMAGENES . " where postIdPost = :idPost;";
+        $sqlImg = "select idImagen as idImagen, postIdPost as idPost, directorio as directorio, texto as texto from " . TBL_IMAGENES . " where postIdPost = :idPost order by directorio ASC;";
         $stmImg = $conPost->prepare($sqlImg);
         $stmImg->bindValue(":idPost", $idPost);
         $stmImg->execute();
