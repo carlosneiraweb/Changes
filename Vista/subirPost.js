@@ -232,7 +232,7 @@ function cargarUltimaImagen(objLastImg){
        
         $('#cuerpo').on('click','.img_usuario_tmp', function(e){
             var id = $(this).children('img').attr('id');
-            //Atributo id campo de bbdd => carlos/54/1,  
+            //Atributo id campo de bbdd => 54/1,  
             //De esta forma si el usuario elimina la imagen 
             //Nosotros podemos elimarla de la bbdd
 

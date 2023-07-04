@@ -160,7 +160,7 @@ class Post extends DataObj{
      */
 
 public function devuelvoIdPalabras($tabla, $columnaIdImagen, $columnaIdPost, $idPostPalabra){
-   // echo 'tabla '.$tabla. ' columnaIdImagen '.$columnaIdImagen. ' palabra '.$palabras.' columnaIdPOST '.$columnaIdPost. ' IDpOSTpALABRA '.$idPostPalabra.'<br>';    
+   //echo 'tabla '.$tabla. ' columnaIdImagen '.$columnaIdImagen. ' palabra '.$palabras.' columnaIdPOST '.$columnaIdPost. ' IDpOSTpALABRA '.$idPostPalabra.'<br>';    
        
     
     try {
@@ -185,7 +185,9 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen, $columnaIdPost, $id
     } catch (Exception $ex) {
         
             Conne::disconnect($con);
-            
+            /**
+             * modificar cuando se ofrezca la opcion en el menu
+             */
             if(isset($_SESSION['atras'])){
                 $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
             }else{
@@ -215,7 +217,12 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen, $columnaIdPost, $id
         
         
        
-        
+        /**
+         * cuando se de la opcion en un menu
+         * de actualizar el post recuperaremos el 
+         * id del post
+         * 
+         */
         $idPostPa;
         
             if(isset($_SESSION['lastId'][0])){
@@ -354,6 +361,7 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen, $columnaIdPost, $id
     //if(isset($_SESSION['errorArchivos'])){unset($_SESSION['errorArchivos']);}
     
     try{
+        
     $con = Conne::connect();
     
         $sql = "UPDATE ".TBL_POST. " SET "
@@ -377,6 +385,7 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen, $columnaIdPost, $id
             $stm->bindValue(":comentario", $this->data["comentario"], PDO::PARAM_STR);
             $stm->bindValue(":precio", $this->data["precio"], PDO::PARAM_STR);
             $stm->bindValue(":fechaPost", $date, PDO::PARAM_STR);
+            //Cuando demos opcion menu recibiremos idPost por consulta bbdd
             $stm->bindValue(":idPost", $_SESSION['lastId'][0] , PDO::PARAM_INT);
             
             $stm->execute();
@@ -395,7 +404,12 @@ public function devuelvoIdPalabras($tabla, $columnaIdImagen, $columnaIdPost, $id
     }catch(Exception $ex){
         
         Conne::disconnect($con);
-        
+        /*
+         * 
+         * MODIFICAR EL DIA QUE SE ACTUALICE DE
+         * VERDAD EL POST EN EL MENU
+         * 
+         */
         if(isset($_SESSION['atras'])){
             $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
         }else{
@@ -439,6 +453,7 @@ private  function insertarPalabrasQueridas(){
             }catch(Exception $ex){
                
                Conne::disconnect($con);
+               $this->eliminarPostId($_SESSION['lastId'][0]);
                $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
                $excepciones =  new MisExcepcionesPost(CONST_ERROR_BBDD_INGRESAR_PALABRAS_QUERIDAS[1], CONST_ERROR_BBDD_INGRESAR_PALABRAS_QUERIDAS[0],$ex);
                $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
@@ -487,7 +502,7 @@ private function insertarPalabrasOfrecidas(){
             } catch (Exception $ex) {
                 
                 Conne::disconnect($con);
-                
+                $this->eliminarPostId($_SESSION['lastId'][0]);
                 $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
                 $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_INGRESAR_PALABRAS_OFRECIDAS[1], CONST_ERROR_BBDD_INGRESAR_PALABRAS_OFRECIDAS[0],$ex); 
                 $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
@@ -500,14 +515,12 @@ private function insertarPalabrasOfrecidas(){
 
 /**
  * Metodo que inserta en la bbdd un post.<br/>
- * @return type boolean
+ * Se instancia $_SESSION['lastId']
  */
 public function insertPost(){
        
     
-            
-//if(isset($_SESSION['errorArchivos'])){unset($_SESSION['errorArchivos']);}  
-    
+          
     try{
         $con = Conne::connect();
        
@@ -552,18 +565,16 @@ public function insertPost(){
             //en el segundo paso de subir un Post, cuando se sube una imagen
             //Si el usuario quiere eliminar una imagen en el proceso
             $_SESSION['lastId'][0] =  $con->lastInsertId();
-            
-            
-            
             $con->commit();
-        
-            $this->insertarPalabrasQueridas();
+            
                        
             $this->insertarPalabrasOfrecidas();
-              
+            $this->insertarPalabrasQueridas();
+             
             //Metodo static clase Imagenes
             Imagenes::insertarImagenDemo();
-
+            
+            
             Conne::disconnect($con);
            
            
@@ -588,7 +599,9 @@ public function insertPost(){
 /**
  * Metodo static <br/>
  * Recive el id del post a eliminar <br/>
- * @param type $id
+ * @param type $id</br>
+ * Finalmente eliminamos la cariable </br>
+ * $_SESSION['lastId'].
  */
 
 
@@ -614,6 +627,8 @@ static function eliminarPostId($id){
             $excepciones = new MisExcepcionesPost(CONST_ERROR_ELIMINAR_POST_AL_REGISTRARLO[1], CONST_ERROR_ELIMINAR_POST_AL_REGISTRARLO[0],$ex);
             $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("",true);
         
+    }finally{
+        if(isset($_SESSION['lastId'])){unset($_SESSION['lastId']);}
     }
    
         

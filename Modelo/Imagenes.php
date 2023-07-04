@@ -22,6 +22,10 @@ class Imagenes extends DataObj{
     );
     
     
+
+
+
+
 /**
  * Metodo que inserta la imagen <br/>
  * demo cuando un usuario esta <br/>
@@ -69,14 +73,14 @@ public static function insertarImagenDemo(){
  * y comentarios de cada imagen subida.<br/>
  * Este metodo comprueba que subiendo alguna <br/>
  * imagen el usuario no ha eliminado una <br/>
- * mientras subia nel Post<br/>
+ * mientras subia el Post<br/>
  * Si es asi se le asigna el nombre que contiene <br/>
  * la variable $_SESSION['imgTMP']. <br/>
  * Esta se instancia en metodo eliminarImg de este archivo.<br/>
- * Si llega a estar en  $_SESSION['imgTMP']['imagenesBorradas'][0] <br/>
+ * Si llega a estar en null $_SESSION['imgTMP']['imagenesBorradas'][0] <br/>
  * es destruida. <br/>
  * Ademas vigila que el usuario no elimine <br/>
- * todas las imagenes y deje al final la de demo. <br/>
+ * todas las imagenes, si es asi deja al final la img demo. <br/>
  * Entonces ingresa en la bbdd la ruta /demo
  *
  */
@@ -84,19 +88,26 @@ public static function insertarImagenDemo(){
    
      
       
+      
        $_SESSION['contador'] = $_SESSION['contador'] + 1;
-       
-       if(isset($_SESSION['imgTMP']) and (!empty($_SESSION['imgTMP']['imagenesBorradas'][0]))){
-           //   Eliminamos el primer elemento del array
-           $tmp = array_shift($_SESSION['imgTMP']['imagenesBorradas']);
-
-       }else{
-                   
-           $tmp = $_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1]."/".$_SESSION['contador'];
+                                                  
+        if(isset($_SESSION['imgTMP'])){
            
+            //   Eliminamos el primer elemento del array
+            $this->setValue("directorio", array_shift($_SESSION['imgTMP']['imagenesBorradas']));
+           
+            if($_SESSION['imgTMP']['imagenesBorradas'][0] === null){
+               
+                unset($_SESSION['imgTMP']);
+                
+            }
+        }else{
+                   
+           $this->setValue("directorio", $_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1]."/".$_SESSION['contador']);
+          
        }
        
-                if(empty($_SESSION['imgTMP']['imagenesBorradas'][0])){unset($_SESSION['imgTMP']);}
+                
        
     try{
         
@@ -106,13 +117,13 @@ public static function insertarImagenDemo(){
         
         $st = $con->prepare($sql);
         
-        $st->bindValue(":postIdPost", $_SESSION['lastId'][0], PDO::PARAM_INT);
-        $st->bindValue(":directorio",$tmp, PDO::PARAM_STR);
+        $st->bindValue(":postIdPost",$this->getValue("postIdPost") , PDO::PARAM_INT);
+        $st->bindValue(":directorio",$this->getValue("directorio"), PDO::PARAM_STR);
         //En caso el usuario no escriba una descripcion de la imagen
         if($this->data['figcaption'] == null){
             $st->bindValue(":texto", " ", PDO::PARAM_STR);  
         }else{
-            $st->bindValue(":texto", $this->data['figcaption'], PDO::PARAM_STR);
+            $st->bindValue(":texto", $this->getValue("figcaption"), PDO::PARAM_STR);
         }
    
         
@@ -129,15 +140,16 @@ public static function insertarImagenDemo(){
 
 
             if(isset($_SESSION['contador']) and $_SESSION['contador'] == 1){
+                
+                $url = $_SESSION['nuevoSubdirectorio'][0]."/".$_SESSION['nuevoSubdirectorio'][1].'/demo';
                 $sql = "DELETE FROM ".TBL_IMAGENES." WHERE postIdPost = :postIdPost and directorio = :directorio";
-
+               
                     $st = $con->prepare($sql);
-                    $st->bindValue(":postIdPost", $_SESSION['lastId'][0], PDO::PARAM_INT);       
-                    $st->bindValue(":directorio",$_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1]."/demo", PDO::PARAM_STR);
-                    //echo 'eliminar demo bbdd '.$_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1]."/demo";
-                    $st->execute() ? true : false;
-
-                     
+                    $st->bindValue(":postIdPost", $this->getValue("postIdPost"), PDO::PARAM_INT);       
+                    $st->bindValue(":directorio",$url, PDO::PARAM_STR);
+                    
+                         $st->execute();
+                    
             }
         
         } catch (Exception $ex) {
@@ -160,7 +172,7 @@ public static function insertarImagenDemo(){
         Conne::disconnect($con);
         $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
         $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_AL_SUBIR_UNA_IMG_SUBIENDO_POST[1],CONST_ERROR_BBDD_AL_SUBIR_UNA_IMG_SUBIENDO_POST[0],$ex); 
-        $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
+       // $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
         
     }
 
@@ -189,7 +201,8 @@ public function eliminarImg(){
         //Si es la primera imagen que borra el usuario se instancia
         //Para guardar en el array su ruta
         if(!isset($_SESSION['imgTMP']['imagenesBorradas'])){
-            $_SESSION['imgTMP']['imagenesBorradas'][0] = null;    
+            $_SESSION['imgTMP']['imagenesBorradas'][0] = null;  
+           
         } 
         
         
@@ -212,8 +225,8 @@ public function eliminarImg(){
         for($i = 0; $i< 5; $i++ ){
             
             if (empty($_SESSION['imgTMP']['imagenesBorradas'][$i])){
-              $_SESSION['imgTMP']['imagenesBorradas'][$i] = $this->getValue('directorio');
-              
+                $_SESSION['imgTMP']['imagenesBorradas'][$i] = $this->getValue('directorio');
+                
                            break;
             }
         }
@@ -279,9 +292,7 @@ public function eliminarImg(){
         $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_ELIMINAR_IMG_POST[1], CONST_ERROR_BBDD_ELIMINAR_IMG_POST[0],$ex);
         $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost",true);
         
-    }finally{
-        
-    }  
+    }
      
 //fin eliminarImg    
 }    
@@ -304,11 +315,11 @@ public function eliminarImg(){
             $sql = "UPDATE ".TBL_IMAGENES. " SET ".
                     "texto = :descripcion ".
                     " WHERE postIdPost = :idPost and idImagen = :idImagen ";
-            //echo "sql actualizarTexto ".$sql.'<br>';
+            
 
             $stm = $con->prepare($sql);
             $stm->bindValue(":descripcion", $this->getValue('figcaption'), PDO::PARAM_STR );
-            $stm->bindValue(":idPost", $_SESSION['lastId'][0] , PDO::PARAM_INT);
+            $stm->bindValue(":idPost", $this->getValue("postIdPost") , PDO::PARAM_INT);
             $stm->bindValue(":idImagen", $this->getValue('idImagen'), PDO::PARAM_STR);
             $stm->execute();
 
