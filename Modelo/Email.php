@@ -63,9 +63,9 @@ class Email {
             $mail->From = EMAIL_FROM;//Remitente del correo
             $mail->FromName = "Te lo cambio.";
             $mail->AddAddress($destino);// Destinatario
-            $mail->Username = EMAIL_USERNAME;//"administracion@ichangeityou.com";
+            $mail->Username = EMAIL_USERNAME;
             $mail->Password = EMAIL_PASSWORD;
-            //$mail->addEmbeddedImage($_SERVER['DOCUMENT_ROOT']."/Changes/photos/carlos/48/1.jpg", "prueba");
+            //$mail->addEmbeddedImage($_SERVER['DOCUMENT_ROOT']."/Changes/photos/demo.jpg", "prueba");
             //Solucion temporal para XAMPP
             //En Linux no es necesario
             //En php.ini tambien se puede modificar

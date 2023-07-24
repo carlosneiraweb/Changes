@@ -89,8 +89,7 @@ $_SESSION["paginaError"] = basename($_SERVER['PHP_SELF']);
     //Añadimos el div con la clase oculto
     // echo'<div id="ocultar" class="oculto"> </div>';  
        
-        global $userReg;
-        $userReg = new Usuarios(array());
+        
         //Variable para recuperar
         //el resultado de la validacion
         //y el posible mensaje de error
@@ -484,7 +483,7 @@ function confirmarRegistro(){
             "email" => $_SESSION['usuario']['email'],
             "nick" => $_SESSION['usuario']['nick'],
             "password" => $_SESSION['usuario']['password'],
-            "bloqueado" => '0'
+            "bloqueado" => '1'
            
                 ));
                
@@ -517,7 +516,6 @@ function processFormRegistro($requiredFields, $st){
     //Array para almacenar los campos no rellenados y obligatorios
         global $missingFields;
         global $resulTestReg;
-        global $userReg;
         $missingFields = array();   
         
         //Segun el paso vamos rellenando la variable de session  de usuario
@@ -579,7 +577,7 @@ function processFormRegistro($requiredFields, $st){
    
         case 'step1':
             
-            $resulTestReg = validarCamposRegistro($st, $userReg);
+            $resulTestReg = validarCamposRegistro($st);
            
                 //Si ha habido algun error volvemos a mostrar el paso del formulario
                 //con los campos que ha rellenado el usuario
@@ -592,7 +590,7 @@ function processFormRegistro($requiredFields, $st){
                 break;
                 
         case 'step2':
-            $resulTestReg = validarCamposRegistro($st, $userReg);
+            $resulTestReg = validarCamposRegistro($st);
             
                 //Si ha habido algun error volvemos a mostrar el paso del formulario
                 //  correcto y un mensaje con los campos correspondientes
@@ -607,7 +605,7 @@ function processFormRegistro($requiredFields, $st){
         case 'step3':
             
            
-            $resulTestReg = validarCamposRegistro($st, $userReg);
+            $resulTestReg = validarCamposRegistro($st);
             
                 //Si ha habido algun error volvemos a mostrar el paso del formulario
                 //  correcto y un mensaje con los campos correspondientes
@@ -621,7 +619,7 @@ function processFormRegistro($requiredFields, $st){
             
         case 'step4':
             
-            $resulTestReg = validarCamposRegistro($st, $userReg);
+            $resulTestReg = validarCamposRegistro($st);
             
             
             if($resulTestReg[1] === 0){

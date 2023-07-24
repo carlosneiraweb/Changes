@@ -44,7 +44,7 @@ class MetodosInfoExcepciones {
     }
 
     private function mostrarError(){
-        header('Location: mostrar_error.php');
+        header(MOSTRAR_PAGINA_ERROR);
             
     }
     
@@ -69,12 +69,13 @@ private function convertirStringDatosSesion($opc){
    
     if(isset($_SESSION['emailNoActivado'])){
         
-        $datosSesion= $opc.PHP_EOL;
-        $datosSesion .= "No se pudo desbloquear usuario en validarEmail.php";
+        $datosSesion= $opc;
         echo PHP_EOL;
-        $datosSesion .= "El nick del usuario es ".$_SESSION['emailNoActivado'];
+        $datosSesion .= " \r No se pudo desbloquear usuario en validarEmail.php";
+        echo PHP_EOL;
+        $datosSesion .= " \r El nick del usuario es ".$_SESSION['emailNoActivado'];
         
-            unset($_SESSION['emailNoActivado']);
+        if(isset($_SESSION['emailNoActivado'])){unset($_SESSION['emailNoActivado']);}
         
     }else if(isset($_SESSION['actualizo'])){    
         

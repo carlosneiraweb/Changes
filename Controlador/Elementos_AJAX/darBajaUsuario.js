@@ -19,8 +19,8 @@ function darseBajaDefinitivamente(){
     
     
     $.ajax({
-                    data: { opcion : 'Definitivamente'       
-                           },
+                data: { opcion : 'Definitivamente'       
+                },
                     type: "POST",
                     dataType: 'json',
                     url: "../Controlador/Elementos_AJAX/darBajaUsuario.php"
@@ -31,14 +31,14 @@ function darseBajaDefinitivamente(){
 
                         $('#baja').empty();
                             $('#baja').append($('<h4>',{
-                            text : 'Tú baja ha sido cursada correctamente.',
-                            class : 'rsTotal'
+                                text : 'Tú baja ha sido cursada correctamente.',
+                                class : 'rsTotal'
                             })).append($('<h5>',{
-                            text: 'Recuerda que puedes darte de alta cuando tú quieras',
-                            class: 'rsTotal'
+                                text: 'Recuerda que puedes darte de alta cuando tú quieras',
+                                class: 'rsTotal'
                             })).append($('<h5>',{
-                            text: 'Vas a ser redirigido al inicio del portal',
-                            class: 'rsTotal'
+                                text: 'Vas a ser redirigido al inicio del portal',
+                                class: 'rsTotal'
                             
                            
                     }));
@@ -73,7 +73,7 @@ function darseBajaParcialmente(){
                     url: "../Controlador/Elementos_AJAX/darBajaUsuario.php"
                 }).done(function( data ) {
                    var test = data;
-                  
+                  alert("test dice "+test);
                    if(test === "OK"){
                        $('#baja').empty();
                        $("#baja").append($('<h4>',{

@@ -45,7 +45,8 @@
     { 
         session_start(); 
     } 
-   
+  
+    
 $conActualizar = Conne::connect();    
       
     switch ($opc) {

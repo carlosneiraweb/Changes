@@ -52,10 +52,12 @@ do {
 }   
 
 /**
- * Metodo que recive un hash sacado
- * de la bbdd y lo compara con el recivido
- * como de un formulario.
- * Si es correcto devuelve true sino false
+ * 
+ * @param type $pass 
+ * Password o hash a comparar
+ * @param type $hash
+ * Hash extraido de una bbdd
+ * @return type boolean
  */
 public final static function comparaHash( $pass, $hash){
      
@@ -63,6 +65,7 @@ public final static function comparaHash( $pass, $hash){
         
         $x = password_verify($pass, $hash);
         //$x = hash_equals($pass, $hash);
+       
        return $x;
         
     } catch (Exception $exc) {

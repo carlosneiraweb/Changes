@@ -15,6 +15,13 @@
         //var_dump($_SESSION['userTMP']);
         $nickComenta = $_SESSION['userTMP']->getValue('nick');
         $idUsuComenta = $_SESSION['userTMP']->devuelveId();
+        
+        /*
+         * Modificar el metodo 
+         * retornoDireccionUsuario 
+         * a pdo::fetc_assoc
+         */
+        
         $imgUsuComenta = $nickComenta;//"<img src='"."../datos_usuario/$nickComenta/$nickComenta.jpg"."'/>";
         $ciudadComenta = $_SESSION['userTMP']->retornoDireccionUsuario();
         $fechaComentario  = date('Y-m-d');

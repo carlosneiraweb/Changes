@@ -2,7 +2,9 @@
   if(!isset($_SESSION)) 
     { 
         session_start(); 
-    } 
+    }
+    
+    
  ?>
     
 <!DOCTYPE html>
@@ -49,25 +51,32 @@
         }
        
        
-      
-        $ex = $_SESSION['paginaError'];
+     
+       
+        
+            $ex = $_SESSION['paginaError'];
+        
+            if(isset($_SESSION['paginaError'])){unset($_SESSION['paginaError']);}
+          
        
         echo '<script type="text/javascript">';
            //indicamos la url a javascript
            //para redirecionarnos a la pagina correcta
+            
                 echo 'urlVolverError = '; echo "'$ex'".';';  
                 
         echo '</script>';
         
            
     
-        ?>
-      
-      
-      <input type="button" id="volver_intentar" value="Aceptar"/>
-              </section>  
-      </section>      
         
+      
+      ?>
+        <input type="button" id="volver_intentar" value="Aceptar"/>
+                </section>  
+        </section>     
+      
+      
         
      
     </body>

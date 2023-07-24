@@ -8,7 +8,6 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesBbdd.php');
-//require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesSistemas.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/DataObj.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Email/mandarEmails.php');
@@ -24,26 +23,29 @@ if(!isset($_SESSION)){
 
 
 if (isset($_POST['actv'])) {
-        $hash =  $_POST['actv'];
-    } else { if (isset($_GET['actv'])) 
+    $hash =  $_POST['actv'];
+} else { 
+    if(isset($_GET['actv'])){ 
         $hash = $_GET['actv'];
-    //echo $hash;
+    }
 }
 
 if (isset($_POST['nick'])) {
         $nick =  $_POST['nick'];
-    } else { if (isset($_GET['nick'])) 
+} else { 
+    if (isset($_GET['nick'])){ 
         $nick = $_GET['nick'];
+    }
 }
-
 
 /**
  * Este metodo elimina de la tabla<br/>
  * Desbloquear al usuario que se <br/>
- * desbloqueado desde el email recibido.
- * @param String $id
+ * desbloqueado desde el email recibido.<br/>
+ * @param String id<br>
+ * @param String nick 
  */
-function eliminarTablaDesbloquear($id){
+function eliminarTablaDesbloquear($id, $nick){
     
    
     
@@ -53,61 +55,59 @@ function eliminarTablaDesbloquear($id){
         
         
         $sqlEliminar = "Delete from ".TBL_DESBLOQUEAR. 
-                " WHERE idDesbloquear = :idDesbloquear;";
+                " WHERE idDesbloquear = $id;";
         
-        $stmELiminar = $con->prepare($sqlEliminar);
-        $stmELiminar->bindValue(":idDesbloquear", $id, PDO::PARAM_INT);
-        $test = $stmELiminar->execute();
-        echo "test dice $test";
-        if(!$test){throw Exception();}
+       
+        $count = $con->exec($sqlEliminar);
+        
+        if(!$count){throw new Exception("Hubo un error al eliminar al usuario de la tabla Desbloquear",0);}
 
 
     }catch(Exception $ex){
-        
-        $_SESSION['emailNoActivado'] = $id;//se elimina en metodosInfoExcepciones
-
-        //echo $ex->getMessage();
-        $excepciones = new MisExcepcionesUsuario(CONST_ERROR_DESBLOQUEO_USUARIO[1],CONST_ERROR_DESBLOQUEO_USUARIO[0],$ex);
-        $excepciones->redirigirPorErrorSistemaUsuario("desbloquearUsuario",true);
+     
+        $_SESSION['emailNoActivado'] = $nick. " y su id es $id";//se elimina en metodosInfoExcepcione
+        $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_ELIMINAR_TABLA_DESBLOQUEO[1],CONST_ERROR_BBDD_ELIMINAR_TABLA_DESBLOQUEO[0],$ex);
+        $excepciones->redirigirPorErrorSistemaUsuario("desbloquearUsuario",false);
     }
     
     
     
     
 }
-
 /**
- * Este metodo desbloquea un usuario <br/>
- * cuando este pincha en el enlace recibido<br/>
+ * 
+ * @param type $id <br/>
+ * El id del usuario a desbloquear<br/>
+ * @param type $nick <br/>
+ * El nick del usuario <br/>
+ * Si tiene exito elimina de la tabla Desbloquear al usuario<br/>
+ * y nos redirige a index.php
  */
-function desbloquearUsuario($id){ 
+function activarCuenta($id,$nick){ 
 
     try{
  
+      
        
+        $con = Conne::connect(); 
 
-         $con = Conne::connect(); 
-
-
-         $sqlValiEmail = "Update ".TBL_USUARIO. " SET bloqueado = :bloqueado WHERE  idUsuario = :idUsuario";
-         $stmValiEmail = $con->prepare($sqlValiEmail);
-         $stmValiEmail->bindValue(":bloqueado", '0', PDO::PARAM_STMT);
-         $stmValiEmail->bindValue(":idUsuario", $id, PDO::PARAM_INT);
+        $sqlValiEmail = "Update ".TBL_USUARIO. " SET bloqueado = ".DESBLOQUEO_EMAIL." WHERE  idUsuario = $id;";
         
-         $test = $stmValiEmail->execute();
+        $count = $con->exec($sqlValiEmail);
+        
+                if($count === 0){throw new Exception("Error al activar la cuenta desde el email",0);}
        
-         if($test){
-             
-            eliminarTablaDesbloquear($id);
-            header(MOSTRAR_PAGINA_INDEX);
-         }
+            if($count === 1){
+
+               eliminarTablaDesbloquear($id,$nick);
+               mandarEmails::mandarEmailWelcome($nick);
+               header(MOSTRAR_PAGINA_INDEX);
+            }
 
     } catch (Exception $ex) {
-   
-        $_SESSION['emailNoActivado'] = $id;//se elimina en metodosInfoExcepciones
-
-        echo $ex->getMessage();
-        $excepciones = new MisExcepcionesUsuario(CONST_ERROR_DESBLOQUEO_USUARIO[1],CONST_ERROR_DESBLOQUEO_USUARIO[0],$ex);
+      
+        $_SESSION['emailNoActivado'] = $nick. " y su id es: $id";//se elimina en metodosInfoExcepcione
+        $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_ACTIVAR_CUENTA_EMAIL[1],CONST_ERROR_BBDD_ACTIVAR_CUENTA_EMAIL[0],$ex);
         $excepciones->redirigirPorErrorSistemaUsuario("desbloquearUsuario",true);
     }    
     
@@ -118,50 +118,40 @@ function desbloquearUsuario($id){
 
 /**
  *Comprobamos que en la tabla <br/>
- * Desbloquear hay un hash e su correo.
- * 
- * 
- *  
+ * Desbloquear hay un hash como el recibido en su correo.<br/>
+ * Recuperamos id, hash y nick
+  *
  */
   
 try{
-    
- 
+  
     $con = Conne::connect(); 
-     
-    $sqlCorreo = " SELECT email from ".TBL_USUARIO. 
-            " WHERE nick = :nick;";
     
-    $stmCorreo = $con->prepare($sqlCorreo);
-    $stmCorreo->bindValue(":nick", $nick, PDO::PARAM_STR);
-    $stmCorreo->execute();
-    $rowCorreo = $stmCorreo->fetch();
-    
-   
-    $sqlCompararHash = "SELECT idDesbloquear, correo from ".TBL_DESBLOQUEAR.
+    $sqlCompararHash = "SELECT idDesbloquear from ".TBL_DESBLOQUEAR.
               " WHERE  nick = :nick;";
    
     $stmComparar = $con->prepare($sqlCompararHash);
-    $stmComparar->bindValue(":nick", $nick, PDO::PARAM_STR);
+    $stmComparar->bindValue(":nick",$nick , PDO::PARAM_STR);
     $stmComparar->execute();
     $row = $stmComparar->fetch();
-    
+    //var_dump($row);
+    if($row[0] == false){throw new Exception("No se pudo recuperar datos de la tabla Desbloqueo",0);}
     
    
     if(strcmp($hash, $row[1]) === 0){
-     
-        if(System::comparaHash($rowCorreo[0], $hash)){
-            desbloquearUsuario($row[0]);
-        }
-      
+        
+        activarCuenta($row[0],$nick);
     }
+      
+    
  
     } catch (Exception $ex) {
         
-        $_SESSION['emailNoActivado'] = $nick;//se elimina en metodosInfoExcepciones
-
-        //echo $ex->getMessage();
-        $excepciones = new MisExcepcionesUsuario(CONST_ERROR_DESBLOQUEO_USUARIO[1],CONST_ERROR_DESBLOQUEO_USUARIO[0],$ex);
+        //Se elimina en metodosInfoExcepciones
+        //se usa de bandera para recojer datos
+        //para ingresar en la bbdd en los errores
+        $_SESSION['emailNoActivado'] = $nick;
+        $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_RECUPERAR_DATOS_TABLA_DESBLOQUEAR[1],CONST_ERROR_BBDD_RECUPERAR_DATOS_TABLA_DESBLOQUEAR[0],$ex);
         $excepciones->redirigirPorErrorSistemaUsuario("desbloquearUsuario",true);
 
 } 

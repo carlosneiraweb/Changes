@@ -6,7 +6,7 @@
  *
  * @author carlos
  */
-use PHPMailer\PHPMailer\PHPMailer;
+
 use PHPMailer\PHPMailer\Exception;
 
 
@@ -29,45 +29,102 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Controlador/Validar/MisExcepcio
 class mandarEmails {
  
 
+    public static function mandarEmailWelcome($nick){
+        
 
- final function comprobarEmailActivacion($hash,$nick){
+     
+            //Creamos el objeto email con los datos
+            //Que necesitamos de $user para el cuerpo del email
+            //La cabecera y el footer son dos constantes
+            try{
+                
+                $user = Usuarios::getByUsername($nick);
+                
+                if($user === null){throw new Exception("No pudimos recuperar al objeto usuario \r"
+                        . " con el nick pasado");}
+                
+                
+                $cuerpoEmail = "<section id='saludo'>
+                        <h4>Enhorabuena $nick por registrarte en <span class='especial'>Te Lo Cambio</h4></span>
+                        </section>
+                        <p>Ahora podrás cambiar con nuestro usuarios.</p> <br /></p>";
+                        
+                ////
+                $emailAcabado = EMAIL_CABECERA.$cuerpoEmail.EMAIL_FOOTER;
+                //$emailAcabado = utf8_decode($emailAcabado);
+                $email = new Email($emailAcabado);
+                //MANDAMOS EL EMAIL
+                
+                $correo = $email->mandarEmail($user->getValue("email"));
+                $test =  $correo->send();
+                
+                if(!$test){throw new Exception($correo->ErrorInfo,0);}
+                
+            }catch (Exception $ex){    
+                
+                $excepciones = new MisExcepcionesUsuario(CONST_ERROR_CONSTRUIR_DARSE_ALTA[1],CONST_ERROR_CONSTRUIR_DARSE_ALTA[0],$ex);
+                $excepciones->redirigirPorErrorSistemaUsuario(" ",false);
+            
+                
+            }finally{
+                unset($correo);
+                unset($user);
+            }             
+    //fin mandarEmailBienvenida
+    }
+    
+    
+    /**
+     * Metodo que manda un email<br/>
+     * para activar la cuenta.<br>
+     * 
+     * @param type String <br>
+     * nick del usuario para mandar el email<br>
+      * @throws Exception
+     * 
+     */
+
+    final function mandarEmailActivacion($nick){
      
    
-     try{
+        try{
          
       
-      $url =  "http://37.221.239.142:8080/Changes/Controlador/Elementos_AJAX/validarEmail.php?actv=$hash&nick=$nick";
-        $cuerpoEmail = '<section id=comprobarEmail>' .
-                        
-                        '<fieldset>'.
-                        '<legend>Enlace activar cuenta</legend>'.
-                        "<h4> $nick solo te queda pulsar en el enlace para validar tú email.</h4>".
-                
-                        "<a link href='$url' >Aqui</a>".
-                            
-
-                        '</fieldset>'
-                        .'</section> ';
-                
-        $emailAcabado = EMAIL_CABECERA.$cuerpoEmail.EMAIL_FOOTER;
-                //$emailAcabado = utf8_decode($emailAcabado);
-        $email = new Email($emailAcabado);
-                //MANDAMOS EL EMAIL
+            $url =   URL_EMAIL_ACTIVACION."$nick";
             
-        $correo = $email->mandarEmail($_SESSION["usuRegistro"]->getValue("email"));
-        
-        $test = $correo->send();       
-        
-         if(!$test){throw new Exception("No se pudo contruir el email para activar al usuario  ", 0);}
+                $cuerpoEmail = '<section id=comprobarEmail>' .
+
+                                '<fieldset>'.
+                                '<legend>Enlace activar cuenta</legend>'.
+                                "<h4> $nick solo te queda pulsar en el enlace para validar tú email.</h4>".
+
+                                "<a link href='$url' >Aqui</a>".
+
+
+                                '</fieldset>'
+                                .'</section> ';
+
+                $emailAcabado = EMAIL_CABECERA.$cuerpoEmail.EMAIL_FOOTER;
+                        //$emailAcabado = utf8_decode($emailAcabado);
+                $email = new Email($emailAcabado);
+                        //MANDAMOS EL EMAIL
+
+                $correo = $email->mandarEmail($_SESSION["usuRegistro"]->getValue("email"));
+
+                $test = $correo->send();       
+
+        if(!$test){
+            throw new Exception("No se pudo contruir el email para activar al usuario  ", 0);
+            
+        }
+            
          
          
-     } catch (Exception $ex) {
+    } catch (Exception $ex) {
          
         $excepciones = new MisExcepcionesUsuario(CONST_ERROR_CONSTRUIR_DARSE_ALTA[1],CONST_ERROR_CONSTRUIR_DARSE_ALTA[0],$ex);
         $excepciones->redirigirPorErrorSistemaUsuario("mandarEmailActivacion",true);
 
-    }catch (\Exception $e) { //The leading slash means the Global PHP Exception class will be caught
-                //echo $e->getMessage(); //Boring error messages from anything else!
     }finally{
         unset($correo);
     }  
@@ -80,45 +137,8 @@ class mandarEmails {
      
  } 
  
-final function mandarEmailWelcome(){
-    
-
-     
-            //Creamos el objeto email con los datos
-            //Que necesitamos de $user para el cuerpo del email
-            //La cabecera y el footer son dos constantes
-            try{
-                $cuerpoEmail = '<section id="saludo">
-                        <h4>Enhorabuena '.$_SESSION["usuRegistro"]->getValue("nombre").' por registrarte en <span class="especial">Te Lo Cambio</h4></span>
-                        </section>
-                        <p>Ahora podrás cambiar con nuestro usuarios.</p> <br />
-                        <p>Recuerda que tú usuario es: '.$_SESSION["usuRegistro"]->getValue("nick").' </p>
-                        <p>Y tu password es: '.$_SESSION["usuRegistro"]->getValue("password").'</p>';
-                ////
-                $emailAcabado = EMAIL_CABECERA.$cuerpoEmail.EMAIL_FOOTER;
-                //$emailAcabado = utf8_decode($emailAcabado);
-                $email = new Email($emailAcabado);
-                //MANDAMOS EL EMAIL
-                
-                $correo = $email->mandarEmail($_SESSION["usuRegistro"]->getValue("email"));
-                $test =  $correo->send();
-                
-                if(!$test){throw new Exception($correo->ErrorInfo,0);}
-                
-            }catch (Exception $ex){    
-                
-                $excepciones = new MisExcepcionesUsuario(CONST_ERROR_CONSTRUIR_DARSE_ALTA[1],CONST_ERROR_CONSTRUIR_DARSE_ALTA[0],$ex);
-                $excepciones->redirigirPorErrorSistemaUsuario("ProblemaEmail",false);
-            
-                
-            }catch (\Exception $e) { //The leading slash means the Global PHP Exception class will be caught
-                //echo $e->getMessage(); //Boring error messages from anything else!
-            }finally{
-                unset($correo);
-            }                        
-                           
-   //FIN  mandarEmailWelcome 
-}
+           
+   
 
 
  /**

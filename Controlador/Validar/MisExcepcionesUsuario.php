@@ -194,7 +194,7 @@ public function redirigirPorErrorSistemaUsuario($opc,$grado){
         case  "eliminarDirectoriosAltaUsuario";
             
             $_SESSION['error'] = ERROR_ELIMINAR_DIRECTORIO_ALTA_USUARIO;
-            $_SESSION['paginaError']= "index.php";
+            $_SESSION['paginaError']= "email";
             $this->tratarDatosErrores("No pudimos eliminar los directorios del usuario al ocurrir un error en su registro. \n\r", $grado);
             
                  
@@ -221,7 +221,16 @@ public function redirigirPorErrorSistemaUsuario($opc,$grado){
                 die();
                 break;
             
-       
+        case  "desbloquearUsuario": 
+           
+            $_SESSION['error'] = ERROR_MANDAR_EMAIL_ACTIVACION;
+            $_SESSION["paginaError"] = "index.php";
+            $this->tratarDatosErrores("No se pudo enviar el email de activar registro \n\r O no se pudo eliminar el usuario de la tabla Desbloquear",$grado);
+            
+                die();
+                break;
+            
+            
         
         default:
            
