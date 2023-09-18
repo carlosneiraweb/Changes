@@ -17,6 +17,13 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Constantes/ConstantesEr
         session_start(); 
     } 
 
+    /**
+     * 
+     * 18 de septiembre
+     */
+    
+    
+    
 global $conBloqueo;
 $conBloqueo = Conne::connect();
 global $usuBloquea;
