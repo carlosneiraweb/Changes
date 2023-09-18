@@ -51,30 +51,33 @@ function darBajaDefinitiva(){
               
             try{
            
+               
                 $idUsu = $_SESSION["userTMP"]->devuelveId();
-                $nickEliTotal = $_SESSION["userTMP"]->getValue('nick');
-                $email= $_SESSION["userTMP"]->getValue('email');
                 $test = $_SESSION["userTMP"]->eliminarPorId($idUsu);
                 
-              
+
                 //dar baja administradores
                 
                 
                 //ELIMINAMOS LOS DIRECTORIOS CREADOS AL REGISTRARSE
-                if($test && $idUsu != ""){
+                if($test && $idUsu ){
                    
+                    
                     Directorios::eliminarDirectoriosSistema("../../photos/".$idUsu,"eliminarDirectoriosBajaUsuario");
                     Directorios::eliminarDirectoriosSistema("../../datos_usuario/".$idUsu,"eliminarDirectoriosBajaUsuario");
                     Directorios::eliminarDirectoriosSistema("../../Videos/".$idUsu,"eliminarDirectoriosBajaUsuario");
      
-                }
-                
-                if($test){
+                    $nickEliTotal = $_SESSION["userTMP"]->getValue('nick');
+                    $email= $_SESSION["userTMP"]->getValue('email');
+                    $objMandarEmails = new mandarEmails();
+                    $objMandarEmails->mandarEmailBajaUsuario($nickEliTotal,$email);
+                     
                     echo json_encode('OK');
-                        $objMandarEmails = new mandarEmails();
-                        $objMandarEmails->mandarEmailBajaUsuario($nickEliTotal,$email);
+                
+                }else{
+                    //echo json_encode("NO_OK");
                 }
-
+                  
             } catch (Exception $ex) {
                    
                 echo $ex->getMessage();
@@ -96,7 +99,7 @@ function darBajaParcial(){
             
             $sqlBajaParcial = "UPDATE  usuario SET bloqueado = ".BLOQUEO_PARCIAL.
                      " where idUsuario = :idUsuario;";
-            echo $sqlBajaParcial;
+            //echo $sqlBajaParcial;
             $stmBajaParcial = $conMenu->prepare($sqlBajaParcial);
             $stmBajaParcial->bindValue(":idUsuario", $idUsu, PDO::PARAM_INT );
             $test = $stmBajaParcial->execute();

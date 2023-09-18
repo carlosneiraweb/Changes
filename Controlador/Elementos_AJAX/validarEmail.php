@@ -1,9 +1,9 @@
 <?php
 
-  header('Content-Type: application/json');
-  header('Cache-Control: no-cache, must-revalidate');
-  header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-  header('Content-type: application/json; charset=utf-8');
+//  header('Content-Type: application/json');
+//  header('Cache-Control: no-cache, must-revalidate');
+//  header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+//  header('Content-type: application/json; charset=utf-8');
 
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
@@ -38,42 +38,7 @@ if (isset($_POST['nick'])) {
     }
 }
 
-/**
- * Este metodo elimina de la tabla<br/>
- * Desbloquear al usuario que se <br/>
- * desbloqueado desde el email recibido.<br/>
- * @param String id<br>
- * @param String nick 
- */
-function eliminarTablaDesbloquear($id, $nick){
-    
-   
-    
-    try{
-        
-        $con = Conne::connect();
-        
-        
-        $sqlEliminar = "Delete from ".TBL_DESBLOQUEAR. 
-                " WHERE idDesbloquear = $id;";
-        
-       
-        $count = $con->exec($sqlEliminar);
-        
-        if(!$count){throw new Exception("Hubo un error al eliminar al usuario de la tabla Desbloquear",0);}
 
-
-    }catch(Exception $ex){
-     
-        $_SESSION['emailNoActivado'] = $nick. " y su id es $id";//se elimina en metodosInfoExcepcione
-        $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_ELIMINAR_TABLA_DESBLOQUEO[1],CONST_ERROR_BBDD_ELIMINAR_TABLA_DESBLOQUEO[0],$ex);
-        $excepciones->redirigirPorErrorSistemaUsuario("desbloquearUsuario",false);
-    }
-    
-    
-    
-    
-}
 /**
  * 
  * @param type $id <br/>
@@ -98,17 +63,18 @@ function activarCuenta($id,$nick){
                 if($count === 0){throw new Exception("Error al activar la cuenta desde el email",0);}
        
             if($count === 1){
-
-               eliminarTablaDesbloquear($id,$nick);
+                
+               Usuarios::elimanarDesbloqueo($id, null);
                mandarEmails::mandarEmailWelcome($nick);
                header(MOSTRAR_PAGINA_INDEX);
+               
             }
 
     } catch (Exception $ex) {
       
         $_SESSION['emailNoActivado'] = $nick. " y su id es: $id";//se elimina en metodosInfoExcepcione
         $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_ACTIVAR_CUENTA_EMAIL[1],CONST_ERROR_BBDD_ACTIVAR_CUENTA_EMAIL[0],$ex);
-        $excepciones->redirigirPorErrorSistemaUsuario("desbloquearUsuario",true);
+        $excepciones->redirigirPorErrorSistemaUsuario("activarCuenta",true);
     }    
     
     
@@ -134,7 +100,7 @@ try{
     $stmComparar->bindValue(":nick",$nick , PDO::PARAM_STR);
     $stmComparar->execute();
     $row = $stmComparar->fetch();
-    //var_dump($row);
+    
     if($row[0] == false){throw new Exception("No se pudo recuperar datos de la tabla Desbloqueo",0);}
     
    
@@ -152,6 +118,6 @@ try{
         //para ingresar en la bbdd en los errores
         $_SESSION['emailNoActivado'] = $nick;
         $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_RECUPERAR_DATOS_TABLA_DESBLOQUEAR[1],CONST_ERROR_BBDD_RECUPERAR_DATOS_TABLA_DESBLOQUEAR[0],$ex);
-        $excepciones->redirigirPorErrorSistemaUsuario("desbloquearUsuario",true);
+        $excepciones->redirigirPorErrorSistemaUsuario("activarCuenta",true);
 
 } 

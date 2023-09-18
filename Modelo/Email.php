@@ -55,7 +55,7 @@ class Email {
             $mail = new PHPMailer(true); //creo un objeto de tipo PHPMailer
             $mail->IsSMTP(); //protocolo SMTP
             $mail->SMTPAuth = true;//autenticaci�n en el SMTP
-            $mail->SMTPSecure =  EMAIL_SMTPSECURE;//SSL security socket layer
+            $mail->SMTPSecure = EMAIL_SMTPSECURE;//SSL security socket layer
             //$mail->SMTPDebug = 2;
             
             $mail->Host = EMAIL_HOST;//servidor de SMTP 
@@ -91,10 +91,8 @@ class Email {
             
           // echo $mail->ErrorInfo;
           // echo $ex->errorMessage();
-            
-        }  catch (\Exception $e) { //The leading slash means the Global PHP Exception class will be caught
-           // echo $e->getMessage(); //Boring error messages from anything else!
-}
+        }
+        
     }
     
 //fin clase    

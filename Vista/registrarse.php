@@ -462,7 +462,7 @@ function confirmarRegistro(){
      * Instanciamos un objeto usuario y
      * hacemos la insercion.
      */
-    function ingresarUsuario(){
+    function ingresarActualizarUsuario(){
         
         global $mensajeReg;
         

@@ -17,6 +17,7 @@ $(document).ready(function(){
     
    function volverAnterior(){
        
+            alert(urlVolverError);
             location.href= urlVolverError;
         
         unset(urlVolverError);

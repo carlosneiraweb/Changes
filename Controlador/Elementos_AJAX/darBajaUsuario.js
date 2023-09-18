@@ -17,7 +17,7 @@ function redirigirInicio(){
  */
 function darseBajaDefinitivamente(){
     
-    
+   
     $.ajax({
                 data: { opcion : 'Definitivamente'       
                 },
@@ -25,9 +25,10 @@ function darseBajaDefinitivamente(){
                     dataType: 'json',
                     url: "../Controlador/Elementos_AJAX/darBajaUsuario.php"
                 }).done(function( data ) {
-                   var test = data;
-                 
-                   if(test === "OK"){
+              
+                  alert("WW"+data);
+                  
+                   if(data === "OK"){
 
                         $('#baja').empty();
                             $('#baja').append($('<h4>',{
@@ -45,7 +46,12 @@ function darseBajaDefinitivamente(){
                         
                          setTimeout(redirigirInicio,5000);
                         
-                    } 
+                    }else{
+                       // redirigirInicio();
+                    }
+                    
+                    
+                }).fail(function(){
                     
                     
                 });

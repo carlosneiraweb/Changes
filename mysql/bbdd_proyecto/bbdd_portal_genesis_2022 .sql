@@ -14,11 +14,11 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 --
 DROP DATABASE IF  EXISTS `bbdd_portal_genesis_2022`;
 
-CREATE SCHEMA IF NOT EXISTS `bbdd_portal_genesis_2022` DEFAULT CHARACTER SET utf8mb4 ;
+CREATE SCHEMA IF NOT EXISTS `bbdd_portal_genesis_2022` DEFAULT CHARACTER SET utf8mb4 COLLATE = utf8mb4_unicode_520_ci;
 USE `bbdd_portal_genesis_2022` ;
 
 
-USE `bbdd_portal_genesis_2022` ;
+
 
 -- -----------------------------------------------------
 -- Table `bbdd_portal_genesis_2022`.`administradores`

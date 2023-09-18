@@ -18,7 +18,7 @@ var objSeccion, petSeccion, objTiempoCambio, petTiempoCambio,
 
 window.onload=function(){
    
-   
+  
     //Section donde se cargaran las imagenes que el usuario valla subiendo
     imgCargar = document.getElementById('cnt_img');
 
@@ -38,7 +38,7 @@ window.onload=function(){
      //Cada vez que subimos una foto nueva en el post
      //Estan se van mostrando en el formulario
      //Para ir recuperandolas de la bbdd necesitamos el idPost
-     //Nos aseguramos que la varfiable idPost esta instanciada
+     //Nos aseguramos que la variable idPost esta instanciada
      //alert(idPost);
      //
     if(typeof idPost !== "undefined"){
@@ -192,9 +192,9 @@ function mandarId(id){
 
 /**
 * @description 
-* Metodo que muestra la ultima imagen subida por el usuario
-* al hacer un nuevo Posts. Esta imagen se van insertando en el formulario
-* al querer poner un post nuevo
+* Metodo que muestra la ultima imagen subida por el usuario <br>
+* al hacer un nuevo Posts. Esta imagen se van insertando en el formulario <br>
+* al poner un post nuevo <br>
  * @param {type} objLastImg
  * @returns {undefined} */
 function cargarUltimaImagen(objLastImg){
@@ -202,7 +202,7 @@ function cargarUltimaImagen(objLastImg){
         var sep = '<section id="capturar" class="contenedor_imagenes" >';
         for (var i= 0 ; i < objLastImg.length; i++){
             var demo = objLastImg[i].ruta;
-            
+       
             demo = demo.substr(-4,4);
          //   alert("demo "+demo);
             //Evitamos cualquier posible error

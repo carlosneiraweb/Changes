@@ -49,10 +49,42 @@ class Usuarios extends DataObj{
             "bloqueado" =>""
         );
     
+/**
+ * Metodo public static <br>
+ * Metodo que elimina de la tabla<br>
+ * Desbloquear usuarios.<br>
+ * @param type String $id<br>
+ * El id del usuario a borrar de la tabla.<br>
+ * @param type $opc
+ * Opcion para tratar el error.<br>
+ */
+    
+    
+    public static function elimanarDesbloqueo($id,$opc){
+        
+        $con =  Conne::connect();
+        $sql = "DELETE FROM ".TBL_DESBLOQUEAR." WHERE idDesbloquear = :id";
+        try{
+            $st = $con->prepare($sql);
+            $st->bindValue(":id", $id, PDO::PARAM_INT);
+            $st->execute();
 
+            Conne::disconnect($con);
+            
+            
+        } catch (Exception $ex) {
+            echo $ex->getLine().'<br>';
+            echo $ex->getFile().'<br>';
+            Conne::disconnect($con);
+            die("Query failed: ".$ex->getMessage());
+        }
+  
+        //fin eliminarDesbloqueo
+    }
+    
     
      /**
-      *
+      * public static <br>
       * Metodo static que recibe un id <br/>
       * nos devuelve un usuario <br/>
       * @param  $id del usuario
@@ -67,7 +99,7 @@ class Usuarios extends DataObj{
             $st->bindValue(":id", $id, PDO::PARAM_INT);
             $st->execute();
             $row = $st->fetch();
-            $st->closeCursor();
+            
             Conne::disconnect($con);
             
             if($row){return new Usuarios($row);}
@@ -83,10 +115,11 @@ class Usuarios extends DataObj{
     
      
     /**
+     * public static <br>
      * Metodo que recive un nick<br/>
      * y comprueba si esta en la bbdd.<br/>
-     * @param nick <br>
-     * String
+     * @param String nick <br>
+     * 
      * @return objeto usuario
      */
 
@@ -102,7 +135,7 @@ class Usuarios extends DataObj{
             $row = $st->fetch();
             
             if($row){ return new Usuarios($row);}
-            $st->closeCursor();
+           
             Conne::disconnect($con);
         } catch (Exception $ex) {
             echo $ex->getFile();
@@ -117,10 +150,11 @@ class Usuarios extends DataObj{
 
 
     /**
-     * public and static
-     * Metodo que devuelve un usuario por
-     * por un email recivido
-     * @param type $emailAddress
+     * public and static<br>
+     * Metodo que devuelve un usuario por<br>
+     * por un email recivido<br>
+     * @param type $emailAddress<br>
+     * Email del usuario
      */
     public static function getByEmailAddress($emailAddress){
         
@@ -131,7 +165,7 @@ class Usuarios extends DataObj{
             $st->bindValue(":emailaddress", $emailAddress, PDO::PARAM_STR);
             $st->execute();
             $row = $st->fetch();
-            $st->closeCursor();
+            
             Conne::disconnect($con);
             if($row){return new Usuarios($row);}    
         } catch(Exception $ex) {
@@ -262,7 +296,7 @@ public final function insert(){
                             "( :idDatosUsuario, :genero, :nombre, :apellido_1, :apellido_2, :telefono);";
                     
                         $stDatosUsuario = $con->prepare($sqlDatosUsuario);
-                        $stDatosUsuario->bindValue("idDatosUsuario", $idUsu, PDO::PARAM_INT);
+                        $stDatosUsuario->bindValue(":idDatosUsuario", $idUsu, PDO::PARAM_INT);
                         $stDatosUsuario->bindValue(":genero", $this->data["genero"], PDO::PARAM_STR);                      
                         $stDatosUsuario->bindValue(":nombre", $this->data["nombre"], PDO::PARAM_STR);
                         $stDatosUsuario->bindValue(":apellido_1", $this->data["apellido_1"], PDO::PARAM_STR);
@@ -295,7 +329,7 @@ public final function insert(){
                         " (:idDesbloquear,:nick,  :fechaDesbloquear);";
                 $stDesbloquear = $con->prepare($sqlDesbloquear);
                 $stDesbloquear->bindValue(":idDesbloquear", $idUsu, PDO::PARAM_INT);
-                $stDesbloquear->bindValue(":nick", $this->data["nick"], PDO::PARAM_STR);
+                $stDesbloquear->bindValue(":nick",$this->data["nick"] , PDO::PARAM_STR);
                 $stDesbloquear->bindValue(":fechaDesbloquear", $date, PDO::PARAM_STR);
                 $stDesbloquear->execute();
                 
@@ -323,11 +357,12 @@ public final function insert(){
 /**
  * Metodo que elimina un usuario por su id <br>
  * @param id <br>
- * String con el id del usuario a eliminar.
+ * String con el id del usuario a eliminar.<br>
+ * @param $opc opcion para tratar el error. <br>
  * @return name $test<br/>
  * Resultado de la acción
  */
- public function eliminarPorId($id){
+ public function eliminarPorId($id,$opc){
     
     $con = Conne::connect();
     $con->beginTransaction();
@@ -338,18 +373,33 @@ public final function insert(){
             
             $st = $con->prepare($sql);
             $st->bindValue(":idUsuario", $id, PDO::PARAM_INT);
-            $test = $st->execute();
+            $st->execute();
+            $test = $st->rowCount();
+            
+          if(!$test){
+              
+              
+              throw new Exception("No se pudo eliminar al usuario por Id",0);
+              
+          }
             
             $con->commit();
             Conne::disconnect($con);
-            return $test;
+            
+            
             
         } catch (Exception $ex) {
-            
+          
             $con->rollBack();
             Conne::disconnect($con);
-            $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_DAR_BAJA_USUARIO_DEFINITIVAMENTE[1],CONST_ERROR_BBDD_DAR_BAJA_USUARIO_DEFINITIVAMENTE[0],$ex);
-            $excepciones->redirigirPorErrorSistemaUsuario("elimanarUsuBBDD",true);
+            
+            if($opc == "registrar"){
+                $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_ELIMINAR_USU_POR_ID[1],CONST_ERROR_BBDD_ELIMINAR_USU_POR_ID[0],$ex);
+                $excepciones->redirigirPorErrorSistemaUsuario($opc,true);
+            }
+            
+        }finally{
+            return $test;
            
         }
      
@@ -360,8 +410,8 @@ public final function insert(){
  
  
     /**
-     * Metodo publico que recive
-     * el nick de un usuario y nos devuelve el id
+     * Metodo publico <br>
+     * nos devuelve el id de un usuario<br>
      *  @return type id usuario
      */
 
@@ -376,17 +426,24 @@ public final function insert(){
                 $st->bindValue(":nick", $this->getValue('nick'), PDO::PARAM_STR);
                 $st->execute();
                 $row = $st->fetch();
+                $t = $st->rowCount();
                 
-                if($row){return $row[0];}
-                $st->closeCursor();
-                
+                if(!$t){
+                 
+                    throw new Exception("No pudimos recuperar el id del usuario",0);
+                    
+                }else{
+                    
+                    return $row[0];
+               
+                }
                 Conne::disconnect($con);
                 
         } catch (Exception $ex) {
             Conne::disconnect($con);
-            echo $ex->getLine().'<br>';
-            echo $ex->getFile().'<br>';
-            die("Query failed: ".$ex->getMessage());
+            $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_RECUPERAR_ID_USUARIO[1],CONST_ERROR_BBDD_RECUPERAR_ID_USUARIO[0],$ex);
+            $excepciones->redirigirPorErrorSistemaUsuario("recuperarIdUsu",true);              
+            
         }
    //fin devuelve id     
 }
@@ -421,7 +478,7 @@ public function retornoDireccionUsuario(){
             return $direccion;
             
         } catch (Exception $ex) {
-            Conne::disconnect($conBloqueo);
+            Conne::disconnect($conDireccion);
             echo $ex->getCode();
             echo '<br>';
             echo $ex->getLine().'<br>';
@@ -452,7 +509,7 @@ public function devuelveEmailPorId($id){
             $st->bindValue(":idUsuario", $id, PDO::PARAM_INT);
             $st->execute();
             $row = $st->fetch();
-            $st->closeCursor();
+            
             Conne::disconnect($con);
             return $row; 
         } catch(Exception $ex) {

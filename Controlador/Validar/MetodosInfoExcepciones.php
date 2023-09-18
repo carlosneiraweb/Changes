@@ -2,6 +2,7 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Sistema/Conne.php');
 
+
  if(!isset($_SESSION)) 
     { 
         session_start(); 
@@ -25,7 +26,7 @@ class MetodosInfoExcepciones {
     protected $misExcepciones = Array();
     
     
-    
+   
     public function __construct($mensaje,$codigo,&$ex) {
         $this->misExcepciones[0] = $mensaje;
         $this->misExcepciones[1] = $codigo;
@@ -44,13 +45,15 @@ class MetodosInfoExcepciones {
     }
 
     private function mostrarError(){
-        header(MOSTRAR_PAGINA_ERROR);
+        
+         header(MOSTRAR_PAGINA_ERROR);
             
     }
     
     private function redirirgirFalloNoCritico(){
-        $url = $_SESSION["paginaError"];
-         header("Location: $url");
+        
+        header(MOSTRAR_PAGINA_BASENAME.$_SESSION['paginaError']);
+        
     }
     
 
@@ -203,7 +206,7 @@ private function insertarErroresBBDD( $opc,$datosSesion){
          
      }finally{
          if(isset($_SESSION["datos"])){unset($_SESSION["datos"]);}
-         if(isset($_SESSION["usuRegistro"])){unset($_SESSION["usuRegistro"]);}
+         if(isset($_SESSION["usuRegistro"])){ unset($_SESSION["usuRegistro"]);}
      }
      
     
@@ -230,12 +233,13 @@ protected function tratarDatosErrores($comentario,$grado){
     
     $this->insertarErroresBBDD( $comentario,$datosSesion);
     
+   
+    
     if($grado){
         
         $this->mostrarError();
     
-    }elseif (!$grado) {
-        // No redirigimos ya lo hemos hecho antes
+    //quitamos grado false
     }else{
         
         $this->redirirgirFalloNoCritico();

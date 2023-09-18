@@ -63,7 +63,7 @@ class mandarEmails {
             }catch (Exception $ex){    
                 
                 $excepciones = new MisExcepcionesUsuario(CONST_ERROR_CONSTRUIR_DARSE_ALTA[1],CONST_ERROR_CONSTRUIR_DARSE_ALTA[0],$ex);
-                $excepciones->redirigirPorErrorSistemaUsuario(" ",false);
+                $excepciones->redirigirPorErrorSistemaUsuario("emailBienvenida",false);
             
                 
             }finally{
@@ -112,7 +112,7 @@ class mandarEmails {
                 $correo = $email->mandarEmail($_SESSION["usuRegistro"]->getValue("email"));
 
                 $test = $correo->send();       
-
+                
         if(!$test){
             throw new Exception("No se pudo contruir el email para activar al usuario  ", 0);
             

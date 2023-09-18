@@ -142,9 +142,16 @@ global $pa_queridas;
         //Llamamos a este metodo para eliminar los datos con los que hemos trabajado
         if(isset($_SESSION['atras']) and $_SESSION['atras'] === "atras"){
             Directorios::eliminarDirectoriosSistema($eliminarPost,"SubirPost");
-            Post::eliminarPostId($_SESSION["lastId"][0]);
+            Post::eliminarPostId($_SESSION["lastId"][0],"SubirPost");
             MisExcepcionesPost::eliminarVariablesSesionPostAcabado();
-            
+            //Estas variables de sesion no se destruyen junto a las 
+            //otras por que es necesaria para hacer un update
+            //del post mientras se esta publicando.
+            //Solo se puede destruir cuando se finaliza el proceso de publicar.
+            //o deciden no publicarlo
+            if(isset($_SESSION['lastId'])){unset($_SESSION['lastId']);}
+            //Solo cuando se ha acabado de publicar el post
+            if(isset($_SESSION['nuevoSubdirectorio'])){unset($_SESSION['nuevoSubdirectorio']);}  
             
                 
         }else{
@@ -180,7 +187,7 @@ global $pa_queridas;
         //Destruimos la sesion atras, la sesion contador y si existiera la 
             //la variable de imagenes borradas
             MisExcepcionesPost::eliminarVariablesSesionPostAcabado(); 
-            //Esta variable de sesion no se destruye junto a las 
+            //Estas variables de sesion no se destruyen junto a las 
             //otras por que es necesaria para hacer un update
             //del post mientras se esta publicando.
             //Solo se puede destruir cuando se finaliza el proceso de publicar.
@@ -330,7 +337,7 @@ global $pa_queridas;
         
     echo'</section>';
   
-    //Agregamos el contenido del textara 
+    //Agregamos el contenido del textarea 
     //comentario Post
     if($coment !== ""){
         echo '<script type="text/javascript">';
@@ -481,8 +488,8 @@ function ingresarPost(){
         //y el Sistema no ha cometido ningun error. En ese caso si el usuario
         //vuelve intentarlo se ingresa un post de nuevo.
         
-        
-        if((isset($_SESSION['atras']) || isset($_SESSION['error'])) ){ 
+        //|| isset($_SESSION['error'])
+        if(isset($_SESSION['atras'])  ){ 
            
             
             $articulo->actualizarPost();
@@ -495,11 +502,7 @@ function ingresarPost(){
            
 
         }
-       
-       
-        
-        
-        
+
         /******************************************************************/
         unset($articulo);
         session_write_close();   
@@ -531,7 +534,7 @@ function ingresarImagenes(){
     $articulo = new Imagenes(array(
        "postIdPost" => $_SESSION['lastId'][0],
        "figcaption" => $_SESSION['post']['figcaption'],
-       "directorio" => $_SESSION['dirImagen']
+       "directorio" => $_SESSION['dirImagen'] //step 2 controlsErroresArchivos ejemplo 185/5/1
     ));
    
    $articulo->insertarFotos();
@@ -570,8 +573,8 @@ function actualizarImagen(){
  * Metodo que elimina una imagen <br/>
  * mientras el usuario esta publicando un Post.<br/>
  * Se generan dos campos hidden<br/>
- * idImagen y ruta, al mostrar el formulario
- * para eliminar o actualizar la imagen.
+ * idImagen y ruta, al mostrar el formulario <br/>
+ * para eliminar o actualizar la imagen. <br/>
  * Archivo subirPost.js
  *
  */
@@ -602,8 +605,8 @@ function processForm($requiredFields, $st){
         switch ($st){
             case 'step1':
                 
-                $_SESSION['post']['seccionSubirPost'] = isset($_POST['seccionSubirPost']) ? $_POST['seccionSubirPost'] : "";
-                $_SESSION['post']['tiempoCambioSubirPost'] = isset($_POST['tiempoCambioSubirPost']) ? $_POST['tiempoCambioSubirPost'] : "";
+                $_SESSION['post']['seccionSubirPost'] = $_POST['seccionSubirPost'];//) ? $_POST['seccionSubirPost'] : "";
+                $_SESSION['post']['tiempoCambioSubirPost'] = $_POST['tiempoCambioSubirPost'];//) ? $_POST['tiempoCambioSubirPost'] : "";
                 $_SESSION['post']['tituloSubirPost'] = $_POST["tituloSubirPost"];       
                 $_SESSION['post']['comentarioSubirPost'] = $_POST['comentarioSubirPost'];
                 $_SESSION['post']['precioSubirPost'] = $_POST['precioSubirPost'];
@@ -668,8 +671,10 @@ function processForm($requiredFields, $st){
             }else {
                 //Por si el usuario ha tratado de subir
                 //formato png
-                if(!isset($_SESSION['png'])){
+                //if(!isset($_SESSION['png'])){
                     ingresarImagenes();
+                    
+                    /*
                     if($_SESSION['contador'] == '1'){
                                 //Metodo que busca entre las palabras 
                         //que un usuario ha guardado en sus
@@ -690,7 +695,9 @@ function processForm($requiredFields, $st){
                         //el campo de la tabla como full text
                         //$articulo->buscarUsuariosInteresados($datosPost);
                     }
-                }
+                     * */
+                     
+                //}
                 displayStep2(array());
                
                 

@@ -150,7 +150,7 @@ function comprobarEmailNuevo(){
     crearDirectorios($tmpNuevosDatos);
     
         if($var == "0"){
-            Directorios::moverImagen($foto,$destino , $tmpNuevosDatos[3]);
+            Directorios::moverImagen($foto, $destino , $tmpNuevosDatos[3]);
         }else{
             Directorios::copiarFoto("../datos_usuario/desconocido.jpg", $destino, $tmpNuevosDatos[3]);
         }
@@ -357,7 +357,7 @@ function validarCamposRegistro($st){
                 
             $test =  Directorios::validarFoto(); 
                 
-            
+        
             if($test !== 0 && $test !== 4){
                 
                 //SI hay algun problema validar foto
@@ -371,14 +371,14 @@ function validarCamposRegistro($st){
 
                 $foto = $_FILES['photoArticulo']['tmp_name']; 
               
-                //ingresamos o actualizamos al usuario en la bbdd
-                ingresarUsuario();
+                
                 //Si el usuario no se ha logeado
                 //entonces se esta registrando    
                 if(!isset($_SESSION["userTMP"])){  
                   
                     
-                    
+                    //ingresamos o actualizamos al usuario en la bbdd
+                    ingresarActualizarUsuario();
                         //SI todo ha ido bien 
                         //Creamos los directorios para el usuario 
                         //Y subimos la foto de perfil
@@ -388,9 +388,12 @@ function validarCamposRegistro($st){
                 //Si se ha logeado esta actualizando sus datos       
                 }else{
                     
+                    // actualizamos al usuario en la bbdd
+                            ingresarActualizarUsuario();
                     $id = $_SESSION["userTMP"]->getValue('idUsuario');
                     $destino = "../datos_usuario/$id/$id.jpg";
                         modificarDirectoriosUsuario();
+                            
                 }
                         
             return $testValidoReg;
@@ -410,7 +413,7 @@ function validarCamposRegistro($st){
                         
         
            
-   
+
         }
   //fin validarCamposRegistro      
       }
