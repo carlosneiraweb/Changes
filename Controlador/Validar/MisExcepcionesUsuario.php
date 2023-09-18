@@ -64,8 +64,8 @@ public function eliminarDirectoriosUsuario($opc) {
            
     }
     
-        if(isset($_SESSION["datos"]["id"])&& $_SESSION["datos"]["id"] != ""){
-            
+        if(isset($_SESSION["datos"]["id"])&& $_SESSION["datos"]["id"] != "" && $opc != null){
+           
             try {
                 
                 Directorios::eliminarDirectoriosSistema($fotos,$opc);
@@ -118,7 +118,7 @@ public function eliminarDirectoriosUsuario($opc) {
 
 public function redirigirPorErrorSistemaUsuario($opc,$grado){
 
-   $_SESSION['errorArchivos'] = "existo";
+   //$_SESSION['errorArchivos'] = "existo";
 
    // echo PHP_EOL."opcion vale ".$opc." y gr4ado vale ".$grado." el id es ".$_SESSION["datos"]["id"].PHP_EOL;
     switch ($opc) {
@@ -127,24 +127,24 @@ public function redirigirPorErrorSistemaUsuario($opc,$grado){
            
         case  "registrar":
             
+            
+            
+            
             $_SESSION['error'] = ERROR_INGRESAR_USUARIO;
             $_SESSION["paginaError"] = "registrarse.php";
-            $_SESSION["usuRegistro"]->eliminarPorId($_SESSION["datos"]["id"]); //POr si ha quedado algun registro
-            $this->eliminarDirectoriosUsuario($opc);
-            $this->tratarDatosErrores($opc,$grado);
-            
-            
-            
-            
-            
+            $_SESSION["usuRegistro"]->elimanarDesbloqueo($_SESSION["datos"]["id"],null);
+            $this->eliminarDirectoriosUsuario(null);
+            $_SESSION["usuRegistro"]->eliminarPorId($_SESSION["datos"]["id"],null); //POr si ha quedado algun registro
+            $this->tratarDatosErrores("Error al registrar usuario.",$grado);
+           
+
                 die();
                 break;
-
+              
         case  "RegistrarUsuarioBBDD":
             
             $_SESSION['error'] = ERROR_REGISTRAR_USUARIO;
             $_SESSION["paginaError"] = "registrarse.php";
-            //$_SESSION['errorArchivos'] = "existo";
             $this->tratarDatosErrores("Error en el gestor bbdd al registrar usuario. \n\r",$grado);
             
             
@@ -163,24 +163,14 @@ public function redirigirPorErrorSistemaUsuario($opc,$grado){
             
         case  "actualizar":
             
-            $_SESSION['error'] = ERROR_ACTUALIZAR_USUARIO; //Sirve de bandera en caso de error
+            $_SESSION['error'] = ERROR_ACTUALIZAR_USUARIO; 
             $_SESSION["paginaError"] = "registrarse.php";
-            $this->tratarDatosErrores("No se pudo renombrar o eliminar la vieja la foto del usuario cuando estaba actualizando su nick. \n\r",$grado);    
+            $this->tratarDatosErrores("No se pudo hacer la actualización \r\n del usuario.",$grado);    
             $_SESSION['actualizo']->actualizoDatosUsuario();
                 
                 die();
                 break;
-            
-        case  "elimanarUsuBBDD";
-            
-            $_SESSION['error'] = ERROR_ELIMINAR_USUARIO_BBDD;
-            $_SESSION['paginaError']= "index.php";
-            $this->tratarDatosErrores("No pudimos eliminar al usuario de la BBDD. \n\r", $grado);
-            
-                 
-                die();
-                break;
-                               
+                       
         case  "eliminarDirectoriosBajaUsuario";
             
             $_SESSION['error'] = ERROR_ELIMINAR_DIRECTORIO_BAJA_USUARIO;
@@ -190,18 +180,7 @@ public function redirigirPorErrorSistemaUsuario($opc,$grado){
                  
                 die();
                 break;
-            
-        case  "eliminarDirectoriosAltaUsuario";
-            
-            $_SESSION['error'] = ERROR_ELIMINAR_DIRECTORIO_ALTA_USUARIO;
-            $_SESSION['paginaError']= "index.php";
-            $this->tratarDatosErrores("No pudimos eliminar los directorios del usuario al ocurrir un error en su registro. \n\r", $grado);
-            
-                 
-                //Eliminamos el die() Por que queremos 
-                //que el script continue para la opción de registrar
-                break;
-        
+
         case  "ProblemaEmail":
             
            
@@ -214,17 +193,53 @@ public function redirigirPorErrorSistemaUsuario($opc,$grado){
             
             $_SESSION['error'] = ERROR_MANDAR_EMAIL_ACTIVACION;
             $_SESSION["paginaError"] = "registrarse.php";
-            $_SESSION["usuRegistro"]->eliminarPorId($_SESSION["datos"]["id"]); //POr si ha quedado algun registro
-            $this->eliminarDirectoriosUsuario("registrar");
+            $_SESSION["usuRegistro"]->elimanarDesbloqueo($_SESSION["datos"]["id"],null);
+            $_SESSION["usuRegistro"]->eliminarPorId($_SESSION["datos"]["id"],null); //POr si ha quedado algun registro
+            $this->eliminarDirectoriosUsuario("registrar",null);
             $this->tratarDatosErrores("No se pudo enviar el email de activar registro \n\r",$grado);
             
                 die();
                 break;
             
-       
+        case  "activarCuenta": 
+           
+            $_SESSION['error'] = ERROR_ACTIVAR_CUENTA_EMAIL;
+            $_SESSION["paginaError"] = "index.php";
+            $this->tratarDatosErrores("No se pudo eliminar el usuario de la tabla Desbloquear",$grado);
+            
+                die();
+                break;
+            
+        case "recuperarIdUsu":
+            
+            $_SESSION['error'] = ERROR_BLOQUEAR_USUARIO;
+            $_SESSION["paginaError"] = "index.php";
+            $this->tratarDatosErrores("No se pudo  recuperar \n\r el id del usuario al bloquearlo",$grado);
+            
+                die();
+                break;
+             
+        case "elimanarUsuBBDD":
+            
+            $_SESSION['error'] = ERROR_INTERNO;
+            $_SESSION["paginaError"] = "mostrar_error.php";
+            $this->tratarDatosErrores("No se pudo  eliminar al usuario \n\r de la bbdd por id",$grado);
+            
+                die();
+                break;   
         
+        case "emailBienvenida":
+            
+            $_SESSION["paginaError"] = "index.php";
+            $this->tratarDatosErrores("No se pudo mandar email \r\n de bienvenida",$grado);
+            
+            
+                die();
+                break;  
+            
         default:
            
+            
              $this->tratarDatosErrores($opc,$grado);
             die();
             break;

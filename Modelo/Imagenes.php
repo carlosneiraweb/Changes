@@ -172,7 +172,7 @@ public static function insertarImagenDemo(){
         Conne::disconnect($con);
         $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
         $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_AL_SUBIR_UNA_IMG_SUBIENDO_POST[1],CONST_ERROR_BBDD_AL_SUBIR_UNA_IMG_SUBIENDO_POST[0],$ex); 
-       // $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
+        $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
         
     }
 
@@ -188,7 +188,7 @@ public static function insertarImagenDemo(){
  * Se instancia la variable $_SESSION['imgTMP'] <br/>
  * para que si el usuario quiere subir otra foto <br/>
  * se le asigne ese nombre. <br/>
- * Vigilamos que el usuario elimina <br/>
+ * Vigilamos que si el usuario elimina <br/>
  * todas las fotos y no sube ninguna.<br/>
  * Volvemos a ingresar en le bbdd la imagen /demo <br/>
  * y movemos al directorio Post la imagen.

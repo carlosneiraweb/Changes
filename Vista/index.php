@@ -112,10 +112,11 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
     //Variable user para instanciar 
     //objetos usuario
     $userLogin;
-    
+  
     if(isset($_POST["logeo"]) and $_POST["logeo"] == "aceptar"){
        
         processForm();
+        
     } else{
         
         //Si no se ha pulsado el boton de enviar se muestra por primera vez el formulario 'vacio'
@@ -328,7 +329,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Changes/Modelo/Usuarios.php');
  
 function displayFormLogeo($missingFields, $user, $test){
       global $valido;
-      
+   
  echo"<section id='login_form' ";
     //Aqui se muestra o esconde el formulario login despues de las comprobaciones PHP
         //Dependiendo si el usuario ha rellenado todos los campos
@@ -353,25 +354,30 @@ function displayFormLogeo($missingFields, $user, $test){
         
             echo'<legend>Formulario de ingreso</legend>';
 echo'<label '. ValidoForm::validateField("nick", $missingFields). ' for="nick" >Introduce nombre de usuario:</label><span class="obligatorio"><img src="../img/obligado.png" ></span>';
-echo'<input  type="text" name="nick" id="nick" autofocus placeholder="Escribe tú nick" value="'.$user->getValueEncoded("nick").'" ><br/><br/>';            
+echo"<input  type='text' name='nick' id='nick' autofocus='autofocus' placeholder='Escribe tú nick' value="; if(isset($_POST["nick"])){echo $_POST["nick"];} echo "><br/><br/>";            
 echo'<label '. ValidoForm::validateField("password", $missingFields).' for="password">Introduce tú password</label><span class="obligatorio"><img src="../img/obligado.png" ></span>';
-echo'<input type="password" name="password" id="password" placeholder="Escribe tú password" value="'.$user->getValueEncoded("password").'" ><br/><br/>';
+echo"<input type='password' name='password' id='password' placeholder='Escribe tú password'  ><br/><br/>";
 
 
 //Mostramos un error en el login
-if(!$test){
-   
-    //Si la cuenta del usuario ha sido bloqueada
-            if(!isset($_SESSION["userTMP"])){
+    if(!$test){
 
-                echo ERROR_VALIDACION_NO_ACTIVO;
+        
+    
+        
+        //Si la cuenta del usuario ha sido bloqueada
+                if(!isset($_SESSION["userTMP"])){
 
-            }else{
-                 echo ERROR_VALIDACION_LOGIN;
-                 unset($_SESSION["userTMP"]);
-                 
-            }
-}
+                    if($user->getValue('bloqueado') == "1"){
+                       echo ERROR_VALIDACION_NO_ACTIVO;   
+                    }elseif($user->getValue('bloqueado') == "2"){
+                       echo ERROR_BAJA_PARCIAL;
+                    }else{
+                        echo ERROR_VALIDACION_LOGIN;
+                    }
+
+                }
+    }
 
  
 echo'<input type="submit" id="btn_login" name="logeo" value="aceptar" />'; 
@@ -418,19 +424,19 @@ function processForm(){
        displayFormLogeo($missingFields, $userLogin, true);
        mostrarOculto();
     }elseif(!$loggedInMember = $userLogin->authenticate(1)) {
-            $_SESSION["userTMP"] = '0';
-            $test = false;
+           
+           //La identificacion no ha sido correcta 
             mostrarOculto();
-            displayFormLogeo($missingFields, $userLogin, $test);
+            displayFormLogeo($missingFields, $userLogin, false);
             
        
     } else { 
        
-        if($loggedInMember->getValue('bloqueado') == '1'){
+        if($loggedInMember->getValue('bloqueado') != '0'){
             
-            $test = false;
             mostrarOculto();
-            displayFormLogeo($missingFields, $userLogin, $test);
+            displayFormLogeo($missingFields, $loggedInMember, false);
+            
         }else{
             
             $_SESSION["userTMP"] = $loggedInMember;

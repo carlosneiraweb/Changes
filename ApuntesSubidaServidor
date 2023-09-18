@@ -1,0 +1,4 @@
+1º 
+Se modifica en MetodosInfoExcepciones y MIsExcepcionesUsuario 
+mostrar_error=>  header("Location:http://37.221.239.142:8080/Changes/Vista/mostrar_error.php");
+Revisar las constantes de URLs

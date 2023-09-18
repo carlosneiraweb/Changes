@@ -29,8 +29,9 @@ function mostrarMenu(){
             text : 'Darse de baja definitivamente.',
             id : 'definitivo'
         })).on('click','#definitivo', function bajaDefinitiva(){
+            
                 $('#baja').off('click','#definitivo', bajaDefinitiva);
-                //$('#dejarPosts').hide();
+                $('#dejarPosts').hide();
                 $('#sectionDefinitivo').remove();
                 $('#baja').append($('<section>',{
                     id : 'sectionDefinitivo',
@@ -60,8 +61,8 @@ function mostrarMenu(){
                     value : 'Cancelar'  
                 })).on('click','#btnSalirDefinitivo', function(){
                            
-                      $('#sectionDefinitivo').remove();
-//                    $('#dejarPosts').show();
+                    $('#sectionDefinitivo').remove();
+                    //$('#dejarPosts').show();
                     $("#definitivo").remove();
                     $('#dejarPosts').remove();
                     
@@ -79,12 +80,15 @@ function mostrarMenu(){
             id : 'dejarPosts'
         })).on('click','#dejarPosts', function bajaDejandoPosts(){
                 $('#baja').off('click','#dejarPosts', bajaDejandoPosts); 
+                $('#definitivo').hide();
                 $('#sectionParcial').remove();
                 $('#baja').append($('<section>',{
                     id : 'sectionParcial',
                     html : 'De esta forma dejarás tus Posts'+'<br/>'+
                            ' la gente podrá seguir viendolos y podrá '+'<br/>'+
-                           ' seguir poniendose en contacto contigo. '+'<br/>'
+                           ' seguir poniendose en contacto contigo. '+'<br/>'+
+                           'Siempre podrás volver con nosotros '+'<br/>'+
+                           'cuando tú quieras.'+'<br/>'
                     
                 }).append($('<input>',{
                     type : 'button',

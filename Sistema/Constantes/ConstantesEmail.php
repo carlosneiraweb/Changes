@@ -66,7 +66,7 @@ define("EMAIL_FOOTER", '</section><footer></footer></body></html>');
 define("EMAIL_FROM", "administracion@ichangeityou.com");
 define("EMAIL_FROM_NAME", "Administración de Te lo cambio.");
 define("EMAIL_SUBJECT_REGISTER", "Email de TE LO CAMBIO");
-define("EMAIL_PASSWORD", "htxrcdgrdcfwbjme");//"ipnjegphlwxedjpz"); 
+define("EMAIL_PASSWORD", "hdxhwdsyaosfbegs");//"ipnjegphlwxedjpz"); 
 define("EMAIL_USERNAME", "carlosneiraweb@gmail.com");
 define("EMAIL_SMTPAUTH", 1);
 define("EMAIL_SMTPSECURE", "tls");

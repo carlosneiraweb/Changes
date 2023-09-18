@@ -14,11 +14,11 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 --
 DROP DATABASE IF  EXISTS `bbdd_portal_genesis_2022`;
 
-CREATE SCHEMA IF NOT EXISTS `bbdd_portal_genesis_2022` DEFAULT CHARACTER SET utf8mb4 ;
+CREATE SCHEMA IF NOT EXISTS `bbdd_portal_genesis_2022` DEFAULT CHARACTER SET utf8mb4 COLLATE = utf8mb4_unicode_520_ci;
 USE `bbdd_portal_genesis_2022` ;
 
 
-USE `bbdd_portal_genesis_2022` ;
+
 
 -- -----------------------------------------------------
 -- Table `bbdd_portal_genesis_2022`.`administradores`
@@ -369,7 +369,7 @@ CREATE TABLE `usuario` (
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `email` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `fecha` date NOT NULL,
-  `bloqueado`	TINYINT(1) NOT NULL DEFAULT '0',
+  `bloqueado`	TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
   PRIMARY KEY (`idUsuario`),
   UNIQUE KEY `nick_UNIQUE` (`nick`))
  ENGINE=InnoDB AUTO_INCREMENT=33 
@@ -377,63 +377,9 @@ DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_520_ci;
 
 
-
---
--- Table structure for table `usuarios_bloqueados_parcial`
---
-
-DROP TABLE IF EXISTS `usuarios_bloqueados_parcial`;
-
-CREATE TABLE `usuarios_bloqueados_parcial` (
-  `usuarioIdUsuario` int NOT NULL,
-  `idUsuarioBloqueado` int NOT NULL,
-  PRIMARY KEY (`usuarioIdUsuario`,`idUsuarioBloqueado`),
-  CONSTRAINT `fk_usuarios_bloqueados_parcial_usuario` FOREIGN KEY (`usuarioIdUsuario`) REFERENCES `usuario` (`idUsuario`) ON DELETE CASCADE ON UPDATE NO ACTION) ENGINE=InnoDB 
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_unicode_520_ci;
-
-
-
---
--- Table structure for table `usuarios_bloqueados_total`
---
-
-DROP TABLE IF EXISTS `usuarios_bloqueados_total`;
-
-CREATE TABLE `usuarios_bloqueados_total` (
-  `usuarioIdUsuario` int NOT NULL,
-  `idUsuarioBloqueado` int NOT NULL,
-  PRIMARY KEY (`usuarioIdUsuario`,`idUsuarioBloqueado`),
-  KEY `fk_usuarios_bloqueados_usuario1_idx` (`usuarioIdUsuario`),
-  CONSTRAINT `fk_usuarios_bloqueados_usuario1` 
-FOREIGN KEY (`usuarioIdUsuario`) REFERENCES `usuario` (`idUsuario`) ON DELETE CASCADE ON UPDATE NO ACTION) 
-ENGINE=InnoDB 
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_unicode_520_ci;
-
-
---
--- Table structure for table `usuarios_expulsados`
---
-
-DROP TABLE IF EXISTS `usuarios_expulsados`;
-
-CREATE TABLE `usuarios_expulsados` (
-  `usuarioIdUsuario` int NOT NULL,
-  PRIMARY KEY (`usuarioIdUsuario`),
-  CONSTRAINT `fk_usuarios_expulsados_usuario1`
- FOREIGN KEY (`usuarioIdUsuario`) REFERENCES `usuario` (`idUsuario`) ON DELETE CASCADE ON UPDATE NO ACTION) 
-ENGINE=InnoDB 
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_unicode_520_ci;
-
-
-
-
 CREATE TABLE IF NOT EXISTS `Desbloquear` (
   `idDesbloquear` INT NOT NULL,
   `nick` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `correo` VARCHAR(255) NOT NULL,
   `fecha` DATE NOT NULL,
   PRIMARY KEY (`idDesbloquear`))
 ENGINE = InnoDB

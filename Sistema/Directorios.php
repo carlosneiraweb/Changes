@@ -112,7 +112,14 @@ class Directorios {
      */
     final static function moverImagen($nombreFoto, $nuevoDirectorio, $opc) {
 
-        
+        if ($opc == "subirImagenPost") {
+            $mensaje = "No se pudo mover la imagen al subir un post";
+        } else if ($opc == "registrar") {
+            $mensaje = "No se pudo mover la imagen al registrarse.";
+        } else if ($opc == "actualizar") {
+            $mensaje = "No se pudo mover la imagen al actualizar.";
+        }
+
 
         try {
 
@@ -121,14 +128,7 @@ class Directorios {
             }
         } catch (Exception $ex) {
             
-            if ($opc == "subirImagenPost") {
-                $mensaje = "No se pudo mover la imagen al subir un post";
-            } else if ($opc == "registrar") {
-                $mensaje = "No se pudo mover la imagen al registrarse.";
-            } else if ($opc == "actualizar") {
-                $mensaje = "No se pudo mover la imagen al actualizar.";
-            }
-
+            
             //En caso error se llama al metodo redirigirPorErrorTrabajosEnArchivosRegistro
             //De la clase mis excepciones con la opcion adecuada
             if ($opc == "actualizar" || $opc == "registrar") {
@@ -166,7 +166,7 @@ class Directorios {
             $excepciones = new MisExcepcionesUsuario(CONST_ERROR_CREAR_DIRECTORIO[1], CONST_ERROR_CREAR_DIRECTORIO[0], $ex);
 
             if ($opc == 'registrar') {
-                
+               
                 $excepciones->redirigirPorErrorSistemaUsuario($opc, true);
             }
         }
@@ -275,26 +275,29 @@ class Directorios {
      * Opcion para tratar posibles errores </br>
      */
     final static function copiarFoto($imagen, $destino, $opc) {
-
-
-        
-        try {
-
-            if (!copy($imagen, $destino)) {
-                throw new Exception($mensaje, 0);
-            }
-        } catch (Exception $ex) {
-            
+      
             if ($opc == "registrar") {
                 $mensaje = "No se pudo copiar imagen al registrarse un usuario";
             } else if($opc == "copiarDemoSubirPost"){
                 $mensaje = "No se pudo copiar imagen Demo al registrar un Post";
             }
-
+       
+        try {
+           
+        
+            if (!copy($imagen, $destino)) {
+               
+                throw new Exception($mensaje, 0);
+               
+            }
+            
+            
+        } catch (Exception $ex) {
+    
             if ($opc == "registrar") {
                 $excepciones = new MisExcepcionesUsuario(CONST_ERROR_COPIAR_DEMO_REGISTRO[1], CONST_ERROR_COPIAR_DEMO_REGISTRO[0], $ex);
                 $excepciones->redirigirPorErrorSistemaUsuario($opc, true);
-            } else {
+            }else if($opc == "errorPost"){
                 $_SESSION['error'] = ERROR_ARCHIVOS;
                 $excepciones = new MisExcepcionesPost(CONST_ERROR_COPIAR_DEMO_POST[1], CONST_ERROR_COPIAR_DEMO_POST[0], $ex);
                 $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
@@ -350,7 +353,7 @@ class Directorios {
                         
                        
                             if (!$test) {
-                                throw new Exception("No se pudo renombrar la imagen subiendo Post. Se había eliminado alguna imagen.", 0);
+                                throw new Exception("No se pudo renombrar la imagen subiendo Post.\r\n   Se había eliminado alguna imagen.", 0);
                             }
                         
                         
@@ -363,7 +366,7 @@ class Directorios {
                         $test = rename($nombreViejo, "../photos/$newNombre.jpg") ? true : false;
                     
                             if (!$test) {
-                                throw new Exception("No se pudo renombrar la imagen subiendo Post. No se había eliminado ninguna imagen.", 0);
+                                throw new Exception("No se pudo renombrar la imagen subiendo Post. \r\n No se había eliminado ninguna imagen.", 0);
                             }
                         
                         
@@ -468,11 +471,12 @@ class Directorios {
 
     /**
      * Metodo que elimina los directorios creados <br>
-     * cuando hay un error al registrarse o publicar un Post. <br>
-     * Una vez ingresado el usuario en la bbdd el sitema <br />
+     * cuando hay un error al registrarse o publicar un Post<br>
+     * o un usuario quiere darse de baja definitivamente. <br>
+     * Una vez ingresado el usuario en la bbdd el sistema <br />
      * intenta crear los directorios al usuario. <br>
      * Si esto no es posible intenta eliminar
-     * las carpetas creadas en datos_usuario, photos y Videos <br />
+     * las directorios creados en datos_usuario, photos y Videos <br />
      * Recive una ruta con el directorio a eliminar. <br />
      *  glob() busca todos los nombres de ruta que coinciden con pattern <br />
      * @param $src <br />
@@ -481,7 +485,7 @@ class Directorios {
      */
     final static function eliminarDirectoriosSistema($src, $opc) {
 
-
+       
         try {
 
             //Nos aseguramos recive rutas de directorios
@@ -515,12 +519,9 @@ class Directorios {
             } elseif ($opc == 'eliminarDirectoriosBajaUsuario') {
                 $excepciones = new MisExcepcionesUsuario(CONST_ERROR_ELIMINAR_DIRECTORIOS_BAJA[1], CONST_ERROR_ELIMINAR_DIRECTORIOS_BAJA[0], $ex);
                 $excepciones->redirigirPorErrorSistemaUsuario("eliminarDirectoriosBajaUsuario", true);
-            } elseif($opc == "registrar"){
-                $excepciones = new MisExcepcionesUsuario(CONST_ERROR_ELIMINAR_DIRECTORIOS_ALTA[1], CONST_ERROR_ELIMINAR_DIRECTORIOS_ALTA[0], $ex);
-                $excepciones->redirigirPorErrorSistemaUsuario("eliminarDirectoriosAltaUsuario", false);
             }else {
-                $excepciones = new MisExcepcionesUsuario(CONST_ERROR_ELIMINAR_DIRECTORIO[1], CONST_ERROR_ELIMINAR_DIRECTORIO[0], $ex);
-                $excepciones->redirigirPorErrorSistemaUsuario(' ', true);
+                //$excepciones = new MisExcepcionesUsuario(CONST_ERROR_ELIMINAR_DIRECTORIO[1], CONST_ERROR_ELIMINAR_DIRECTORIO[0], $ex);
+                //$excepciones->redirigirPorErrorSistemaUsuario(' ', true);
             }
         }
 

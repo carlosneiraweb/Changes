@@ -21,7 +21,7 @@ define("CONST_ERROR_CREAR_SUBDIRECTORIO_POST", array("DIR  7","No se pudo crear 
 /**Error eliminar directorios al publicar un post y haber un error*/
 define( "CONST_ERROR_ELIMINAR_DIR_PUBLICAR_POST",array("DIR  8","No se pudieron eliminar los directorios al haber un error al publicar un post"));
 /**Error al eliminar los directorios al darse de baja un usuario*/
-define("CONST_ERROR_ELIMINAR_DIRECTORIOS_BAJA",array("DIR  9","No se pudo eliminar los directorios al dar de baja un usuario"));
+define("CONST_ERROR_ELIMINAR_DIRECTORIOS_BAJA",array("DIR  9","No se pudo eliminar los directorios \r\n al dar de baja un usuario. \r\n OJO \r\n Si se dio de baja en la BBDD"));
 /**Error al eliminar los directorios que se crearon al intentar hacer el registro de un ususario*/
 define("CONST_ERROR_ELIMINAR_DIRECTORIOS_ALTA",array("DIR  10","No se pudo eliminar los directorios al registrar un usuario y ocurrir un error"));
 
@@ -55,7 +55,7 @@ define("CONST_ERROR_ELIMINAR_IMG_DEMO_POST_DEL_DIRECTORIO", array("FILE 9","No s
 /**Error al eliminar una imagen que del directorio esta subiendo un usuario al Post*/
 define("CONST_ERROR_ELIMINAR_IMG_SUBIR_POST",array("FILE 10","No se pudo eliminar la img subida al directorio por el usuario al post"));
 /**Error al copiar la foto demo al registrarse*/
-define("CONST_ERROR_COPIAR_DEMO_REGISTRO", array("FILE 11", "No se pudo copiar la imagen demo al registrarse"));
+define("CONST_ERROR_COPIAR_DEMO_REGISTRO", array("FILE 11", "No se pudo copiar la imagen desconocido al registrarse"));
 //**Error al copiar imagen DEMO al subir post*/
 define("CONST_ERROR_COPIAR_DEMO_POST", array("FILE 12", "No se pudo copiar la imagen DEMO al subir un post."));
 
@@ -123,7 +123,17 @@ define("CONST_ERROR_BBDD_DESBLOQUEAR_TOTALMENTE_USUARIO",array("BBDD 27","No pud
 /**Error en la BBDD al mostrar los usuarios bloqueados totalmente*/
 define("CONST_ERROR_BBDD_MOSTRAR_USUARIOS_BLOQUEADOS_TOTAL",array("BBDD 28","No pudimos mostrar los usuarios bloqueados total"));
 /**Error en la BBDD al mostrar los usuarios bloqueados parcialmente*/
-define("CONST_ERROR_BBDD_MOSTRAR_USUARIOS_BLOQUEADOS_PARCIAL",array("EMAIL 4","No pudimos mostrar los usuarios bloqueados parcial"));
+define("CONST_ERROR_BBDD_MOSTRAR_USUARIOS_BLOQUEADOS_PARCIAL",array("BBDD 29","No pudimos mostrar los usuarios bloqueados parcial"));
+/**Error al desbloquear un usuario*/
+define("CONST_ERROR_BBDD_RECUPERAR_DATOS_TABLA_DESBLOQUEAR",array("BBDD 30",'No pudimos recuperar id del usuario  de la tabla desbloquear'));
+/**Error al activar la cuenta del usuario al pinchar en el enlace mandado a su email*/
+define("CONST_ERROR_BBDD_ACTIVAR_CUENTA_EMAIL",array("BBDD 31","No pudimos activar la cuenta del usuario al activar esta desde el email mandado"));
+/**Error al eliminar de la tabla Desbloquear*/
+define("CONST_ERROR_BBDD_ELIMINAR_TABLA_DESBLOQUEO", array("BBDD 32", "No se pudo eliminar al usuario de la tabla Desbloquear"));
+/**Error al recuperar el id del usuario*/
+define("CONST_ERROR_BBDD_RECUPERAR_ID_USUARIO", array("BBDD 33","No recuperamos el id del usuario"));
+/**Error eliminar un usuario por id*/
+define("CONST_ERROR_BBDD_ELIMINAR_USU_POR_ID",array("BBDD 34","No se pudo eliminar al usuario por ID"));
 
                         /**ERRORES EMAIL*/
 /**Error al construir el email palabras buscadas*/
@@ -131,17 +141,7 @@ define("CONST_ERROR_CONSTRUIR_PALABRAS_BUSCADAS",array("EMAIL 0","No se pudo con
 /**error al mandar email darse baja*/
 define("CONST_ERROR_CONSTRUIR_DARSE_BAJA",array("EMAIL 1","No se pudo contruir el email cuando un usuario se da de baja"));
 /**Error al mandar email darse alta*/
-define("CONST_ERROR_CONSTRUIR_DARSE_ALTA",array("EMAIL 2","No se pudo contruir el email cuando un usuario se da de alta"));
-/**Error al desbloquear un usuario*/
-define("CONST_ERROR_DESBLOQUEO_USUARIO",array("EMAIL 3",'Hemos tenido un problema al desbloquear un usuario'));
-
-
-
-
-//Error al Desbloquear Tabla Desbloquear un usuario
-//define("CONST_ERROR_ELIMINAR_TABLA_DESBLOQUEAR",array(41,"No se ha podido eliminar un usuario de la tabla Desbloqueo"));
-/**Error al recuperar el id de un ususario en bloquear usuario**/
-//define("CONST_ERROR_RECUPERAR_ID_USUARIO_BLOQUEO",array(47,"No se pudo recuperar el id cuando un usuario introduzco el nick para bloquearlo"));
+define("CONST_ERROR_CONSTRUIR_DARSE_ALTA",array("EMAIL 2","No se pudo mandar email de Bienvenida"));
 
 
 
@@ -150,9 +150,14 @@ define("CONST_ERROR_DESBLOQUEO_USUARIO",array("EMAIL 3",'Hemos tenido un problem
 
 
 
+
+
+/**Error generico para fallos internos del sistema*/
+define("ERROR_INTERNO","<h5>Upppss Tuvimos un problema</h5><h4>Intentalo de nuevo</h4>");
 define("ERROR", "<h5>Revisa tu formulario.</h5><h6>Parece que hay algun campo vacio</h6>");
 define("ERROR_VALIDACION_LOGIN", '<h5>El usuario o la contraseña <br> <strong>no son validos</strong>.</h5>');
-define("ERROR_VALIDACION_NO_ACTIVO","<h5>Tú cuenta no esta activa.</h5><h5>Ponte en contacto con un administrador</h5>");
+define("ERROR_VALIDACION_NO_ACTIVO","<h5>Tú cuenta no esta activa.</h5><h5>Tienes que abrir el enlace que te mandamos a tú email</h5>");
+define("ERROR_BAJA_PARCIAL","<h5>Te diste de baja parcial</h5><h5>Para volver a darte de alta nos tienes que escribir un email</h5>");
 define("ERROR_NOMBRE_USUARIO_EXISTE", '<h5>El nombre de usuario ya existe</h5>');
 define("ERROR_PASSWORD_INCORRECTO", '<h5>El password introducido no cumple las normas</h5>'.
                                 "<h5>Recuerda que solo acepta letras y números</h5>".
@@ -165,12 +170,14 @@ define("ERROR_EMAIL_INCORRECTO", '<h5>El email no es valido</h5>'.
 define("ERROR_TELEFONO_INCORRECTO", '<h5>El teléfono introducido es incorrecto.</h5>');
 define("ERROR_CODIGO_POSTAL", "<h5>El código postal no es correcto.</h5>");
 define("ACUERDO_CONDICIONES", '<h5>Debes de estar de acuerdo con nuestras condiciones</h5>');
+/**Error foto .jpj*/
 define("ERROR_FORMATO_FOTO", '<h5>Únicamente aceptamos imagenes .jpg</h5>');
 define("ERROR_TAMAÑO_FOTO", '<h5>El tamaño de la foto supera el máximo permitido.</h5>');
 define("ERROR_FOTO_NO_ELIGIDA", '<h5>Parece que no has seleccionado una imagen.</h5>');
 define("ERROR_ELIMINAR_FOTO", '<h5>Hemos tenido un problema al eliminar la foto</h5>');
 define("ERROR_INSERTAR_FOTO", '<h5>Hemos tenido un problema al insertar tu foto.</h5>');
 define("ERROR_FOTO_GENERAL", "<h5>Lo sentimos hemos tenido un problema al subir la foto.</h5>");
+/**Error generico al insertar un anuncio*/
 define("ERROR_INSERTAR_ARTICULO", "<h5>No hemos podido insertar tú anuncio.</h5><h4>Intentalo otra vez</h4>");
 define("ERROR_INGRESAR_USUARIO", "<h5>Hemos tenido un problema al ingresarte.</h5>");
 define("ERROR_REGISTRAR_USUARIO", "<h5>Hemos tenido un problema al tratar de registrarte.</h5>");
@@ -181,6 +188,8 @@ define("TXT_ERROR_ELIMINAR_POST", "../Errores/ErroresEliminarPost.txt");
 define("ERROR_MANDAR_EMAIL","<h5>Lo sentimos pero por alguna razon no se te ha mandado un email</h5>");
 /**Error al mandar email de validacion*/
 define("ERROR_MANDAR_EMAIL_ACTIVACION","<h5>Parece ser que tuvimos un problema al mandar tú email de activación</h5><h4>Intenta registrarte de nuevo</h4><h4>Lo sentimos</h4>");
+/**Error al no poder desbloquear al usuario desde el email de activacion*/
+define("ERROR_ACTIVAR_CUENTA_EMAIL","<h5>No pudimos activar tú cuenta</h5><h5>Por favor intentalo otra vez o ponte en contacto con nosotros</h5>");
 /**Error al actualizar el post del usuario*/
 define("ERROR_ACTUALIZAR_POST","<h5>Hemos tenido un problema al actualizar tú Post</h5><h4>Debes ingresarlo otra vez</h4>");
 /**Error al desbloquear un usuario*/
@@ -190,11 +199,23 @@ define("ERROR_BLOQUEAR_USUARIO","<h5>Por algún motivo no hemos podido hacer el 
 /**Error mostrar usuarios bloqueados*/
 define("ERROR_MOSTRAR_USUARIOS_BLOQUEADOS","<h5>Por algún motivo no podemos mostrarte los usuarios que tienes bloqueados</h5><h4>Puedes intentarlo de nuevo</h4>");
 /**Error al eliminar de la BBDD a un usuario*/
-define("ERROR_ELIMINAR_USUARIO_BBDD","<h5>No hemos podido darte de baja<h5><h4>Si no puedes ponerte en logearte</h4><h4>Ponte en contacto con nosotros</h4>");
+define("ERROR_ELIMINAR_USUARIO_BBDD","<h5>No hemos podido darte de baja<h5><h4>Si no puedes volver a logearte</h4><h4>Ponte en contacto con nosotros</h4>");
 /**Error  al eliminar los directorios de un usuario al darse de baja*/
 define("ERROR_ELIMINAR_DIRECTORIO_BAJA_USUARIO","<h5>Tuvimos un problema al darte de baja</h5><h4>Intentaremos solucionarlo lo antes posible</h4>");
 /**Error al eliminar os directorios de un usuario al ocurrir un error al darse de alta*/
 define("ERROR_ELIMINAR_DIRECTORIO_ALTA_USUARIO","<h5>Parece que hubo un problema al darte de alta</h5>");
+/**Error activar cuenta por email*/
+define("ERROR_ACTIVAR_CUENTA_EMAIL","<h5>No pudimos activar tú cuenta.</h5>,<h4>Intentalo otra vez oponte en contacto con nosotros</h4>");
+
+
+
+
+
+
+
+
+
+
 
 define("ACTUALIZAR", 1);
 define("ERROR_ARCHIVOS", "<h5>Parece que hemos tenido un problema.</h5><h5>Lo sentimos, intentalo otra vez.</h5>");

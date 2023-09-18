@@ -40,12 +40,12 @@ function crearSubdirectorio(){
    
    /**/
    $id = $_SESSION['userTMP']->getValue('idUsuario');
-   //[0] nombre usuario
+   //[0] id usuario
    $_SESSION['nuevoSubdirectorio'][0] = $id;
    //[1] numero subdirectorio ejemplo "1"
    $_SESSION['nuevoSubdirectorio'][1] = Directorios::crearSubdirectorio('../photos/'.$id);
    //echo 'responde '."../photos/".$_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1];
-   Directorios::copiarFoto("../photos/demo.jpg","../photos/".$_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1]."/demo.jpg", "copiarDemoSubirPost");    
+   Directorios::copiarFoto("../photos/demo.jpg","../photos/".$_SESSION['nuevoSubdirectorio'][0].'/'.$_SESSION['nuevoSubdirectorio'][1]."/demo.jpg", "errorPost");    
    
 //fin crearSubdirectorio    
 }
@@ -111,7 +111,7 @@ function validarCamposSubirPost($st){
                 Directorios::moverImagen($foto, $destino, "subirImagenPost");
                 
                //Renombramos la imagen subida por el usuario
-                
+                //Ejemplo => 185/1/1
                 $_SESSION['dirImagen'] = Directorios::renombrarFotoSubirPost($destino); 
                                   
           
@@ -122,13 +122,18 @@ function validarCamposSubirPost($st){
             // Esto ultimo se hace en el switch del
             //metodo que valida la subida en el directorio Directorios
                 $_SESSION['paginaError'] = "subir_posts.php";
-                //png bandera para que al recargar
-                //no se ingrese la img otra vez
-                $_SESSION['png'] = 'png';
+                //Nos aseguramos que no se inserte en la bbdd
+                //la img con formato erroneo
+                //
+                //
+                //$_SESSION['png'] = 'png';
+                //
+                //
                 //Para que actualice el post
                 //Ya que nos devuelve al primer paso del formulario
                 $_SESSION['atras'] = 'atras';
-                mostrarError();      
+                mostrarError(); 
+                die();
                
                 
         }

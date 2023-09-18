@@ -16,8 +16,13 @@ $(document).ready(function(){
    $('#publicar').on('click', redireccionarSubirPost);
     
    function volverAnterior(){
+       
+            alert(urlVolverError);
+            location.href= urlVolverError;
+        
+        unset(urlVolverError);
+       
       
-       location.href= urlVolverError;
        //urlVolverError = null;
        //history.back();
    } 

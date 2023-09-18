@@ -60,24 +60,27 @@ public  function redirigirPorErrorTrabajosEnArchivosSubirPost($opc,$grado){
         $_SESSION["paginaError"] = "subir_posts.php";
         //Directorio a eliminar al ocurrir un error
         $dir = "../photos/".$_SESSION['nuevoSubdirectorio'][0]."/".$_SESSION['nuevoSubdirectorio'][1];
-        
+       
         switch ($opc) {
             
             case 'errorPost':
                 
-                //Solo eliminamos los directorios creados
-                //Aun no se ha insertado en la bbdd nada
-                $this->tratarDatosErrores($opc, $grado);
-                //Por si no se ha podido crear el subdirectorio
-                //tambien en caso hubiese un error una vez registrado el post
-                //pero no finalizado del todo el proceso
+                
+                //Tratamos de eliminar los posibles directorios creados
+                //y borramos de la bbdd. Si no se ha creado el 
+                //$_SESSION['nuevoSubdirectorio'][1] no hace falta realizar este paso
                 if($_SESSION['nuevoSubdirectorio'][1] !== null){
                    
                     Directorios::eliminarDirectoriosSistema($dir,"SubirPost");
-                    
-                    if(isset($_SESSION['lastId'][0])){Post::eliminarPostId($_SESSION['lastId'][0]);}
+                    //Eliminamos el post de la bbdd
+                    //se pasa un null por si no se ha hecho un insert
+                    //no se cree un bucle 
+                    if(isset($_SESSION['lastId'][0])){Post::eliminarPostId($_SESSION['lastId'][0], null);}
                 }
-                 $this->eliminarVariablesSesionPostAcabado();
+                
+                
+                $this->eliminarVariablesSesionPostAcabado();
+                $this->tratarDatosErrores($opc, $grado);
 
                     die();
                     break;

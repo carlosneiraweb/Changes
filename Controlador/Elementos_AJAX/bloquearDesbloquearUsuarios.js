@@ -124,6 +124,7 @@ function mostrarResultados(texto){
 
 function bloquear(nickBloquear,opc){
     
+   // alert(nickBloquear+" "+opc);
  
     
    $.ajax({

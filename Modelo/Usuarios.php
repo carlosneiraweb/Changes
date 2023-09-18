@@ -49,14 +49,46 @@ class Usuarios extends DataObj{
             "bloqueado" =>""
         );
     
+/**
+ * Metodo public static <br>
+ * Metodo que elimina de la tabla<br>
+ * Desbloquear usuarios.<br>
+ * @param type String $id<br>
+ * El id del usuario a borrar de la tabla.<br>
+ * @param type $opc
+ * Opcion para tratar el error.<br>
+ */
+    
+    
+    public static function elimanarDesbloqueo($id,$opc){
+        
+        $con =  Conne::connect();
+        $sql = "DELETE FROM ".TBL_DESBLOQUEAR." WHERE idDesbloquear = :id";
+        try{
+            $st = $con->prepare($sql);
+            $st->bindValue(":id", $id, PDO::PARAM_INT);
+            $st->execute();
 
+            Conne::disconnect($con);
+            
+            
+        } catch (Exception $ex) {
+            echo $ex->getLine().'<br>';
+            echo $ex->getFile().'<br>';
+            Conne::disconnect($con);
+            die("Query failed: ".$ex->getMessage());
+        }
+  
+        //fin eliminarDesbloqueo
+    }
+    
     
      /**
-
-      *       * Metodo static que recibe un id 
-      * nos devuelve un usuario
-      * @param type $id
-      * @return Un Usuario
+      * public static <br>
+      * Metodo static que recibe un id <br/>
+      * nos devuelve un usuario <br/>
+      * @param  $id del usuario
+      * @return Un Objeto usuario Usuario
       */
     public static function getMember($id){
         
@@ -67,7 +99,7 @@ class Usuarios extends DataObj{
             $st->bindValue(":id", $id, PDO::PARAM_INT);
             $st->execute();
             $row = $st->fetch();
-            $st->closeCursor();
+            
             Conne::disconnect($con);
             
             if($row){return new Usuarios($row);}
@@ -81,13 +113,16 @@ class Usuarios extends DataObj{
     //fin getMember
     }
     
-     /**
-     * public and static
-     * Metodo que devuelve un usuario por nombre de usuario
-     * @param type $nick
-     * @return un array con los datos del usuario
-      * Objeto Usarios
+     
+    /**
+     * public static <br>
+     * Metodo que recive un nick<br/>
+     * y comprueba si esta en la bbdd.<br/>
+     * @param String nick <br>
+     * 
+     * @return objeto usuario
      */
+
     public static function getByUsername($nick){
         
         $con = Conne::connect();
@@ -98,8 +133,9 @@ class Usuarios extends DataObj{
             $st ->bindValue(":nick", $nick, PDO::PARAM_STR);
             $st ->execute();
             $row = $st->fetch();
-            if($row){return new Usuarios($row);}
-            $st->closeCursor();
+            
+            if($row){ return new Usuarios($row);}
+           
             Conne::disconnect($con);
         } catch (Exception $ex) {
             echo $ex->getFile();
@@ -112,43 +148,13 @@ class Usuarios extends DataObj{
    //fin getByUsername
     }
 
-    /**
-     * Metodo que recive un nick
-     * y comprueba si esta en la bbdd
-     * @param nick <br>
-     * String
-     * @return nick usuario
-     */
-public static function getUserName($nick){
-        
-        $con = Conne::connect();
-        $sql = "Select * FROM ".TBL_USUARIO. " WHERE  nick = :nick";
-        
-        try{
-            $st = $con->prepare($sql);
-            $st ->bindValue(":nick", $nick, PDO::PARAM_STR);
-            $st ->execute();
-            $row = $st->fetchAll();
-            if($row){return $row;}
-            $st->closeCursor();
-            Conne::disconnect($con);
-        } catch (Exception $ex) {
-            echo $ex->getFile();
-            echo $ex->getCode();
-            echo '<br>';
-            echo $ex->getLine();
-            Conne::disconnet($con);
-        }
-        
-    //getUsername
-}
-
 
     /**
-     * public and static
-     * Metodo que devuelve un usuario por
-     * por un email recivido
-     * @param type $emailAddress
+     * public and static<br>
+     * Metodo que devuelve un usuario por<br>
+     * por un email recivido<br>
+     * @param type $emailAddress<br>
+     * Email del usuario
      */
     public static function getByEmailAddress($emailAddress){
         
@@ -159,7 +165,7 @@ public static function getUserName($nick){
             $st->bindValue(":emailaddress", $emailAddress, PDO::PARAM_STR);
             $st->execute();
             $row = $st->fetch();
-            $st->closeCursor();
+            
             Conne::disconnect($con);
             if($row){return new Usuarios($row);}    
         } catch(Exception $ex) {
@@ -174,10 +180,10 @@ public static function getUserName($nick){
   
    
     /**
-     * Metodo public para autentificar 
-     * un usuario. Este metodo debe recibir un parametro:
-     * True para validar el Login, se comprueba el nick y el password
-     * False Para validar el nick, password y email, para asegurarse
+     * Metodo public para autentificar <br/>
+     * un usuario. Este metodo debe recibir un parametro:<br/>
+     * True para validar el Login, se comprueba el nick y el password <br/>
+     * False Para validar el nick, password y email, para asegurarse <br/>
      * que no existe un usuario con esos datos en el registro.
      * 
      * @return type Object Usuario
@@ -266,14 +272,19 @@ public final function insert(){
         $con->beginTransaction();
         
         
-        
+             /**
+                 * Destruimos cuando mandamos
+                 * email para activar cuenta
+                 */
+                
+            $hash = System::generoHash($this->data["password"]);
             $date = date('Y-m-d');
             $st = $con->prepare($sql);
             $st->bindValue(":nick", $this->data["nick"], PDO::PARAM_STR);
-            $st->bindValue(":password",  System::generoHash($this->data["password"]) , PDO::PARAM_STR);
+            $st->bindValue(":password",  $hash , PDO::PARAM_STR);
             $st->bindValue(":email", $this->data["email"], PDO::PARAM_STR);
             $st->bindValue(":fecha", $date, PDO::PARAM_STR);
-            $st->bindValue(":bloqueado", '1', PDO::PARAM_STR);
+            $st->bindValue(":bloqueado", BLOQUEO_INICIO, PDO::PARAM_STR);
 
                 $st->execute(); 
                 $idUsu = $con->lastInsertId();
@@ -285,7 +296,7 @@ public final function insert(){
                             "( :idDatosUsuario, :genero, :nombre, :apellido_1, :apellido_2, :telefono);";
                     
                         $stDatosUsuario = $con->prepare($sqlDatosUsuario);
-                        $stDatosUsuario->bindValue("idDatosUsuario", $idUsu, PDO::PARAM_INT);
+                        $stDatosUsuario->bindValue(":idDatosUsuario", $idUsu, PDO::PARAM_INT);
                         $stDatosUsuario->bindValue(":genero", $this->data["genero"], PDO::PARAM_STR);                      
                         $stDatosUsuario->bindValue(":nombre", $this->data["nombre"], PDO::PARAM_STR);
                         $stDatosUsuario->bindValue(":apellido_1", $this->data["apellido_1"], PDO::PARAM_STR);
@@ -312,19 +323,13 @@ public final function insert(){
                 $stDireccion->execute();             
 
                 
-                /**
-                 * Destruimos cuando mandamos
-                 * email para activar cuenta
-                 */
-                
-                $_SESSION["hash" ] = System::generoHash($this->data["email"]);
-                $sqlDesbloquear = "INSERT INTO ".TBL_DESBLOQUEAR. " (idDesbloquear,nick,correo,fecha) ".
+               
+                $sqlDesbloquear = "INSERT INTO ".TBL_DESBLOQUEAR. " (idDesbloquear,nick,fecha) ".
                         " VALUES ".
-                        " (:idDesbloquear,:nick, :correoDesbloquear, :fechaDesbloquear);";
+                        " (:idDesbloquear,:nick,  :fechaDesbloquear);";
                 $stDesbloquear = $con->prepare($sqlDesbloquear);
                 $stDesbloquear->bindValue(":idDesbloquear", $idUsu, PDO::PARAM_INT);
-                $stDesbloquear->bindValue(":nick", $this->data["nick"], PDO::PARAM_STR);
-                $stDesbloquear->bindValue(":correoDesbloquear", $_SESSION["hash"] , PDO::PARAM_STR);
+                $stDesbloquear->bindValue(":nick",$this->data["nick"] , PDO::PARAM_STR);
                 $stDesbloquear->bindValue(":fechaDesbloquear", $date, PDO::PARAM_STR);
                 $stDesbloquear->execute();
                 
@@ -352,11 +357,12 @@ public final function insert(){
 /**
  * Metodo que elimina un usuario por su id <br>
  * @param id <br>
- * String con el id del usuario a eliminar.
+ * String con el id del usuario a eliminar.<br>
+ * @param $opc opcion para tratar el error. <br>
  * @return name $test<br/>
  * Resultado de la acción
  */
- public function eliminarPorId($id){
+ public function eliminarPorId($id,$opc){
     
     $con = Conne::connect();
     $con->beginTransaction();
@@ -367,18 +373,33 @@ public final function insert(){
             
             $st = $con->prepare($sql);
             $st->bindValue(":idUsuario", $id, PDO::PARAM_INT);
-            $test = $st->execute();
+            $st->execute();
+            $test = $st->rowCount();
+            
+          if(!$test){
+              
+              
+              throw new Exception("No se pudo eliminar al usuario por Id",0);
+              
+          }
             
             $con->commit();
             Conne::disconnect($con);
-            return $test;
+            
+            
             
         } catch (Exception $ex) {
-            
+          
             $con->rollBack();
             Conne::disconnect($con);
-            $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_DAR_BAJA_USUARIO_DEFINITIVAMENTE[1],CONST_ERROR_BBDD_DAR_BAJA_USUARIO_DEFINITIVAMENTE[0],$ex);
-            $excepciones->redirigirPorErrorSistemaUsuario("elimanarUsuBBDD",true);
+            
+            if($opc == "registrar"){
+                $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_ELIMINAR_USU_POR_ID[1],CONST_ERROR_BBDD_ELIMINAR_USU_POR_ID[0],$ex);
+                $excepciones->redirigirPorErrorSistemaUsuario($opc,true);
+            }
+            
+        }finally{
+            return $test;
            
         }
      
@@ -389,8 +410,8 @@ public final function insert(){
  
  
     /**
-     * Metodo publico que recive
-     * el nick de un usuario y nos devuelve el id
+     * Metodo publico <br>
+     * nos devuelve el id de un usuario<br>
      *  @return type id usuario
      */
 
@@ -405,96 +426,29 @@ public final function insert(){
                 $st->bindValue(":nick", $this->getValue('nick'), PDO::PARAM_STR);
                 $st->execute();
                 $row = $st->fetch();
+                $t = $st->rowCount();
                 
-                if($row){return $row[0];}
-                $st->closeCursor();
-                
+                if(!$t){
+                 
+                    throw new Exception("No pudimos recuperar el id del usuario",0);
+                    
+                }else{
+                    
+                    return $row[0];
+               
+                }
                 Conne::disconnect($con);
                 
         } catch (Exception $ex) {
             Conne::disconnect($con);
-            echo $ex->getLine().'<br>';
-            echo $ex->getFile().'<br>';
-            die("Query failed: ".$ex->getMessage());
+            $excepciones = new MisExcepcionesUsuario(CONST_ERROR_BBDD_RECUPERAR_ID_USUARIO[1],CONST_ERROR_BBDD_RECUPERAR_ID_USUARIO[0],$ex);
+            $excepciones->redirigirPorErrorSistemaUsuario("recuperarIdUsu",true);              
+            
         }
    //fin devuelve id     
-    }
-
-/**
- * Metodo que recive el id del usuario logeado <br/>
- * y devuelve los posibles usuarios bloqueados <br/>
- * @param type idUsuario <br/>
- * @return type array de ids de usuarios <br/>
- */
-public final function devuelveUsuariosBloqueadosTotal($id){
-    
-   
-    $conBloqueo = Conne::connect();
-   
-    
-        try{
-
-            $sqlBloqueoTotal = "Select idUsuarioBloqueado 
-            from ".TBL_BLOQUEADOS_TOTAL." where usuarioidUsuario = :usuarioIdUsuario;";
-           
-            $stmBloqueoTotal = $conBloqueo->prepare($sqlBloqueoTotal);
-            $stmBloqueoTotal->bindValue(":usuarioIdUsuario",$id, PDO::PARAM_INT);
-            $stmBloqueoTotal->execute();
-            $usuBloqueados = $stmBloqueoTotal->fetchAll();
-            $stmBloqueoTotal->closeCursor();
-            
-            Conne::disconnect($conBloqueo);
-            
-            return $usuBloqueados;
-        } catch (Exception $ex) {
-            Conne::disconnect($conBloqueo);
-            echo $ex->getCode();
-            echo '<br>';
-            echo $ex->getLine().'<br>';
-            echo $ex->getFile().'<br>';
-        }
-
- // devuelveUsuariosBloqueados()  
 }
     
-/**
- * Metodo que recive el id del usuario logeado <br/>
- * y devuelve los posibles usuarios bloqueados <br/>
- * @param type idUsuario <br/>
- * @return type array de ids de usuarios <br/>
- */
-public final function devuelveUsuariosBloqueadosParcial($id){
-    
-   
-    $conBloqueo = Conne::connect();
-    
-    
-        try{
 
-            
-            $sqlBloqueoParcial = "Select idUsuarioBloqueado 
-            from ".TBL_BLOQUEADOS_PARCIAL."  where usuarioIdUsuario = :usuarioIdUsuario;";
-
-            $stmBloqueoParcial = $conBloqueo->prepare($sqlBloqueoParcial);
-            $stmBloqueoParcial->bindValue(":usuarioIdUsuario",$id, PDO::PARAM_INT);
-            $stmBloqueoParcial->execute();
-            $usuBloqueados = $stmBloqueoParcial->fetchAll();
-            $stmBloqueoParcial->closeCursor();
-            
-           
-            Conne::disconnect($conBloqueo);
-            
-            return $usuBloqueados;
-        } catch (Exception $ex) {
-            Conne::disconnect($conBloqueo);
-            echo $ex->getCode();
-            echo '<br>';
-            echo $ex->getLine().'<br>';
-            echo $ex->getFile().'<br>';
-        }
-
- // devuelveUsuariosBloqueados()  
-}
     
 
 
@@ -524,7 +478,7 @@ public function retornoDireccionUsuario(){
             return $direccion;
             
         } catch (Exception $ex) {
-            Conne::disconnect($conBloqueo);
+            Conne::disconnect($conDireccion);
             echo $ex->getCode();
             echo '<br>';
             echo $ex->getLine().'<br>';
@@ -555,7 +509,7 @@ public function devuelveEmailPorId($id){
             $st->bindValue(":idUsuario", $id, PDO::PARAM_INT);
             $st->execute();
             $row = $st->fetch();
-            $st->closeCursor();
+            
             Conne::disconnect($con);
             return $row; 
         } catch(Exception $ex) {

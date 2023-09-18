@@ -108,18 +108,18 @@ if(!isset($_SESSION)){
  * @param $user <br/>
  *  @tipo objeto usuario <br/>
  */
-function comprobarEmailNuevo($user){
+function comprobarEmailNuevo(){
    
     if($_SESSION['actualizo']->getValue('email') != $_SESSION['usuario']['email']){
                                 
-        if($user->getByEmailAddress($_SESSION['usuario']['email'])){
+        if(Usuarios::getByEmailAddress($_SESSION['usuario']['email'])){
             return 1;
         }else{
             return 0;
         }
     }      
     
-    //fin  comprobarNickNuevo   
+    //fin  comprobarEmailNuevo   
     }
     
     
@@ -150,15 +150,15 @@ function comprobarEmailNuevo($user){
     crearDirectorios($tmpNuevosDatos);
     
         if($var == "0"){
-            Directorios::moverImagen($foto,$destino , $tmpNuevosDatos[3]);
+            Directorios::moverImagen($foto, $destino , $tmpNuevosDatos[3]);
         }else{
             Directorios::copiarFoto("../datos_usuario/desconocido.jpg", $destino, $tmpNuevosDatos[3]);
         }
        
-        
-        $objMandarEmails->comprobarEmailActivacion($_SESSION["hash"],$_SESSION['usuario']['nick']);
+      
+        $objMandarEmails->mandarEmailActivacion($_SESSION['usuario']['nick']);
        
-        if(isset($_SESSION["hash"])){unset ($_SESSION["hash"]);}
+       
 
   //fin crearDirectoriosRegistro  
     
@@ -209,7 +209,7 @@ function modificarDirectoriosUsuario(){
      * 
      * @return boolean
      */
-function validarCamposRegistro($st, $user){
+function validarCamposRegistro($st){
         
         $testValidoReg = array(null, 1);
         global $destino;
@@ -226,16 +226,15 @@ function validarCamposRegistro($st, $user){
            
             case "step1":
 
-
-                
+               
                 //En caso de que exista el nombre de usuario o email
                 //Los passwords se repitan o el email sea incorrecto
-                    
-           
+            
+                
                         //En caso se este registrando
                         if(!isset($_SESSION["userTMP"])){
                          
-                            if($user->getUserName($_SESSION['usuario']['nick']) !== null){
+                            if(Usuarios::getByUsername($_SESSION['usuario']['nick']) !== null){
                                                  
                                
                                 $testValidoReg[0] = ERROR_NOMBRE_USUARIO_EXISTE;
@@ -252,10 +251,10 @@ function validarCamposRegistro($st, $user){
                             //$usuActualiza se instancia en el metodo 
                             //con la variable de sesion $_SESSION["userTMP"]
                             //cuando un usuario se logea
-                                
+                              
                             if($usuActualiza !== $_SESSION['usuario']['nick'] ){
-                        
-                                if($_SESSION["userTMP"]->getByUserName($_SESSION['usuario']['nick'])){
+                                
+                                if(Usuarios::getByUserName($_SESSION['usuario']['nick'])){
                                     
                                         $testValidoReg[0] = ERROR_NOMBRE_USUARIO_EXISTE;
                                         $testValidoReg[1] =  0;
@@ -281,7 +280,7 @@ function validarCamposRegistro($st, $user){
                     //           
                     }
                     
-                    if($user->getByEmailAddress($_SESSION['usuario']['email'])){
+                    if(Usuarios::getByEmailAddress($_SESSION['usuario']['email'])){
                         
                         //Se comprueba que se esta registrando
                         //Si se esta actualizando no se hace esa comprobacion
@@ -294,7 +293,7 @@ function validarCamposRegistro($st, $user){
                             
                             //Mandamos comprobar que el nuevo correo
                             //no esta ya en uso si el usuario desea cambiarlo
-                            if(comprobarEmailNuevo($user)){
+                            if(comprobarEmailNuevo()){
                                 
                                 $testValidoReg[0] = ERROR_EMAIL_EXISTE;
                                 $testValidoReg[1] = 0;  
@@ -358,7 +357,7 @@ function validarCamposRegistro($st, $user){
                 
             $test =  Directorios::validarFoto(); 
                 
-            
+        
             if($test !== 0 && $test !== 4){
                 
                 //SI hay algun problema validar foto
@@ -372,14 +371,14 @@ function validarCamposRegistro($st, $user){
 
                 $foto = $_FILES['photoArticulo']['tmp_name']; 
               
-                //ingresamos o actualizamos al usuario en la bbdd
-                ingresarUsuario();
+                
                 //Si el usuario no se ha logeado
                 //entonces se esta registrando    
                 if(!isset($_SESSION["userTMP"])){  
                   
                     
-                    
+                    //ingresamos o actualizamos al usuario en la bbdd
+                    ingresarActualizarUsuario();
                         //SI todo ha ido bien 
                         //Creamos los directorios para el usuario 
                         //Y subimos la foto de perfil
@@ -389,9 +388,12 @@ function validarCamposRegistro($st, $user){
                 //Si se ha logeado esta actualizando sus datos       
                 }else{
                     
+                    // actualizamos al usuario en la bbdd
+                            ingresarActualizarUsuario();
                     $id = $_SESSION["userTMP"]->getValue('idUsuario');
                     $destino = "../datos_usuario/$id/$id.jpg";
                         modificarDirectoriosUsuario();
+                            
                 }
                         
             return $testValidoReg;
@@ -411,7 +413,7 @@ function validarCamposRegistro($st, $user){
                         
         
            
-   
+
         }
   //fin validarCamposRegistro      
       }

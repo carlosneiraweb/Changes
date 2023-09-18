@@ -453,7 +453,7 @@ private  function insertarPalabrasQueridas(){
             }catch(Exception $ex){
                
                Conne::disconnect($con);
-               $this->eliminarPostId($_SESSION['lastId'][0]);
+            
                $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
                $excepciones =  new MisExcepcionesPost(CONST_ERROR_BBDD_INGRESAR_PALABRAS_QUERIDAS[1], CONST_ERROR_BBDD_INGRESAR_PALABRAS_QUERIDAS[0],$ex);
                $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
@@ -502,7 +502,7 @@ private function insertarPalabrasOfrecidas(){
             } catch (Exception $ex) {
                 
                 Conne::disconnect($con);
-                $this->eliminarPostId($_SESSION['lastId'][0]);
+               
                 $_SESSION['error'] = ERROR_INSERTAR_ARTICULO;
                 $excepciones = new MisExcepcionesPost(CONST_ERROR_BBDD_INGRESAR_PALABRAS_OFRECIDAS[1], CONST_ERROR_BBDD_INGRESAR_PALABRAS_OFRECIDAS[0],$ex); 
                 $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("errorPost", true);
@@ -599,13 +599,13 @@ public function insertPost(){
 /**
  * Metodo static <br/>
  * Recive el id del post a eliminar <br/>
- * @param type $id</br>
+ * @param type String $id </br>
  * Finalmente eliminamos la cariable </br>
  * $_SESSION['lastId'].
  */
 
 
-static function eliminarPostId($id){
+static function eliminarPostId($id,$opcion){
     
     try{
         
@@ -624,8 +624,10 @@ static function eliminarPostId($id){
         
         Conne::disconnect($con);
             
+        if($opcion == "SubirPost"){
             $excepciones = new MisExcepcionesPost(CONST_ERROR_ELIMINAR_POST_AL_REGISTRARLO[1], CONST_ERROR_ELIMINAR_POST_AL_REGISTRARLO[0],$ex);
-            $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost("",true);
+            $excepciones->redirigirPorErrorTrabajosEnArchivosSubirPost($opcion,true);
+        }
         
     }finally{
         if(isset($_SESSION['lastId'])){unset($_SESSION['lastId']);}
